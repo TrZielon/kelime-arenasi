@@ -1,6 +1,6 @@
 const MODELS = {
-  quick: ["claude-haiku-5-5", "claude-haiku-4-5"],
-  default: ["claude-sonnet-5-5", "claude-sonnet-4-5"],
+  quick: ["gemini-2.5-flash-lite", "gemini-2.5-flash"],
+  default: ["gemini-2.5-flash", "gemini-2.5-flash-lite"],
 };
 
 export default async function handler(req, res) {
@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "method" });
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: "server_config" });
   }
@@ -23,28 +23,32 @@ export default async function handler(req, res) {
 
   for (const model of candidates) {
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model,
-          max_tokens: 6000,
-          messages: [{ role: "user", content: prompt }],
-        }),
-      });
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": apiKey,
+          },
+          body: JSON.stringify({
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+            generationConfig: {
+              maxOutputTokens: 8000,
+              thinkingConfig: { thinkingBudget: 0 },
+            },
+          }),
+        }
+      );
 
       const data = await response.json().catch(() => ({}));
 
       if (response.ok) {
-        const text = (data.content || [])
-          .filter((block) => block.type === "text")
-          .map((block) => block.text)
-          .join("\n");
-        const truncated = data.stop_reason === "max_tokens";
+        const cand = data.candidates?.[0];
+        const text = (cand?.content?.parts || [])
+          .map((p) => p.text || "")
+          .join("");
+        const truncated = cand?.finishReason === "MAX_TOKENS";
         return res.status(200).json({ text, truncated });
       }
 
@@ -54,12 +58,14 @@ export default async function handler(req, res) {
 
       lastMsg = `${model} (${response.status}): ${data?.error?.message || "bilinmeyen hata"}`;
 
-      // Anahtar sorunu varsa diğer modeller de çalışmaz, döngüyü durdur
-      if (response.status === 401 || response.status === 403) break;
+      // Anahtar sorunu varsa diğer modeller de çalışmaz
+      if (response.status === 400 || response.status === 403) {
+        if (/api key/i.test(lastMsg)) break;
+      }
     } catch (err) {
       lastMsg = `${model}: ${err.message}`;
     }
   }
 
-  return res.status(502).json({ error: "Anthropic hatası: " + lastMsg });
+  return res.status(502).json({ error: "Gemini hatası: " + lastMsg });
 }
