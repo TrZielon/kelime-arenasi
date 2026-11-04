@@ -909,6 +909,79 @@ async function init(){
   await loadShared(cur);
   goStep(0);
 }
+  /* ---- v7: anahtar/izin hatasında dur, gereksiz yeniden çizimi kaldır ---- */
+let FATAL='';
+const isFatal=()=>/API anahtarı|izin|oturum|ulaşılamadı|sunucu fonksiyonu|açık değil|çok fazla|kota/i.test(LASTERR||'');
+
+async function pool2(items,fn,n=2){
+  let i=0;
+  const w=async()=>{while(i<items.length&&!FATAL){const it=items[i++];await fn(it);if(isFatal())FATAL=LASTERR||'hata'}};
+  await Promise.all(Array.from({length:Math.min(n,items.length)},w));
+}
+
+async function fillTr(p){
+  const todo=p.items.filter(x=>!x.tr);
+  if(!todo.length)return;
+  FILL[p.id]=1;
+  try{
+    const ch=[];for(let i=0;i<todo.length;i+=40)ch.push(todo.slice(i,i+40));
+    await pool2(ch,async c=>{
+      const r=await askJ(TR_SYS,c.map((x,i)=>`${i+1}. ${x.en}`).join('\n'),0,'quick');
+      (r&&Array.isArray(r.items)?r.items:[]).forEach(o=>{const x=c[Number(o&&o.i)-1];if(x&&!x.tr&&validTr(o.tr,x.en))x.tr=o.tr.trim()});
+      save(p);
+    });
+  }finally{delete FILL[p.id]}
+}
+
+// Ekranı yalnızca gerçekten gerektiğinde yeniden çiz (her adımda değil)
+function tickUI(p){
+  if(cur!==p)return;
+  const el=$('#gprog');if(el)el.textContent=progTxt(p);
+  const f=$('#ft');if(f)f.innerHTML=footHtml();
+}
+function refreshWait(p){
+  if(cur===p&&$('#st [data-wait]')&&!RUN[p.id])goStep(step);
+}
+
+async function enrich(p){
+  if(RUN[p.id])return;
+  FATAL='';LASTERR='';
+  const upd=(t,bad,why)=>{ENR[p.id]={t,bad,why:why||''};if(cur===p)renderEnr()};
+  if(!SMP){upd('Yapay zekâ bu sayfada açık değil.',true,'yok');return}
+  RUN[p.id]=1;p.dict=p.dict||{};
+  p.items.forEach(x=>{if(x.tr&&!validTr(x.tr,x.en))x.tr=''});
+  const tick=()=>{const G=p.groups||[];upd(`✨ Hazırlanıyor · anlam ${p.items.filter(x=>x.tr).length}/${p.items.length} · cümle ${p.items.filter(x=>x.s).length}/${p.items.length} · paragraf ${G.filter(g=>g.text).length}/${G.length}`);tickUI(p)};
+  try{
+    await fillTr(p);
+    tick();
+    for(let pass=0;pass<2&&!FATAL;pass++){
+      const todo=p.items.filter(x=>x.tr&&!x.s);
+      if(!todo.length)break;
+      const ch=[];for(let i=0;i<todo.length;i+=6)ch.push(todo.slice(i,i+6));
+      await pool2(ch,async c=>{
+        const r=await askJ(BATCH,c.map(w=>w.en+' - '+(w.tr||'?')).join('\n'),120000,'quick');
+        if(r&&Array.isArray(r.items))r.items.forEach(g=>{const it=c.find(x=>x.en.toLowerCase()===String(g&&g.en).toLowerCase());if(it)merge(it,g)});
+        save(p);tick();
+      });
+    }
+    if(!FATAL)await genGroups(p,tick);
+    if(!FATAL)await glossAll(p);
+    save(p);
+    if(!FATAL)await shareDef(p);
+    const G=p.groups||[],inT=new Set(G.filter(g=>g.text).flatMap(g=>g.w));
+    const noTr=p.items.filter(x=>!x.tr).length,noS=p.items.filter(x=>x.tr&&!x.s).length,noG=p.items.filter(x=>x.tr&&!inT.has(x.en)).length;
+    const parts=[];
+    if(noTr)parts.push(`${noTr} kelimenin anlamı yok`);
+    if(noS)parts.push(`${noS} kelimenin cümlesi yok`);
+    if(noG)parts.push(`${noG} kelime paragrafa girmedi`);
+    if(FATAL)upd('Hata: '+FATAL,true,FATAL);
+    else upd(parts.length?`Eksikler: ${parts.join(' · ')}`:'',parts.length>0,LASTERR);
+  }catch(e){upd('Hata: '+e.message,true,'hata')}
+  finally{
+    delete RUN[p.id];
+    if(cur===p){renderEnr();if(!FATAL)refreshWait(p)}
+  }
+}
   init();
 </script>
 </body>
