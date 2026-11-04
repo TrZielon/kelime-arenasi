@@ -603,7 +603,7 @@ async function grade(){
   $('#gfb').innerHTML='<span class="m">Bot değerlendiriyor…</span>';
   const r=await askJ(GRADE,`REFERANS ANA DÜŞÜNCE: ${g.ana||''}\nÖĞRENCİ CEVABI: ${t}`);
   const out=h=>{if(cur===p&&GI===gi&&step===6&&$('#gfb'))$('#gfb').innerHTML=h};
-  if(!r){out('<span class="bad2">Bot şu an yanıt veremedi, tekrar dene.</span>');return}
+    if(!r){out('<span class="bad2">Bot yanıt veremedi'+(LASTERR?' ('+esc(LASTERR)+')':'')+'. Tekrar dene.</span>');return}
   if(r.onay===true||r.onay==='true'){
     if(!g.ok){g.ok=true;p.prog.xp=(p.prog.xp||0)+15}
     if(p.groups.every(x=>x.ok))p.prog.steps[6]=1;
