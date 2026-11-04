@@ -589,7 +589,7 @@ function pview(){
   <div class="row">${G.map((x,k)=>`<button class="pill ${k===i?'on':''}" data-g="${k}">${x.ok?'✓ ':''}${k+1}</button>`).join('')}</div>
   <div class="box" style="text-align:left"${pending?' data-wait="1"':''}>
     ${g.text?`<p class="sent">${sent(g.text)}</p><div class="row"><button class="pill" data-say="${esc(g.text)}">🔊 Metni dinle</button></div>`:`<p class="m">${busy?'Bu grubun paragrafı oluşturuluyor…':'Bu grubun paragrafı oluşturulamadı.'}</p>${LASTERR&&!busy?`<p class="m">Son hata: ${esc(LASTERR)}</p>`:''}`}
-    <div class="m">Kelimeler: ${g.w.map(w=>`<span class="chip">${esc(w)}</span>`).join('')}</div>
+        <div class="m">Kelimeler: ${g.w.map(w=>{const it=p.items.find(x=>x.en===w);return `<span class="chip">${esc(w)}${it&&it.tr?' = '+esc(it.tr):' (anlam eksik)'}</span>`}).join('')}</div>
     ${g.miss&&g.miss.length?`<div class="m" style="margin-top:6px">Metinde geçmeyen: ${g.miss.map(w=>esc(w)).join(', ')}</div>`:''}
     ${needRe?`<div class="row"><button class="pill" id="rg" data-gi="${i}">Bu grubu yeniden oluştur</button></div>`:''}
     <div class="tip" id="tip">${tipHtml()}</div>
