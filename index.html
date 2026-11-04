@@ -312,22 +312,53 @@ const GATE={n:0,q:[]};
 const gateIn=()=>GATE.n<1?(GATE.n++,Promise.resolve()):new Promise(r=>GATE.q.push(r));
 const gateOut=()=>{const r=GATE.q.shift();if(r)r();else GATE.n--};
 const runPool=async(items,fn,n=2)=>{let i=0;const w=async()=>{while(i<items.length){const it=items[i++];await fn(it)}};await Promise.all(Array.from({length:Math.min(n,items.length)},w))};
-async function askJ(sys,input,ms,tier){
-  if(!SMP){LASTERR='yapay zeka bu sayfada açık değil';return null}
-  await gateIn();
-  const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),ms||(tier==='quick'?60000:180000));
-  try{
-    const o={cache:false,signal:ac.signal};if(tier)o.modelTier=tier;
-    const r=await SMP(sys+'\n\nGİRDİ:\n'+input,o);
-    if(r&&r.truncated){LASTERR='çıktı kesildi';return null}
-    const m=String(r&&r.text||'').match(/[\[{][\s\S]*[\]}]/);
-    if(m){const v=JSON.parse(m[0]);if(v&&typeof v==='object'){LASTERR='';return v}}
-    LASTERR='geçersiz yanıt';return null;
-  }catch(e){
-    const c=e&&e.code;
-    LASTERR=c==='not_granted'?'izin verilmedi':c==='rate_limited'?'çok fazla istek, biraz sonra yeniden dene':c==='session_expired'?'oturumun yeniden açılması gerekiyor':(e&&e.name==='AbortError')?'zaman aşımı':((e&&e.message)||'bağlantı hatası');
+async function askJ(sys, input, ms, tier) {
+  if (!SMP) {
+    LASTERR = 'yapay zeka bu sayfada açık değil';
     return null;
-  }finally{clearTimeout(tm);gateOut()}
+  }
+  await gateIn();
+  try {
+    const maxRetries = 3;
+    const baseWait = 1000;
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      const ac = new AbortController();
+      const tm = setTimeout(() => ac.abort(), ms || (tier === 'quick' ? 60000 : 180000));
+      try {
+        const o = { cache: false, signal: ac.signal };
+        if (tier) o.modelTier = tier;
+        const r = await SMP(sys + '\n\nGİRDİ:\n' + input, o);
+        if (r && r.truncated) {
+          LASTERR = 'çıktı kesildi';
+          return null;
+        }
+        const m = String(r && r.text || '').match(/[\[{][\s\S]*[\]}]/);
+        if (m) {
+          const v = JSON.parse(m[0]);
+          if (v && typeof v === 'object') {
+            LASTERR = '';
+            return v;
+          }
+        }
+        LASTERR = 'geçersiz yanıt';
+      } catch (e) {
+        const c = e && e.code;
+        LASTERR = c === 'not_granted' ? 'izin verilmedi'
+          : c === 'rate_limited' ? 'çok fazla istek, biraz sonra yeniden dene'
+          : c === 'session_expired' ? 'oturumun yeniden açılması gerekiyor'
+          : (e && e.name === 'AbortError') ? 'zaman aşımı'
+          : ((e && e.message) || 'bağlantı hatası');
+      } finally {
+        clearTimeout(tm);
+      }
+      if (attempt < maxRetries - 1) {
+        await new Promise(res => setTimeout(res, baseWait * Math.pow(2, attempt)));
+      }
+    }
+    return null;
+  } finally {
+    gateOut();
+  }
 }
 
 function renderHead(){$('#del').hidden=cur.id==='def';renderEnr();
