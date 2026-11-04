@@ -495,6 +495,38 @@ async function enrich(p){
     if(noTr)parts.push(`${noTr} kelimenin anlamı yok`);
     if(noS)parts.push(`${noS} kelimenin cümlesi yok`);
     if(noG)parts.push(`${noG} kelime paragrafa girmedi`);
+       // Kurtarma turu: hâlâ eksik varsa bir kez daha dene
+    if (noS > 0 || noG > 0) {
+      if (noS > 0) {
+        const todoS = p.items.filter(x => x.tr && !x.s);
+        const chS = [];
+        for (let i = 0; i < todoS.length; i += 6) chS.push(todoS.slice(i, i + 6));
+        await runPool(chS, async c => {
+          const r = await askJ(BATCH, c.map(w => w.en + ' - ' + (w.tr || '?')).join('\n'), 120000, 'quick');
+          if (r && Array.isArray(r.items)) r.items.forEach(g => {
+            const it = c.find(x => x.en.toLowerCase() === String(g && g.en).toLowerCase());
+            if (it) merge(it, g);
+          });
+          save(p); tick();
+        });
+      }
+      if (noG > 0) {
+        await genGroups(p, tick);
+      }
+      // Sayıları yeniden hesapla
+      const G2 = p.groups || [];
+      const inT2 = new Set(G2.filter(g => g.text).flatMap(g => g.w));
+      const noTr2 = p.items.filter(x => !x.tr).length;
+      const noS2 = p.items.filter(x => x.tr && !x.s).length;
+      const noG2 = p.items.filter(x => x.tr && !inT2.has(x.en)).length;
+      const parts2 = [];
+      if (noTr2) parts2.push(`${noTr2} kelimenin anlamı yok`);
+      if (noS2) parts2.push(`${noS2} kelimenin cümlesi yok`);
+      if (noG2) parts2.push(`${noG2} kelime paragrafa girmedi`);
+      upd(parts2.length ? `Eksikler: ${parts2.join(' · ')}` : '', parts2.length > 0, LASTERR);
+      refreshWait(p);
+      return;
+    }
     upd(parts.length?`Eksikler: ${parts.join(' · ')}`:'',parts.length>0,LASTERR);
     refreshWait(p);
   }catch(e){upd('Hata: '+e.message,true,'hata')}
