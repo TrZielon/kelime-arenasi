@@ -1,8 +1,7 @@
 const MODELS = {
-  quick: ["gemini-2.5-flash-lite", "gemini-2.5-flash"],
-  default: ["gemini-2.5-flash", "gemini-2.5-flash-lite"],
+  quick: ["gemini-3.5-flash-lite", "gemini-3.5-flash"],
+  default: ["gemini-3.5-flash", "gemini-3.5-flash-lite"],
 };
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "method" });
