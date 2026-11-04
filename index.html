@@ -309,7 +309,7 @@ const say=t=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(
 function save(p=cur){clearTimeout(p._t);p._t=setTimeout(async()=>{if(!DB||!UID)return;try{const {id,_t,...b}=p;await DB.collection('data/users/'+UID).doc(id).set(b)}catch(e){}},300)}
 
 const GATE={n:0,q:[]};
-const gateIn=()=>GATE.n<2?(GATE.n++,Promise.resolve()):new Promise(r=>GATE.q.push(r));
+const gateIn=()=>GATE.n<1?(GATE.n++,Promise.resolve()):new Promise(r=>GATE.q.push(r));
 const gateOut=()=>{const r=GATE.q.shift();if(r)r();else GATE.n--};
 const runPool=async(items,fn,n=2)=>{let i=0;const w=async()=>{while(i<items.length){const it=items[i++];await fn(it)}};await Promise.all(Array.from({length:Math.min(n,items.length)},w))};
 async function askJ(sys,input,ms,tier){
