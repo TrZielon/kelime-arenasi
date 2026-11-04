@@ -402,7 +402,7 @@ async function genGroup(p,g){
   const words=g.w.map(en=>p.items.find(x=>x.en===en)).filter(Boolean);
   if(!words.length)return false;
   let best=null,miss=[];
-  for(let t=0;t<3;t++){
+  for(let t=0;t<2;t++){
     const input='KALIPLAR: '+words.map(x=>x.en+(x.tr?` (${x.tr})`:'')).join(' | ')+(t&&miss.length?'\nÖZELLİKLE ŞUNLAR PARAGRAFTA GEÇMELİ: '+miss.join(' | '):'');
     const r=await askJ(PARA_G,input);
     if(!r||typeof r.par!=='string'||!r.par.trim())continue;
@@ -851,7 +851,65 @@ async function init(){
   await loadShared(cur);
   goStep(0);
 }
-init();
+/* ---- v6: tek deneme, eşzamanlı çağrı, hazır içerik ---- */
+const GATE2={n:0,q:[],max:3};
+const gateIn2=()=>GATE2.n<GATE2.max?(GATE2.n++,Promise.resolve()):new Promise(r=>GATE2.q.push(r));
+const gateOut2=()=>{const r=GATE2.q.shift();if(r)r();else GATE2.n--};
+
+async function askJ(sys,input,ms,tier){
+  if(!SMP){LASTERR='yapay zeka bu sayfada açık değil';return null}
+  await gateIn2();
+  const lim=Math.min(ms||(tier==='quick'?45000:65000),65000);
+  const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),lim);
+  try{
+    const o={cache:false,signal:ac.signal};if(tier)o.modelTier=tier;
+    const r=await SMP(sys+'\n\nGİRDİ:\n'+input,o);
+    if(r&&r.truncated){LASTERR='çıktı kesildi';return null}
+    const m=String(r&&r.text||'').match(/[\[{][\s\S]*[\]}]/);
+    if(m){const v=JSON.parse(m[0]);if(v&&typeof v==='object'){LASTERR='';return v}}
+    LASTERR='geçersiz yanıt';return null;
+  }catch(e){
+    const c=e&&e.code;
+    LASTERR=c==='not_granted'?'izin verilmedi'
+      :c==='rate_limited'?'çok fazla istek, biraz bekle'
+      :(e&&e.name==='AbortError')?'zaman aşımı'
+      :((e&&e.message)||'bağlantı hatası');
+    return null;
+  }finally{clearTimeout(tm);gateOut2()}
+}
+
+async function loadStaticDef(p){
+  if(!p||p.id!=='def')return;
+  try{
+    const r=await fetch('data/def.json',{cache:'no-store'});
+    if(!r.ok)return;
+    const d=await r.json();
+    if(Array.isArray(d.items)&&d.items.length===p.items.length){
+      p.items.forEach((x,i)=>{const y=d.items[i];if(y&&y.en===x.en){
+        x.tr=x.tr||y.tr||'';
+        if(!x.s&&y.s){x.s=y.s;x.st=y.st||'';x.d=y.d||[];x.gl=y.gl||{};x.mo=y.mo||{}}
+      }});
+    }
+    if(Array.isArray(d.groups)&&d.groups.length&&!(p.groups||[]).some(g=>g.text))p.groups=d.groups;
+    if(d.dict&&typeof d.dict==='object')p.dict=Object.assign({},d.dict,p.dict||{});
+  }catch(e){}
+}
+
+async function init(){
+  if(!window.claude){UID=localUid();DB=localDB();SMP=remoteSample()}else{
+    const use=n=>window.claude.use(n);
+    try{const u=await use('user');UID=u?await u.id():null}catch(e){}
+    try{DB=await use('db')}catch(e){}
+    try{SMP=await use('sample')}catch(e){}}
+  if(DB&&UID){try{const s=await DB.collection('data/users/'+UID).get();packs=s.docs.filter(d=>d.exists).map(d=>({id:d.id,...d.data()}))}catch(e){DB=null}}
+  packs.forEach(p=>{p.prog=Object.assign({box:{},steps:[0,0,0,0,0,0,0],xp:0},p.prog||{});if(p.prog.steps.length===6)p.prog.steps.splice(5,0,0);if(!p.items)p.items=seed(p.words)});
+  if(!packs.some(p=>p.id==='def'))packs.unshift(mk('def','BUEPT Listesi',parse(DEF)));
+  cur=packs.find(p=>p.id==='def')||packs[0];
+  await loadStaticDef(cur);
+  await loadShared(cur);
+  goStep(0);
+}
+  init();
 </script>
 </body>
 </html>
