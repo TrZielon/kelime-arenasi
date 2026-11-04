@@ -514,4 +514,281 @@ function mclick(t){
 function mkQ(sentOnly){
   const xs=cur.items.filter(x=>x.tr);
   if(sentOnly){
-    const
+    const cs=xs.filter(x=>x.s&&x.st);
+    for(const x of shuf(cs)){
+      const d=[...x.d,...shuf(cs.filter(o=>o!==x).map(o=>o.st))].filter((v,i,a)=>v&&v!==x.st&&a.indexOf(v)===i).slice(0,3);
+      if(d.length===3)return {k:'s',q:x.s,ans:x.st,opts:shuf([x.st,...d]),x};
+    }
+    return null;
+  }
+  const x=rnd(xs),dirEn=Math.random()<.5,key=o=>dirEn?o.tr:o.en,ans=key(x);
+  return {k:'w',dirEn,q:dirEn?x.en:x.tr,ans,opts:shuf([ans,...shuf(xs.filter(o=>o!==x&&key(o)!==ans)).slice(0,3).map(key)]),x};
+}
+function qstart(m){qmode=m;qi=0;qok=0;lives=m==='boss'?3:99;qNext()}
+function qNext(){
+  const total=qmode==='boss'?10:qmode==='cum'?6:12;
+  if(qi>=total||lives<=0)return qEnd(lives>0);
+  if(!cur.items.some(x=>x.tr)||FILL[cur.id]){$('#st').innerHTML=waitBox();return}
+  if(qmode==='cum'&&!cur.items.some(x=>x.s&&x.st)){$('#st').innerHTML='<div class="box" data-wait="1"><p class="m">Cümleler henüz hazırlanıyor… Hazırlamak için “Yeniden dene” düğmesine bas.</p><button class="pill" id="re">Yeniden dene</button></div>';return}
+  const q=Q=(qmode==='cum'&&mkQ(true))||mkQ(false);q.done=0;SRC=null;
+  $('#st').innerHTML=`<div class="m">${qmode==='boss'?`Boss · ${qi+1}/10 · ${'❤️'.repeat(lives)}`:qmode==='cum'?`Cümle · ${qi+1}/6`:`Seç · ${qi+1}/12`}</div>
+  <div class="box">${q.k==='s'?`<div class="m">Cümlenin anlamı hangisi?</div><div class="sent">${esc(q.q)}</div><button class="pill" data-say="${esc(q.q)}">🔊</button>`:`<div class="m">${q.dirEn?'İngilizce → Türkçe':'Türkçe → İngilizce'}</div><div class="big">${esc(q.q)}</div>${q.dirEn?`<button class="pill" data-say="${esc(q.x.en.split(/\s*[\/~]\s*/)[0])}">🔊</button>`:''}`}</div>
+  ${q.opts.map((o,i)=>`<button class="opt" data-o="${i}">${esc(o)}</button>`).join('')}
+  <div class="fb" id="fb"></div><div class="row"><button class="btn" id="nx" hidden>Sonraki</button></div>`;
+}
+function qAns(i){
+  if(Q.done)return;Q.done=1;
+  const ok=Q.opts[i]===Q.ans;
+  document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(Q.opts[k]===Q.ans)b.classList.add('ok');else if(k===i)b.classList.add('bad')});
+  if(ok){qok++;xp(10);SFX.ok()}else{lives--;SFX.bad()}
+  $('#fb').innerHTML=(ok?'<span class="good">✅ Doğru</span>':'<span class="bad2">❌ Doğru cevap: '+esc(Q.ans)+'</span>')+`<div class="m">${esc(Q.x.en)} = ${esc(Q.x.tr)}</div>`;
+  $('#nx').hidden=false;
+}
+function qEnd(won){
+  const K={sec:2,yaz:3,boss:4,cum:5}[qmode];
+  if(won){cur.prog.steps[K]=1;xp(20);save();SFX.win()}
+  renderHead();
+  $('#st').innerHTML=`<div class="box"><div class="big">${won?'✅ Tamamlandı':'💀 Canların bitti'}</div><p class="m">${qok} doğru</p><button class="btn${won?'':' bad'}" ${won?`data-go="${K+1}"`:'data-restart="1"'}>${won?'Sonraki adım →':'Tekrar dene'}</button></div>`;
+}
+
+function ystart(){qmode='yaz';qi=0;qok=0;ynext()}
+function ynext(){
+  if(qi>=10)return qEnd(true);
+  if(!cur.items.some(x=>x.tr)||FILL[cur.id]){$('#st').innerHTML=waitBox();return}
+  const xs=cur.items.filter(x=>x.tr&&!x.en.includes('X'));
+  if(!xs.length){$('#st').innerHTML='<div class="box m">Bu listede yazma alıştırması için uygun kelime yok.</div>';return}
+  Q={x:rnd(xs),done:0};
+  $('#st').innerHTML=`<div class="m">Yaz · ${qi+1}/10</div><div class="box"><div class="m">Türkçe → İngilizce</div><div class="big">${esc(Q.x.tr)}</div></div><div class="row"><input id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="İngilizcesini yaz" style="max-width:360px"></div><div class="row"><button class="btn" id="ck">Kontrol et</button></div><div class="fb" id="fb"></div>`;
+  $('#ans').focus();
+}
+function yCheck(){
+  if(Q.done){qi++;ynext();return}
+  const v=$('#ans').value.trim().toLowerCase().replace(/[.,!?']/g,'').replace(/^to /,'');
+  if(!v)return;
+  Q.done=1;
+  const ok=Q.x.en.split(/\s*[\/~]\s*/).some(a=>a.trim().toLowerCase()===v);
+  if(ok){qok++;xp(10);SFX.ok()}else SFX.bad();
+  $('#fb').innerHTML=(ok?'<span class="good">✅ Doğru</span>':'<span class="bad2">❌ Doğru cevap: '+esc(Q.x.en)+'</span>');
+  $('#ck').textContent='Sonraki';$('#ans').disabled=true;
+}
+
+function pview(){
+  const p=cur,G=p.groups||[];
+  const inG=new Set(G.flatMap(g=>g.w)),left=p.items.filter(x=>x.tr&&!inG.has(x.en)).length;
+  if(!G.length){
+    $('#st').innerHTML=left
+      ?`<div class="box" data-wait="1"><p class="m">${left} kelime paragraflara bölünmeyi bekliyor.</p>${LASTERR?`<p class="m">Son hata: ${esc(LASTERR)}</p>`:''}<div class="row"><button class="btn" id="pg">Paragrafları oluştur</button></div></div>`
+      :waitBox();
+    return;
+  }
+  GI=Math.min(Math.max(GI,0),G.length-1);
+  const i=GI,g=G[i],busy=!!PRUN[p.id],pending=!g.text&&busy;
+  const needRe=!busy&&(!g.text||(g.miss&&g.miss.length));
+  SRC=g;
+  $('#st').innerHTML=`<div class="m" id="gprog">${progTxt(p)}</div>
+  <div class="row">${G.map((x,k)=>`<button class="pill ${k===i?'on':''}" data-g="${k}">${x.ok?'✓ ':''}${k+1}</button>`).join('')}</div>
+  <div class="box" style="text-align:left"${pending?' data-wait="1"':''}>
+    ${g.text?`<p class="sent">${sent(g.text)}</p><div class="row"><button class="pill" data-say="${esc(g.text)}">🔊 Metni dinle</button></div>`:`<p class="m">${busy?'Bu grubun paragrafı oluşturuluyor…':'Bu grubun paragrafı oluşturulamadı.'}</p>${LASTERR&&!busy?`<p class="m">Son hata: ${esc(LASTERR)}</p>`:''}`}
+    <div class="m">Kelimeler: ${g.w.map(w=>`<span class="chip">${esc(w)}</span>`).join('')}</div>
+    ${g.miss&&g.miss.length?`<div class="m" style="margin-top:6px">Metinde geçmeyen: ${g.miss.map(w=>esc(w)).join(', ')}</div>`:''}
+    ${needRe?`<div class="row"><button class="pill" id="rg" data-gi="${i}">Bu grubu yeniden oluştur</button></div>`:''}
+    <div class="tip" id="tip">${tipHtml()}</div>
+  </div>
+  ${g.text?`<div class="box"><p class="m">Bu paragrafın Türkçe ana düşüncesini yaz; bot onaylayacak ya da onaylamayacak.</p><textarea id="ap" placeholder="Ana düşünce…"></textarea><div class="row"><button class="btn" id="gr">Bota gönder</button></div><div class="fb" id="gfb">${g.ok?'<span class="good">✅ Bu grup onaylandı</span>':''}</div></div>`:''}
+  <div class="row">${i>0?`<button class="pill" data-g="${i-1}">← Önceki</button>`:''}${i<G.length-1?`<button class="pill" data-g="${i+1}">Sonraki grup →</button>`:''}</div>`;
+}
+async function grade(){
+  const p=cur,gi=GI,g=p.groups&&p.groups[gi],t=$('#ap').value.trim();
+  if(!t||!g||!g.text)return;
+  $('#gfb').innerHTML='<span class="m">Bot değerlendiriyor…</span>';
+  const r=await askJ(GRADE,`REFERANS ANA DÜŞÜNCE: ${g.ana||''}\nÖĞRENCİ CEVABI: ${t}`);
+  const out=h=>{if(cur===p&&GI===gi&&step===6&&$('#gfb'))$('#gfb').innerHTML=h};
+  if(!r){out('<span class="bad2">Bot şu an yanıt veremedi, tekrar dene.</span>');return}
+  if(r.onay===true||r.onay==='true'){
+    if(!g.ok){g.ok=true;p.prog.xp=(p.prog.xp||0)+15}
+    if(p.groups.every(x=>x.ok))p.prog.steps[6]=1;
+    save(p);
+    if(cur===p){renderHead();tickUI(p)}
+    SFX.win();
+    out(`<div class="good big">✅ Onaylandı</div><div>${esc(r.yorum)}</div>`);
+  }else out(`<div class="bad2 big">❌ Onaylanmadı</div><div>${esc(r.yorum)}</div>`);
+}
+
+let TIPH='',TIPC='',TAPN=0;
+const tipCtx=()=>step+'|'+cur.id+'|'+(step===6?GI:(deck[di]?deck[di].en:''));
+const tipHtml=()=>TIPH&&TIPC===tipCtx()?TIPH:'<span class="m">Kelimelere dokun: anlam ve ek-kök ayrımı.</span>';
+function setTip(h){TIPH=h;TIPC=tipCtx();const t=$('#tip');if(t)t.innerHTML=h}
+function meaningOf(k){
+  if(SRC&&SRC.gl&&SRC.gl[k])return SRC.gl[k];
+  if(cur.dict&&cur.dict[k])return cur.dict[k];
+  const it=cur.items.find(x=>x.en.toLowerCase().split(/\s*[\/~]\s*/).map(v=>v.trim()).includes(k));
+  return it?it.tr:'';
+}
+async function tap(w,el){
+  document.querySelectorAll('.tk.sel').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');
+  const k=w.toLowerCase(),mo=SRC&&SRC.mo?aMo(SRC.mo[k]):[],my=++TAPN,q=encodeURIComponent(k),ctx=tipCtx();
+  say(w);
+  const show=(g,note)=>setTip(`<b>${esc(w)}</b> — ${g?`<span class="good">${esc(g)}</span>`:`<span class="m">${note}</span>`} <a class="m" href="https://dictionary.cambridge.org/dictionary/english-turkish/${q}" target="_blank" rel="noopener">Cambridge ↗</a> <a class="m" href="https://tureng.com/en/turkish-english/${q}" target="_blank" rel="noopener">Tureng ↗</a><div>${mo.map(([p,t,d])=>`<span class="chip">${esc(p)} · ${esc(t)}: ${esc(d)}</span>`).join('')}</div>`);
+  const g=meaningOf(k);
+  if(g)return show(g);
+  show('','anlam aranıyor…');
+  const r=await askJ(GLOSS,k,60000,'quick');
+  const v=r?(typeof r[k]==='string'?r[k].trim():String(Object.values(r).find(x=>typeof x==='string')||'').trim()):'';
+  if(v){cur.dict=cur.dict||{};cur.dict[k]=v;save(cur)}
+  if(my===TAPN&&tipCtx()===ctx)show(v,'anlam bulunamadı');
+}
+function vAdd(){
+  $('#st').innerHTML=`<div class="box" style="text-align:left"><div class="big" style="text-align:center">Yeni liste</div><p class="m">Her satıra bir kelime yaz (“kelime - anlam”). Anlamı olmayanları sistem tamamlar. PDF, Word (.docx) veya .txt dosyası da ekleyebilirsin.</p><input id="pn" placeholder="Liste adı (ör. Hukuk makalesi)" style="margin-bottom:8px"><div class="row"><button class="pill" id="pfb">📄 PDF / Word / TXT yükle</button><span class="m" id="pfs"></span><input type="file" id="pf" accept=".pdf,.docx,.txt" hidden></div><textarea id="pw" placeholder="rule - yönetmek&#10;ally&#10;surveillance - gözetim"></textarea><div class="row"><button class="btn" id="mk">Listeyi oluştur</button><button class="pill" data-go="${step}">Vazgeç</button></div></div>`;
+}
+const lib=(u,g)=>{if(window[g])return Promise.resolve();if(!LIBS[u])LIBS[u]=new Promise((ok,no)=>{const s=document.createElement('script');s.src=u;s.onload=ok;s.onerror=()=>no(new Error('kütüphane yüklenemedi'));document.head.appendChild(s)});return LIBS[u]};
+async function importFile(f){
+  if(!f)return;const out=$('#pfs');out.textContent='Okunuyor…';
+  try{
+    const ext=f.name.split('.').pop().toLowerCase();let txt='';
+    if(ext==='pdf'){
+      await lib(PDFJS,'pdfjsLib');pdfjsLib.GlobalWorkerOptions.workerSrc=PDFW;
+      const pdf=await pdfjsLib.getDocument({data:new Uint8Array(await f.arrayBuffer())}).promise;
+      for(let n=1;n<=pdf.numPages;n++){
+        const c=await (await pdf.getPage(n)).getTextContent();let line='',lx=null;
+        for(const it of c.items){
+          if(it.str){if(lx!==null&&it.transform[4]-lx>20)line+='\t';line+=it.str;lx=it.transform[4]+(it.width||0)}
+          if(it.hasEOL){txt+=line+'\n';line='';lx=null}
+        }
+        txt+=line+'\n';
+      }
+    }else if(ext==='docx'){
+      await lib(MAMMOTH,'mammoth');
+      const {value}=await mammoth.convertToHtml({arrayBuffer:await f.arrayBuffer()});
+      txt=[...new DOMParser().parseFromString(value,'text/html').querySelectorAll('p,tr')].filter(el=>el.tagName==='TR'||!el.closest('table')).map(el=>el.tagName==='TR'?[...el.children].map(c=>c.textContent.trim()).join('\t'):el.textContent).join('\n');
+    }else txt=await f.text();
+    const n=parse(txt).length,ta=$('#pw');
+    ta.value=(ta.value.trim()?ta.value.trim()+'\n':'')+txt.trim();
+    out.textContent=n?`${n} satır okundu; kontrol edip oluşturabilirsin`:'Dosyada kelime bulunamadı (taranmış PDF olabilir)';
+  }catch(e){out.textContent='Dosya okunamadı: '+e.message}
+}
+async function delPack(){
+  if(cur.id==='def'||!confirm('Bu liste silinsin mi?'))return;
+  const id=cur.id;packs=packs.filter(p=>p.id!==id);cur=packs[0];goStep(0);
+  try{await DB.collection('data/users/'+UID).doc(id).delete()}catch(e){}
+}
+function mkPack(){
+  const w=parse($('#pw').value),name=$('#pn').value.trim()||'Yeni liste';
+  if(!w.length)return;
+  const p=mk('p'+Date.now().toString(36),name,w);packs.push(p);cur=p;save(p);goStep(0);
+}
+
+document.addEventListener('click',e=>{
+  const t=e.target;
+  const tk=t.closest('.tk');if(tk){tap(tk.dataset.w,tk);return}
+  const sy=t.closest('[data-say]');if(sy){say(sy.dataset.say);return}
+  const st=t.closest('[data-st]');if(st){goStep(+st.dataset.st);return}
+  const go=t.closest('[data-go]');if(go){goStep(+go.dataset.go);return}
+  if(t.closest('[data-restart]')){goStep(step);return}
+  if(t.closest('#xj')){exportDef();return}
+  if(t.closest('#pfb')){$('#pf').click();return}
+  if(t.closest('#addb')){vAdd();return}
+  if(t.closest('#mk')){mkPack();return}
+  if(t.closest('#th')){const T=['arena','neon','kagit'],n=T[(T.indexOf(document.documentElement.dataset.theme)+1)%3];document.documentElement.dataset.theme=n;return}
+  if(t.closest('#snd')){muted=!muted;t.closest('#snd').textContent=muted?'🔇':'🔊';return}
+  if(t.closest('#cd')&&step===0&&!t.closest('.tk,.tip')){flip=!flip;drawK();return}
+  if(t.closest('#fl')){flip=!flip;drawK();return}
+  if(t.closest('#del')){delPack();return}
+  if(t.closest('#pg')){const p=cur;genGroups(p,()=>tickUI(p)).then(()=>{if(step===6&&cur===p)pview()});pview();return}
+  if(t.closest('#rg')){const b=t.closest('#rg'),p=cur,g=p.groups&&p.groups[+b.dataset.gi];if(g){b.disabled=true;b.textContent='Oluşturuluyor…';genGroup(p,g).then(()=>{save(p);if(step===6&&cur===p)pview()})}return}
+  const gg=t.closest('[data-g]');if(gg&&step===6){GI=+gg.dataset.g;pview();return}
+  if(t.closest('#rt')||t.closest('#re')||t.closest('#hz')){enrich(cur);return}
+  if(t.closest('#pm')){useCap('permissions').then(pm=>pm&&pm.manage()).catch(()=>{});return}
+  if(t.closest('#tt')){const el=$('#trs');if(el)el.hidden=!el.hidden;return}
+  if(t.closest('#yes')){const x=deck[di];cur.prog.box[x.en]=Math.min(5,bx(x)+1);xp(5);SFX.ok();di++;flip=false;drawK();save();return}
+  if(t.closest('#no')){const x=deck[di];cur.prog.box[x.en]=1;di++;flip=false;drawK();save();return}
+  const o=t.closest('[data-o]');if(o){qAns(+o.dataset.o);return}
+  if(t.closest('#nx')){qi++;qNext();return}
+  if(t.closest('#ck')){yCheck();return}
+  if(t.closest('#gr')){grade();return}
+  if(t.closest('[data-l],[data-r]')&&step===1){mclick(t);return}
+  if(t.closest('#nr')){mstart();return}
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&$('#ck')){yCheck();return}
+  if(e.target.matches&&e.target.matches('input,textarea,select'))return;
+  const k=e.key;
+  if(step===0&&$('#cd')){if(k===' '){e.preventDefault();$('#fl').click()}else if(k==='1')$('#no').click();else if(k==='2')$('#yes').click()}
+  else if([2,4,5].includes(step)&&Q&&Q.opts){if(/^[1-4]$/.test(k))$(`[data-o="${k-1}"]`)?.click();else if((k===' '||k==='Enter')&&$('#nx')&&!$('#nx').hidden){e.preventDefault();$('#nx').click()}}
+});
+document.addEventListener('change',e=>{if(e.target.id==='pf'){importFile(e.target.files[0]);e.target.value=''}});
+$('#pk').addEventListener('change',e=>pick(e.target.value));
+
+async function loadShared(p){
+  if(!p||p.id!=='def'||!DB)return;
+  try{
+    const s=await DB.doc('shared/def').get();if(!s.exists)return;
+    const d=JSON.parse(JSON.stringify(s.data()));
+    if(Array.isArray(d.items)&&d.items.length===p.items.length){
+      p.items.forEach((x,i)=>{const y=d.items[i];if(y&&y.en===x.en){if(!x.tr&&y.tr)x.tr=y.tr;if(!x.s&&y.s){x.s=y.s;x.st=y.st||'';x.d=y.d||[];x.gl=y.gl||{};x.mo=y.mo||{}}}});
+    }
+    if(Array.isArray(d.groups)&&!(p.groups||[]).length)p.groups=d.groups;
+    if(d.dict&&typeof d.dict==='object')p.dict=Object.assign({},d.dict,p.dict||{});
+  }catch(e){}
+}
+async function shareDef(p){
+  if(!DB||p.id!=='def'||!(p.groups||[]).length||!p.groups.every(g=>g.text))return;
+  if(p.items.filter(x=>x.s).length<p.items.length*.9)return;
+  try{
+    const r=DB.doc('shared/def');
+    if((await r.get()).exists)return;
+    await r.set({items:p.items.map(x=>({en:x.en,tr:x.tr,s:x.s,st:x.st,d:x.d,gl:x.gl,mo:x.mo})),groups:p.groups.map(g=>({w:g.w,text:g.text,ana:g.ana,gl:g.gl,miss:g.miss})),dict:p.dict||{}});
+  }catch(e){}
+}
+function exportDef(){
+  const p=cur,data={items:p.items.map(x=>({en:x.en,tr:x.tr,s:x.s,st:x.st,d:x.d,gl:x.gl,mo:x.mo})),groups:(p.groups||[]).map(g=>({w:g.w,text:g.text,ana:g.ana,gl:g.gl,miss:g.miss})),dict:p.dict||{}};
+  $('#st').innerHTML=`<div class="box" style="text-align:left"><p class="m">Bu metni kopyalayıp sakla. ${p.items.filter(x=>x.s).length}/${p.items.length} cümle ve ${(p.groups||[]).filter(g=>g.text).length} paragraf hazır.</p><textarea style="min-height:280px;font-size:12px">${esc(JSON.stringify(data))}</textarea></div>`;
+}
+function localUid(){let u=localStorage.getItem('ka_uid');if(!u){u=(crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random().toString(36).slice(2));localStorage.setItem('ka_uid',u)}return u}
+function localDB(){
+  const L=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+  const ref=(path,id)=>{const k='db:'+path+'/'+id;return{get:async()=>{const v=L(k);return{exists:v!==null,data:()=>v}},set:async v=>{localStorage.setItem(k,JSON.stringify(v))},delete:async()=>{localStorage.removeItem(k)}}};
+  return{
+    collection:path=>({doc:id=>ref(path,id),get:async()=>{const pre='db:'+path+'/';const docs=Object.keys(localStorage).filter(k=>k.startsWith(pre)).map(k=>({id:k.slice(pre.length),exists:true,data:()=>L(k)}));return{docs}}}),
+    doc:path=>{const i=path.lastIndexOf('/');return ref(path.slice(0,i),path.slice(i+1))}
+  };
+}
+const API_URL='/api/claude';
+const SRV_MSG={server_config:'sunucuda API anahtarı tanımlı değil (Vercel → Settings → Environment Variables → GEMINI_API_KEY ekle, sonra Redeploy et)',origin:'bu site adresi sunucuda izinli değil',rate:'çok fazla istek gönderildi, biraz bekleyip yeniden dene',upstream:'yapay zekâ servisine ulaşılamadı, biraz sonra yeniden dene',prompt:'istek geçersiz',method:'istek yöntemi geçersiz'};
+function remoteSample(){
+  return async(prompt,opts={})=>{
+    if(location.protocol==='file:')throw Object.assign(new Error('Bu sayfa dosya olarak açıldı. Yapay zekâ için sayfayı yayınlanmış adresinden (https://…) aç.'),{code:'local_file'});
+    let r;
+    try{
+      r=await fetch(API_URL,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prompt,tier:opts.modelTier||'default'}),signal:opts.signal});
+    }catch(e){
+      if(e&&e.name==='AbortError')throw e;
+      throw Object.assign(new Error('sunucuya ulaşılamadı (internet bağlantını ya da adresi kontrol et)'),{code:'network'});
+    }
+    if(r.status===429)throw Object.assign(new Error('çok fazla istek, biraz bekleyip yeniden dene'),{code:'rate_limited'});
+    if(r.status===404)throw new Error('sunucu fonksiyonu bulunamadı (api/claude.js yayınlanmamış olabilir)');
+    if(!r.ok){
+      let c='',detail='';try{const j=await r.json();c=j.error||'';detail=j.detail||''}catch(e){}
+      const base=SRV_MSG[c]||('sunucu hatası '+r.status+(c?' ('+c+')':''));
+      throw new Error(detail?base+' — '+detail:base);
+    }
+    const d=await r.json();
+    return {text:String(d.text||''),truncated:!!d.truncated};
+  };
+}
+async function init(){
+  if(!window.claude){UID=localUid();DB=localDB();SMP=remoteSample()}else{
+  const use=n=>window.claude.use(n);
+  try{const u=await use('user');UID=u?await u.id():null}catch(e){}
+  try{DB=await use('db')}catch(e){}
+  try{SMP=await use('sample')}catch(e){}}
+  if(DB&&UID){try{const s=await DB.collection('data/users/'+UID).get();packs=s.docs.filter(d=>d.exists).map(d=>({id:d.id,...d.data()}))}catch(e){DB=null}}
+  packs.forEach(p=>{p.prog=Object.assign({box:{},steps:[0,0,0,0,0,0,0],xp:0},p.prog||{});if(p.prog.steps.length===6)p.prog.steps.splice(5,0,0);if(!p.items)p.items=seed(p.words)});
+  if(!packs.some(p=>p.id==='def'))packs.unshift(mk('def','BUEPT Listesi',parse(DEF)));
+  cur=packs.find(p=>p.id==='def')||packs[0];
+  await loadShared(cur);
+  goStep(0);
+}
+init();
+</script>
+</body>
+</html>
