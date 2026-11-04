@@ -180,6 +180,30 @@ textarea{min-height:140px;resize:vertical}
   *{animation:none!important;transition:none!important}
 }
 </style>
+<style id="v8-theme">
+:root,[data-theme=arena]{--bg:#f4f6fb;--p:#ffffff;--p2:#eef2fa;--ink:#16203a;--m:#5d6b88;--a:#2456e8;--a2:#6d3cf0;--ok:#15803d;--bad:#c81e3a;--b:#dde4f2;--sh:0 12px 28px -18px rgba(22,32,58,.35);--ring:0 0 0 3px rgba(36,86,232,.25);color-scheme:light}
+[data-theme=neon]{--bg:#0b1220;--p:#131c31;--p2:#1a2642;--ink:#e8eefc;--m:#8ea0c4;--a:#38bdf8;--a2:#818cf8;--ok:#34d399;--bad:#fb7185;--b:#22304f;--sh:0 12px 28px -18px rgba(0,0,0,.6);--ring:0 0 0 3px rgba(56,189,248,.35);color-scheme:dark}
+[data-theme=kagit]{--bg:#f6f1e6;--p:#fffdf8;--p2:#f3ecdc;--ink:#2b2118;--m:#7a6a55;--a:#9a4a1f;--a2:#c7742f;--ok:#2e7d4f;--bad:#b3261e;--b:#e6dcc7;--sh:0 12px 28px -18px rgba(60,40,20,.35);--ring:0 0 0 3px rgba(154,74,31,.3);color-scheme:light}
+body{background:radial-gradient(900px 420px at 50% -10%,var(--p2),transparent 60%),var(--bg);line-height:1.6}
+header{border-bottom:1px solid var(--b);padding:12px 0;margin-bottom:4px}
+.brand{font-size:20px;letter-spacing:-.2px}
+.hud>span{box-shadow:var(--sh)}
+.steps{gap:8px;padding:10px 2px}
+.steps .pill{font-size:13px;padding:8px 14px;border-radius:12px;background:var(--p)}
+.steps .pill.on{background:var(--a);color:#fff;border-color:var(--a)}
+.box{border-radius:20px;box-shadow:var(--sh);border:1px solid var(--b);border-top:3px solid var(--a)}
+.btn{background:linear-gradient(135deg,var(--a),var(--a2));color:#fff;box-shadow:0 8px 18px -10px var(--a)}
+.btn.ok{background:var(--ok);color:#fff;box-shadow:none}
+.btn.bad{background:var(--bad);color:#fff;box-shadow:none}
+.opt,.tile{background:var(--p);border-color:var(--b)}
+.opt:hover:not(:disabled),.tile:hover{border-color:var(--a)}
+.tip{background:var(--p2)}
+.scorecard{background:var(--p);border:1px solid var(--b);border-radius:20px;padding:22px;text-align:center;box-shadow:var(--sh)}
+.scorenum{font-size:52px;font-weight:800;color:var(--a);line-height:1.1}
+.scorebar{height:10px;border-radius:999px;background:var(--b);overflow:hidden;margin:14px 0}
+.scorebar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--a),var(--a2));transition:width .6s ease}
+.scorecard .fb{font-weight:700;margin-top:6px}
+</style>
 </head>
 <body>
 <div id="app">
@@ -981,6 +1005,31 @@ async function enrich(p){
     delete RUN[p.id];
     if(cur===p){renderEnr();if(!FATAL)refreshWait(p)}
   }
+}
+  /* ---- v8: yüzdeli değerlendirme ve başlık ---- */
+const b8=document.querySelector('.brand');if(b8)b8.textContent='Kelime Arenası';
+
+const GRADE2=`Bir İngilizce akademik metnin Türkçe ana düşüncesini öğrenci yazdı. Öğrencinin cevabını referans ana düşünceyle karşılaştır ve 0 ile 100 arasında tam sayılı bir yüzde ver.
+Yüzde ölçeği: 100 = referansla tam örtüşüyor; 85 = merkezi iddia doğru, küçük bir ayrıntı eksik; 70 = merkezi iddia doğru ama önemli bir ayrıntı eksik ya da ifade zayıf; 40 = kısmen doğru; 0 = alakasız ya da yanlış.
+Dil hatalarına ve kelime seçimine değil, düşüncenin doğruluğuna ve kapsamına bak. YALNIZCA geçerli JSON döndür: {"yuzde": 0 ile 100 arasında tam sayı, "onay": yuzde 70 ve üzeriyse true, değilse false, "yorum": "Türkçe, 2-3 cümle. Eksik ya da yanlış noktayı ve doğru ana düşünceyi belirt."}`;
+
+async function grade(){
+  const p=cur,gi=GI,g=p.groups&&p.groups[gi],t=$('#ap').value.trim();
+  if(!t||!g||!g.text)return;
+  $('#gfb').innerHTML='<span class="m">Bot değerlendiriyor…</span>';
+  const r=await askJ(GRADE2,`REFERANS ANA DÜŞÜNCE: ${g.ana||''}\nÖĞRENCİ CEVABI: ${t}`,60000);
+  const out=h=>{if(cur===p&&GI===gi&&step===6&&$('#gfb'))$('#gfb').innerHTML=h};
+  if(!r){out('<span class="bad2">Bot yanıt veremedi'+(LASTERR?' ('+esc(LASTERR)+')':'')+'. Tekrar dene.</span>');return}
+  const sc=Math.max(0,Math.min(100,Math.round(parseFloat(String(r.yuzde).replace(',','.').replace(/[^0-9.]/g,''))||0)));
+  const pass=sc>=70;
+  if(pass){
+    if(!g.ok){g.ok=true;p.prog.xp=(p.prog.xp||0)+15}
+    if(p.groups.every(x=>x.ok))p.prog.steps[6]=1;
+    save(p);
+    if(cur===p){renderHead();tickUI(p)}
+    SFX.win();
+  }
+  out(`<div class="scorecard"><div class="scorenum">%${sc}</div><div class="scorebar"><i style="width:${sc}%"></i></div><div class="fb ${pass?'good':'bad2'}">${pass?'✅ Geçti':'❌ Geçmedi'} <span class="m">(geçme eşiği %70)</span></div><div class="m">${esc(r.yorum||'')}</div></div>`);
 }
   init();
 </script>
