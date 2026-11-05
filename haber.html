@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-palette="teal">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -12,18 +12,32 @@
   --line:#dbe8e4;--soft:#e6f2ee;--ok:#2e9e6e;--bad:#d9534f;
   --r:20px;--sh:0 10px 28px -16px rgba(21,50,45,.28);
 }
+html[data-palette=blue]{
+  --bg:#f2f4fc;--ink:#1d2350;--muted:#5f6690;--teal:#3f47b8;--teal2:#5b63d6;
+  --line:#dfe3f3;--soft:#e9ecfa;--sh:0 10px 28px -16px rgba(29,35,80,.28);
+}
+html[data-palette=maroon]{
+  --bg:#fbf4f4;--ink:#3b1519;--muted:#7d5b5f;--teal:#7a1f2b;--teal2:#9c3441;
+  --line:#f0dfe0;--soft:#f7e9ea;--sh:0 10px 28px -16px rgba(59,21,25,.25);
+}
 *{box-sizing:border-box}
 html,body{margin:0}
-body{min-height:100vh;background:var(--bg);color:var(--ink);font:16px/1.6 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:env(safe-area-inset-bottom,0px)}
-button{font:inherit;color:inherit}
+body{min-height:100vh;background:var(--bg);color:var(--ink);font:16px/1.6 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:env(safe-area-inset-bottom,0px);transition:background .3s}
+button,select{font:inherit;color:inherit}
 a{color:inherit}
 .wrap{max-width:860px;margin:0 auto;padding:0 18px 48px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0;flex-wrap:wrap}
-.brand{font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:22px;color:var(--teal);text-decoration:none}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:22px;color:var(--teal)}
+.brand svg{flex:0 0 auto}
+.right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 nav{display:flex;gap:8px;flex-wrap:wrap}
-nav a{padding:8px 14px;border-radius:999px;text-decoration:none;font-weight:600;font-size:14px;color:var(--ink)}
+nav a{padding:9px 16px;border-radius:999px;text-decoration:none;font-weight:600;font-size:15px}
 nav a:hover{background:var(--soft)}
 nav a.cur{background:var(--teal);color:#fff}
+.tools{display:flex;align-items:center;gap:8px}
+.dot{width:26px;height:26px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
+.dot.on{box-shadow:0 0 0 2px var(--teal)}
+.iconbtn{background:var(--card);border:1.5px solid var(--line);border-radius:999px;width:38px;height:38px;cursor:pointer;font-size:16px}
 .hero{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border-radius:28px;padding:28px 26px;margin:6px 0 22px;box-shadow:var(--sh)}
 .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;opacity:.85;margin:0 0 6px}
 .hero h1{font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:clamp(26px,6vw,36px);line-height:1.15;margin:0 0 8px}
@@ -35,13 +49,13 @@ h2{font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:24px;margin:8p
 .date{color:var(--muted);font-size:13px;margin-left:6px}
 .ttl{font-family:"Fraunces",Georgia,serif;font-weight:700;font-size:22px;line-height:1.25;margin:8px 0 6px}
 .muted{color:var(--muted);font-size:14px}
-.pill{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;min-height:38px;cursor:pointer;font-weight:600;font-size:14px;text-decoration:none;display:inline-flex;align-items:center;color:var(--ink)}
+.pill{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;min-height:38px;cursor:pointer;font-weight:600;font-size:14px;text-decoration:none;display:inline-flex;align-items:center}
 .pill:hover{border-color:var(--teal2)}
 .pill.on{background:var(--teal);color:#fff;border-color:var(--teal)}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
 .btn{background:var(--accent);color:#2a1a05;border:0;border-radius:14px;padding:12px 20px;min-height:46px;font-weight:800;cursor:pointer;box-shadow:0 8px 18px -10px var(--accent2)}
 .btn:hover{filter:brightness(1.04)}
-select{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:8px 12px;font:inherit;color:var(--ink)}
+select{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:8px 12px}
 .box{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin:12px 0;box-shadow:var(--sh)}
 .story{font-size:18px;line-height:1.9}
 .tk{cursor:pointer;border-bottom:2px dotted var(--teal2);border-radius:4px}
@@ -58,15 +72,26 @@ select{background:var(--card);border:1.5px solid var(--line);border-radius:999px
 .opt.bad{border-color:var(--bad);background:#fbeaea}
 .src{color:var(--teal);font-weight:600}
 .empty{text-align:center;padding:34px 18px}
-@media(max-width:480px){.hero{padding:22px 20px}.story{font-size:17px}}
+@media(max-width:560px){nav a{padding:8px 12px;font-size:14px}.brand span{font-size:19px}.hero{padding:22px 20px}.story{font-size:17px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header class="top">
-<a class="brand" href="/">⚔️ Kelime Arenası</a>
-<nav><a href="/">Ana sayfa</a><a class="cur" href="/haber.html">📰 Haber</a></nav>
+  <a class="brand" href="/">
+    <svg width="36" height="36" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#1f5f57"/><path d="M14 36V22a10 10 0 0 1 20 0v14" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="37" cy="11" r="3.5" fill="#f2a53a"/></svg>
+    <span>Kelime Arenası</span>
+  </a>
+  <div class="right">
+    <nav><a href="/">Ana sayfa</a><a class="cur" href="/haber.html">📰 Haber</a></nav>
+    <div class="tools">
+      <button class="dot" data-pal="teal" style="background:#1f5f57" aria-label="Yeşil tema"></button>
+      <button class="dot" data-pal="blue" style="background:#3f47b8" aria-label="Mavi tema"></button>
+      <button class="dot" data-pal="maroon" style="background:#7a1f2b" aria-label="Bordo tema"></button>
+      <button class="iconbtn" id="snd" aria-label="Ses">🔊</button>
+    </div>
+  </div>
 </header>
 <main id="main"></main>
 </div>
@@ -74,10 +99,25 @@ select{background:var(--card);border:1.5px solid var(--line);border-radius:999px
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const LV={1:'Seviye 1',2:'Seviye 2',3:'Seviye 3'};
-let DATA=[],CUR=null,LEVEL='1',QS=null,LAST=null;
+let DATA=[],CUR=null,LEVEL='1',QS=null,LAST=null,MUTED=localStorage.getItem('ka_mute')==='1';
 const DONE=()=>{try{return JSON.parse(localStorage.getItem('ka_hn_done')||'{}')}catch(e){return {}}};
 const saveDone=d=>localStorage.setItem('ka_hn_done',JSON.stringify(d));
-function say(t,rate){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=rate||1;speechSynthesis.speak(u)}catch(e){}}
+function say(t,rate){
+  if(MUTED)return;
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=rate||1;speechSynthesis.speak(u)}catch(e){}
+}
+
+function setPal(p){
+  document.documentElement.dataset.palette=p;
+  localStorage.setItem('ka_pal',p);
+  document.querySelectorAll('[data-pal]').forEach(b=>b.classList.toggle('on',b.dataset.pal===p));
+}
+function setMute(){
+  $('#snd').textContent=MUTED?'🔇':'🔊';
+  if(MUTED){try{speechSynthesis.cancel()}catch(e){}}
+}
+setPal(localStorage.getItem('ka_pal')||'teal');
+setMute();
 
 async function load(){
   try{
@@ -162,6 +202,8 @@ async function tapWord(w,el){
 }
 document.addEventListener('click',e=>{
   const t=e.target;
+  const pal=t.closest('[data-pal]');if(pal){setPal(pal.dataset.pal);return}
+  if(t.closest('#snd')){MUTED=!MUTED;localStorage.setItem('ka_mute',MUTED?'1':'0');setMute();return}
   const lv=t.closest('[data-lv]');if(lv){LEVEL=lv.dataset.lv;reader();return}
   if(t.closest('#quiz')){quiz();return}
   if(t.closest('[data-back]')){reader();return}
