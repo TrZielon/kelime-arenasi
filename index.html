@@ -308,6 +308,20 @@ html{scroll-padding-top:120px}
 </div>
 
 <script>
+  /* ===== HABER DÜĞMESİ ===== */
+document.addEventListener('DOMContentLoaded',()=>{
+  if(document.getElementById('haberbtn'))return;
+  const a=document.createElement('a');
+  a.id='haberbtn';
+  a.href='/haber.html';
+  a.textContent='📰 Haber';
+  a.style.cssText='display:inline-flex;align-items:center;padding:7px 14px;border-radius:999px;border:1.5px solid var(--b);background:var(--p);color:var(--ink);font-weight:600;font-size:14px;text-decoration:none;min-height:36px;';
+  const hud=document.querySelector('.hud');
+  if(hud){hud.prepend(a);return}
+  a.style.cssText+='position:fixed;top:12px;right:12px;z-index:50;';
+  document.body.appendChild(a);
+});
+/* ===== HABER DÜĞMESİ SONU ===== */
   /* ===== HIZ VE YÜZDE GÜNCELLEMESİ ===== */
 const P_LANE={fg:0,bg:0},P_MAX={fg:2,bg:2},P_WAIT={fg:[],bg:[]};
 function P_acquire(l){
