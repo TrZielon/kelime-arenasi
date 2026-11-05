@@ -308,6 +308,56 @@ html{scroll-padding-top:120px}
 </div>
 
 <script>
+  /* ===== HIZ VE YÜZDE GÜNCELLEMESİ ===== */
+const P_LANE={fg:0,bg:0},P_MAX={fg:2,bg:2},P_WAIT={fg:[],bg:[]};
+function P_acquire(l){
+  if(P_LANE[l]<P_MAX[l]){P_LANE[l]++;return Promise.resolve()}
+  return new Promise(r=>P_WAIT[l].push(r));
+}
+function P_release(l){
+  const n=P_WAIT[l].shift();
+  if(n)n(); else P_LANE[l]--;
+}
+const GRADE2=`Bir İngilizce akademik metnin Türkçe ana düşüncesini öğrenci yazdı. Referans ana düşünceyle karşılaştır ve 0 ile 100 arasında bir benzerlik puanı ver: 100 = aynı ana fikir, 60 = ana fikir doğru ama önemli bir ayrıntı eksik, 0 = alakasız ya da yanlış. Kelime seçimi ve ifade farklılıklarını cezalandırma. YALNIZCA geçerli JSON döndür: {"skor": 0-100 arası tam sayı, "yorum": "Türkçe, 2 cümle. Eksik ya da yanlış noktayı belirt, doğru ana düşünceyi kısaca yaz."}`;
+
+async function askJ(sys,input,ms,tier){
+  if(!SMP){LASTERR='yapay zeka bu sayfada açık değil';return null}
+  const lane=(sys===GRADE||sys===GRADE2||sys===GLOSS)?'fg':'bg';
+  await P_acquire(lane);
+  const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),ms||(lane==='fg'?60000:180000));
+  try{
+    const o={cache:false,signal:ac.signal};if(tier)o.modelTier=tier;
+    const r=await SMP(sys+'\n\nGİRDİ:\n'+input,o);
+    if(r&&r.truncated){LASTERR='çıktı kesildi';return null}
+    const m=String(r&&r.text||'').match(/[\[{][\s\S]*[\]}]/);
+    if(m){const v=JSON.parse(m[0]);if(v&&typeof v==='object'){LASTERR='';return v}}
+    LASTERR='geçersiz yanıt';return null;
+  }catch(e){
+    const c=e&&e.code;
+    LASTERR=c==='rate_limited'?'çok fazla istek, biraz sonra yeniden dene':(e&&e.name==='AbortError')?'zaman aşımı':((e&&e.message)||'bağlantı hatası');
+    return null;
+  }finally{clearTimeout(tm);P_release(lane)}
+}
+
+async function grade(){
+  const p=cur,gi=GI,g=p.groups&&p.groups[gi],t=$('#ap').value.trim();
+  if(!t||!g||!g.text)return;
+  const show=h=>{if(cur===p&&GI===gi&&step===6&&$('#gfb'))$('#gfb').innerHTML=h};
+  show('<span class="m">Bot değerlendiriyor…</span>');
+  const r=await askJ(GRADE2,`REFERANS ANA DÜŞÜNCE: ${g.ana||''}\nÖĞRENCİ CEVABI: ${t}`,60000,'quick');
+  if(!r){show(`<span class="bad2">Bot yanıt veremedi${LASTERR?' ('+esc(LASTERR)+')':''}. Tekrar dene.</span>`);return}
+  const skor=Math.max(0,Math.min(100,Math.round(Number(r.skor)||0)));
+  const bar=`<div class="bar"><i style="width:${skor}%"></i></div><div class="big">%${skor} benzerlik</div><div class="m">Geçiş puanı: %60</div>`;
+  if(skor>=60){
+    if(!g.ok){g.ok=true;p.prog.xp=(p.prog.xp||0)+15}
+    if(p.groups.every(x=>x.ok))p.prog.steps[6]=1;
+    save(p);
+    if(cur===p){renderHead();tickUI(p)}
+    SFX.win();
+    show(`${bar}<div class="good big">✅ Onaylandı</div><div>${esc(r.yorum||'')}</div>`);
+  }else show(`${bar}<div class="bad2 big">❌ Onaylanmadı</div><div>${esc(r.yorum||'')}</div>`);
+}
+/* ===== GÜNCELLEME SONU ===== */
 function mascot(cls='',size=60){
   return `<svg class="masc ${cls}" viewBox="0 0 120 130" width="${size}" height="${Math.round(size*1.08)}" aria-hidden="true"><path d="M60 6 L108 24 V62 C108 96 84 116 60 124 C36 116 12 96 12 62 V24 Z" style="fill:var(--p2);stroke:#fff;stroke-width:5;stroke-linejoin:round"/><path d="M60 22 V108" stroke="rgba(255,255,255,.18)" stroke-width="6"/><circle cx="44" cy="56" r="8" fill="#fff"/><circle cx="76" cy="56" r="8" fill="#fff"/><circle cx="46" cy="58" r="3.6" fill="#111"/><circle cx="78" cy="58" r="3.6" fill="#111"/><path class="sm" d="M40 84 Q60 102 80 84" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/><path class="fr" d="M40 94 Q60 78 80 94" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/></svg>`;
 }
