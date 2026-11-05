@@ -1,100 +1,111 @@
 <!DOCTYPE html>
-<html lang="tr" data-palette="teal">
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Günlük haberler: üç seviye, dinleme ve quiz.">
 <title>Haber · Kelime Arenası</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-:root{
-  --bg:#f1f7f5;--card:#ffffff;--ink:#15322d;--muted:#5d7a73;
-  --teal:#1f5f57;--teal2:#2f8a7c;--accent:#f2a53a;--accent2:#e8902a;
-  --line:#dbe8e4;--soft:#e6f2ee;--ok:#2e9e6e;--bad:#d9534f;
-  --r:20px;--sh:0 10px 28px -16px rgba(21,50,45,.28);
-}
-html[data-palette=blue]{
-  --bg:#f2f4fc;--ink:#1d2350;--muted:#5f6690;--teal:#3f47b8;--teal2:#5b63d6;
-  --line:#dfe3f3;--soft:#e9ecfa;--sh:0 10px 28px -16px rgba(29,35,80,.28);
-}
-html[data-palette=maroon]{
-  --bg:#fbf4f4;--ink:#3b1519;--muted:#7d5b5f;--teal:#7a1f2b;--teal2:#9c3441;
-  --line:#f0dfe0;--soft:#f7e9ea;--sh:0 10px 28px -16px rgba(59,21,25,.25);
-}
+body[data-pal="gece"]{--bg:#0f1224;--card:#171b33;--line:#2a3050;--ink:#f4f1ff;--mut:#9aa3c7;--p:#6366f1;--p2:#8b5cf6;--acc:#fbbf24;--bad:#f43f5e;--soft:#1f2545;--lg:url(#lgA);--shadow:0 22px 40px -26px rgba(0,0,0,.7)}
+body[data-pal="kitaplik"]{--bg:#f7f1e3;--card:#fffaf0;--line:#e6d9bf;--ink:#2e1a1f;--mut:#7d6a5f;--p:#7a1f2e;--p2:#a33a4a;--acc:#c08a2b;--bad:#b42318;--soft:#f1e5cc;--lg:url(#lgB);--shadow:0 22px 40px -28px rgba(46,26,31,.45)}
+body[data-pal="akdeniz"]{--bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;--p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--lg:url(#lgC);--shadow:0 22px 40px -28px rgba(13,43,42,.4)}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:16px;line-height:1.5;transition:background .3s,color .3s;background-image:radial-gradient(color-mix(in srgb,var(--mut) 13%,transparent) 1px,transparent 1.4px);background-size:24px 24px;padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
-html,body{margin:0}
-body{min-height:100vh;background:var(--bg);color:var(--ink);font:16px/1.6 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:env(safe-area-inset-bottom,0px);transition:background .3s}
-button,select{font:inherit;color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
 a{color:inherit}
-.wrap{max-width:860px;margin:0 auto;padding:0 18px 48px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:22px;color:var(--teal)}
-.brand svg{flex:0 0 auto}
-.right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-nav{display:flex;gap:8px;flex-wrap:wrap}
-nav a{padding:9px 16px;border-radius:999px;text-decoration:none;font-weight:600;font-size:15px}
-nav a:hover{background:var(--soft)}
-nav a.cur{background:var(--teal);color:#fff}
-.tools{display:flex;align-items:center;gap:8px}
-.dot{width:26px;height:26px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
-.dot.on{box-shadow:0 0 0 2px var(--teal)}
-.iconbtn{background:var(--card);border:1.5px solid var(--line);border-radius:999px;width:38px;height:38px;cursor:pointer;font-size:16px}
-.hero{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border-radius:28px;padding:28px 26px;margin:6px 0 22px;box-shadow:var(--sh)}
-.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;opacity:.85;margin:0 0 6px}
-.hero h1{font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:clamp(26px,6vw,36px);line-height:1.15;margin:0 0 8px}
-.hero p{margin:0;opacity:.92}
-h2{font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:24px;margin:8px 0 10px}
-.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin:12px 0;box-shadow:var(--sh);text-decoration:none;transition:transform .15s,border-color .2s}
-.card:hover{transform:translateY(-2px);border-color:var(--teal2)}
-.tag{display:inline-block;font-size:12px;font-weight:700;background:var(--soft);color:var(--teal);border-radius:999px;padding:3px 10px}
-.date{color:var(--muted);font-size:13px;margin-left:6px}
-.ttl{font-family:"Fraunces",Georgia,serif;font-weight:700;font-size:22px;line-height:1.25;margin:8px 0 6px}
-.muted{color:var(--muted);font-size:14px}
-.pill{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;min-height:38px;cursor:pointer;font-weight:600;font-size:14px;text-decoration:none;display:inline-flex;align-items:center}
-.pill:hover{border-color:var(--teal2)}
-.pill.on{background:var(--teal);color:#fff;border-color:var(--teal)}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
-.btn{background:var(--accent);color:#2a1a05;border:0;border-radius:14px;padding:12px 20px;min-height:46px;font-weight:800;cursor:pointer;box-shadow:0 8px 18px -10px var(--accent2)}
-.btn:hover{filter:brightness(1.04)}
-select{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:8px 12px}
-.box{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin:12px 0;box-shadow:var(--sh)}
+.nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:12px 18px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-weight:800;font-size:20px;text-decoration:none;letter-spacing:-.3px}
+.logo svg{width:38px;height:38px}
+.navlinks{display:flex;gap:4px;margin-left:10px;flex-wrap:wrap}
+.navlinks a{padding:8px 13px;border-radius:12px;font-weight:700;color:var(--mut);text-decoration:none}
+.navlinks a:hover{color:var(--ink);background:var(--soft)}
+.navlinks a.cur{color:#fff;background:var(--p)}
+.tools{margin-left:auto;display:flex;gap:8px;align-items:center}
+.dots{display:flex;gap:7px}
+.dots button{width:22px;height:22px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line);padding:0}
+.dots button.on{box-shadow:0 0 0 2px var(--p)}
+.sndbtn{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;min-height:34px}
+.page{max-width:840px;margin:0 auto;padding:24px 18px 90px}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--mut)}
+.hero{position:relative;overflow:hidden;border-radius:30px;padding:30px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;box-shadow:0 26px 46px -30px var(--p);margin-bottom:22px}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 88% 0%,rgba(255,255,255,.2),transparent 42%),repeating-linear-gradient(115deg,rgba(255,255,255,.06) 0 2px,transparent 2px 18px)}
+.hero .eyebrow{color:rgba(255,255,255,.8)}
+.hero h1{position:relative;font-family:Fraunces,serif;font-weight:800;font-size:clamp(26px,4vw,38px);margin:6px 0 8px;letter-spacing:-.7px;line-height:1.12}
+.hero p{position:relative;margin:0;opacity:.92;max-width:560px}
+h2.sec{font-family:Fraunces,serif;font-size:22px;margin:8px 0 12px;letter-spacing:-.3px}
+.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;margin:12px 0;box-shadow:0 5px 0 var(--line),var(--shadow);text-decoration:none;transition:transform .15s,border-color .2s}
+.card:hover{transform:translateY(-2px);border-color:var(--p)}
+.tag{display:inline-block;font-size:11px;font-weight:800;background:var(--soft);color:var(--p);border-radius:999px;padding:3px 10px}
+.date{color:var(--mut);font-size:13px;margin-left:6px}
+.ttl{font-family:Fraunces,serif;font-weight:800;font-size:22px;line-height:1.25;margin:8px 0 6px;letter-spacing:-.3px}
+.muted{color:var(--mut);font-size:14px}
+.pill{background:var(--soft);border:0;border-radius:999px;padding:8px 14px;min-height:38px;font-weight:700;font-size:14px;text-decoration:none;display:inline-flex;align-items:center}
+.pill.on{background:var(--p);color:#fff}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0;justify-content:flex-start}
+.btn3{background:var(--acc);color:#1f1300;border:0;border-radius:18px;padding:13px 22px;font-weight:800;font-size:15px;box-shadow:0 6px 0 color-mix(in srgb,var(--acc) 55%,#000);transition:transform .08s,box-shadow .08s}
+.btn3:active{transform:translateY(4px);box-shadow:0 2px 0 color-mix(in srgb,var(--acc) 55%,#000)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:22px;margin:12px 0;box-shadow:0 6px 0 var(--line),var(--shadow)}
 .story{font-size:18px;line-height:1.9}
-.tk{cursor:pointer;border-bottom:2px dotted var(--teal2);border-radius:4px}
-.tk:hover,.tk.sel{background:var(--soft);color:var(--teal);border-bottom-color:transparent}
-.tip{min-height:44px;margin-top:14px;background:var(--soft);border-radius:14px;padding:10px 14px;font-size:15px}
-.tip b{color:var(--teal)}
-.bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:10px 0}
-.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
-.qn{font-weight:700;margin-bottom:8px}
-.opt{display:block;width:100%;margin:8px 0;padding:13px 14px;min-height:50px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);text-align:left;cursor:pointer;font-size:15px;font-weight:600}
-.opt:hover:not(:disabled){border-color:var(--teal2);background:var(--soft)}
+.tk{border-bottom:2px dotted var(--mut);cursor:pointer;border-radius:5px;padding:0 1px}
+.tk:hover,.tk.sel{background:var(--soft);color:var(--p);border-bottom-color:transparent}
+.tip{min-height:50px;margin-top:14px;background:var(--soft);border-radius:16px;padding:12px 14px;font-size:15px}
+.tip b{color:var(--p)}
+.bar{height:12px;background:var(--soft);border-radius:999px;overflow:hidden;margin:12px 0}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--acc));border-radius:999px;transition:width .5s}
+.qn{font-weight:800;margin-bottom:8px}
+.opt{display:block;width:100%;margin:8px 0;padding:14px 16px;min-height:52px;border-radius:16px;border:2px solid var(--line);background:var(--card);color:var(--ink);text-align:left;font-size:15px;font-weight:700;box-shadow:0 4px 0 var(--line)}
+.opt:hover:not(:disabled){border-color:var(--mut)}
 .opt:disabled{cursor:default}
-.opt.ok{border-color:var(--ok);background:#e7f6ef}
-.opt.bad{border-color:var(--bad);background:#fbeaea}
-.src{color:var(--teal);font-weight:600}
+.opt.ok{border-color:#16a34a;background:color-mix(in srgb,#16a34a 14%,var(--card))}
+.opt.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 11%,var(--card))}
+.src{color:var(--p);font-weight:700}
 .empty{text-align:center;padding:34px 18px}
-@media(max-width:560px){nav a{padding:8px 12px;font-size:14px}.brand span{font-size:19px}.hero{padding:22px 20px}.story{font-size:17px}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+select{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:9px 12px;font-weight:700;color:var(--ink);font-family:inherit}
+@media(max-width:640px){.navlinks{order:3;width:100%;margin:0}.navlinks a{flex:1;text-align:center;padding:8px 6px;font-size:14px}.tools{margin-left:auto}.hero{padding:22px}.story{font-size:17px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
-<body>
-<div class="wrap">
-<header class="top">
-  <a class="brand" href="/">
-    <svg width="36" height="36" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#1f5f57"/><path d="M14 36V22a10 10 0 0 1 20 0v14" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="37" cy="11" r="3.5" fill="#f2a53a"/></svg>
-    <span>Kelime Arenası</span>
-  </a>
-  <div class="right">
-    <nav><a href="/">Ana sayfa</a><a class="cur" href="/haber.html">📰 Haber</a></nav>
+<body data-pal="gece">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#6d28d9"/></linearGradient>
+    <linearGradient id="lgB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8f2a3b"/><stop offset="1" stop-color="#5c1420"/></linearGradient>
+    <linearGradient id="lgC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14968c"/><stop offset="1" stop-color="#0b5a55"/></linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/><stop offset="0.6" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset="0.5" stop-color="#fbbf24"/><stop offset="1" stop-color="#d97706"/></linearGradient>
+    <symbol id="lgo" viewBox="0 0 64 64">
+      <rect x="2" y="2" width="60" height="60" rx="18" style="fill:var(--lg)"/>
+      <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sheen)"/>
+      <path d="M15 50V31a17 17 0 0 1 34 0v19" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+      <path d="M25 50V33a7 7 0 0 1 14 0v17" fill="none" stroke="url(#gold)" stroke-width="4.5" stroke-linecap="round"/>
+      <path d="M9 55 Q20 51.5 32 55 Q44 51.5 55 55" fill="none" stroke="url(#gold)" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="50" cy="13" r="6.2" fill="#fbbf24" fill-opacity="0.25"/>
+      <circle cx="50" cy="13" r="3.6" fill="url(#gold)"/>
+    </symbol>
+  </defs>
+</svg>
+<nav class="nav" aria-label="Ana gezinme">
+  <div class="nav-in">
+    <a class="logo" href="/" aria-label="Kelime Arenası ana sayfa"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#lgo"/></svg><span>Kelime Arenası</span></a>
+    <div class="navlinks">
+      <a href="/">Ana sayfa</a>
+      <a class="cur" href="/haber.html">📰 Haber</a>
+    </div>
     <div class="tools">
-      <button class="dot" data-pal="teal" style="background:#1f5f57" aria-label="Yeşil tema"></button>
-      <button class="dot" data-pal="blue" style="background:#3f47b8" aria-label="Mavi tema"></button>
-      <button class="dot" data-pal="maroon" style="background:#7a1f2b" aria-label="Bordo tema"></button>
-      <button class="iconbtn" id="snd" aria-label="Ses">🔊</button>
+      <div class="dots" role="group" aria-label="Renk paleti">
+        <button data-pal="gece" title="Gece" aria-label="Gece paleti" style="background:#6366f1"></button>
+        <button data-pal="kitaplik" title="Kitaplık" aria-label="Kitaplık paleti" style="background:#7a1f2e"></button>
+        <button data-pal="akdeniz" title="Akdeniz" aria-label="Akdeniz paleti" style="background:#0f766e"></button>
+      </div>
+      <button class="sndbtn" id="snd" aria-label="Sesi aç/kapat">🔊</button>
     </div>
   </div>
-</header>
-<main id="main"></main>
-</div>
+</nav>
+<main class="page" id="main"></main>
 <script>
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -106,17 +117,16 @@ function say(t,rate){
   if(MUTED)return;
   try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=rate||1;speechSynthesis.speak(u)}catch(e){}
 }
-
-function setPal(p){
-  document.documentElement.dataset.palette=p;
-  localStorage.setItem('ka_pal',p);
-  document.querySelectorAll('[data-pal]').forEach(b=>b.classList.toggle('on',b.dataset.pal===p));
+function setPal(n){
+  document.body.dataset.pal=n;
+  document.querySelectorAll('.dots button').forEach(b=>b.classList.toggle('on',b.dataset.pal===n));
+  try{localStorage.setItem('ka_pal',n)}catch(e){}
 }
 function setMute(){
   $('#snd').textContent=MUTED?'🔇':'🔊';
   if(MUTED){try{speechSynthesis.cancel()}catch(e){}}
 }
-setPal(localStorage.getItem('ka_pal')||'teal');
+setPal(localStorage.getItem('ka_pal')||'gece');
 setMute();
 
 async function load(){
@@ -136,9 +146,9 @@ function route(){
 }
 function list(){
   const done=DONE();
-  const hero=`<section class="hero"><p class="eyebrow">Günlük haber · Üç seviye</p><h1>Haberi oku, dinle, quiz çöz.</h1><p>Her gün güncel haberler eklenir. Her haber üç İngilizce seviyesinde yazılır ve her seviyenin kendi quizi vardır.</p></section>`;
+  const hero=`<section class="hero"><div class="eyebrow">Günlük haber · Üç seviye</div><h1>Haberi oku, dinle, quiz çöz.</h1><p>Her gün güncel haberler eklenir. Her haber üç İngilizce seviyesinde yazılır ve her seviyenin kendi quizi vardır.</p></section>`;
   const body=DATA.length
-    ? `<h2>Son haberler</h2>`+DATA.map(x=>`<a class="card" href="#${esc(x.id)}"><span class="tag">${esc(x.category)}</span><span class="date">${esc(x.date)}</span><div class="ttl">${esc(x.title)}</div><div class="muted">${[1,2,3].map(l=>LV[l]+(done[x.id+'-'+l]!=null?' ✓ %'+done[x.id+'-'+l]:'')).join(' · ')}</div></a>`).join('')
+    ? `<h2 class="sec">Son haberler</h2>`+DATA.map(x=>`<a class="card" href="#${esc(x.id)}"><span class="tag">${esc(x.category)}</span><span class="date">${esc(x.date)}</span><div class="ttl">${esc(x.title)}</div><div class="muted">${[1,2,3].map(l=>LV[l]+(done[x.id+'-'+l]!=null?' ✓ %'+done[x.id+'-'+l]:'')).join(' · ')}</div></a>`).join('')
     : `<div class="box empty"><p class="muted">Henüz haber yok. Haberler her sabah otomatik eklenir.</p></div>`;
   $('#main').innerHTML=hero+body;
 }
@@ -146,24 +156,24 @@ function reader(){
   const lv=CUR.levels[LEVEL]||CUR.levels['1'];
   const done=DONE();
   const tabs=[1,2,3].map(l=>`<button class="pill ${String(l)===LEVEL?'on':''}" data-lv="${l}">${LV[l]}${done[CUR.id+'-'+l]!=null?' ✓ %'+done[CUR.id+'-'+l]:''}</button>`).join('');
-  const story=String(lv.text).split(/([A-Za-z][A-Za-z'-]*)/).map((t,i)=>i%2?`<span class="tk" data-w="${t}">${t}</span>`:esc(t)).join('');
+  const story=String(lv.text).split(/([A-Za-z][A-Za-z'-]*)/).map((t,i)=>i%2?`<span class="tk" data-w="${esc(t)}">${esc(t)}</span>`:esc(t)).join('');
   $('#main').innerHTML=`<a class="pill" href="#">← Haberler</a>
   <div class="row" style="margin-top:14px"><span class="tag">${esc(CUR.category)}</span><span class="date">${esc(CUR.date)}</span></div>
   <h2 class="ttl" style="font-size:28px">${esc(CUR.title)}</h2>
   <div class="row">${tabs}</div>
   <div class="box">
-    <div class="row" style="margin-top:0"><button class="btn" id="play">🔊 Dinle</button><select id="spd"><option value="0.8">Yavaş</option><option value="1" selected>Normal</option><option value="1.15">Hızlı</option></select><button class="pill" id="stop">■ Durdur</button></div>
+    <div class="row" style="margin-top:0"><button class="btn3" id="play">🔊 Dinle</button><select id="spd"><option value="0.8">Yavaş</option><option value="1" selected>Normal</option><option value="1.15">Hızlı</option></select><button class="pill" id="stop">■ Durdur</button></div>
     <div class="story">${story}</div>
     <div class="tip" id="tip"><span class="muted">Bir kelimeye dokunun, Türkçe anlamı çıksın.</span></div>
   </div>
-  <div class="row"><button class="btn" id="quiz">Quiz'e geç →</button></div>
+  <div class="row"><button class="btn3" id="quiz">Quiz'e geç →</button></div>
   <p class="muted">Kaynak: <a class="src" href="${esc(CUR.src)}" target="_blank" rel="noopener">${esc(CUR.source)}</a> · Metin bu haberden yapay zekâyla sadeleştirilmiştir.</p>`;
 }
 function quiz(){
   const qs=CUR.levels[LEVEL].quiz;
   QS={ans:Array(qs.length).fill(null)};
   $('#main').innerHTML=`<button class="pill" data-back="1">← Metne dön</button>
-  <h2 style="margin-top:14px">${LV[LEVEL]} · Quiz</h2>
+  <h2 class="sec" style="margin-top:14px">${LV[LEVEL]} · Quiz</h2>
   ${qs.map((q,i)=>`<div class="box"><div class="qn">${i+1}. ${esc(q.q)}</div>${q.opts.map((o,k)=>`<button class="opt" data-q="${i}" data-k="${k}">${esc(o)}</button>`).join('')}</div>`).join('')}
   <div id="res"></div>`;
 }
@@ -180,7 +190,7 @@ function answer(i,k){
   if(QS.ans.every(v=>v!==null)){
     const total=qs.length,right=QS.ans.filter((v,j)=>v===qs[j].ans).length,pct=Math.round(right/total*100);
     const d=DONE();d[CUR.id+'-'+LEVEL]=pct;saveDone(d);
-    $('#res').innerHTML=`<div class="box" style="text-align:center"><div class="ttl" style="margin:0">%${pct}</div><div class="bar"><i style="width:${pct}%"></i></div><p class="muted">${right} / ${total} doğru</p><button class="btn" data-back="1">Metne dön</button></div>`;
+    $('#res').innerHTML=`<div class="box" style="text-align:center"><div class="ttl" style="margin:0">%${pct}</div><div class="bar"><i style="width:${pct}%"></i></div><p class="muted">${right} / ${total} doğru</p><button class="btn3" data-back="1">Metne dön</button></div>`;
   }
 }
 async function tapWord(w,el){
@@ -190,7 +200,7 @@ async function tapWord(w,el){
   const cached=localStorage.getItem(key);
   if(cached){tip.innerHTML=`<b>${esc(w)}</b> — ${esc(cached)}`;return}
   tip.innerHTML=`<b>${esc(w)}</b> — <span class="muted">anlam aranıyor…</span>`;
-  const sentence=CUR.levels[LEVEL].text.split(/(?<=[.!?])\s+/).find(s=>new RegExp('\\b'+w+'\\b','i').test(s))||'';
+  const sentence=CUR.levels[LEVEL].text.split(/(?<=[.!?])\s+/).find(s=>new RegExp('\\b'+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i').test(s))||'';
   try{
     const r=await fetch('/api/claude',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prompt:`Translate the English word "${w}" into Turkish. It appears in this sentence: "${sentence}". Give the most fitting meaning in 1-3 Turkish words. Return ONLY JSON: {"tr":"..."}`,tier:'quick'})});
     const d=await r.json();
