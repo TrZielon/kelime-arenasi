@@ -322,6 +322,27 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.body.appendChild(a);
 });
 /* ===== HABER DÜĞMESİ SONU ===== */
+  /* ===== HABER BUTONU: MENÜYE YERLEŞTİR ===== */
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('haberbtn')?.remove();
+  if(document.getElementById('haberbtn2'))return;
+  const ref=[...document.querySelectorAll('a,button,span,div')]
+    .find(e=>e.children.length===0 && e.textContent.trim()==='Ana sayfa');
+  const base=ref?(ref.closest('a,button')||ref):null;
+  const b=base?base.cloneNode(true):document.createElement('a');
+  b.id='haberbtn2';
+  b.textContent='📰 Haber';
+  b.classList.remove('active','is-active','on');
+  b.removeAttribute('aria-current');
+  if(b.tagName==='A'){b.href='/haber.html'}
+  else{b.onclick=()=>{location.href='/haber.html'}}
+  if(base){base.after(b)}
+  else{
+    b.style.cssText='position:fixed;bottom:16px;right:16px;z-index:50;background:#1f5f57;color:#fff;padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:700;';
+    document.body.appendChild(b);
+  }
+});
+/* ===== HABER BUTONU SONU ===== */
   /* ===== HIZ VE YÜZDE GÜNCELLEMESİ ===== */
 const P_LANE={fg:0,bg:0},P_MAX={fg:2,bg:2},P_WAIT={fg:[],bg:[]};
 function P_acquire(l){
