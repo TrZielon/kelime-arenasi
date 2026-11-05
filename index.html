@@ -1746,6 +1746,91 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(nav){nav.insertBefore(a,nav.children[1]||null)}else{document.body.appendChild(a)}
 });
 /* ===== SON ===== */
+/* ===== HIZ VE DÜZELTME (SON) ===== */
+(function(){
+  const st=document.createElement('style');
+  st.textContent='#ft{display:none!important}';
+  document.head.appendChild(st);
+})();
+
+const FX={fg:0,bg:0},FXMAX={fg:2,bg:2},FXQ={fg:[],bg:[]};
+function fxLock(l){
+  if(FX[l]<FXMAX[l]){FX[l]++;return Promise.resolve()}
+  return new Promise(r=>FXQ[l].push(r));
+}
+function fxUnlock(l){
+  const n=FXQ[l].shift();
+  if(n)n(); else FX[l]--;
+}
+
+async function askJ(sys,input,ms,tier){
+  if(!SMP){LASTERR='yapay zeka bu sayfada açık değil';return null}
+  const lane=(sys===GRADE||sys===GRADE2||sys===GLOSS)?'fg':'bg';
+  await fxLock(lane);
+  try{
+    for(let attempt=0;attempt<2;attempt++){
+      const ac=new AbortController();
+      const tm=setTimeout(()=>ac.abort(),ms||(lane==='fg'?45000:120000));
+      try{
+        const o={cache:false,signal:ac.signal};
+        if(tier)o.modelTier=tier;
+        const r=await SMP(sys+'\n\nGİRDİ:\n'+input,o);
+        if(r&&r.truncated){LASTERR='çıktı kesildi';return null}
+        const m=String(r&&r.text||'').match(/[\[{][\s\S]*[\]}]/);
+        if(m){const v=JSON.parse(m[0]);if(v&&typeof v==='object'){LASTERR='';return v}}
+        LASTERR='geçersiz yanıt';
+        return null;
+      }catch(e){
+        const c=e&&e.code;
+        LASTERR=c==='rate_limited'?'çok fazla istek, biraz sonra yeniden dene':(e&&e.name==='AbortError')?'zaman aşımı':((e&&e.message)||'bağlantı hatası');
+        if(c!=='rate_limited'||attempt===1)return null;
+        await new Promise(res=>setTimeout(res,1500));
+      }finally{clearTimeout(tm)}
+    }
+    return null;
+  }finally{fxUnlock(lane)}
+}
+
+async function genGroup(p,g){
+  const words=g.w.map(en=>p.items.find(x=>x.en===en)).filter(Boolean);
+  if(!words.length)return false;
+  let best=null,miss=[];
+  for(let t=0;t<2;t++){
+    const input='KALIPLAR: '+words.map(x=>x.en+(x.tr?` (${x.tr})`:'')).join(' | ')+(t&&miss.length?'\nÖZELLİKLE ŞUNLAR PARAGRAFTA GEÇMELİ: '+miss.join(' | '):'');
+    const r=await askJ(PARA_G,input,120000,'quick');
+    if(!r||typeof r.par!=='string'||!r.par.trim())continue;
+    const m=words.map(x=>x.en).filter(en=>!covered(r.par,en));
+    if(!best||m.length<best.m.length)best={par:r.par.trim(),ana:String(r.ana_fikir||'').trim(),gl:lowerKeys(r.gl),m};
+    miss=m;
+    if(!m.length)break;
+  }
+  if(!best)return false;
+  if(!g.text||best.m.length<(g.miss||[]).length)Object.assign(g,{text:best.par,ana:best.ana,gl:best.gl,miss:best.m});
+  return true;
+}
+
+async function grade(){
+  const p=cur,gi=GI,g=p.groups&&p.groups[gi],t=$('#ap').value.trim();
+  if(!t||!g||!g.text)return;
+  const show=h=>{if(cur===p&&GI===gi&&step===6&&$('#gfb'))$('#gfb').innerHTML=h};
+  show('<span class="m">Bot değerlendiriyor…</span>');
+  const r=await askJ(GRADE2,`REFERANS ANA DÜŞÜNCE: ${g.ana||''}\nÖĞRENCİ CEVABI: ${t}`,45000,'quick');
+  if(!r){show(`<span class="bad2">Bot yanıt veremedi${LASTERR?' ('+esc(LASTERR)+')':''}. Tekrar dene.</span>`);return}
+  const skor=Math.max(0,Math.min(100,Math.round(Number(r.skor)||0)));
+  const bar=`<div class="bar"><i style="width:${skor}%"></i></div><div class="big">%${skor} benzerlik</div><div class="m">Geçiş puanı: %60</div>`;
+  if(skor>=60){
+    if(!g.ok){g.ok=true;p.prog.xp=(p.prog.xp||0)+15;markDay();saveMeta()}
+    if(p.groups.every(x=>x.ok))p.prog.steps[6]=1;
+    save(p);
+    renderHead();
+    if(cur===p&&step===6&&GI===gi)pview();
+    SFX.win();
+    show(`${bar}<div class="good big">✅ Onaylandı</div><div>${esc(r.yorum||'')}</div>`);
+  }else{
+    show(`${bar}<div class="bad2 big">❌ Onaylanmadı</div><div>${esc(r.yorum||'')}</div>`);
+  }
+}
+/* ===== HIZ VE DÜZELTME SONU ===== */
 </script>
 </body>
 </html>
