@@ -1733,6 +1733,19 @@ async function init(){
 }
 
 init();
+/* ===== HABER LİNKİ (SON SÜRÜM) ===== */
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('#haberbtn,#haberbtn2').forEach(e=>e.remove());
+  if(document.getElementById('haberlink'))return;
+  const st=document.createElement('style');
+  st.textContent='.haberlink{padding:8px 13px;border-radius:12px;font-weight:700;color:var(--p);background:var(--soft);text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap}.haberlink:hover{filter:brightness(1.05)}';
+  document.head.appendChild(st);
+  const a=document.createElement('a');
+  a.id='haberlink';a.className='haberlink';a.href='/haber.html';a.textContent='📰 Haber';
+  const nav=document.querySelector('.navlinks');
+  if(nav){nav.insertBefore(a,nav.children[1]||null)}else{document.body.appendChild(a)}
+});
+/* ===== SON ===== */
 </script>
 </body>
 </html>
