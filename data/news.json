@@ -1,4 +1,440 @@
 {
-  "updated": "2026-11-05T11:37:02.204Z",
-  "items": []
+  "updated": "2026-11-05T11:42:44.232Z",
+  "items": [
+    {
+      "id": "mw3h7vgo6rm5",
+      "date": "2026-11-05",
+      "category": "World",
+      "title": "Vance Criticizes Republican Defeat and Points to Iran War",
+      "src": "https://www.bbc.co.uk/news/articles/crz98zqkz7z0o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Vice President Vance gave a very blunt assessment of a recent Republican election defeat. His strong critique was one of the sharpest breaks with a sitting president in recent memory. Vance blamed the election loss on a war with Iran. He spoke directly about why the Republicans lost. This event showed a big difference in opinion between the vice president and the sitting president. People were surprised by his honest words about the political situation and the war.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Republicans celebrated a big victory.",
+                "Vance strongly criticized a Republican election loss and blamed a war.",
+                "The president ended the war with Iran.",
+                "Vance won a new election."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'blunt' mean in the text?",
+              "opts": [
+                "Direct and honest",
+                "Quiet and shy",
+                "Slow to move",
+                "Very polite"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What did Vance blame for the election defeat?",
+              "opts": [
+                "A war with Iran",
+                "New voting laws",
+                "High taxes",
+                "Bad weather"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "True or False: Vance's actions showed a sharp break with a sitting president.",
+              "opts": [
+                "False",
+                "Not mentioned",
+                "Only partly true",
+                "True"
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "2": {
+          "text": "Vice President Vance recently shared a blunt assessment regarding a Republican election defeat. His scathing critique marked one of the sharpest breaks with a sitting president in recent memory. During his comments, Vance directly blamed a war with Iran for the political loss. By speaking out so strongly, Vance highlighted a major rift between himself and the current president. It is rare for a sitting vice president to criticize political outcomes and presidential context so openly. This sudden public split has drawn significant attention because it shows deep disagreement at the highest level of government over the impact of foreign conflict on domestic elections.",
+          "quiz": [
+            {
+              "q": "What is the main focus of Level 2?",
+              "opts": [
+                "A speech about future election plans",
+                "A new agreement between Vance and the president",
+                "Vance's open critique of an election loss linked to an Iran war",
+                "The end of the conflict with Iran"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "In the text, what does 'scathing' mean?",
+              "opts": [
+                "Confused and weak",
+                "Gentle and kind",
+                "Severe and harsh",
+                "Short and quiet"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What specific cause did Vance give for the Republican loss?",
+              "opts": [
+                "Economic inflation",
+                "Low voter turnout",
+                "Media bias",
+                "A war with Iran"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "The Republicans won the recent election.",
+                "Vance's critique was a very rare break with a sitting president.",
+                "Vance avoided talking about the election defeat.",
+                "Vance agreed completely with the president."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "In a remarkable political development, Vice President Vance delivered a blunt assessment of a recent Republican election defeat, attributing the loss to an ongoing war with Iran. His scathing critique represents one of the sharpest public breaks with a sitting president in recent memory. By explicitly linking the electoral setback to the foreign conflict, Vance created a visible divide between his perspective and that of the current administration. Such an open disagreement from a serving vice president is exceptionally rare, shedding light on internal tensions regarding the political fallout of international military actions. Observers noted that Vance did not hold back in his evaluation, marking a memorable moment of public discord within top political ranks.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this report?",
+              "opts": [
+                "Republicans gained many seats despite a foreign conflict.",
+                "Iran influenced the outcome of a presidential primary.",
+                "Vance offered a sharp critique of an election defeat, blaming an Iran war and breaking with the president.",
+                "The president fired the vice president over foreign policy."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'assessment' mean in this context?",
+              "opts": [
+                "A financial payment",
+                "A physical movement",
+                "An evaluation or judgment",
+                "A secret agreement"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Who did Vance break with in his recent assessment?",
+              "opts": [
+                "The opposition party leaders",
+                "A sitting president",
+                "Election officials",
+                "Foreign diplomats"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which of the following is FALSE based on the text?",
+              "opts": [
+                "The event is one of the sharpest breaks with a president in recent memory.",
+                "Vance blamed the election defeat on a war with Iran.",
+                "Vance's critique was subtle and supportive of the president.",
+                "Vance delivered a blunt assessment of the Republican defeat."
+              ],
+              "ans": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mw3h7k5r1jif",
+      "date": "2026-11-05",
+      "category": "World",
+      "title": "What Democrats can and can't do with their new power after taking Congress",
+      "src": "https://www.bbc.co.uk/news/articles/cq1kdgnn2xdeo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Democrats have new power in Congress. They can vote and pass new legislation. This means they can make new rules and laws. However, Donald Trump is still the president. Trump has veto power. Veto means he can stop a law from passing even if Congress votes for it. So, Democrats can approve new laws in Congress, but they cannot make every law happen alone. They must remember that President Trump can still block their plans with his veto.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Congress cannot vote on any new legislation.",
+                "Democrats have new power, but Trump can still veto their laws.",
+                "Trump lost all of his power to the Democrats.",
+                "Democrats and Trump agree on every new law."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'veto' mean in the text?",
+              "opts": [
+                "To help write a law",
+                "To stop a law from passing",
+                "To start a new party",
+                "To vote for a new leader"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What can Democrats do with their new power?",
+              "opts": [
+                "They can stop Trump from using his veto.",
+                "They can remove the president immediately.",
+                "They can vote legislation through.",
+                "They can change the president's name."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is true based on the text?",
+              "opts": [
+                "Democrats can make every law happen alone.",
+                "Congress is not allowed to vote.",
+                "Trump still has veto power.",
+                "Trump no longer has veto power."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "2": {
+          "text": "After taking Congress, Democrats now hold significant new power in government. With this position, they have the ability to vote legislation through and advance their policy goals. This allows them to pass new laws in the legislative branch. However, their power is not unlimited because Donald Trump remains president. President Trump still holds veto power over any bills that Congress passes. A presidential veto can prevent proposed legislation from officially becoming law. Therefore, while Democrats can successfully vote on and pass legislation through Congress, they must still deal with the fact that President Trump can block their bills. They cannot enact laws completely on their own without facing the president's potential veto.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the text?",
+              "opts": [
+                "Why Donald Trump lost his veto power",
+                "How to vote in American elections",
+                "The full history of Congress",
+                "The limits and abilities of the Democrats' new power"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does 'legislation' mean in the text?",
+              "opts": [
+                "Laws or bills",
+                "Vetoes",
+                "Elections",
+                "Presidents"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Who still holds veto power?",
+              "opts": [
+                "The legislative branch alone",
+                "The Democrats",
+                "Donald Trump",
+                "Congress"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is true according to the text?",
+              "opts": [
+                "Donald Trump cannot stop bills passed by Congress.",
+                "Democrats can pass laws completely on their own without limits.",
+                "Democrats can vote legislation through Congress.",
+                "Trump has lost his role as president."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "3": {
+          "text": "Following their recent takeover of Congress, Democrats have gained substantial new authority within the legislative process. Equipped with this political power, Democrats now possess the capability to vote legislation through the chamber. This milestone enables them to shape the legislative agenda and push forward proposed bills. Nevertheless, there are distinct boundaries to what they can achieve. Donald Trump remains in the presidency and retains his full veto power. This constitutional mechanism allows President Trump to reject and block any legislation passed by Congress, preventing it from taking effect as law. Consequently, despite their ability to approve bills in Congress, Democrats cannot enact legislation entirely at will, as the threat of a presidential veto continues to stand in their path.",
+          "quiz": [
+            {
+              "q": "What is the main focus of this article?",
+              "opts": [
+                "The balance between Democratic congressional power and Trump's veto authority",
+                "Why President Trump decided to give up his power",
+                "The process of electing a new president in Congress",
+                "A complete list of laws recently passed by Democrats"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In the context of the text, what does 'retains' mean?",
+              "opts": [
+                "Rejects",
+                "Creates",
+                "Loses",
+                "Keeps"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What specific action can Democrats take after taking Congress?",
+              "opts": [
+                "They can replace the president.",
+                "They can eliminate the presidential veto.",
+                "They can vote legislation through.",
+                "They can pass laws without any opposition."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which of the following statements is FALSE based on the text?",
+              "opts": [
+                "Democrats can pass laws without facing any presidential veto.",
+                "Trump still has the power to veto legislation.",
+                "Trump can block legislation passed by Congress.",
+                "Democrats gained new power after taking Congress."
+              ],
+              "ans": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mw3h7o67vqmk",
+      "date": "2026-11-05",
+      "category": "World",
+      "title": "France gears up for strikes and protests as unions promise national mobilisation",
+      "src": "https://www.bbc.co.uk/news/articles/ckx2qzv835pgo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Five trade unions in France joined together for a national day of action. Workers started strikes and protests across the country. They want to show their power and make their voices heard. Many people are participating in these events. The unions promised a big national mobilisation. Because of this, many services in France may stop or work slowly. The unions hope that this action will bring changes for the workers. More protests are expected to happen as the unions continue to work together on this big day.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Five French unions organised a national day of strikes and protests.",
+                "French unions decided to stop all protests forever.",
+                "Only one small union is striking in France today.",
+                "France is closing all of its public services permanently."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does 'mobilisation' mean in this text?",
+              "opts": [
+                "Buying new cars",
+                "Organising people to take action",
+                "Sleeping for a long time",
+                "Traveling to another country"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "How many trade unions joined the national day of action?",
+              "opts": [
+                "Two",
+                "Four",
+                "Three",
+                "Five"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "True or False: The strikes and protests are happening across the nation.",
+              "opts": [
+                "True",
+                "False",
+                "Only in Paris",
+                "Not mentioned"
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "Five of France's trade unions have joined a widespread wave of strikes and protests as part of a national day of action. The unions have promised a strong national mobilisation to push for their demands. This coordinated effort means that workers from different sectors across the country are walking out of their jobs and taking to the streets. Public transport, schools, and other services could face severe disruptions throughout the day. Union leaders hope this large-scale action will demonstrate their strength and force officials to listen to their concerns. The national mobilisation marks a significant moment of unity among the five different labor organisations as they push forward together.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the article?",
+              "opts": [
+                "A new law passed by the French government",
+                "A holiday celebrated by workers in France",
+                "A national day of strikes by five French unions",
+                "A union election in France"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'disruptions' mean in the text?",
+              "opts": [
+                "Very fast public transport",
+                "Problems that interrupt normal activities",
+                "Celebrations in the street",
+                "New job opportunities"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What have the five unions promised to deliver?",
+              "opts": [
+                "Free transport for everyone",
+                "A new political party",
+                "An end to all strikes",
+                "A national mobilisation"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which of the following is TRUE according to the text?",
+              "opts": [
+                "Five trade unions joined the wave of strikes.",
+                "No services will be affected by the protests.",
+                "The protests are limited to a single town.",
+                "Only one union is participating in the action."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "Five of France's leading trade unions have joined forces in a widespread wave of strikes and protests, marking a powerful national day of action. Promising a full-scale national mobilisation, the labor organisations have called upon workers nationwide to demonstrate their collective strength. The coordinated strike action is expected to cause notable disruptions to public services, transport networks, and various business sectors throughout the country. By uniting five major unions under a single cause, labor leaders aim to send a strong message to both employers and government officials. As citizens gear up for the widespread movement, public attention remains focused on the scale of the participation and the potential impact of this massive display of union solidarity across France.",
+          "quiz": [
+            {
+              "q": "What is the main idea of Level 3?",
+              "opts": [
+                "Five unions united for a major national day of strikes and protests.",
+                "French trade unions are ending their agreements.",
+                "The French government banned all national demonstrations.",
+                "Public transport in France is operating without any issues."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In the context of the passage, what does 'solidarity' mean?",
+              "opts": [
+                "A type of strike action",
+                "Unity and mutual support among a group",
+                "Complete disagreement among people",
+                "A financial system"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What kind of day of action have the unions joined?",
+              "opts": [
+                "A national day of action",
+                "An international meeting",
+                "A local city action",
+                "A weekend festival"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is FALSE based on the text?",
+              "opts": [
+                "Five unions joined the wave of strikes.",
+                "The action is a national day of protests.",
+                "The unions promised a national mobilisation.",
+                "Only one trade union is taking part in the strikes."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    }
+  ]
 }
