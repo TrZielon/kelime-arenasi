@@ -204,6 +204,13 @@ header{border-bottom:1px solid var(--b);padding:12px 0;margin-bottom:4px}
 .scorebar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--a),var(--a2));transition:width .6s ease}
 .scorecard .fb{font-weight:700;margin-top:6px}
 </style>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('ka_theme')||'akdeniz')}catch(e){}</script>
+<style id="v15-theme">
+:root[data-theme=akdeniz]{--bg:#f3f8f6;--p:#ffffff;--p2:#e2f1ed;--ink:#0d2b2a;--m:#56736f;--a:#0f766e;--a2:#f59e0b;--ok:#15803d;--bad:#e11d48;--b:#d5e7e1;--sh:0 12px 28px -18px rgba(13,43,42,.4);--ring:0 0 0 3px rgba(15,118,110,.25);--lg:url(#lgC);color-scheme:light}
+:root[data-theme=kitaplik]{--bg:#f7f1e3;--p:#fffaf0;--p2:#f1e5cc;--ink:#2e1a1f;--m:#7d6a5f;--a:#7a1f2e;--a2:#c08a2b;--ok:#3f7d3a;--bad:#b42318;--b:#e6d9bf;--sh:0 12px 28px -18px rgba(46,26,31,.45);--ring:0 0 0 3px rgba(122,31,46,.25);--lg:url(#lgB);color-scheme:light}
+.brand{background:none!important;-webkit-background-clip:border-box;background-clip:border-box;color:var(--ink);display:flex;align-items:center;gap:10px}
+.wm{background:linear-gradient(90deg,var(--a),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+</style>
 </head>
 <body>
 <div id="app">
@@ -1201,6 +1208,27 @@ document.addEventListener('click',e=>{
 document.addEventListener('keydown',e=>{
   if(step===5&&(e.key===' '||e.key==='Enter')&&$('#cnx')&&!$('#cnx').hidden){e.preventDefault();$('#cnx').click()}
 });
+  /* ---- v15: Akdeniz ve Kitaplık temaları, logo, tema seçici ---- */
+(function(){
+  const KEY='ka_theme',NAMES={akdeniz:'🌊 Akdeniz',kitaplik:'📚 Kitaplık'};
+  const setTheme=t=>{document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem(KEY,t)}catch(e){}};
+  let saved=null;try{saved=localStorage.getItem(KEY)}catch(e){}
+  setTheme(NAMES[saved]?saved:'akdeniz');
+
+  document.body.insertAdjacentHTML('afterbegin','<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="lgC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14968c"/><stop offset="1" stop-color="#0b5a55"/></linearGradient><linearGradient id="lgB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8f2a3b"/><stop offset="1" stop-color="#5c1420"/></linearGradient><linearGradient id="gold2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset=".5" stop-color="#fbbf24"/><stop offset="1" stop-color="#d97706"/></linearGradient></defs></svg>');
+
+  const brand=document.querySelector('.brand');
+  if(brand)brand.innerHTML='<svg width="38" height="38" viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="18" style="fill:var(--lg)"/><path d="M15 50V31a17 17 0 0 1 34 0v19" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/><path d="M25 50V33a7 7 0 0 1 14 0v17" fill="none" stroke="url(#gold2)" stroke-width="4.5" stroke-linecap="round"/><path d="M9 55 Q20 51.5 32 55 Q44 51.5 55 55" fill="none" stroke="url(#gold2)" stroke-width="2.2" stroke-linecap="round"/><circle cx="50" cy="13" r="6.2" fill="#fbbf24" fill-opacity=".25"/><circle cx="50" cy="13" r="3.6" fill="url(#gold2)"/></svg><span class="wm">Kelime Arenası</span>';
+
+  const th=document.getElementById('th');
+  if(th){
+    th.hidden=true;
+    th.insertAdjacentHTML('beforebegin','<span class="tpick">'+Object.keys(NAMES).map(k=>'<button class="pill tp" data-tp="'+k+'">'+NAMES[k]+'</button>').join('')+'</span>');
+  }
+  const mark=()=>document.querySelectorAll('.tp').forEach(b=>b.classList.toggle('on',b.dataset.tp===document.documentElement.getAttribute('data-theme')));
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-tp]');if(b){setTheme(b.dataset.tp);mark()}});
+  mark();
+})();
   init();
 </script>
 </body>
