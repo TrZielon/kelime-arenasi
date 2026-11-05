@@ -1,5 +1,9 @@
 {
   "functions": {
-    "api/claude.js": { "maxDuration": 60 }
-  }
+    "api/claude.js": { "maxDuration": 60 },
+    "api/news-update.js": { "maxDuration": 60 }
+  },
+  "crons": [
+    { "path": "/api/news-update", "schedule": "0 6 * * *" }
+  ]
 }
