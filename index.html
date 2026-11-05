@@ -1031,6 +1031,40 @@ async function grade(){
   }
   out(`<div class="scorecard"><div class="scorenum">%${sc}</div><div class="scorebar"><i style="width:${sc}%"></i></div><div class="fb ${pass?'good':'bad2'}">${pass?'✅ Geçti':'❌ Geçmedi'} <span class="m">(geçme eşiği %70)</span></div><div class="m">${esc(r.yorum||'')}</div></div>`);
 }
+  /* ---- v9: cümle sorularında çeldiricileri uzunluk ve konu açısından yakın seç ---- */
+const wcount=s=>String(s||'').trim().split(/\s+/).filter(Boolean).length;
+const closeScore=(a,b)=>Math.abs(String(a).length-String(b).length)+Math.abs(wcount(a)-wcount(b))*8;
+
+function mkQ(sentOnly){
+  const xs=cur.items.filter(x=>x.tr);
+  if(sentOnly){
+    const cs=xs.filter(x=>x.s&&x.st);
+    if(cs.length<4)return null;
+    for(const x of shuf(cs)){
+      const grp=(cur.groups||[]).find(g=>(g.w||[]).includes(x.en));
+      const groupWords=grp?grp.w:[];
+      const same=cs.filter(o=>o!==x&&groupWords.includes(o.en)).map(o=>o.st);
+      const others=cs.filter(o=>o!==x&&!groupWords.includes(o.en)).map(o=>o.st);
+      const cands=[
+        ...(x.d||[]).map(v=>({v,pen:2})),
+        ...same.map(v=>({v,pen:0})),
+        ...others.map(v=>({v,pen:14}))
+      ];
+      const seen=new Set();
+      const d=cands
+        .filter(c=>c.v&&c.v!==x.st&&!seen.has(c.v)&&seen.add(c.v))
+        .map(c=>({v:c.v,sc:closeScore(c.v,x.st)+c.pen}))
+        .sort((a,b)=>a.sc-b.sc)
+        .slice(0,3)
+        .map(c=>c.v);
+      if(d.length<3)continue;
+      return {k:'s',q:x.s,ans:x.st,opts:shuf([x.st,...d]),x};
+    }
+    return null;
+  }
+  const x=rnd(xs),dirEn=Math.random()<.5,key=o=>dirEn?o.tr:o.en,ans=key(x);
+  return {k:'w',dirEn,q:dirEn?x.en:x.tr,ans,opts:shuf([ans,...shuf(xs.filter(o=>o!==x&&key(o)!==ans)).slice(0,3).map(key)]),x};
+}
   init();
 </script>
 </body>
