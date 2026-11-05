@@ -303,7 +303,7 @@ shrink - Küçültmek, küçülmek
 water-intensive - Çok su gerektiren
 X-intensive - Çok X gerektiren`;
 
-const BATCH=`Sen BUEPT düzeyinde akademik İngilizce öğretmenisin. YALNIZCA geçerli JSON döndür: {"items":[...]}. Girdideki her satır "en - tr" biçimindedir (anlam yoksa tr alanına uygun Türkçe anlam yaz). Her kelime için: "en" girdideki kelimenin aynısı; "tr" Türkçe anlam; "s" kelimeyi içeren akademik C1 düzeyinde 14-22 kelimelik tek İngilizce cümle; "st" cümlenin doğal Türkçe çevirisi; "d" cümlenin anlamı olarak yanlış ama makul görünen 3 Türkçe çeviri dizisi; "gl" cümledeki önemli kelimelerin en fazla 10 tanesi için {"kelime":"Türkçe anlam"} (küçük harf); "mo" ek-kök ayrımı öğretici en fazla 3 kelime için {"kelime":[["parça","kök" veya "ek","kısa Türkçe açıklama"]]}. "X" içeren maddelerde X yerine gerçek bir örnek kullan (ör. post-harvest, energy-intensive) ve cümlede onu kullan.`;
+const BATCH=`Sen BUEPT düzeyinde akademik İngilizce öğretmenisin. YALNIZCA geçerli JSON döndür: {"items":[...]}. Girdideki her satır "en - tr" biçimindedir (anlam yoksa tr alanına uygun Türkçe anlam yaz). Her kelime için: "en" girdideki kelimenin aynısı; "tr" Türkçe anlam; "s" kelimeyi içeren akademik C1 düzeyinde 14-22 kelimelik tek İngilizce cümle; "st" cümlenin doğal Türkçe çevirisi; "d" cümlenin anlamı olarakanlamca çok yakın ama zaman, olumsuzluk, nedensellik, kişi ya da nicelik bakımından bir noktada yanlış 3 Türkçe çeviri dizisi; "gl" cümledeki önemli kelimelerin en fazla 10 tanesi için {"kelime":"Türkçe anlam"} (küçük harf); "mo" ek-kök ayrımı öğretici en fazla 3 kelime için {"kelime":[["parça","kök" veya "ek","kısa Türkçe açıklama"]]}. "X" içeren maddelerde X yerine gerçek bir örnek kullan (ör. post-harvest, energy-intensive) ve cümlede onu kullan.`;
 const GS=10,PRUN={},FILL={};let GI=0;
 const PARA_G=`Sen BUEPT sınavına hazırlanan öğrenciler için akademik İngilizce paragraf yazan uzman bir yazarsın. YALNIZCA geçerli JSON döndür. Kurallar: (1) Verilen her kalıbı paragrafta en az bir kez, parantez içindeki Türkçe anlamına uygun ve doğal çekimli biçimde kullan. \"a / b / c\" biçimindeki kalıplarda bunlardan biri yeterlidir. X içeren kalıplarda X yerine gerçek bir kelime kullan (ör. energy-intensive). (2) Tek bir konu seç ve bütün cümleleri o konuya bağla. Cümleler arasında mantıksal bağlar kullan (neden-sonuç, karşıtlık, örnek, sonuç). (3) İlk cümle konuyu tanıtan net bir ana cümle olsun; son cümle bir sonuç ya da değerlendirme içersin. (4) C1 düzeyi akademik üslup, doğal eşdizimler (collocations) kullan; dolgu ifadesi ve tekrar yok; her cümlenin yapısı farklı olsun. (5) Uzunluk 60-85 kelime. (6) Gerçek olmayan istatistik ya da iddia uydurma. Biçim: {\"par\":\"paragraf metni\",\"ana_fikir\":\"paragrafın asıl iddiası, Türkçe, tek cümle\",\"gl\":{\"kelime\":\"Türkçe anlam\"}} gl: paragrafta kullandığın önemli kelimelerin en fazla 10 tanesi, küçük harfli anahtarlarla.`;
 const GLOSS=`Verilen İngilizce kelimelerin her birinin en yaygın Türkçe karşılığını yaz (1-3 kelime; çekimli biçimse o biçimin anlamı). YALNIZCA geçerli JSON döndür: {"kelime":"Türkçe karşılık"}. Anahtarlar küçük harfli ve girdideki gibi olsun.`;
@@ -1065,6 +1065,142 @@ function mkQ(sentOnly){
   const x=rnd(xs),dirEn=Math.random()<.5,key=o=>dirEn?o.tr:o.en,ans=key(x);
   return {k:'w',dirEn,q:dirEn?x.en:x.tr,ans,opts:shuf([ans,...shuf(xs.filter(o=>o!==x&&key(o)!==ans)).slice(0,3).map(key)]),x};
 }
+  /* ---- v10: cümle bölümü grup grup, anlamca yakın çeldiriciler, sade alt bar ---- */
+const ADMIN=/[?&]admin=1\b/.test(location.search);
+document.head.insertAdjacentHTML('beforeend','<style>#ft:empty{display:none}</style>');
+
+function footHtml(){
+  return ADMIN&&cur.id==='def'?'<button class="pill" id="xj">📋 İçeriği dışa aktar</button>':'';
+}
+
+function renderHead(){
+  $('#del').hidden=cur.id==='def';
+  renderEnr();
+  $('#pk').innerHTML=packs.map(p=>`<option value="${esc(p.id)}" ${p.id===cur.id?'selected':''}>${esc(p.name)}</option>`).join('');
+  $('#xp').textContent=cur.prog.xp||0;
+  const done=[0,1,2,3,4,5,6].map(i=>i===5?cAllDone(cur):!!cur.prog.steps[i]);
+  $('#pb').style.width=done.filter(Boolean).length/7*100+'%';
+  $('#steps').innerHTML=['Kartlar','Eşleştir','Seç','Yaz','Boss','Cümle','Paragraf']
+    .map((n,i)=>`<button class="pill ${step===i?'on':''}" data-st="${i}">${done[i]?'✓ ':''}${i+1} ${n}</button>`).join('');
+  $('#ft').innerHTML=footHtml();
+}
+
+function goStep(i){
+  step=i;renderHead();
+  [startKart,mstart,()=>qstart('sec'),ystart,()=>qstart('boss'),cview,pview][i]();
+}
+
+const chunk=(a,n)=>{const r=[];for(let i=0;i<a.length;i+=n)r.push(a.slice(i,i+n));return r};
+const cdoneSet=p=>new Set(p.prog.cdone||[]);
+
+function cgroups(p){
+  const ok=p.items.filter(x=>x.s&&x.st).map(x=>x.en);
+  const okSet=new Set(ok);
+  let src=(p.groups||[]).filter(g=>g.w&&g.w.length).map(g=>g.w.filter(en=>okSet.has(en)));
+  const covered=new Set(src.flat());
+  const left=ok.filter(en=>!covered.has(en));
+  if(left.length)src=[...src,...chunk(left,10)];
+  return src.filter(w=>w.length);
+}
+
+const cAllDone=p=>{const d=cdoneSet(p),all=cgroups(p).flat();return all.length>0&&all.every(en=>d.has(en))};
+
+const toks=s=>String(s||'').toLowerCase().split(/[^a-zçğıöşü0-9]+/).filter(t=>t.length>=4).map(t=>t.slice(0,5));
+const ovl=(a,b)=>{const B=new Set(toks(b));return toks(a).filter(t=>B.has(t)).length};
+
+function cDistract(x,p,groupEns){
+  const pool=[];
+  (x.d||[]).forEach(v=>pool.push({v,pen:0}));
+  p.items.forEach(y=>{if(y!==x&&y.s&&y.st)pool.push({v:y.st,pen:groupEns.includes(y.en)?1:4})});
+  const seen=new Set();
+  return pool
+    .filter(c=>typeof c.v==='string'&&c.v.trim()&&c.v!==x.st&&!seen.has(c.v)&&seen.add(c.v))
+    .map(c=>({v:c.v,sc:c.pen*3-ovl(c.v,x.st)*4+Math.abs(c.v.length-x.st.length)*0.15}))
+    .sort((a,b)=>a.sc-b.sc)
+    .slice(0,3)
+    .map(c=>c.v);
+}
+
+function cQ(pend,p,groupEns){
+  const pool=p.items.filter(x=>x.s&&x.st&&pend.includes(x.en));
+  for(const x of shuf(pool)){
+    const d=cDistract(x,p,groupEns);
+    if(d.length===3)return {k:'s',q:x.s,ans:x.st,opts:shuf([x.st,...d]),x};
+  }
+  return null;
+}
+
+function cview(){
+  qmode='cum';
+  const p=cur,G=cgroups(p);
+  if(!G.length){
+    $('#st').innerHTML='<div class="box" data-wait="1"><p class="m">Cümleler henüz hazır değil.</p><button class="pill" id="re">Yeniden dene</button></div>';
+    return;
+  }
+  const done=cdoneSet(p);
+  let gi=Math.min(Math.max(p.prog.cg||0,0),G.length-1);
+  if(G[gi].every(en=>done.has(en))){const nx=G.findIndex(w=>!w.every(en=>done.has(en)));if(nx>=0)gi=nx}
+  p.prog.cg=gi;
+
+  if(cAllDone(p)){
+    if(!p.prog.steps[5]){p.prog.steps[5]=1;save(p);renderHead();SFX.win()}
+    $('#st').innerHTML=`<div class="box"><div class="big">✅ Cümle bölümü tamam</div><p class="m">${G.length} grup tamamlandı.</p><button class="btn" data-go="6">Paragraf →</button></div>`;
+    return;
+  }
+
+  const nav=`<div class="row">${G.map((w,k)=>{const fin=w.every(en=>done.has(en));return `<button class="pill ${k===gi?'on':''}" data-cg="${k}">${fin?'✓ ':''}${k+1}</button>`}).join('')}</div>`;
+  const pend=G[gi].filter(en=>!done.has(en));
+
+  if(!pend.length){
+    $('#st').innerHTML=`<div class="m">Cümle · Grup ${gi+1}/${G.length}</div>${nav}<div class="box"><div class="big">✅ Grup ${gi+1} tamam</div><button class="btn" data-cgnext="1">Sonraki grup →</button></div>`;
+    return;
+  }
+
+  const q=cQ(pend,p,G[gi]);
+  if(!q){
+    $('#st').innerHTML=`<div class="m">Cümle · Grup ${gi+1}/${G.length}</div>${nav}<div class="box m">Bu grup için yeterli çeldirici üretilemedi. Bir sonraki gruba geçebilirsin.</div><div class="row"><button class="btn" data-cgnext="1">Sonraki grup →</button></div>`;
+    return;
+  }
+
+  Q=q;q.done=0;SRC=null;
+  const total=G[gi].length,fin=total-pend.length;
+  $('#st').innerHTML=`<div class="m">Cümle · Grup ${gi+1}/${G.length} · ${fin}/${total} tamam</div>${nav}
+  <div class="box"><div class="m">Cümlenin anlamı hangisi?</div><div class="sent">${esc(q.q)}</div><button class="pill" data-say="${esc(q.q)}">🔊 Dinle</button></div>
+  ${q.opts.map((o,i)=>`<button class="opt" data-o="${i}">${esc(o)}</button>`).join('')}
+  <div class="fb" id="fb"></div><div class="row"><button class="btn" id="cnx" hidden>Sonraki cümle</button></div>`;
+}
+
+function qAns(i){
+  if(Q.done)return;Q.done=1;
+  const ok=Q.opts[i]===Q.ans;
+  document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(Q.opts[k]===Q.ans)b.classList.add('ok');else if(k===i)b.classList.add('bad')});
+  if(qmode==='cum'){
+    if(ok){xp(10);SFX.ok();cur.prog.cdone=[...new Set([...(cur.prog.cdone||[]),Q.x.en])];save(cur)}
+    else SFX.bad();
+    $('#fb').innerHTML=ok?'<span class="good">✅ Doğru</span>':`<span class="bad2">❌ Doğru cevap: ${esc(Q.ans)}</span><div class="m">Bu cümle tekrar gelecek.</div>`;
+    const b=$('#cnx');if(b){b.textContent=ok?'Sonraki cümle':'Devam';b.hidden=false}
+    return;
+  }
+  if(ok){qok++;xp(10);SFX.ok()}else{lives--;SFX.bad()}
+  $('#fb').innerHTML=(ok?'<span class="good">✅ Doğru</span>':'<span class="bad2">❌ Doğru cevap: '+esc(Q.ans)+'</span>')+`<div class="m">${esc(Q.x.en)} = ${esc(Q.x.tr)}</div>`;
+  $('#nx').hidden=false;
+}
+
+document.addEventListener('click',e=>{
+  const t=e.target;
+  const g=t.closest('[data-cg]');
+  if(g&&step===5){cur.prog.cg=+g.dataset.cg;cview();return}
+  if(t.closest('[data-cgnext]')&&step===5){
+    const G=cgroups(cur),d=cdoneSet(cur);
+    const nx=G.findIndex(w=>!w.every(en=>d.has(en)));
+    cur.prog.cg=nx>=0?nx:0;cview();return;
+  }
+  if(t.closest('#cnx')&&step===5){cview();return}
+});
+
+document.addEventListener('keydown',e=>{
+  if(step===5&&(e.key===' '||e.key==='Enter')&&$('#cnx')&&!$('#cnx').hidden){e.preventDefault();$('#cnx').click()}
+});
   init();
 </script>
 </body>
