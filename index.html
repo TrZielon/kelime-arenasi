@@ -1982,6 +1982,219 @@ async function grade(){
   }
 }
 /* ===== HIZ VE DÜZELTME SONU ===== */
+/* ===== v17 düzeltme paketi: anlam, ses, quiz, buton görünürlüğü ===== */
+(function(){
+  const s=document.createElement('style');
+  s.textContent=`
+    .btn{background:var(--a,#ffc857)!important;color:#1a1020!important;opacity:1!important}
+    .btn.ok{background:#34d399!important;color:#04210f!important}
+    .btn.bad{background:#ff5d73!important;color:#fff!important}
+    .btn:disabled{opacity:.55!important}
+    .opt{background:var(--p,#1d1837)!important;color:var(--ink,#f7f3ff)!important;cursor:pointer}
+    .opt.ok{border-color:#34d399!important}
+    .opt.bad{border-color:#ff5d73!important}
+    input,textarea{background:var(--p,#1d1837)!important;color:var(--ink,#f7f3ff)!important}
+  `;
+  document.head.appendChild(s);
+})();
+
+/* ---- Ses: Amerikan İngilizcesi (en-US) ---- */
+let FX_VOICE=null;
+function fxVoice(){
+  if(!('speechSynthesis' in window))return null;
+  const vs=speechSynthesis.getVoices()||[];
+  FX_VOICE=vs.find(v=>/^en[-_]US/i.test(v.lang)&&/Samantha|Google US|Aaron|Zira|David|Microsoft|Natural/i.test(v.name))||vs.find(v=>/^en[-_]US/i.test(v.lang))||null;
+  return FX_VOICE;
+}
+if('speechSynthesis' in window){speechSynthesis.onvoiceschanged=fxVoice;fxVoice()}
+function fxSpeakNow(text){
+  if(!FX_VOICE)fxVoice();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='en-US';u.rate=.92;u.pitch=1;u.volume=1;
+  if(FX_VOICE)u.voice=FX_VOICE;
+  try{speechSynthesis.resume()}catch(e){}
+  speechSynthesis.speak(u);
+}
+function fxSpeak(text){
+  if(!('speechSynthesis' in window)||!text)return;
+  try{
+    if(speechSynthesis.speaking||speechSynthesis.pending){speechSynthesis.cancel();setTimeout(()=>fxSpeakNow(text),80);return}
+    fxSpeakNow(text);
+  }catch(e){}
+}
+function fxSayAny(t){fxSpeak(String(t||'').split(/\s*[\/~]\s*/)[0].trim())}
+
+/* ---- Anlam: önce yerel veri, yoksa tek ve hızlı bir çağrı ---- */
+let FX_TN=0;
+function fxLocal(k){
+  if(SRC&&SRC.gl&&SRC.gl[k])return SRC.gl[k];
+  if(cur.dict&&cur.dict[k])return cur.dict[k];
+  const it=cur.items.find(x=>x.en.toLowerCase().split(/\s*[\/~]\s*/).map(v=>v.trim()).includes(k));
+  return it&&it.tr?it.tr:'';
+}
+async function fxGloss(k){
+  if(!SMP)return '';
+  const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),25000);
+  try{
+    const r=await SMP(GLOSS+'\n\nGİRDİ:\n'+k,{cache:false,signal:ac.signal,modelTier:'quick'});
+    const m=String(r&&r.text||'').match(/\{[\s\S]*\}/);
+    if(!m)return '';
+    const o=JSON.parse(m[0]);
+    const v=o[k]||Object.values(o).find(x=>typeof x==='string')||'';
+    return String(v).trim();
+  }catch(e){return ''}
+  finally{clearTimeout(tm)}
+}
+async function fxTap(w,el){
+  document.querySelectorAll('.tk.sel').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+  fxSayAny(w);
+  const k=String(w).toLowerCase().replace(/[^a-z'-]/g,'');
+  const mo=(SRC&&SRC.mo&&Array.isArray(SRC.mo[k]))?SRC.mo[k].filter(Array.isArray):[];
+  const my=++FX_TN;
+  const paint=(g,note)=>{
+    const t=document.getElementById('tip');if(!t)return;
+    t.innerHTML=`<b>${esc(w)}</b> — ${g?`<span class="good">${esc(g)}</span>`:`<span class="m">${esc(note||'')}</span>`} <a class="m" href="https://dictionary.cambridge.org/dictionary/english-turkish/${encodeURIComponent(k)}" target="_blank" rel="noopener">Cambridge ↗</a>
+      <div>${mo.map(([p,tt,d])=>`<span class="chip">${esc(p)} · ${esc(tt)}: ${esc(d)}</span>`).join('')}</div>
+      <div style="margin-top:8px"><button class="pill" data-fx-quiz="${esc(k)}">🎯 Bu kelimeyle quiz</button></div>`;
+  };
+  const g=fxLocal(k);
+  if(g)return paint(g);
+  paint('','anlam aranıyor…');
+  const r=await fxGloss(k);
+  if(my!==FX_TN)return;
+  if(r){cur.dict=cur.dict||{};cur.dict[k]=r;save(cur);paint(r)}
+  else paint('','anlam bulunamadı, kelimeye tekrar dokun');
+}
+
+/* ---- Quiz motoru: bütün kelimeler, yanlışlar sona eklenir ---- */
+const FXQ={mode:'',K:2,q:[],total:0,solved:0,lives:3,cur:null,locked:false,endWon:false};
+function fxPool(m){
+  const it=cur.items.filter(x=>x.tr);
+  if(m==='cum')return it.filter(x=>x.s&&x.st);
+  if(m==='yaz')return it.filter(x=>!x.en.includes('X'));
+  return it;
+}
+function fxStart(m){
+  FXQ.mode=m;FXQ.K={sec:2,yaz:3,boss:4,cum:5}[m]||2;
+  FXQ.q=shuf(fxPool(m));FXQ.total=FXQ.q.length;FXQ.solved=0;
+  FXQ.lives=m==='boss'?3:99;FXQ.cur=null;FXQ.endWon=false;
+  if(!FXQ.q.length){$('#st').innerHTML='<div class="box"><p class="m">Bu mod için uygun kelime yok. Cümle modu için cümlelerin hazırlanmış olması gerekir.</p></div>';return}
+  fxNext();
+}
+function qstart(m){fxStart(m)}
+function ystart(){fxStart('yaz')}
+function fxQuizWord(k){
+  const key=String(k||'').toLowerCase();
+  const it=cur.items.find(x=>x.tr&&x.en.toLowerCase().split(/\s*[\/~]\s*/).map(v=>v.trim()).includes(key));
+  if(!it){const t=document.getElementById('tip');if(t)t.innerHTML='<span class="bad2">Bu kelime listede yok.</span>';return}
+  const rest=shuf(fxPool('sec').filter(x=>x!==it));
+  FXQ.mode='sec';FXQ.K=2;FXQ.q=[it,...rest];FXQ.total=FXQ.q.length;FXQ.solved=0;FXQ.lives=99;FXQ.cur=null;FXQ.endWon=false;
+  step=2;try{renderHead()}catch(e){}
+  fxNext();
+}
+function fxNext(){
+  FXQ.locked=false;
+  if(FXQ.mode==='boss'&&FXQ.lives<=0)return fxEnd(false);
+  if(!FXQ.q.length)return fxEnd(true);
+  const x=FXQ.q[0];
+  if(FXQ.mode==='yaz')return fxYaz(x);
+  const q=fxMake(x,FXQ.mode);FXQ.cur=q;fxRender(q);
+}
+function fxMake(x,m){
+  const items=cur.items.filter(y=>y.tr);
+  const useSent=x.s&&x.st&&(m==='cum'||(m==='sec'&&Math.random()<.5)||(m==='boss'&&Math.random()<.4));
+  if(useSent){
+    const d=[...(x.d||[]),...shuf(items.filter(o=>o!==x&&o.st).map(o=>o.st))].filter((v,i,a)=>v&&v!==x.st&&a.indexOf(v)===i).slice(0,3);
+    if(d.length===3)return {k:'s',x,q:x.s,ans:x.st,opts:shuf([x.st,...d])};
+  }
+  const dirEn=Math.random()<.5,key=o=>dirEn?o.tr:o.en,ans=key(x);
+  const d=shuf(items.filter(o=>o!==x&&key(o)!==ans)).slice(0,3).map(key);
+  return {k:'w',x,dirEn,q:dirEn?x.en:x.tr,ans,opts:shuf([ans,...d])};
+}
+function fxRender(q){
+  const n=Math.min(FXQ.solved+1,FXQ.total),t=FXQ.total;
+  const head=FXQ.mode==='boss'?`Boss · ${n}/${t} · ${'❤️'.repeat(Math.max(FXQ.lives,0))}`:(FXQ.mode==='cum'?`Cümle · ${n}/${t}`:`Seç · ${n}/${t}`);
+  const body=q.k==='s'
+    ?`<div class="m">Cümlenin anlamı hangisi?</div><div class="sent">${esc(q.q)}</div><button class="pill" data-say="${esc(q.q)}">🔊 Dinle</button>`
+    :`<div class="m">${q.dirEn?'İngilizce → Türkçe':'Türkçe → İngilizce'}</div><div class="big">${esc(q.q)}</div>${q.dirEn?`<button class="pill" data-say="${esc(q.x.en.split(/\s*[\/~]\s*/)[0])}">🔊 Dinle</button>`:''}`;
+  $('#st').innerHTML=`<div class="m">${head}</div>
+    <div class="bar"><i style="width:${t?FXQ.solved/t*100:0}%"></i></div>
+    <div class="box">${body}</div>
+    ${q.opts.map((o,i)=>`<button class="opt" data-fo="${i}" data-ok="${o===q.ans?1:0}">${esc(o)}</button>`).join('')}
+    <div class="fb" id="fx-fb"></div>
+    <div class="row"><button class="btn" id="fx-next" hidden>Sonraki</button></div>`;
+}
+function fxAnswer(btn){
+  const q=FXQ.cur;if(!q||FXQ.locked||!q.opts)return;
+  FXQ.locked=true;
+  const ok=btn.dataset.ok==='1';
+  document.querySelectorAll('[data-fo]').forEach(b=>{b.disabled=true;if(b.dataset.ok==='1')b.classList.add('ok');else if(b===btn&&!ok)b.classList.add('bad')});
+  if(ok){FXQ.solved++;FXQ.q.shift();xp(10);SFX.ok()}
+  else{FXQ.q.push(FXQ.q.shift());if(FXQ.mode==='boss')FXQ.lives--;SFX.bad()}
+  const fb=document.getElementById('fx-fb');
+  if(fb)fb.innerHTML=(ok?'<span class="good">✅ Doğru</span>':`<span class="bad2">❌ Doğru cevap: ${esc(q.ans)}</span>`)+`<div class="m">${esc(q.x.en)} = ${esc(q.x.tr)}${ok?'':' · bu kelime tekrar gelecek'}</div>`;
+  const nx=document.getElementById('fx-next');if(nx)nx.hidden=false;
+}
+function fxYaz(x){
+  FXQ.cur={k:'y',x};FXQ.locked=false;
+  const n=Math.min(FXQ.solved+1,FXQ.total),t=FXQ.total;
+  $('#st').innerHTML=`<div class="m">Yaz · ${n}/${t}</div>
+    <div class="bar"><i style="width:${t?FXQ.solved/t*100:0}%"></i></div>
+    <div class="box"><div class="m">Türkçe → İngilizce</div><div class="big">${esc(x.tr)}</div></div>
+    <div class="row"><input id="fx-in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="İngilizcesini yaz" style="max-width:360px"></div>
+    <div class="row"><button class="btn" id="fx-check">Kontrol et</button></div>
+    <div class="fb" id="fx-fb"></div>`;
+  const i=document.getElementById('fx-in');if(i)i.focus();
+}
+function fxCheck(){
+  const q=FXQ.cur;if(!q||q.k!=='y')return;
+  if(FXQ.locked)return fxNext();
+  const inp=document.getElementById('fx-in');
+  const v=(inp?inp.value:'').trim().toLowerCase().replace(/[.,!?']/g,'').replace(/^to /,'');
+  if(!v)return;
+  FXQ.locked=true;
+  const ok=q.x.en.split(/\s*[\/~]\s*/).some(a=>a.trim().toLowerCase()===v);
+  if(ok){FXQ.solved++;FXQ.q.shift();xp(10);SFX.ok()}
+  else{FXQ.q.push(FXQ.q.shift());SFX.bad()}
+  if(inp)inp.disabled=true;
+  const b=document.getElementById('fx-check');if(b)b.textContent='Sonraki';
+  const fb=document.getElementById('fx-fb');
+  if(fb)fb.innerHTML=(ok?'<span class="good">✅ Doğru</span>':`<span class="bad2">❌ Doğru cevap: ${esc(q.x.en)}</span>`)+(ok?'':'<div class="m">Bu kelime tekrar gelecek</div>');
+}
+function fxEnd(won){
+  FXQ.endWon=won;
+  if(won){cur.prog.steps[FXQ.K]=1;xp(20);save();SFX.win()}
+  try{renderHead()}catch(e){}
+  $('#st').innerHTML=`<div class="box"><div class="big">${won?'✅ Tamamlandı':'💀 Canların bitti'}</div><p class="m">${FXQ.solved}/${FXQ.total} kelime tamamlandı</p><button class="btn${won?'':' bad'}" id="fx-restart">${won?'Sonraki adım →':'Tekrar dene'}</button></div>`;
+}
+function fxAfterEnd(){if(FXQ.endWon)goStep(FXQ.K+1);else fxStart(FXQ.mode)}
+
+/* ---- Tıklama ve klavye: bu bölümdeki her düğme kendi işlevini çalıştırır ---- */
+document.addEventListener('click',function(e){
+  const t=e.target;if(!t||!t.closest)return;
+  const sy=t.closest('[data-say]');
+  if(sy){e.stopImmediatePropagation();fxSayAny(sy.dataset.say);return}
+  const tk=t.closest('.tk');
+  if(tk){e.stopImmediatePropagation();fxTap(tk.dataset.w,tk);return}
+  const qz=t.closest('[data-fx-quiz]');
+  if(qz){e.stopImmediatePropagation();fxQuizWord(qz.dataset.fxQuiz);return}
+  const op=t.closest('[data-fo]');
+  if(op){e.stopImmediatePropagation();fxAnswer(op);return}
+  if(t.closest('#fx-next')){e.stopImmediatePropagation();fxNext();return}
+  if(t.closest('#fx-check')){e.stopImmediatePropagation();fxCheck();return}
+  if(t.closest('#fx-restart')){e.stopImmediatePropagation();fxAfterEnd();return}
+},true);
+
+document.addEventListener('keydown',function(e){
+  const inp=document.getElementById('fx-in');
+  if(e.key==='Enter'&&inp&&document.activeElement===inp){e.preventDefault();fxCheck();return}
+  if(FXQ.cur&&FXQ.cur.opts&&FXQ.cur.opts.length){
+    if(/^[1-4]$/.test(e.key)){const b=document.querySelector(`[data-fo="${e.key-1}"]`);if(b&&!b.disabled){e.preventDefault();fxAnswer(b)}return}
+    const nx=document.getElementById('fx-next');
+    if((e.key===' '||e.key==='Enter')&&nx&&!nx.hidden){e.preventDefault();fxNext()}
+  }
+},true);
 </script>
 </body>
 </html>
