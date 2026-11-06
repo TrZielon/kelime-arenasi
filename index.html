@@ -650,8 +650,7 @@ const tone=(fs,d,ty)=>{try{if(muted)return;ac=ac||new(window.AudioContext||windo
 
 const SFX={ok:()=>tone([523,659,784],.09,'triangle'),bad:()=>tone([220,165],.2,'sawtooth'),win:()=>tone([523,659,784,1047],.11,'triangle')};
 
-const say=t=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.9;speechSynthesis.speak(u)}catch(e){}};
-
+const say=t=>speakWord(t);
 function save(p=cur){clearTimeout(p._t);p._t=setTimeout(async()=>{if(!DB||!UID)return;try{const {id,_t,...b}=p;await DB.collection('data/users/'+UID).doc(id).set(b)}catch(e){}},300)}
 
 const GATE={n:0,q:[]};
@@ -1732,7 +1731,159 @@ async function init(){
 
 }
 
-init();
+/* ---- v16: tüm kelimelerle quiz, anlık sözlük, Amerikan telaffuzu ---- */
+
+/* 1) Telaffuz: önce Amerikan İngilizcesi kaydı, yoksa en-US sesi */
+let EN_VOICE=null;
+function pickVoice(){
+  const vs=(window.speechSynthesis&&speechSynthesis.getVoices())||[];
+  EN_VOICE=vs.find(v=>/^en[-_]US/i.test(v.lang)&&/Google|Samantha|Aaron|Zira|David|Natural|Microsoft/i.test(v.name))||vs.find(v=>/^en[-_]US/i.test(v.lang))||null;
+  return EN_VOICE;
+}
+if(window.speechSynthesis)speechSynthesis.onvoiceschanged=pickVoice;
+function speakEn(t){
+  try{
+    if(!EN_VOICE)pickVoice();
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(t);
+    u.lang='en-US';if(EN_VOICE)u.voice=EN_VOICE;u.rate=.92;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+const AUD={};
+async function usAudio(word){
+  const k=word.toLowerCase().replace(/[^a-z'-]/g,'');
+  if(!k)return null;
+  if(k in AUD)return AUD[k];
+  try{
+    const r=await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(k));
+    if(!r.ok)throw new Error('yok');
+    const j=await r.json(),ph=(j[0]&&j[0].phonetics)||[];
+    const us=ph.find(p=>p.audio&&/-us\.mp3/i.test(p.audio))||ph.find(p=>p.audio&&p.audio.trim());
+    AUD[k]=us?us.audio:null;
+  }catch(e){AUD[k]=null}
+  return AUD[k];
+}
+async function speakWord(w){
+  const first=String(w).split(/\s*[\/~]\s*/)[0].trim();
+  if(!/^[A-Za-z'-]+$/.test(first)){speakEn(first);return}
+  const url=await usAudio(first);
+  if(url){try{await new Audio(url).play();return}catch(e){}}
+  speakEn(first);
+}
+
+/* 2) Anlık sözlük: tek çağrı, kuyruk ve yeniden deneme yok */
+async function fastGloss(keys){
+  if(!SMP||!keys.length)return {};
+  const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),30000);
+  try{
+    const r=await SMP(GLOSS+'\n\nGİRDİ:\n'+keys.join(', '),{cache:false,signal:ac.signal,modelTier:'quick'});
+    const m=String(r&&r.text||'').match(/\{[\s\S]*\}/);
+    return m?JSON.parse(m[0]):{};
+  }catch(e){return {}}
+  finally{clearTimeout(tm)}
+}
+
+async function tap(w,el){
+  document.querySelectorAll('.tk.sel').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');
+  const k=w.toLowerCase().replace(/[^a-z'-]/g,''),mo=SRC&&SRC.mo?aMo(SRC.mo[k]):[],my=++TAPN,ctx=tipCtx();
+  speakWord(w);
+  const link=`<a class="m" href="https://dictionary.cambridge.org/dictionary/english-turkish/${encodeURIComponent(k)}" target="_blank" rel="noopener">Cambridge ↗</a> <a class="m" href="https://tureng.com/en/turkish-english/${encodeURIComponent(k)}" target="_blank" rel="noopener">Tureng ↗</a>`;
+  const show=(g,note)=>setTip(`<b>${esc(w)}</b> — ${g?`<span class="good">${esc(g)}</span>`:`<span class="m">${note}</span>`} ${link}<div>${mo.map(([p,t,d])=>`<span class="chip">${esc(p)} · ${esc(t)}: ${esc(d)}</span>`).join('')}</div><div style="margin-top:8px"><button class="pill" id="qz" data-qw="${esc(k)}">🎯 Bu kelimeyle quiz</button></div>`);
+  let g=(SRC&&SRC.gl&&SRC.gl[k])||(cur.dict&&cur.dict[k])||'';
+  if(!g){const it=cur.items.find(x=>x.en.toLowerCase().split(/\s*[\/~]\s*/).map(v=>v.trim()).includes(k));if(it&&it.tr)g=it.tr}
+  if(g)return show(g);
+  show('','anlam aranıyor…');
+  const need=new Set([k]);
+  if(SRC&&SRC.s){(SRC.s.toLowerCase().match(/[a-z][a-z'-]*/g)||[]).forEach(v=>{if(!(cur.dict&&cur.dict[v])&&!(SRC.gl&&SRC.gl[v]))need.add(v)})}
+  const r=await fastGloss([...need].slice(0,30));
+  cur.dict=cur.dict||{};
+  Object.keys(r||{}).forEach(x=>{if(typeof r[x]==='string')cur.dict[x.toLowerCase()]=r[x].trim()});
+  save(cur);
+  if(my===TAPN&&tipCtx()===ctx)show(cur.dict[k]||'','anlam bulunamadı, tekrar dokun');
+}
+
+/* 3) Quiz: bütün kelimeler, yanlışlar sona eklenir */
+let QX={mode:'',queue:[],total:0,solved:0,lives:3};
+const qPool=m=>{const it=cur.items.filter(x=>x.tr);return shuf(m==='cum'?it.filter(x=>x.s&&x.st):m==='yaz'?it.filter(x=>!x.en.includes('X')):it)};
+function qstart(m){
+  const q=qPool(m);
+  QX={mode:m,queue:q,total:q.length,solved:0,lives:m==='boss'?3:99};
+  if(!q.length){$('#st').innerHTML='<div class="box m">Bu mod için uygun kelime yok. Cümleler hazırlanınca burada açılır.</div>';return}
+  qNext();
+}
+function makeQ(x,m){
+  const items=cur.items.filter(y=>y.tr);
+  if(m!=='yaz'&&x.s&&x.st&&(m==='cum'||Math.random()<.5)){
+    const d=[...(x.d||[]),...shuf(items.filter(o=>o!==x&&o.st).map(o=>o.st))].filter((v,i,a)=>v&&v!==x.st&&a.indexOf(v)===i).slice(0,3);
+    if(d.length===3)return {k:'s',x,q:x.s,ans:x.st,opts:shuf([x.st,...d])};
+  }
+  const dirEn=Math.random()<.5,key=o=>dirEn?o.tr:o.en,ans=key(x);
+  const d=shuf(items.filter(o=>o!==x&&key(o)!==ans)).slice(0,3).map(key);
+  return {k:'w',x,dirEn,q:dirEn?x.en:x.tr,ans,opts:shuf([ans,...d])};
+}
+function qNext(){
+  if(QX.lives<=0)return qEnd(false);
+  if(!QX.queue.length)return qEnd(true);
+  const x=QX.queue[0];
+  if(QX.mode==='yaz')return renderYaz(x);
+  const q=makeQ(x,QX.mode);q.done=0;Q=q;SRC=null;
+  renderQ(q);
+}
+function renderQ(q){
+  const m=QX.mode,n=Math.min(QX.solved+1,QX.total);
+  const head=m==='boss'?`Boss · ${n}/${QX.total} · ${'❤️'.repeat(Math.max(QX.lives,0))}`:(m==='cum'?`Cümle · ${n}/${QX.total}`:`Seç · ${n}/${QX.total}`);
+  const body=q.k==='s'
+    ?`<div class="m">Cümlenin anlamı hangisi?</div><div class="sent">${esc(q.q)}</div><button class="pill" data-say="${esc(q.q)}">🔊 Dinle</button>`
+    :`<div class="m">${q.dirEn?'İngilizce → Türkçe':'Türkçe → İngilizce'}</div><div class="big">${esc(q.q)}</div>${q.dirEn?`<button class="pill" data-say="${esc(q.x.en.split(/\s*[\/~]\s*/)[0])}">🔊 Dinle</button>`:''}`;
+  $('#st').innerHTML=`<div class="m">${head}</div><div class="bar"><i style="width:${QX.solved/QX.total*100}%"></i></div><div class="box">${body}</div>${q.opts.map((o,i)=>`<button class="opt" data-o="${i}">${esc(o)}</button>`).join('')}<div class="fb" id="fb"></div><div class="row"><button class="btn" id="nx" hidden>Sonraki</button></div>`;
+}
+function qAns(i){
+  const q=Q;if(!q||q.done)return;q.done=1;
+  const ok=q.opts[i]===q.ans;
+  document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(q.opts[k]===q.ans)b.classList.add('ok');else if(k===i)b.classList.add('bad')});
+  if(ok){QX.solved++;QX.queue.shift();xp(10);SFX.ok()}
+  else{QX.queue.push(QX.queue.shift());if(QX.mode==='boss')QX.lives--;SFX.bad()}
+  $('#fb').innerHTML=(ok?'<span class="good">✅ Doğru</span>':'<span class="bad2">❌ Doğru cevap: '+esc(q.ans)+'</span>')+`<div class="m">${esc(q.x.en)} = ${esc(q.x.tr)}${ok?'':' · bu kelime tekrar gelecek'}</div>`;
+  const nx=$('#nx');if(nx)nx.hidden=false;
+}
+function renderYaz(x){
+  Q={x,done:0,opts:[],ans:x.en};
+  $('#st').innerHTML=`<div class="m">Yaz · ${Math.min(QX.solved+1,QX.total)}/${QX.total}</div><div class="bar"><i style="width:${QX.solved/QX.total*100}%"></i></div><div class="box"><div class="m">Türkçe → İngilizce</div><div class="big">${esc(x.tr)}</div></div><div class="row"><input id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="İngilizcesini yaz" style="max-width:360px"></div><div class="row"><button class="btn" id="ck">Kontrol et</button></div><div class="fb" id="fb"></div>`;
+  $('#ans').focus();
+}
+function yCheck(){
+  const q=Q;if(!q||!$('#ans'))return;
+  if(q.done){qNext();return}
+  const v=$('#ans').value.trim().toLowerCase().replace(/[.,!?']/g,'').replace(/^to /,'');
+  if(!v)return;
+  q.done=1;
+  const ok=q.x.en.split(/\s*[\/~]\s*/).some(a=>a.trim().toLowerCase()===v);
+  if(ok){QX.solved++;QX.queue.shift();xp(10);SFX.ok()}else{QX.queue.push(QX.queue.shift());SFX.bad()}
+  $('#fb').innerHTML=(ok?'<span class="good">✅ Doğru</span>':'<span class="bad2">❌ Doğru cevap: '+esc(q.x.en)+'</span>')+(ok?'':'<div class="m">Bu kelime tekrar gelecek</div>');
+  $('#ck').textContent='Sonraki';$('#ans').disabled=true;
+}
+function qEnd(won){
+  const K={sec:2,yaz:3,boss:4,cum:5}[QX.mode];
+  if(won){cur.prog.steps[K]=1;xp(20);save();SFX.win()}
+  renderHead();
+  $('#st').innerHTML=`<div class="box"><div class="big">${won?'✅ Tamamlandı':'💀 Canların bitti'}</div><p class="m">${QX.solved}/${QX.total} kelime tamamlandı</p><button class="btn${won?'':' bad'}" ${won?`data-go="${K+1}"`:'data-restart="1"'}>${won?'Sonraki adım →':'Tekrar dene'}</button></div>`;
+}
+function ystart(){qstart('yaz')}
+function ynext(){qNext()}
+
+/* Kelimeye dokunup doğrudan quiz'e geçiş */
+function quizWord(k){
+  const key=String(k||'').toLowerCase();
+  const it=cur.items.find(x=>x.tr&&x.en.toLowerCase().split(/\s*[\/~]\s*/).map(v=>v.trim()).includes(key));
+  if(!it){setTip('<span class="bad2">Bu kelime listede yok. Listeye eklersen quizde çıkar.</span>');return}
+  const rest=shuf(cur.items.filter(x=>x.tr&&x!==it));
+  step=2;renderHead();
+  QX={mode:'sec',queue:[it,...rest],total:rest.length+1,solved:0,lives:99};
+  qNext();
+}
+document.addEventListener('click',e=>{const b=e.target.closest('#qz');if(b)quizWord(b.dataset.qw)});
+  init();
 /* ===== HABER LİNKİ (SON SÜRÜM) ===== */
 document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('#haberbtn,#haberbtn2').forEach(e=>e.remove());
