@@ -1,6 +1,441 @@
 {
-  "updated": "2026-11-05T11:42:44.232Z",
+  "updated": "2026-11-06T06:20:27.748Z",
   "items": [
+    {
+      "id": "mw4l59wb7me0",
+      "date": "2026-11-06",
+      "category": "World",
+      "title": "Global tech stocks plunge as US midterms add to AI slowdown fears",
+      "src": "https://www.bbc.co.uk/news/articles/cmn04705rd8jo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Tech stocks around the world went down. Investors are worried about the AI industry. They fear that AI growth is slowing down. The US midterms are also making investors nervous. People think the government might look more closely at how companies build data centres. They also think there could be tougher rules for the AI industry. Because of these fears, many people sold their shares in tech companies. Investors are watching the US midterms carefully now. They want to see what will happen to data centres and AI companies in the future.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Investors are buying more AI shares than ever.",
+                "Data centres are closing all over the world.",
+                "Tech stocks dropped due to fears about AI and US midterms.",
+                "The US midterms were cancelled by tech companies."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'plunge' mean in the headline?",
+              "opts": [
+                "To move slowly",
+                "To fall quickly",
+                "To stay the same",
+                "To grow bigger"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What might receive tougher scrutiny from the government?",
+              "opts": [
+                "Farm lands",
+                "Data centre construction",
+                "Car factories",
+                "Social media users"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "True or False: Investors are worried about possible tougher rules for the AI industry.",
+              "opts": [
+                "True",
+                "Only in the US",
+                "Not mentioned",
+                "False"
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "Global tech stocks have dropped sharply as investors worry about a slowdown in the artificial intelligence industry. The upcoming US midterms are adding to these concerns. Investors react to the possibility of tougher scrutiny regarding the construction of new data centres, which are essential for AI technology. Furthermore, there are growing fears that the government may introduce stricter regulations for the entire AI sector. Because of these combined factors, confidence in technology companies has fallen, leading to widespread selling in global markets. Investors remain cautious as they monitor how political changes in the United States might impact the future growth and regulation of AI businesses and their infrastructure.",
+          "quiz": [
+            {
+              "q": "What is the main cause of the drop in global tech stocks?",
+              "opts": [
+                "Fears of an AI slowdown and US midterm concerns",
+                "The closing of all tech businesses in the US",
+                "A sudden rise in the price of data centres",
+                "A lack of electricity for data centres"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In the text, what does the word 'scrutiny' mean?",
+              "opts": [
+                "Financial support",
+                "Fast building",
+                "Careful examination or examination",
+                "Public celebration"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What kind of construction might face tougher scrutiny?",
+              "opts": [
+                "Housing projects",
+                "Shopping malls",
+                "Data centres",
+                "Highway bridges"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "True or False: The text states that investors are unconcerned about the US midterms.",
+              "opts": [
+                "True",
+                "Only tech workers are concerned",
+                "False",
+                "It is unknown"
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "3": {
+          "text": "Global technology stocks have experienced a sharp decline as investors grapple with heightened fears of a slowdown in the artificial intelligence sector. Adding to the market instability are the upcoming US midterm elections, which have raised concerns over future policy directions. Investors have reacted strongly to the possibility of tougher government scrutiny surrounding the construction of data centres, which are critical to supporting AI workloads. Additionally, there is anxiety over potential increases in regulation targeting the broader AI industry. These combined worries have prompted a wave of selling across international markets, reflecting diminished confidence among shareholders. As the US midterms approach, financial markets are keeping a close watch on political developments that could lead to stricter oversight, potentially impacting the expansion plans and valuation of major technology firms involved in AI infrastructure.",
+          "quiz": [
+            {
+              "q": "Which statement best summarizes the main focus of the article?",
+              "opts": [
+                "Data centre construction has been banned across the United States.",
+                "Investors are ignoring political events to focus entirely on AI technology.",
+                "Tech stocks fell as US midterms heightened fears over AI growth and regulation.",
+                "The AI industry has stopped all future building projects worldwide."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'heightened' mean as used in the text?",
+              "opts": [
+                "Reduced to a lower level",
+                "Ended permanently",
+                "Made completely invisible",
+                "Increased or made stronger"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What specific infrastructure is mentioned as facing potential tougher scrutiny?",
+              "opts": [
+                "Satellite networks",
+                "Data centre construction",
+                "Undersea communication cables",
+                "Solar panel farms"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "True or False: Possible tougher scrutiny of data centre construction contributed to the market reaction.",
+              "opts": [
+                "The text says this is impossible",
+                "True",
+                "Only outside the US",
+                "False"
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mw4l57gn6ysj",
+      "date": "2026-11-06",
+      "category": "World",
+      "title": "Trump signs order on Oval Office decor",
+      "src": "https://www.bbc.co.uk/news/articles/cmy0eeg101djo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Donald Trump signed a new order. This order stops future presidents from changing the Oval Office. The Oval Office is a famous room in the White House. Trump made this decision after he made many big changes to the room's decor. He also tore down the White House East Wing. Now, future leaders cannot change the Oval Office decor like he did. Trump wants the room to stay the way it is now.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Trump signed an order to stop future presidents from changing the Oval Office.",
+                "Trump built a new East Wing for the White House.",
+                "Future presidents will change the Oval Office every year.",
+                "The Oval Office was closed to all visitors."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In the text, what does the word 'decor' relate to?",
+              "opts": [
+                "The name of a leader",
+                "The price of a building",
+                "The decoration and style of a room",
+                "The rules of a sport"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What part of the White House did Trump tear down?",
+              "opts": [
+                "The Oval Office",
+                "The East Wing",
+                "The North Portico",
+                "The West Wing"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE according to the story?",
+              "opts": [
+                "The order allows future presidents to tear down the Oval Office.",
+                "Trump made many big changes to the Oval Office decor.",
+                "Future presidents are required to change the Oval Office.",
+                "Trump did not change anything in the White House."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "2": {
+          "text": "Donald Trump has signed a new executive order regarding the White House. This order prevents future presidents from changing the decor of the Oval Office. The decision was made after Trump introduced a series of major changes to the famous room's interior design. Along with altering the Oval Office decor, Trump also tore down the East Wing of the White House. Because of his new order, future leaders will not have the power to undo his changes or redecorate the Oval Office according to their own tastes. The order ensures that the current look of the Oval Office remains protected from any future modifications by coming presidents.",
+          "quiz": [
+            {
+              "q": "What is the main topic of this news report?",
+              "opts": [
+                "An order by Trump preventing future changes to the Oval Office",
+                "A plan to rebuild the White House East Wing",
+                "New rules for visiting the President's office",
+                "A history of interior design in the White House"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'prevents' mean in the text?",
+              "opts": [
+                "Stops something from happening",
+                "Encourages someone to act",
+                "Asks for permission",
+                "Explains a difficult idea"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What did Trump do to the White House decor before signing the order?",
+              "opts": [
+                "He allowed future presidents to choose the design.",
+                "He left it completely untouched.",
+                "He painted it red.",
+                "He made a series of big changes to the Oval Office."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE based on the text?",
+              "opts": [
+                "The order was signed by a future president.",
+                "Trump tore down the East Wing of the White House.",
+                "Future presidents can easily change the Oval Office.",
+                "Trump preserved the East Wing without any changes."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "Donald Trump has signed an official order designed to block future presidents from altering the decor of the Oval Office. This action comes directly after Trump completed a series of substantial modifications to the iconic room's interior aesthetic. In addition to these major changes inside the Oval Office, Trump also tore down the White House East Wing. By signing this order, Trump aims to protect the current state of the room, ensuring that subsequent commanders-in-chief cannot redecorate or reverse the design choices he has implemented. The order effectively freezes the Oval Office decor, preventing future administrations from putting their own personal stamp on the famous workspace.",
+          "quiz": [
+            {
+              "q": "What main action did Trump take according to the report?",
+              "opts": [
+                "He ordered the total reconstruction of the East Wing.",
+                "He signed an order to stop future leaders from altering Oval Office decor.",
+                "He restored the original historical look of the White House.",
+                "He invited future presidents to redecorate the Oval Office."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "As used in the text, what does the word 'altering' mean?",
+              "opts": [
+                "Destroying completely",
+                "Protecting legally",
+                "Cleaning thoroughly",
+                "Changing or modifying"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What physical structure did Trump demolish according to the summary?",
+              "opts": [
+                "The West Wing",
+                "The Oval Office",
+                "The Rose Garden",
+                "The White House East Wing"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE according to the article?",
+              "opts": [
+                "The order follows Trump's series of big changes to the Oval Office decor.",
+                "The East Wing was expanded rather than torn down.",
+                "Trump made no major changes to the Oval Office prior to the order.",
+                "Future administrations are encouraged to redecorate the room."
+              ],
+              "ans": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mw4l5a04s2y3",
+      "date": "2026-11-06",
+      "category": "World",
+      "title": "White House denies Hegseth and Rubio to leave jobs after Republican election losses",
+      "src": "https://www.bbc.co.uk/news/articles/cqg7xxg4jdv5o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "US media reports say some people want to replace Pete Hegseth. He may also face an impeachment vote. At the same time, rumors say Mark Rubio wants to run for president. These reports came after Republicans lost elections. However, the White House denies that Pete Hegseth and Mark Rubio will leave their jobs. The White House says both men are staying in their positions. They will continue their work despite the rumors and the election results.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Pete Hegseth won a major election.",
+                "Mark Rubio was voted out of office.",
+                "The White House denies Hegseth and Rubio are leaving their jobs.",
+                "The US media elected a new president."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'denies' mean in the text?",
+              "opts": [
+                "Writes a news story",
+                "Asks a question",
+                "Agrees with the reports",
+                "Says something is not true"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What might Pete Hegseth face according to reports?",
+              "opts": [
+                "A new media job",
+                "A promotion",
+                "An impeachment vote",
+                "A presidential run"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "True or False: Mark Rubio is rumored to be looking at a presidential run.",
+              "opts": [
+                "True",
+                "The White House confirmed it",
+                "False",
+                "The text says he already won"
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "Following recent Republican election losses, US media reports claim there are growing calls to replace Pete Hegseth. Reports also state that Hegseth could face a possible impeachment vote. Meanwhile, other rumors suggest that Mark Rubio is eyeing a future presidential run. Despite these media claims, the White House has officially denied that either man will be leaving his position. Officials state that Hegseth and Rubio will remain in their current roles. The White House pushback comes as commentators discuss the fallout from the recent election results and speculate about potential changes in government leadership.",
+          "quiz": [
+            {
+              "q": "What is the main focus of the article?",
+              "opts": [
+                "The results of a recent presidential vote",
+                "Mark Rubio starting his campaign for president",
+                "Pete Hegseth resigning from his position",
+                "The White House denying that Hegseth and Rubio are leaving"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "In the text, what does the word 'eyeing' mean?",
+              "opts": [
+                "Ignoring completely",
+                "Rejecting firmly",
+                "Failing to see",
+                "Looking at or considering"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What political event happened before these reports emerged?",
+              "opts": [
+                "Pete Hegseth was impeached.",
+                "Mark Rubio became president.",
+                "The White House hired new staff.",
+                "Republicans suffered election losses."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Republicans won the recent elections.",
+                "Pete Hegseth faces a potential impeachment vote according to media reports.",
+                "Mark Rubio has officially left his job.",
+                "The White House confirmed Hegseth will be replaced."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "The White House has firmly rejected claims that Pete Hegseth and Mark Rubio will be stepping down from their positions in the wake of recent Republican election losses. US media reports had previously indicated that there were mounting calls to replace Hegseth, who is additionally facing the prospect of a potential impeachment vote. Simultaneously, separate reports surfaced speculating that Rubio is eyeing a potential presidential run. Despite these widespread media reports and political rumors, White House representatives insist that both officials will remain in their posts, dismissing speculation about impending staff departures following the unfavorable election outcomes.",
+          "quiz": [
+            {
+              "q": "What main message is the White House conveying?",
+              "opts": [
+                "Reports about Hegseth and Rubio leaving their jobs are untrue.",
+                "An impeachment vote against Hegseth has passed.",
+                "The recent election results were a success for Republicans.",
+                "Hegseth and Rubio are retiring immediately."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does 'surfaced' mean in this context?",
+              "opts": [
+                "Disappeared completely",
+                "Sank to the bottom",
+                "Was proven false",
+                "Became known or appeared"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What is Mark Rubio rumored to be considering?",
+              "opts": [
+                "Running for president",
+                "Leading an impeachment vote",
+                "Replacing Pete Hegseth",
+                "Joining the US media"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which of the following is FALSE based on the text?",
+              "opts": [
+                "Republicans recently experienced election losses.",
+                "The White House confirmed that Pete Hegseth will be replaced.",
+                "The White House denies that Rubio and Hegseth will leave.",
+                "Pete Hegseth faces a possible impeachment vote according to reports."
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mw3h7vgo6rm5",
       "date": "2026-11-05",
