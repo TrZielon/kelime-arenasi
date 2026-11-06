@@ -71,39 +71,39 @@ select{background:var(--card);border:2px solid var(--line);border-radius:14px;pa
 </head>
 <body data-pal="gece">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#6d28d9"/></linearGradient>
-    <linearGradient id="lgB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8f2a3b"/><stop offset="1" stop-color="#5c1420"/></linearGradient>
-    <linearGradient id="lgC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14968c"/><stop offset="1" stop-color="#0b5a55"/></linearGradient>
-    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/><stop offset="0.6" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
-    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset="0.5" stop-color="#fbbf24"/><stop offset="1" stop-color="#d97706"/></linearGradient>
-    <symbol id="lgo" viewBox="0 0 64 64">
-      <rect x="2" y="2" width="60" height="60" rx="18" style="fill:var(--lg)"/>
-      <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sheen)"/>
-      <path d="M15 50V31a17 17 0 0 1 34 0v19" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
-      <path d="M25 50V33a7 7 0 0 1 14 0v17" fill="none" stroke="url(#gold)" stroke-width="4.5" stroke-linecap="round"/>
-      <path d="M9 55 Q20 51.5 32 55 Q44 51.5 55 55" fill="none" stroke="url(#gold)" stroke-width="2.2" stroke-linecap="round"/>
-      <circle cx="50" cy="13" r="6.2" fill="#fbbf24" fill-opacity="0.25"/>
-      <circle cx="50" cy="13" r="3.6" fill="url(#gold)"/>
-    </symbol>
-  </defs>
+<defs>
+<linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#6d28d9"/></linearGradient>
+<linearGradient id="lgB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8f2a3b"/><stop offset="1" stop-color="#5c1420"/></linearGradient>
+<linearGradient id="lgC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14968c"/><stop offset="1" stop-color="#0b5a55"/></linearGradient>
+<linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/><stop offset="0.6" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset="0.5" stop-color="#fbbf24"/><stop offset="1" stop-color="#d97706"/></linearGradient>
+<symbol id="lgo" viewBox="0 0 64 64">
+<rect x="2" y="2" width="60" height="60" rx="18" style="fill:var(--lg)"/>
+<rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sheen)"/>
+<path d="M15 50V31a17 17 0 0 1 34 0v19" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+<path d="M25 50V33a7 7 0 0 1 14 0v17" fill="none" stroke="url(#gold)" stroke-width="4.5" stroke-linecap="round"/>
+<path d="M9 55 Q20 51.5 32 55 Q44 51.5 55 55" fill="none" stroke="url(#gold)" stroke-width="2.2" stroke-linecap="round"/>
+<circle cx="50" cy="13" r="6.2" fill="#fbbf24" fill-opacity="0.25"/>
+<circle cx="50" cy="13" r="3.6" fill="url(#gold)"/>
+</symbol>
+</defs>
 </svg>
 <nav class="nav" aria-label="Ana gezinme">
-  <div class="nav-in">
-    <a class="logo" href="/" aria-label="Kelime Arenası ana sayfa"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#lgo"/></svg><span>Kelime Arenası</span></a>
-    <div class="navlinks">
-      <a href="/">Ana sayfa</a>
-      <a class="cur" href="/haber.html">📰 Haber</a>
-    </div>
-    <div class="tools">
-      <div class="dots" role="group" aria-label="Renk paleti">
-        <button data-pal="gece" title="Gece" aria-label="Gece paleti" style="background:#6366f1"></button>
-        <button data-pal="kitaplik" title="Kitaplık" aria-label="Kitaplık paleti" style="background:#7a1f2e"></button>
-        <button data-pal="akdeniz" title="Akdeniz" aria-label="Akdeniz paleti" style="background:#0f766e"></button>
-      </div>
-      <button class="sndbtn" id="snd" aria-label="Sesi aç/kapat">🔊</button>
-    </div>
-  </div>
+<div class="nav-in">
+<a class="logo" href="/" aria-label="Kelime Arenası ana sayfa"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#lgo"/></svg><span>Kelime Arenası</span></a>
+<div class="navlinks">
+<a href="/">Ana sayfa</a>
+<a class="cur" href="/haber.html">📰 Haber</a>
+</div>
+<div class="tools">
+<div class="dots" role="group" aria-label="Renk paleti">
+<button data-pal="gece" title="Gece" aria-label="Gece paleti" style="background:#6366f1"></button>
+<button data-pal="kitaplik" title="Kitaplık" aria-label="Kitaplık paleti" style="background:#7a1f2e"></button>
+<button data-pal="akdeniz" title="Akdeniz" aria-label="Akdeniz paleti" style="background:#0f766e"></button>
+</div>
+<button class="sndbtn" id="snd" aria-label="Sesi aç/kapat">🔊</button>
+</div>
+</div>
 </nav>
 <main class="page" id="main"></main>
 <script>
@@ -113,10 +113,31 @@ const LV={1:'Seviye 1',2:'Seviye 2',3:'Seviye 3'};
 let DATA=[],CUR=null,LEVEL='1',QS=null,LAST=null,MUTED=localStorage.getItem('ka_mute')==='1';
 const DONE=()=>{try{return JSON.parse(localStorage.getItem('ka_hn_done')||'{}')}catch(e){return {}}};
 const saveDone=d=>localStorage.setItem('ka_hn_done',JSON.stringify(d));
+
+/* ----- SES: İngilizce (ABD) sesi seçilir ----- */
+let VOICE=null;
+function pickVoice(){
+  try{
+    const vs=speechSynthesis.getVoices()||[];
+    VOICE=vs.find(v=>/^en[-_]US/i.test(v.lang)&&/Google|Samantha|Zira|David|Aria|Jenny|Guy|Ava|Allison/i.test(v.name))
+      ||vs.find(v=>/^en[-_]US/i.test(v.lang))||null;
+  }catch(e){VOICE=null}
+}
+try{speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
+pickVoice();
 function say(t,rate){
   if(MUTED)return;
-  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=rate||1;speechSynthesis.speak(u)}catch(e){}
+  try{
+    pickVoice();
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(t);
+    u.lang='en-US';
+    if(VOICE)u.voice=VOICE;
+    u.rate=rate||1;
+    speechSynthesis.speak(u);
+  }catch(e){}
 }
+
 function setPal(n){
   document.body.dataset.pal=n;
   document.querySelectorAll('.dots button').forEach(b=>b.classList.toggle('on',b.dataset.pal===n));
@@ -158,24 +179,24 @@ function reader(){
   const tabs=[1,2,3].map(l=>`<button class="pill ${String(l)===LEVEL?'on':''}" data-lv="${l}">${LV[l]}${done[CUR.id+'-'+l]!=null?' ✓ %'+done[CUR.id+'-'+l]:''}</button>`).join('');
   const story=String(lv.text).split(/([A-Za-z][A-Za-z'-]*)/).map((t,i)=>i%2?`<span class="tk" data-w="${esc(t)}">${esc(t)}</span>`:esc(t)).join('');
   $('#main').innerHTML=`<a class="pill" href="#">← Haberler</a>
-  <div class="row" style="margin-top:14px"><span class="tag">${esc(CUR.category)}</span><span class="date">${esc(CUR.date)}</span></div>
-  <h2 class="ttl" style="font-size:28px">${esc(CUR.title)}</h2>
-  <div class="row">${tabs}</div>
-  <div class="box">
-    <div class="row" style="margin-top:0"><button class="btn3" id="play">🔊 Dinle</button><select id="spd"><option value="0.8">Yavaş</option><option value="1" selected>Normal</option><option value="1.15">Hızlı</option></select><button class="pill" id="stop">■ Durdur</button></div>
-    <div class="story">${story}</div>
-    <div class="tip" id="tip"><span class="muted">Bir kelimeye dokunun, Türkçe anlamı çıksın.</span></div>
-  </div>
-  <div class="row"><button class="btn3" id="quiz">Quiz'e geç →</button></div>
-  <p class="muted">Kaynak: <a class="src" href="${esc(CUR.src)}" target="_blank" rel="noopener">${esc(CUR.source)}</a> · Metin bu haberden yapay zekâyla sadeleştirilmiştir.</p>`;
+<div class="row" style="margin-top:14px"><span class="tag">${esc(CUR.category)}</span><span class="date">${esc(CUR.date)}</span></div>
+<h2 class="ttl" style="font-size:28px">${esc(CUR.title)}</h2>
+<div class="row">${tabs}</div>
+<div class="box">
+<div class="row" style="margin-top:0"><button class="btn3" id="play">🔊 Dinle</button><select id="spd"><option value="0.8">Yavaş</option><option value="1" selected>Normal</option><option value="1.15">Hızlı</option></select><button class="pill" id="stop">■ Durdur</button></div>
+<div class="story">${story}</div>
+<div class="tip" id="tip"><span class="muted">Bir kelimeye dokunun, Türkçe anlamı çıksın.</span></div>
+</div>
+<div class="row"><button class="btn3" id="quiz">Quiz'e geç →</button></div>
+<p class="muted">Kaynak: <a class="src" href="${esc(CUR.src)}" target="_blank" rel="noopener">${esc(CUR.source)}</a> · Metin bu haberden yapay zekâyla sadeleştirilmiştir.</p>`;
 }
 function quiz(){
   const qs=CUR.levels[LEVEL].quiz;
   QS={ans:Array(qs.length).fill(null)};
   $('#main').innerHTML=`<button class="pill" data-back="1">← Metne dön</button>
-  <h2 class="sec" style="margin-top:14px">${LV[LEVEL]} · Quiz</h2>
-  ${qs.map((q,i)=>`<div class="box"><div class="qn">${i+1}. ${esc(q.q)}</div>${q.opts.map((o,k)=>`<button class="opt" data-q="${i}" data-k="${k}">${esc(o)}</button>`).join('')}</div>`).join('')}
-  <div id="res"></div>`;
+<h2 class="sec" style="margin-top:14px">${LV[LEVEL]} · Quiz</h2>
+${qs.map((q,i)=>`<div class="box"><div class="qn">${i+1}. ${esc(q.q)}</div>${q.opts.map((o,k)=>`<button class="opt" data-q="${i}" data-k="${k}">${esc(o)}</button>`).join('')}</div>`).join('')}
+<div id="res"></div>`;
 }
 function answer(i,k){
   const qs=CUR.levels[LEVEL].quiz;
@@ -210,9 +231,11 @@ async function tapWord(w,el){
     else tip.innerHTML=`<b>${esc(w)}</b> — <span class="muted">anlam bulunamadı</span>`;
   }catch(e){tip.innerHTML=`<b>${esc(w)}</b> — <span style="color:var(--bad)">bağlantı hatası</span>`}
 }
+
+/* ----- TIKLAMALAR ----- */
 document.addEventListener('click',e=>{
   const t=e.target;
-  const pal=t.closest('[data-pal]');if(pal){setPal(pal.dataset.pal);return}
+  const pal=t.closest('.dots [data-pal]');if(pal){setPal(pal.dataset.pal);return}
   if(t.closest('#snd')){MUTED=!MUTED;localStorage.setItem('ka_mute',MUTED?'1':'0');setMute();return}
   const lv=t.closest('[data-lv]');if(lv){LEVEL=lv.dataset.lv;reader();return}
   if(t.closest('#quiz')){quiz();return}
