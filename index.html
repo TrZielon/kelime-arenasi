@@ -650,8 +650,7 @@ const tone=(fs,d,ty)=>{try{if(muted)return;ac=ac||new(window.AudioContext||windo
 
 const SFX={ok:()=>tone([523,659,784],.09,'triangle'),bad:()=>tone([220,165],.2,'sawtooth'),win:()=>tone([523,659,784,1047],.11,'triangle')};
 
-const say=t=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.9;speechSynthesis.speak(u)}catch(e){}};
-
+const say=t=>{if(muted)return;try{pickVoice();speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';if(VOICE)u.voice=VOICE;u.rate=.92;speechSynthesis.speak(u)}catch(e){}};
 function save(p=cur){clearTimeout(p._t);p._t=setTimeout(async()=>{if(!DB||!UID)return;try{const {id,_t,...b}=p;await DB.collection('data/users/'+UID).doc(id).set(b)}catch(e){}},300)}
 
 const GATE={n:0,q:[]};
@@ -1831,6 +1830,38 @@ async function grade(){
   }
 }
 /* ===== HIZ VE DÜZELTME SONU ===== */
+let VOICE=null;
+function pickVoice(){
+  try{
+    const vs=speechSynthesis.getVoices()||[];
+    VOICE=vs.find(v=>/^en[-_]US/i.test(v.lang)&&/Google|Samantha|Zira|David|Aria|Jenny|Guy|Ava|Allison/i.test(v.name))
+      ||vs.find(v=>/^en[-_]US/i.test(v.lang))||null;
+  }catch(e){VOICE=null}
+}
+try{speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
+pickVoice();
+
+let __gdone=-1;
+function tickUI(p){
+  if(cur!==p)return;
+  const G=p.groups||[],n=G.filter(g=>g.text).length;
+  const el=$('#gprog');if(el)el.textContent=progTxt(p);
+  const f=$('#ft');if(f){const h=footHtml();if(f.dataset.h!==h){f.dataset.h=h;f.innerHTML=h}}
+  if(step===6&&n!==__gdone){__gdone=n;pview()}
+}
+function refreshWait(p){
+  if(cur!==p||!$('#st [data-wait]'))return;
+  setTimeout(()=>{if(cur===p&&!RUN[p.id]&&$('#st [data-wait]'))goStep(step)},300);
+}
+function renderEnr(){
+  const j=ENR[cur.id],el=$('#enr');if(!el)return;
+  const need=cur.items.some(x=>!x.s||!x.tr)||!((cur.groups||[]).length&&cur.groups.every(g=>g.text));
+  const btns=(j&&j.bad?'<button class="pill" id="rt">Yeniden dene</button>':'')
+    +(j&&j.bad&&j.why==='izin'?'<button class="pill" id="pm">İzinleri aç</button>':'')
+    +(!j&&need&&!RUN[cur.id]?'<button class="btn" id="hz">✨ Eksik anlam, cümle ve paragrafları hazırla</button>':'');
+  if(el.dataset.k!==btns){el.dataset.k=btns;el.innerHTML='<span class="m" id="enrt"></span> '+btns}
+  const t=$('#enrt');if(t)t.textContent=j?j.t:'';
+}
 </script>
 </body>
 </html>
