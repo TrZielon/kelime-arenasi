@@ -3804,3 +3804,549 @@ if(typeof cur !== 'undefined' && cur){
 }
 </script>
 <!-- ===== KELİME ARENASI YENİ ARAYÜZ & OTOMASYON YAMASI SONU ===== -->
+<!-- ===== KELİME ARENASI: 4 YENİ OTOMASYON & DÜZELTME YAMASI (SIFIR ÇAKIŞMA SÜRÜMÜ) ===== -->
+<style>
+.tureng-badge{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:999px;background:rgba(251,191,36,.15);color:var(--acc);border:1px solid rgba(251,191,36,.35);margin-bottom:4px}
+[data-conq-demo]{display:none!important}
+</style>
+<script>
+(function(){
+  /* 1. TÜM ETKİNLİKLERDE AMERİKAN AKSANI (const say ATAMASI YAPMADAN speechSynthesis ÜZERİNDEN) */
+  let US_VOICE = null;
+  function pickUsVoice(){
+    try{
+      const vs = window.speechSynthesis ? (speechSynthesis.getVoices() || []) : [];
+      US_VOICE =
+        vs.find(v => /^en[-_]US/i.test(v.lang) && /Google US English|Samantha|Ava|Allison|Aria|Jenny|Guy|Zira|David|Alex|Aaron|Nicky|Microsoft/i.test(v.name)) ||
+        vs.find(v => /^en[-_]US/i.test(v.lang)) ||
+        vs.find(v => /^en/i.test(v.lang) && /US|United States|America/i.test(v.name)) ||
+        vs.find(v => /^en/i.test(v.lang)) ||
+        null;
+    }catch(e){ US_VOICE = null; }
+  }
+  try{
+    if(window.speechSynthesis){
+      const proto = Object.getPrototypeOf(window.speechSynthesis) || (typeof SpeechSynthesis !== 'undefined' && SpeechSynthesis.prototype);
+      const protoSpeak = proto && proto.speak ? proto.speak.bind(window.speechSynthesis) : window.speechSynthesis.speak.bind(window.speechSynthesis);
+      const protoCancel = proto && proto.cancel ? proto.cancel.bind(window.speechSynthesis) : window.speechSynthesis.cancel.bind(window.speechSynthesis);
+      window.speechSynthesis.cancel = function(){
+        try{ protoCancel(); }catch(e){}
+      };
+      window.speechSynthesis.speak = function(u){
+        if(typeof muted !== 'undefined' && muted) return;
+        try{
+          pickUsVoice();
+          protoCancel();
+          if(u && typeof u === 'object'){
+            u.text = String(u.text || '').replace(/\s*[\/~]\s*/g, ', ').replace(/\bpost-X\b/gi,'post harvest').replace(/\bX-intensive\b/gi,'energy intensive').trim();
+            u.lang = 'en-US';
+            if(US_VOICE) u.voice = US_VOICE;
+            if(!u.rate || u.rate === 1) u.rate = 0.92;
+            protoSpeak(u);
+          }
+        }catch(e){}
+      };
+      window.speechSynthesis.onvoiceschanged = pickUsVoice;
+      pickUsVoice();
+    }
+  }catch(e){}
+
+  /* 2. PDF / KELİME LİSTESİ AYIRICI + MEVCUT ANLAMI KORUMA + TURENG YAYGIN ANLAMLAR */
+  const FIXED_PHRASES = new Set([
+    'have to do with','at stake','in danger','at risk','behind bars','take a toll',
+    'account for','per capita','per person','a third','one third','invasion of privacy',
+    'post-x','x-intensive','water-intensive'
+  ]);
+
+  function isTurkishSegment(s){
+    const str = String(s || '').trim();
+    if(!str) return false;
+    if(/[çğıöşüİÇĞÖŞÜ]/.test(str)) return true;
+    if(/\b[a-z]{2,}(mak|mek)\b/i.test(str)) return true;
+    if(/\b(bir|ve|veya|ile|olan|etmek|olmak|yapmak|vermek|almak|tutmak|olarak|gibi|kadar|sonra|arasında|karşı|göre|ait|dair|ortak|rakip|rekabet|hanedan|veraset|varis|somut|hasat|tohum|miktar|hacim|bahane|verim|aciliyet|ittifak)\b/i.test(str)) return true;
+    return false;
+  }
+
+  function splitEnglishEntry(enRaw){
+    const clean = String(enRaw || '').trim();
+    if(!clean) return [];
+    if(/[\/~;,]/.test(clean)){
+      const parts = clean.split(/\s*[\/~;,]\s*/).map(s=>s.trim()).filter(Boolean);
+      if(parts.length > 1) return parts;
+    }
+    const low = clean.toLowerCase();
+    if(!FIXED_PHRASES.has(low) && !/^(to|a|an|the|in|on|at|by|for|with|from|of|into|out)\b/i.test(low)){
+      const words = clean.split(/\s+/);
+      if(words.length === 2 && !words[0].includes('-') && !words[1].includes('-')){
+        const stopWords = new Set(['of','to','in','on','for','with','at','by','from','up','out','off','down','over','under','as','be','have','take','make','get','give','keep','let','put','set']);
+        if(!stopWords.has(words[0].toLowerCase()) && !stopWords.has(words[1].toLowerCase()) && words[0].length >= 4 && words[1].length >= 4){
+          return [words[0], words[1]];
+        }
+      }
+    }
+    return [clean];
+  }
+
+  function smartParse(t){
+    const rawLines = String(t || '').split(/\r?\n/)
+      .map(l => l.replace(/[\u00a0 ]+/g,' ')
+        .replace(/[A-ZÇĞİÖŞÜ][A-ZÇĞİÖŞÜ ]{2,}\s*[–-]\s*VOCAB/g,'')
+        .replace(/^\s*(?:\d+[.)]|[•*·-])\s+/,'').trim())
+      .filter(l => l && !/^[A-ZÇĞİÖŞÜ ]+$/.test(l));
+    const out = [], seen = new Set();
+    for(const l of rawLines){
+      const seg = l.split(/\s+:\s+|\s+[-–—]\s+|\s*\|\s*|\t+/).map(s=>s.trim()).filter(Boolean);
+      let enSegments = [l], trPart = '';
+      if(seg.length >= 2){
+        let ti = seg.findIndex((s,i) => i > 0 && isTurkishSegment(s));
+        if(ti === -1) ti = seg.length - 1;
+        enSegments = seg.slice(0, ti);
+        trPart = seg.slice(ti).join(', ');
+      }
+      for(const segEn of enSegments){
+        const enList = splitEnglishEntry(segEn);
+        for(const enItem of enList){
+          const key = enItem.toLowerCase();
+          if(seen.has(key)) continue;
+          seen.add(key);
+          out.push({ en: enItem, tr: trPart || '', baseTr: trPart || '' });
+        }
+      }
+    }
+    return out;
+  }
+
+  function splitCombinedItemsInPack(p){
+    if(!p || !Array.isArray(p.items)) return;
+    const newItems = [], seen = new Set();
+    let changed = false;
+    for(const it of p.items){
+      const parts = splitEnglishEntry(it.en);
+      if(parts.length > 1){
+        changed = true;
+        for(const part of parts){
+          const k = part.toLowerCase();
+          if(seen.has(k)) continue;
+          seen.add(k);
+          const clone = Object.assign({}, it, { en: part, baseTr: it.baseTr || it.tr || '' });
+          if(p.prog && p.prog.box && p.prog.box[it.en] && !p.prog.box[part]) p.prog.box[part] = p.prog.box[it.en];
+          newItems.push(clone);
+        }
+      } else {
+        const k = String(it.en || '').toLowerCase();
+        if(!seen.has(k)){
+          seen.add(k);
+          if(it.tr && !it.baseTr) it.baseTr = it.tr;
+          newItems.push(it);
+        }
+      }
+    }
+    if(changed){
+      p.items = newItems;
+      p.words = newItems.map(x => ({ en: x.en, tr: x.tr || '' }));
+    }
+  }
+
+  const TURENG_SYS = `Sen Tureng Sözlük tabanlı akademik İngilizce-Türkçe sözlük uzmanısın.
+Girdide numaralandırılmış İngilizce kelimeler ve varsa kullanıcının listesindeki mevcut Türkçe anlamı ("[Mevcut: ...]") verilmiştir.
+Kurallar:
+1. Eğer bir satırdaki İngilizce ifadede 2 ayrı İngilizce kelime yan yana kalmışsa (deyim/kalıp değilse), "split" dizisinde bunları ayrı kelimeler olarak ayır.
+2. Her kelime için "tr" alanına:
+   - "[Mevcut: ...]" içinde Türkçe anlam verilmişse onu EN BAŞTA koru.
+   - Yanına Tureng Sözlük "Yaygın Kullanım (Common Usage)" kategorisindeki en yaygın 2-4 farklı Türkçe karşılığını virgülle ayırarak ekle.
+YALNIZCA geçerli JSON döndür:
+{"items":[{"i":1,"tr":"Mevcut anlam, Tureng yaygın anlam 1, Tureng yaygın anlam 2, Tureng yaygın anlam 3","split":[]}]}`;
+
+  function combineTurengMeaning(baseTr, aiTr){
+    const parts = [], seen = new Set();
+    const add = str => {
+      String(str || '').split(/\s*[,;/]\s*/).forEach(piece => {
+        const clean = piece.trim(), low = clean.toLowerCase();
+        if(clean && !seen.has(low)){ seen.add(low); parts.push(clean); }
+      });
+    };
+    if(baseTr) add(baseTr);
+    if(aiTr) add(aiTr);
+    return parts.slice(0, 5).join(', ');
+  }
+
+  fillTr = async function(p){
+    splitCombinedItemsInPack(p);
+    let todo = p.items.filter(x => !x.tr || !x.turengDone);
+    if(!todo.length) return;
+    FILL[p.id] = 1;
+    try{
+      for(const sz of [15, 6]){
+        if(!todo.length) break;
+        const ch = [];
+        for(let i=0; i<todo.length; i+=sz) ch.push(todo.slice(i, i+sz));
+        await runPool(ch, async c => {
+          const promptLines = c.map((x,i) => `${i+1}. ${x.en}${x.tr ? ` [Mevcut: ${x.tr}]` : ''}`).join('\n');
+          const r = await askJ(TURENG_SYS, promptLines, 60000, 'quick');
+          if(r && Array.isArray(r.items)){
+            r.items.forEach(o => {
+              const x = c[Number(o && o.i) - 1];
+              if(!x) return;
+              if(Array.isArray(o.split) && o.split.length > 1){
+                const idx = p.items.indexOf(x);
+                if(idx >= 0){
+                  const replacements = o.split.filter(s => s && s.en).map(s => ({
+                    en: String(s.en).trim(),
+                    baseTr: x.baseTr || x.tr || '',
+                    tr: combineTurengMeaning(x.baseTr || x.tr, s.tr || o.tr),
+                    turengDone: true, d: [], gl: {}, mo: {}
+                  }));
+                  if(replacements.length){ p.items.splice(idx, 1, ...replacements); return; }
+                }
+              }
+              if(validTr(o.tr, x.en)){
+                x.tr = combineTurengMeaning(x.baseTr || x.tr, o.tr);
+                x.turengDone = true;
+              }
+            });
+          }
+          save(p);
+        });
+        todo = p.items.filter(x => !x.tr);
+      }
+    }finally{ delete FILL[p.id]; }
+  };
+
+  /* 3. CÜMLE MODUNDA UZUNLUK EŞİTLEME & YÜKSEK ÇELDİRİCİ ŞIKLAR */
+  const BATCH_HARD = `Sen BUEPT düzeyinde akademik İngilizce ölçme ve değerlendirme uzmanısın. YALNIZCA geçerli JSON döndür: {"items":[...]}.
+Girdideki her satır "en - tr" biçimindedir. Her kelime için:
+- "en": girdideki kelimenin aynısı
+- "tr": mevcut Türkçe anlamları koruyarak Tureng yaygın karşılıklarıyla zenginleştirilmiş Türkçe anlam (3-4 yaygın karşılık)
+- "s": kelimeyi içeren akademik C1 düzeyinde 15-22 kelimelik tek İngilizce cümle
+- "st": cümlenin doğal, eksiksiz akademik Türkçe çevirisi
+- "d": cümlenin anlamı için YÜKSEK ÇELDİRİCİLİKTE 3 yanlış Türkçe çeviri dizisi.
+  ÇELDİRİCİ KURALLARI ("d" için ZORUNLU):
+  1. UZUNLUK KURALI: Doğru cevap ("st") KESİNLİKLE en uzun şık olmamalıdır! "d" içindeki en az 2 çeldirici şık "st" cümlesinden 2-5 kelime DAHA UZUN, diğeri ise aynı uzunlukta olmalıdır.
+  2. İNCE AYRIM KURALI: Şıklar birbirinin tam tersi (basit olumlu/olumsuz zıttı) OLMAMALIDIR. Her çeldirici cümlenin %75-85'ini doğru çeviriyle aynı tutup sadece TEK BİR KRİTİK NOKTADA (bağlaç yönü, kesinlik/miktar derecesi veya hedef kavram nüansı) ayrılmalıdır.
+- "gl": cümledeki önemli kelimelerin en fazla 10 tanesi için {"kelime":"Türkçe anlam"}
+- "mo": ek-kök ayrımı öğretici en fazla 3 kelime için {"kelime":[["parça","kök" veya "ek","kısa Türkçe açıklama"]]}.`;
+
+  const DIST_UPGRADE_SYS = `Sen BUEPT/YDS düzeyinde akademik İngilizce-Türkçe soru yazarısın.
+Girdide numaralandırılmış İngilizce cümleler ("s") ve doğru Türkçe çevirileri ("st") verilmiştir.
+Her cümle için 3 adet YÜKSEK ÇELDİRİCİLİKLİ yanlış Türkçe çeviri ("d") üret:
+1. KESİN UZUNLUK KURALI: Doğru çeviri ("st") en uzun şık OLMAMALIDIR! Ürettiğin 3 çeldiricinin en az 2 tanesi karakter ve kelime sayısı olarak "st" cümlesinden DAHA UZUN olmalıdır.
+2. İNCE NÜANS KURALI: Çeldiriciler "st" cümlesinin tam zıttı olmamalıdır! Cümlenin %80'i "st" ile aynı kelimelerden oluşmalı, sadece bağlaç yönü (rağmen/dolayı), kesinlik derecesi (tamamen/kısmen) veya hedef kelimenin akademik nüansı farklılaşmalıdır.
+YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"d":["çeldirici 1","çeldirici 2","çeldirici 3"]}]}`;
+
+  function buildSubtleDistractors(x){
+    const st = String(x.st || '').trim();
+    if(!st) return [];
+    let rawD = Array.isArray(x.d) ? x.d.map(s=>String(s||'').trim()).filter(s=>s && s!==st) : [];
+    const nuanceVariants = [];
+    const swaps = [
+      [/(\b)rağmen(\b)/i, 'nedeniyle ve bunun doğrudan bir sonucu olarak'],
+      [/(\b)için(\b)/i, 'rağmen ilgili süreçte beklenen düzeyde'],
+      [/(\b)önemli(\b)/i, 'ikincil ve sınırlı düzeyde kalan'],
+      [/(\b)büyük(\b)/i, 'kısmi ve yalnızca belirli koşullarda görülen'],
+      [/(\b)art\w+/i, 'belirli dönemlerde kademeli olarak azalmakta ve sınırlandırılmaktadır'],
+      [/(\b)azal\w+/i, 'kontrolsüz biçimde artış göstererek mevcut dengeleri zorlamaktadır'],
+      [/(\b)engel\w+/i, 'dolaylı yoldan teşvik ederek sürecin hızlanmasına zemin hazırladı'],
+      [/(\b)sağla\w+/i, 'ancak uzun vadede beklenen etkiyi yaratmakta yetersiz kaldı'],
+      [/(\b)göster\w+/i, 'konusunda kesin bir kanıt sunmaktan ziyade tartışmalı bir varsayım öne sürmektedir']
+    ];
+    for(const [rgx, rep] of swaps){
+      if(rgx.test(st)){ const v = st.replace(rgx, rep); if(v !== st) nuanceVariants.push(v); }
+    }
+    const academicExtensions = [
+      ' ve bu durum ilgili alandaki mevcut uygulamaların kapsamını doğrudan etkilemektedir',
+      '; ancak bu sürecin uzun vadeli sonuçları uzmanlar arasında hâlâ tartışılmaktadır',
+      ' ve özellikle kurumsal düzeyde alınan kararların yeniden değerlendirilmesini gerektirmektedir',
+      '; üstelik bu eğilim son dönemdeki akademik araştırmaların bulgularıyla da paralellik göstermektedir',
+      ' ve söz konusu koşulların değişmesi halinde mevcut dengelerin tamamen farklılaşabileceği belirtilmektedir'
+    ];
+    const expandToMatchLength = (str, idx, minLen) => {
+      let res = str.replace(/[.!?]+$/, '').trim();
+      const stComma = st.indexOf(',');
+      if(res.length < st.length * 0.72 && stComma > 15 && !res.startsWith(st.slice(0, 12))){
+        res = st.slice(0, stComma + 1) + ' ' + res.charAt(0).toLowerCase() + res.slice(1);
+      }
+      let extIdx = (idx + st.length) % academicExtensions.length;
+      while(res.length < minLen){ res += academicExtensions[extIdx % academicExtensions.length]; extIdx++; }
+      return res + '.';
+    };
+    const pool = [...rawD, ...nuanceVariants].filter((v,i,a) => v && v !== st && a.indexOf(v) === i);
+    while(pool.length < 3){
+      const base = st.replace(/[.!?]+$/, '');
+      if(pool.length === 0) pool.push(base + '; ancak bu durum yalnızca belirli istisnai koşullar altında geçerliliğini korumaktadır.');
+      else if(pool.length === 1) pool.push('İlk bakışta öyle görünse de, ' + base.charAt(0).toLowerCase() + base.slice(1) + ' iddiası henüz kesinlik kazanmamıştır.');
+      else pool.push(base + ' ve bu gelişme başlangıçta öngörülen hedeflerin tam aksine bir tablo ortaya çıkarmıştır.');
+    }
+    return pool.slice(0, 3).map((dStr, idx) => {
+      const targetLen = idx < 2 ? (st.length + 6 + idx * 8) : Math.max(dStr.length, st.length - 4);
+      return dStr.length < targetLen ? expandToMatchLength(dStr, idx, targetLen) : dStr;
+    });
+  }
+
+  let DIST_RUN = {};
+  async function upgradePackDistractors(p){
+    if(!p || DIST_RUN[p.id] || !SMP) return;
+    const need = (p.items || []).filter(x => x.s && x.st && (!x.dV2 || !Array.isArray(x.d) || x.d.length < 3 || Math.max(0, ...x.d.map(s=>String(s||'').length)) <= x.st.length));
+    if(!need.length) return;
+    DIST_RUN[p.id] = 1;
+    try{
+      const ch = [];
+      for(let i=0; i<need.length; i+=6) ch.push(need.slice(i, i+6));
+      await runPool(ch, async c => {
+        const inp = c.map((x,i) => `${i+1}.\nEN: ${x.s}\nDOĞRU TR (st): ${x.st}`).join('\n\n');
+        const r = await askJ(DIST_UPGRADE_SYS, inp, 90000, 'quick');
+        if(r && Array.isArray(r.items)){
+          r.items.forEach(o => {
+            const x = c[Number(o && o.i) - 1];
+            if(x && Array.isArray(o.d) && o.d.length >= 3){
+              x.d = o.d.map(s => String(s || '').trim()).filter(Boolean);
+              x.dV2 = true;
+            }
+          });
+          save(p);
+        }
+      });
+    }finally{ delete DIST_RUN[p.id]; }
+  }
+
+  enrich = async function(p){
+    if(!p || RUN[p.id]) return;
+    splitCombinedItemsInPack(p);
+    const upd = (t,bad,why) => { ENR[p.id]={t,bad,why:why||''}; if(cur===p) renderEnr(); };
+    if(!SMP){ upd('Yapay zekâ bu sayfada açık değil.',true,'yok'); return; }
+    RUN[p.id]=1; p.dict=p.dict||{};
+    p.items.forEach(x=>{ if(x.tr && !validTr(x.tr,x.en)) x.tr=''; });
+    const tick = () => {
+      const G=p.groups||[];
+      upd(`✨ Hazırlanıyor · Tureng anlam ${p.items.filter(x=>x.tr).length}/${p.items.length} · Cümle ${p.items.filter(x=>x.s).length}/${p.items.length} · Paragraf ${G.filter(g=>g.text).length}/${G.length}`);
+      tickUI(p);
+    };
+    try{
+      await fillTr(p); tick();
+      for(let pass=0; pass<3; pass++){
+        const todo = p.items.filter(x=>x.tr && !x.s), ch=[];
+        if(!todo.length) break;
+        for(let i=0; i<todo.length; i+=6) ch.push(todo.slice(i, i+6));
+        await runPool(ch, async c => {
+          const r = await askJ(BATCH_HARD, c.map(w=>w.en+' - '+(w.tr||'?')).join('\n'), 120000, 'quick');
+          if(r && Array.isArray(r.items)){
+            r.items.forEach(g => {
+              const it = c.find(x=>x.en.toLowerCase()===String(g&&g.en).toLowerCase());
+              if(it){
+                const prevTr = it.baseTr || it.tr || '';
+                merge(it, g);
+                if(g.tr && validTr(g.tr, it.en)) it.tr = combineTurengMeaning(prevTr, g.tr);
+                it.dV2 = true;
+              }
+            });
+          }
+          save(p); tick();
+        });
+      }
+      await upgradePackDistractors(p);
+      await genGroups(p, tick);
+      await glossAll(p);
+      save(p);
+      await shareDef(p);
+      const G=p.groups||[], inT=new Set(G.filter(g=>g.text).flatMap(g=>g.w));
+      const noTr=p.items.filter(x=>!x.tr).length, noS=p.items.filter(x=>x.tr&&!x.s).length, noG=p.items.filter(x=>x.tr&&!inT.has(x.en)).length;
+      const parts=[];
+      if(noTr) parts.push(`${noTr} kelimenin anlamı yok`);
+      if(noS) parts.push(`${noS} kelimenin cümlesi yok`);
+      if(noG) parts.push(`${noG} kelime paragrafa girmedi`);
+      upd(parts.length?`Eksikler: ${parts.join(' · ')}${LASTERR?' · Neden: '+LASTERR:''}`:'', parts.length>0, LASTERR);
+      refreshWait(p);
+      if(cur===p && step===-1) renderHome();
+    }catch(e){ upd('Hata: '+e.message,true,'hata'); }
+    finally{ delete RUN[p.id]; }
+  };
+
+  mkQ = function(sentOnly){
+    const xs = cur.items.filter(x=>x.tr);
+    if(sentOnly){
+      const cs = xs.filter(x=>x.s && x.st);
+      if(!cs.length) return null;
+      upgradePackDistractors(cur);
+      const x = rnd(cs);
+      const d = buildSubtleDistractors(x);
+      return { k:'s', q:x.s, ans:x.st, opts:shuf([x.st, ...d]), x };
+    }
+    const x = rnd(xs), dirEn = Math.random() < .5, key = o => dirEn ? o.tr : o.en, ans = key(x);
+    const xMeanings = new Set(String(x.tr||'').toLowerCase().split(/\s*[,;/]\s*/).filter(Boolean));
+    const distPool = shuf(xs.filter(o => {
+      if(o === x || key(o) === ans) return false;
+      const oMeanings = String(o.tr||'').toLowerCase().split(/\s*[,;/]\s*/).filter(Boolean);
+      return !oMeanings.some(m => xMeanings.has(m));
+    })).slice(0, 3).map(key);
+    return { k:'w', dirEn, q:dirEn ? x.en : x.tr, ans, opts:shuf([ans, ...distPool]), x };
+  };
+
+  yCheck = function(){
+    if(!Q) return;
+    if(Q.done){ qi++; ynext(); return; }
+    const inp = $('#ans'); if(!inp) return;
+    const v = inp.value.trim().toLowerCase().replace(/[.,!?']/g,'').replace(/^to /,'');
+    if(!v) return;
+    const targetVariants = Q.x.en.split(/\s*[\/~]\s*/).map(a=>a.trim().toLowerCase());
+    const ok = targetVariants.includes(v);
+    if(!ok){
+      const qMeanings = new Set(String(Q.x.tr||'').toLowerCase().split(/\s*[,;/]\s*/).map(s=>s.trim()).filter(Boolean));
+      const synMatch = cur.items.find(other => {
+        if(other === Q.x) return false;
+        if(other.en.toLowerCase().trim() !== v) return false;
+        const otherMeanings = String(other.tr||'').toLowerCase().split(/\s*[,;/]\s*/).map(s=>s.trim()).filter(Boolean);
+        return otherMeanings.some(m => qMeanings.has(m));
+      });
+      if(synMatch){
+        const hintWord = Q.x.en.trim();
+        SFX.ok();
+        $('#fb').innerHTML = `<span class="good">💡 <b>"${esc(v)}"</b> kelimesi de bu anlama gelir; harika! Ama bu soruda listedeki <b>diğer eş anlamlı kelimeyi</b> bulmalısın.<br>İpucu: <b>${esc(hintWord.slice(0,2))}…</b> (${hintWord.length} harfli)</span>`;
+        inp.value = ''; inp.focus();
+        return;
+      }
+    }
+    Q.done = 1;
+    META.tot = (META.tot||0) + 1;
+    if(ok){ META.ok = (META.ok||0) + 1; qok++; xp(10); SFX.ok(); } else { SFX.bad(); }
+    saveMeta();
+    say(Q.x.en);
+    $('#fb').innerHTML = (ok ? '<span class="good">✅ Doğru!</span>' : '<span class="bad2">❌ Doğru cevap: '+esc(Q.x.en)+'</span>') + ` <button type="button" class="pill" style="padding:3px 10px;font-size:12px;margin-left:6px" data-say="${esc(Q.x.en)}">🔊 Amerikan Aksanıyla Dinle</button>`;
+    $('#ck').textContent = 'Sonraki →';
+    inp.disabled = true;
+  };
+
+  /* 4. PDF AYRIŞTIRMA & HER EKLENEN LİSTEDE TAMAMLANMA DURUMUNU YENİLEME */
+  importFile = async function(f){
+    if(!f) return;
+    const out = $('#pfs');
+    if(out) out.textContent = 'Okunuyor ve birleşik kelimeler ayrıştırılıyor…';
+    try{
+      const ext = f.name.split('.').pop().toLowerCase();
+      let txt = '';
+      if(ext === 'pdf'){
+        await lib(PDFJS, 'pdfjsLib');
+        pdfjsLib.GlobalWorkerOptions.workerSrc = PDFW;
+        const pdf = await pdfjsLib.getDocument({data: new Uint8Array(await f.arrayBuffer())}).promise;
+        for(let n=1; n<=pdf.numPages; n++){
+          const c = await (await pdf.getPage(n)).getTextContent();
+          let line = '', lx = null;
+          for(const it of c.items){
+            if(it.str){
+              if(lx !== null && it.transform[4] - lx > 20) line += '\t';
+              line += it.str;
+              lx = it.transform[4] + (it.width || 0);
+            }
+            if(it.hasEOL){ txt += line + '\n'; line = ''; lx = null; }
+          }
+          txt += line + '\n';
+        }
+      } else if(ext === 'docx'){
+        await lib(MAMMOTH, 'mammoth');
+        const {value} = await mammoth.convertToHtml({arrayBuffer: await f.arrayBuffer()});
+        txt = [...new DOMParser().parseFromString(value, 'text/html').querySelectorAll('p,tr')]
+          .filter(el => el.tagName === 'TR' || !el.closest('table'))
+          .map(el => el.tagName === 'TR' ? [...el.children].map(c => c.textContent.trim()).join('\t') : el.textContent)
+          .join('\n');
+      } else {
+        txt = await f.text();
+      }
+      const separated = smartParse(txt);
+      const ta = $('#pw');
+      if(ta && separated.length){
+        const formatted = separated.map(w => w.tr ? `${w.en} - ${w.tr}` : w.en).join('\n');
+        ta.value = (ta.value.trim() ? ta.value.trim() + '\n' : '') + formatted;
+      }
+      if(out){
+        out.textContent = separated.length
+          ? `✅ ${separated.length} ayrı İngilizce kelime ayrıştırıldı (birleşik kelimeler ayrıldı). Oluşturduğunda Tureng yaygın anlamları eklenecek!`
+          : 'Dosyada kelime bulunamadı (taranmış PDF olabilir)';
+      }
+    }catch(e){
+      if(out) out.textContent = 'Dosya okunamadı: ' + e.message;
+    }
+  };
+
+  loadShared = async function(p){
+    if(!p || p.id !== 'def' || !DB) return;
+    try{
+      const s = await DB.doc('shared/def').get();
+      if(!s.exists) return;
+      const d = JSON.parse(JSON.stringify(s.data()));
+      if(Array.isArray(d.items)){
+        p.items.forEach(x => {
+          const low = x.en.toLowerCase().trim();
+          const y = d.items.find(it => it && (it.en.toLowerCase().trim() === low || it.en.toLowerCase().split(/\s*[\/~;,]\s*/).map(v=>v.trim()).includes(low)));
+          if(y){
+            if(!x.tr && y.tr) x.tr = y.tr;
+            if(!x.baseTr && y.tr) x.baseTr = y.tr;
+            if(!x.s && y.s){ x.s = y.s; x.st = y.st || ''; x.d = y.d || []; x.gl = y.gl || {}; x.mo = y.mo || {}; }
+          }
+        });
+      }
+      if(Array.isArray(d.groups) && !(p.groups || []).length) p.groups = d.groups;
+      if(d.dict && typeof d.dict === 'object') p.dict = Object.assign({}, d.dict, p.dict || {});
+    }catch(e){}
+  };
+
+  function ensureFreshPackState(p){
+    if(!p) return;
+    splitCombinedItemsInPack(p);
+    if(!p.prog || typeof p.prog !== 'object') p.prog = { box:{}, steps:[0,0,0,0,0,0,0], mdone:[], xp:0 };
+    p.prog.box = Object.assign({}, p.prog.box || {});
+    p.prog.steps = Array.isArray(p.prog.steps) && p.prog.steps.length === 7 ? [...p.prog.steps] : [0,0,0,0,0,0,0];
+    p.prog.mdone = Array.isArray(p.prog.mdone) ? [...p.prog.mdone] : [];
+    p.prog.xp = Number(p.prog.xp) || 0;
+  }
+
+  badgeHtml = function(){
+    const p = cur;
+    const S = (p && p.prog && Array.isArray(p.prog.steps)) ? p.prog.steps : [0,0,0,0,0,0,0];
+    const hasBoxed = p && p.items && p.items.some(x => (p.prog.box[x.en]||1) > 1);
+    const acc = META.tot ? META.ok / META.tot : 0;
+    const B = [
+      ['🃏','İlk kart', !!(S[0] || hasBoxed)],
+      ['🎯','Keskin nişancı', !!(S[2] || ((META.tot||0)>=20 && acc>=.8))],
+      ['🔥','7 gün seri', (META.streak||0)>=7],
+      ['🐉','Boss avcısı', !!S[4]],
+      ['✍️','Yazar', !!S[3]],
+      ['📖','Paragraf ustası', !!S[6]]
+    ];
+    return B.map(([ic,n,got])=>`<div class="badge ${got?'got':''}"><i>${ic}</i>${n}</div>`).join('');
+  };
+
+  pick = function(id){
+    cur = packs.find(p => p.id === id) || packs[0];
+    ensureFreshPackState(cur);
+    GI = 0; step = -1; deck = []; di = 0; md = new Set(); Q = null;
+    renderHead(); showHome();
+  };
+
+  mkPack = function(){
+    const raw = ($('#pw') && $('#pw').value) || '';
+    const w = smartParse(raw);
+    const name = (($('#pn') && $('#pn').value) || '').trim() || 'Yeni liste';
+    if(!w.length){ setPfs('Önce kelime yaz ya da dosya seç.'); return; }
+    const p = {
+      id: 'p' + Date.now().toString(36),
+      name,
+      words: w.map(x => ({ en: x.en, tr: x.tr || '' })),
+      items: w.map(x => ({ en: x.en, tr: x.tr || '', baseTr: x.baseTr || x.tr || '', d: [], gl: {}, mo: {} })),
+      groups: [], dict: {},
+      prog: { box: {}, steps: [0,0,0,0,0,0,0], mdone: [], xp: 0 }
+    };
+    packs.push(p); cur = p;
+    GI = 0; step = -1; deck = []; di = 0; md = new Set(); Q = null;
+    save(p); closeModal(); renderHead(); showHome();
+    if(SMP) enrich(p);
+  };
+
+  function applyNow(){
+    if(typeof packs !== 'undefined' && Array.isArray(packs)) packs.forEach(p => ensureFreshPackState(p));
+    if(typeof cur !== 'undefined' && cur){ ensureFreshPackState(cur); if(step===-1) renderHome(); }
+    try{ document.querySelectorAll('[data-conq-demo]').forEach(el => el.remove()); }catch(e){}
+  }
+  applyNow();
+  setTimeout(applyNow, 180);
+  setTimeout(applyNow, 650);
+})();
+</script>
+<!-- ===== 4 YENİ OTOMASYON YAMASI SONU ===== -->
