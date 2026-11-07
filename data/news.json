@@ -1,6 +1,441 @@
 {
-  "updated": "2026-11-06T06:20:27.748Z",
+  "updated": "2026-11-07T06:20:43.510Z",
   "items": [
+    {
+      "id": "mw60l4ccpqkr",
+      "date": "2026-11-07",
+      "category": "World",
+      "title": "AI stocks climb after trillions wiped from market values",
+      "src": "https://www.bbc.co.uk/news/articles/c35ynnpzdq51o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Investors sold many tech shares before. They lost trillions of dollars in market value. People worried about the Democrat election victory. They thought this victory would make AI development slower. But now, AI stocks are climbing again. Investors are buying these tech shares today. The market is changing after the big fall.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "The Democrat party lost the election.",
+                "AI stocks are rising after a big fall in value.",
+                "Tech companies are leaving the market.",
+                "Investors are stopping all AI development."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'shares' mean in this text?",
+              "opts": [
+                "Types of new technology",
+                "Telling secrets to people",
+                "Dividing food with friends",
+                "Parts of a company that people can buy"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "How much market value was lost before stocks started climbing?",
+              "opts": [
+                "Billions of dollars",
+                "Trillions of dollars",
+                "Millions of dollars",
+                "Thousands of dollars"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Investors only bought tech shares before.",
+                "AI development stopped completely.",
+                "Investors never worried about the election.",
+                "AI stocks are climbing now."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "2": {
+          "text": "Technology stocks are rising again after losing trillions of dollars in market values. Earlier, investors were selling off their tech shares. This sell-off happened partly because people were worried about the Democrat election victory. Investors feared that the new political situation would lead to slower artificial intelligence development. Because of these concerns, the tech market lost a huge amount of value. However, the situation has now changed as AI stocks begin to climb back up, bringing some relief to the market.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the news article?",
+              "opts": [
+                "A recovery in AI stocks following a major market sell-off",
+                "The official results of the Democrat election victory",
+                "The total end of artificial intelligence research",
+                "How to buy shares in technology companies"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In the text, what does the word 'concerns' mean?",
+              "opts": [
+                "Worries or fears about something",
+                "New technological inventions",
+                "Promises for the future",
+                "Financial profits"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Why were investors selling their tech shares earlier?",
+              "opts": [
+                "The government banned all stock trading.",
+                "AI technology stopped working completely.",
+                "They wanted to buy non-tech companies.",
+                "They were worried the Democrat victory would slow AI development."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which of the following is TRUE based on the story?",
+              "opts": [
+                "The election victory caused AI development to speed up.",
+                "Market values never dropped.",
+                "Investors are still only selling their tech shares.",
+                "Trillions of dollars were erased from market values."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "3": {
+          "text": "Artificial intelligence stocks have begun to climb, following a period where trillions of dollars were wiped from market values. The previous decline occurred as investors actively sold off technology shares. This widespread sell-off was driven in part by market concerns surrounding the Democrat election victory. Many investors worried that the political shift would result in slower AI development, prompting them to reduce their holdings in tech companies. Despite these initial fears of a prolonged slowdown in the artificial intelligence sector, the market has seen a reversal, with stock prices now rising once again.",
+          "quiz": [
+            {
+              "q": "Which sentence best summarizes the main focus of the text?",
+              "opts": [
+                "AI stocks are rebounding after political concerns wiped out trillions in value.",
+                "Investors are permanently leaving the technology market.",
+                "Tech shares are dropping further due to slow AI development.",
+                "Democrat leaders are stopping artificial intelligence research."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does 'wiped' mean in the context of the text?",
+              "opts": [
+                "Removed or erased completely",
+                "Added quickly",
+                "Cleaned with a cloth",
+                "Calculated precisely"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What specific fear caused investors to sell their tech shares?",
+              "opts": [
+                "That technology companies would close down",
+                "That trillions of dollars would be spent on new technology",
+                "That the Democrat election victory would mean slower AI development",
+                "That AI stocks would climb too quickly"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is FALSE according to the text?",
+              "opts": [
+                "Investor selling was partly due to election concerns.",
+                "Trillions of dollars were previously lost from market values.",
+                "AI stock prices are currently climbing.",
+                "Investors sold tech shares because AI development became too fast."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mw60l7tty2r1",
+      "date": "2026-11-07",
+      "category": "World",
+      "title": "Four midterms takeaways for 2028 White House race",
+      "src": "https://www.bbc.co.uk/news/articles/cq1m41n3v7mmo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "The midterm elections are over, but people are already talking about the 2028 White House race. The buzz about the presidential election is under way. We learned four important things this week. First, early news helps us see who might run for president. Second, voters are watching leaders closely. Third, both political parties want to plan early for the future. Fourth, the political news will not stop soon. People are excited to see what happens next in American politics.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this story?",
+              "opts": [
+                "There will be no more elections in the White House.",
+                "The midterm elections learned four things about the 2028 presidential race.",
+                "Voters do not care about political news anymore.",
+                "The presidential election happened this week."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'buzz' mean in this text?",
+              "opts": [
+                "A quiet room",
+                "Excited talk or interest",
+                "A fast car",
+                "A loud bee"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "How many takeaways or things were learned this week?",
+              "opts": [
+                "Four",
+                "Three",
+                "Two",
+                "One"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Leaders are ignoring the voters.",
+                "The 2028 election ended this week.",
+                "Nobody is interested in American politics.",
+                "Talk about the 2028 election has already started."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "2": {
+          "text": "Even though the midterm elections just finished, attention is already turning to the future. The buzz about the 2028 presidential election for the White House is already under way. This week provided four important takeaways for the upcoming race. Experts and voters are examining the results to see which politicians gained strength and which ones lost support. Both major political parties are looking ahead to prepare their future strategies. Early discussions help us understand potential candidates and key issues. The news shows that the competition for the White House never really stops, and political excitement will continue as the 2028 race begins to take shape.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the article?",
+              "opts": [
+                "A history of past elections",
+                "Why midterms are held every year",
+                "Four takeaways from this week regarding the 2028 White House race",
+                "The results of a local city vote"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does 'takeaways' mean in the text?",
+              "opts": [
+                "Physical movements",
+                "Stolen property",
+                "Fast food meals",
+                "Key lessons or facts learned"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which election is already generating buzz?",
+              "opts": [
+                "The 2024 election",
+                "The 2020 election",
+                "The 2030 midterm election",
+                "The 2028 presidential election"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is FALSE according to the text?",
+              "opts": [
+                "Attention is turning to the 2028 White House race.",
+                "Political parties are ignoring future strategies.",
+                "We learned four things this week about the 2028 race.",
+                "The buzz about the presidential election is under way."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "Although recent midterms have concluded, political analysts are immediately shifting their focus toward the next major contest. The buzz surrounding the 2028 presidential election for the White House is already well under way, with discussions beginning far in advance. Observations from this week have highlighted four distinct takeaways regarding the future race. These key insights offer a clearer picture of how potential contenders are positioned and how political strategies are evolving. Both political parties are analyzing recent voter behavior to lay the groundwork for their upcoming campaigns. By paying close attention to these early developments, observers can better anticipate the dynamics that will shape the battle for the White House over the next several years.",
+          "quiz": [
+            {
+              "q": "What primary subject does the text cover?",
+              "opts": [
+                "Lessons learned this week concerning the 2028 presidential election",
+                "New laws passed after the midterm elections",
+                "The cancellation of future White House races",
+                "A complete list of confirmed candidates for 2028"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In this context, what does the phrase 'under way' mean?",
+              "opts": [
+                "Delayed indefinitely",
+                "Finished",
+                "Already happening or started",
+                "Moving underneath"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What did we learn this week according to the summary?",
+              "opts": [
+                "Five final election scores",
+                "Four takeaways about the 2028 White House race",
+                "Two new voting rules",
+                "The exact winner of the 2028 election"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE based on the text?",
+              "opts": [
+                "The White House race will not happen in 2028.",
+                "There were zero takeaways from this week's events.",
+                "Political analysts are ignoring the midterm results.",
+                "Discussion about the 2028 presidential election has already begun."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mw60lgty4dnj",
+      "date": "2026-11-07",
+      "category": "World",
+      "title": "Two dead after bus crashes in France, officials say",
+      "src": "https://www.bbc.co.uk/news/articles/cmly00l4p3lwo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Local authorities say a sad accident happened in France. A bus crashed. Two people died in the crash. One person was a child. The other person was a young adult. The crash also hurt more people. Officials shared these facts after the accident. Local authorities are looking into what happened. People are sad about the child and the young adult.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this news story?",
+              "opts": [
+                "A bus crashed in France and killed two people.",
+                "A bus arrived safely at a school in France.",
+                "Two adults bought a new bus in France.",
+                "A train crashed in France with many people."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'crash' mean in this story?",
+              "opts": [
+                "To fix a broken engine",
+                "To drive very slowly",
+                "To buy a new vehicle",
+                "To hit something violently"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Who died in the bus crash?",
+              "opts": [
+                "One teacher and one driver",
+                "One child and one young adult",
+                "Two drivers",
+                "Two old adults"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE according to the story?",
+              "opts": [
+                "More people were injured in the crash.",
+                "Only one person was on the bus.",
+                "Nobody was hurt in the crash.",
+                "The crash happened in a different country, not France."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "According to local authorities, a serious bus crash has taken place in France. Officials reported that two people were killed in the tragic incident. The victims were identified as one child and one young adult. In addition to the two deaths, more people sustained injuries during the crash. Local authorities confirmed these details after the event. Rescuers and officials worked at the site to help the people who were hurt. The news has saddened the local community after the loss of two young lives.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the article?",
+              "opts": [
+                "A celebration in France",
+                "A train accident in Europe",
+                "A fatal bus crash in France",
+                "A new travel safety rule in France"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'authorities' mean in the text?",
+              "opts": [
+                "Passengers on the bus",
+                "Drivers of other cars",
+                "Official people in charge",
+                "Children at a school"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "How many people died in the bus crash?",
+              "opts": [
+                "Three people",
+                "Four people",
+                "One person",
+                "Two people"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE based on the text?",
+              "opts": [
+                "More people were injured besides the two who died.",
+                "Only one person was injured in the crash.",
+                "Local authorities said nobody died.",
+                "No children were involved in the accident."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "A tragic bus accident in France has resulted in two fatalities, according to local authorities. Officials confirmed that one child and one young adult lost their lives in the crash. In addition to the two deaths, several other individuals were injured when the bus crashed. Local authorities provided the initial details regarding the casualties following the incident. Emergency services responded to the scene to assist those who suffered injuries. The local community is mourning the loss of the young victims, while authorities continue to handle the situation surrounding the deadly crash.",
+          "quiz": [
+            {
+              "q": "What is the primary subject of this news report?",
+              "opts": [
+                "A safety inspection of public buses in Europe",
+                "A delay in public transport across France",
+                "A fatal bus crash in France resulting in two deaths",
+                "A road construction project in France"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'fatalities' mean as used in the text?",
+              "opts": [
+                "Deaths",
+                "Injuries",
+                "Passengers",
+                "Vehicles"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which two people were killed in the crash?",
+              "opts": [
+                "Two elderly passengers",
+                "One child and one young adult",
+                "Two bus drivers",
+                "One teenager and one senior citizen"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE according to the report?",
+              "opts": [
+                "Local authorities reported that two people died in the crash.",
+                "The crash occurred on a train in France.",
+                "The crash resulted in no injuries to other people.",
+                "Only adults were involved in the accident."
+              ],
+              "ans": 0
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mw4l59wb7me0",
       "date": "2026-11-06",
