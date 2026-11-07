@@ -4456,5 +4456,2647 @@ YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"d":["çeldirici 1","çeldiric
 })();
 </script>
 <!-- ===== KELİME ARENASI YENİ ARAYÜZ & OTOMASYON YAMASI SONU ===== -->
+<!-- ===== KELİME ARENASI: TÜM GÜNCELLEMELER, 2 AKDENİZ PALETİ, ÖZGÜR KELİME LİSTESİ & KALICI VERİ KORUMASI (TEK PARÇA FİNAL SÜRÜM) ===== -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* 1. AKDENİZ (AÇIK YEŞİL - İLK AÇILIŞ VARSAYILAN) */
+body[data-pal="akdeniz"], body[data-pal="gece"], body[data-pal="kitaplik"]{
+  --bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;
+  --p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--ok:#059669;
+  --lg:url(#lgC);--shadow:0 22px 44px -26px rgba(13,43,42,.38);
+  --glow:rgba(20,184,166,.22);--acc-glow:rgba(245,158,11,.28);
+}
+/* 2. DERİN AKDENİZ (KOYU YEŞİL) */
+body[data-pal="derin_akdeniz"], body[data-pal="sicak_espresso"]{
+  --bg:#061514;--card:#0c2423;--line:#194240;--ink:#f3f8f6;--mut:#7ca39e;
+  --p:#0f766e;--p2:#14b8a6;--acc:#fbbf24;--bad:#f43f5e;--soft:#11312f;--ok:#34d399;
+  --lg:url(#lgC);--shadow:0 22px 44px -24px rgba(0,0,0,.82);
+  --glow:rgba(20,184,166,.28);--acc-glow:rgba(251,191,36,.30);
+}
+body{
+  font-family:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif!important;
+  background-image:
+    radial-gradient(820px 380px at 14% 0%, var(--glow), transparent 70%),
+    radial-gradient(680px 340px at 88% 8%, var(--acc-glow), transparent 70%),
+    radial-gradient(color-mix(in srgb,var(--mut) 12%,transparent) 1px,transparent 1.4px)!important;
+  background-size:100% 100%, 100% 100%, 24px 24px!important;
+  background-attachment:fixed;
+}
+.logo svg{width:40px;height:40px;filter:drop-shadow(0 4px 10px var(--glow));transition:transform .2s}
+.logo:hover svg{transform:scale(1.06) rotate(-3deg)}
+.logo-sub{
+  font-family:"Plus Jakarta Sans",sans-serif;font-size:10px;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--acc);
+  border:1px solid var(--line);margin-left:2px;
+}
+.hero{
+  border-radius:30px;padding:32px;
+  background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;
+  display:grid;grid-template-columns:1.25fr auto;gap:26px;align-items:center;
+  box-shadow:0 28px 54px -26px var(--pd), inset 0 1px 0 rgba(255,255,255,.25);
+  border:1.5px solid rgba(255,255,255,.16);
+}
+.hero-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;position:relative;z-index:1}
+.rank-badge{
+  display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:999px;
+  background:rgba(251,191,36,.22);border:1px solid rgba(251,191,36,.55);
+  color:#fef3c7;font-size:11.5px;font-weight:800;letter-spacing:.03em;
+}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center;position:relative;z-index:1}
+.btn-hero-sec{
+  background:rgba(255,255,255,.14);color:#fff;border:1.5px solid rgba(255,255,255,.28);
+  border-radius:16px;padding:13px 18px;font-weight:800;font-size:14px;backdrop-filter:blur(6px);
+  transition:background .15s,transform .15s;
+}
+.btn-hero-sec:hover{background:rgba(255,255,255,.22);transform:translateY(-2px)}
+.hero-r{
+  position:relative;z-index:1;display:flex;flex-direction:row!important;align-items:center;gap:16px;
+  background:rgba(10,12,26,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  padding:16px 20px;border-radius:24px;border:1.5px solid rgba(255,255,255,.18);
+}
+.hero-ring-wrap{position:relative;width:118px;height:118px;display:grid;place-items:center}
+.hero-ring-svg{width:118px;height:118px;overflow:visible;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}
+.hero-ring-center{
+  position:absolute;inset:18px;border-radius:50%;
+  background:color-mix(in srgb,var(--p) 78%,#000);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:1.5px solid rgba(255,255,255,.18);
+}
+.hero-ring-center b{font-family:Fraunces,serif;font-weight:900;font-size:22px;line-height:1;color:#fff}
+.hero-ring-center small{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#fef08a;margin-top:2px}
+.sc{display:flex;align-items:center;gap:14px;border-radius:22px;padding:16px 18px;border:1.5px solid var(--line)}
+.sc-ico{width:46px;height:46px;border-radius:15px;background:var(--soft);border:1px solid var(--line);display:grid;place-items:center;font-size:22px;flex:0 0 46px}
+.sec-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.sec{margin:0!important;display:flex;align-items:center;gap:8px}
+.view-switch{display:inline-flex;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:3px;gap:3px}
+.vbtn{border:0;background:transparent;color:var(--mut);padding:6px 12px;border-radius:9px;font-size:12.5px;font-weight:800;transition:all .15s}
+.vbtn.on{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;box-shadow:0 3px 10px var(--glow)}
+.modes{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:14px}
+.mcard{
+  position:relative;background:radial-gradient(200px 120px at 85% 0%, var(--glow), transparent 75%), var(--card);
+  border:1.5px solid var(--line);border-radius:22px;padding:18px;text-align:left;
+  display:flex;flex-direction:column;gap:8px;box-shadow:0 5px 0 var(--line),var(--shadow);overflow:hidden;
+}
+.mcard:hover:not(:disabled){transform:translateY(-4px);border-color:var(--acc);box-shadow:0 8px 0 var(--line), 0 18px 34px -16px rgba(0,0,0,.45), 0 0 22px var(--glow)}
+.mcard.boss-card{background:radial-gradient(220px 140px at 85% 0%, rgba(244,63,94,.22), transparent 75%), var(--card);border-color:color-mix(in srgb,var(--bad) 45%,var(--line))}
+.mcard.done{border-color:#10b981;background:radial-gradient(220px 140px at 85% 0%, rgba(16,185,129,.18), transparent 75%), var(--card)}
+.mcard-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.mcard .ic{width:52px;height:52px;border-radius:16px;background:var(--soft);border:1.5px solid var(--line);display:grid;place-items:center;font-size:26px}
+.mcard-badges{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.ring-lbl{font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
+.mcard .tag{position:static!important;font-size:11px;font-weight:800;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--mut)}
+.mcard.done .tag{background:linear-gradient(135deg,#10b981,#059669);color:#fff;border-color:transparent}
+.mcard-foot{display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-top:10px;border-top:1px dashed var(--line);font-size:12px;font-weight:800;color:var(--p2)}
+.mcard.done .mcard-foot{color:#10b981}
+.modes.quest-map{display:flex;flex-direction:column;gap:12px;position:relative;padding-left:28px}
+.modes.quest-map::before{content:"";position:absolute;left:11px;top:20px;bottom:20px;width:4px;background:linear-gradient(180deg,var(--acc),var(--p),var(--line));border-radius:999px}
+.modes.quest-map .mcard{flex-direction:row;align-items:center;gap:16px;padding:16px 20px}
+.modes.quest-map .mcard-body{flex:1;min-width:0}
+.modes.quest-map .mcard-foot{border-top:0;padding-top:0;margin-top:0;flex:0 0 auto;gap:12px}
+.tower-stack{display:flex;flex-direction:column;gap:6px;align-items:center;margin-top:10px}
+.t-tier{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:11px;border:1.5px solid var(--line);background:var(--soft);font-size:12px;font-weight:800;transition:transform .15s,border-color .15s;cursor:pointer}
+.t-tier:hover{transform:scale(1.02);border-color:var(--acc)}
+.t-tier.t5{width:64%;background:linear-gradient(135deg,rgba(251,191,36,.22),rgba(245,158,11,.08));border-color:rgba(251,191,36,.5);color:var(--acc)}
+.t-tier.t4{width:73%}.t-tier.t3{width:82%}.t-tier.t2{width:91%}.t-tier.t1{width:100%}
+.t-cnt{padding:2px 8px;border-radius:999px;background:var(--card);color:var(--ink);font-size:11px;border:1px solid var(--line)}
+.combo-pill{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:999px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:13px;font-weight:900;box-shadow:0 4px 12px rgba(239,68,68,.35)}
+.boss-vs-bar{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;background:linear-gradient(135deg,rgba(244,63,94,.14),rgba(139,92,246,.14));border:1.5px solid rgba(244,63,94,.38);border-radius:20px;padding:12px 16px;margin-bottom:14px}
+.vs-side{display:flex;flex-direction:column;gap:5px}.vs-side.right{text-align:right;align-items:flex-end}
+.vs-name{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+.vs-hp{width:100%;height:10px;background:rgba(0,0,0,.3);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.14)}
+.vs-hp i{display:block;height:100%;background:linear-gradient(90deg,#f43f5e,#fb923c);transition:width .35s ease}
+.vs-badge{width:36px;height:36px;border-radius:50%;background:var(--bad);color:#fff;font-family:Fraunces,serif;font-weight:900;font-size:13px;display:grid;place-items:center;box-shadow:0 0 14px rgba(244,63,94,.5)}
+.deck-stage{position:relative;margin:14px 0 22px;padding-bottom:12px}
+.deck-stage::before,.deck-stage::after{content:"";position:absolute;left:18px;right:18px;height:340px;border-radius:28px;background:var(--card);border:1.5px solid var(--line);pointer-events:none;z-index:0}
+.deck-stage::before{top:8px;transform:scale(.965);opacity:.65}
+.deck-stage::after{top:16px;transform:scale(.93);opacity:.35}
+.flip{z-index:2}
+.gate-ov{position:fixed;inset:0;z-index:120;pointer-events:none;display:flex;overflow:hidden;visibility:hidden}
+.gate-ov.active{visibility:visible}
+.g-door{flex:1;height:100%;background:linear-gradient(135deg,var(--card),var(--soft));border:3px solid var(--acc);transition:transform .42s cubic-bezier(.22,1,.36,1)}
+.g-door.left{transform:translateX(-102%)}.g-door.right{transform:translateX(102%)}
+.gate-ov.closed .g-door.left,.gate-ov.closed .g-door.right{transform:translateX(0)}
+.g-seal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(0);width:128px;height:128px;border-radius:50%;background:radial-gradient(circle,var(--p),color-mix(in srgb,var(--p) 65%,#000));border:3.5px solid var(--acc);box-shadow:0 0 50px var(--acc-glow), 0 0 30px var(--glow);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Fraunces,serif;font-weight:900;font-size:13px;text-align:center;z-index:125;transition:transform .32s cubic-bezier(.34,1.56,.64,1);padding:10px}
+.gate-ov.closed .g-seal{transform:translate(-50%,-50%) scale(1) rotate(360deg)}
+.conquest-ov{position:fixed;inset:0;z-index:180;background:radial-gradient(circle at 50% 45%, color-mix(in srgb,var(--card) 85%,transparent), color-mix(in srgb,var(--bg) 95%,#000));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:18px;opacity:0;pointer-events:none;transition:opacity .32s ease}
+.conquest-ov.show{opacity:1;pointer-events:auto}
+.conquest-stage{position:relative;width:min(540px,100%);background:radial-gradient(380px 220px at 50% 18%, color-mix(in srgb,var(--acc) 26%,transparent), transparent 70%),radial-gradient(320px 240px at 50% 85%, var(--glow), transparent 70%),var(--card);border:2px solid color-mix(in srgb,var(--acc) 65%,var(--line));border-radius:30px;padding:28px 22px 24px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.78), 0 0 60px var(--acc-glow);transform:scale(.82) translateY(24px);transition:transform .5s cubic-bezier(.22,1,.36,1);overflow:hidden}
+.conquest-ov.show .conquest-stage{transform:scale(1) translateY(0)}
+.shockwave{position:absolute;left:50%;top:142px;width:160px;height:160px;margin-left:-80px;margin-top:-80px;border-radius:50%;border:2.5px solid var(--acc);opacity:0;pointer-events:none}
+.conquest-ov.show .shockwave.s1{animation:swPulse 1.1s cubic-bezier(.16,1,.3,1) .15s forwards;box-shadow:0 0 25px var(--acc-glow)}
+.conquest-ov.show .shockwave.s2{animation:swPulse 1.35s cubic-bezier(.16,1,.3,1) .35s forwards;border-color:var(--p2);box-shadow:0 0 30px var(--glow)}
+@keyframes swPulse{0%{transform:scale(.3);opacity:.95;border-width:5px}100%{transform:scale(2.35);opacity:0;border-width:1px}}
+.crest-wrap{position:relative;width:210px;height:210px;margin:0 auto 8px;display:grid;place-items:center;z-index:2}
+.crest-svg{width:210px;height:210px;overflow:visible;filter:drop-shadow(0 12px 24px rgba(0,0,0,.45))}
+.sword-l,.sword-r{transform-origin:110px 110px;opacity:0}
+.conquest-ov.show .sword-l{animation:swordInL .55s cubic-bezier(.34,1.56,.64,1) .08s forwards}
+.conquest-ov.show .sword-r{animation:swordInR .55s cubic-bezier(.34,1.56,.64,1) .08s forwards}
+@keyframes swordInL{0%{transform:translate(-40px,-40px) rotate(-35deg) scale(.6);opacity:0}70%{transform:translate(4px,4px) rotate(4deg) scale(1.06);opacity:1}100%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1}}
+@keyframes swordInR{0%{transform:translate(40px,-40px) rotate(35deg) scale(.6);opacity:0}70%{transform:translate(-4px,4px) rotate(-4deg) scale(1.06);opacity:1}100%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1}}
+.ring-seg{fill:none;stroke-linecap:round;transition:stroke .3s,filter .3s}
+.ring-seg.idle{stroke:rgba(255,255,255,.16)}
+body[data-pal="kitaplik"] .ring-seg.idle,body[data-pal="akdeniz"] .ring-seg.idle{stroke:color-mix(in srgb,var(--mut) 25%,transparent)}
+.ring-seg.done{stroke:var(--ok);filter:drop-shadow(0 0 6px color-mix(in srgb,var(--ok) 65%,transparent))}
+.ring-seg.newly-conquered{stroke:url(#conqGoldGrad);stroke-dasharray:65;stroke-dashoffset:65;filter:drop-shadow(0 0 14px var(--acc))}
+.conquest-ov.show .ring-seg.newly-conquered{animation:igniteArc .75s cubic-bezier(.22,1,.36,1) .38s forwards}
+@keyframes igniteArc{0%{stroke-dashoffset:65;stroke-width:10}60%{stroke-dashoffset:0;stroke-width:15}100%{stroke-dashoffset:0;stroke-width:11}}
+.center-shield{transform-origin:110px 110px;opacity:0}
+.conquest-ov.show .center-shield{animation:shieldStamp .55s cubic-bezier(.34,1.56,.64,1) .24s forwards}
+@keyframes shieldStamp{0%{transform:scale(1.85);opacity:0}65%{transform:scale(.92);opacity:1}100%{transform:scale(1);opacity:1}}
+.conq-banner{position:relative;z-index:3;display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--acc),#f59e0b,var(--acc-glow));color:#1f1300;font-weight:900;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;padding:6px 18px;border-radius:999px;box-shadow:0 6px 20px var(--acc-glow);transform:scaleX(.4);opacity:0}
+.conquest-ov.show .conq-banner{animation:unfurlBanner .48s cubic-bezier(.34,1.56,.64,1) .45s forwards}
+@keyframes unfurlBanner{to{transform:scaleX(1);opacity:1}}
+.conq-title{font-family:Fraunces,serif;font-size:clamp(24px,4.2vw,32px);font-weight:900;margin:10px 0 4px;color:var(--ink)}
+.conq-sub{font-size:13.5px;color:var(--mut);font-weight:600;margin-bottom:14px}
+.conq-rewards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0 18px;position:relative;z-index:3}
+.rew-box{background:var(--soft);border:1.5px solid var(--line);border-radius:16px;padding:10px 8px}
+.rew-val{font-family:Fraunces,serif;font-size:18px;font-weight:900;color:var(--acc);display:block}
+.rew-lbl{font-size:10px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+.spark-pt{position:fixed;pointer-events:none;z-index:200;width:8px;height:8px;border-radius:50%;animation:spkMove .85s cubic-bezier(.16,1,.3,1) forwards;box-shadow:0 0 8px currentColor}
+@keyframes spkMove{0%{transform:translate(0,0) scale(1.2);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
+.tureng-badge{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:999px;background:rgba(251,191,36,.15);color:var(--acc);border:1px solid rgba(251,191,36,.35);margin-bottom:4px}
+[data-conq-demo]{display:none!important}
+.add-word-btn{display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:4px 11px;border-radius:999px;border:1.5px solid var(--acc);background:linear-gradient(135deg,var(--acc),#f59e0b);color:#1f1300;font-size:12px;font-weight:900;cursor:pointer;box-shadow:0 3px 10px rgba(251,191,36,.35);transition:transform .15s,filter .15s;vertical-align:middle}
+.add-word-btn:hover{transform:translateY(-1px) scale(1.03);filter:brightness(1.06)}
+.added-word-badge{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:3px 10px;border-radius:999px;background:rgba(16,185,129,.16);border:1px solid rgba(16,185,129,.45);color:#10b981;font-size:11.5px;font-weight:800;vertical-align:middle}
+.flip{min-height:390px;height:auto}
+.face{overflow-y:auto}
+.deck-stage::before,.deck-stage::after{height:100%}
+.syn-box{margin-top:10px;padding:9px 12px;border-radius:14px;background:color-mix(in srgb,var(--soft) 82%,var(--bg));border:1px solid var(--line);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.syn-lbl{font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;color:var(--acc);display:inline-flex;align-items:center;gap:4px;margin-right:2px}
+.syn-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;background:var(--card);border:1.5px solid var(--line);color:var(--ink);font-size:12.5px;font-weight:800;cursor:pointer;transition:transform .14s,border-color .14s,background .14s}
+.syn-chip:hover{transform:translateY(-1px);border-color:var(--p);color:var(--p)}
+.syn-chip.in-pack{border-color:rgba(16,185,129,.55);background:color-mix(in srgb,#10b981 12%,var(--card))}
+.syn-chip i{font-style:normal;font-size:10px;color:#10b981;font-weight:900}
+.close-box{margin-top:10px;padding:12px 14px;border-radius:16px;background:rgba(245,158,11,.14);border:1.5px solid var(--acc);color:var(--ink);font-size:14px;font-weight:700;line-height:1.45;animation:pulseWarn .38s ease}
+@keyframes pulseWarn{0%{transform:scale(.96)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+.boss-phase-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(244,63,94,.16);border:1px solid rgba(244,63,94,.45);color:var(--bad);font-size:11.5px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.pwa-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:12px;background:linear-gradient(135deg,var(--acc),#f59e0b);color:#1f1300;border:0;font-weight:900;font-size:13px;box-shadow:0 3px 12px var(--acc-glow);cursor:pointer;transition:transform .15s,filter .15s;white-space:nowrap}
+.pwa-btn:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.pwa-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:14px}
+.pwa-card{background:var(--soft);border:1.5px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.pwa-card h4{font-family:Fraunces,serif;font-size:17px;margin:0;color:var(--ink);display:flex;align-items:center;gap:7px}
+.pwa-step-item{font-size:13.5px;font-weight:600;color:var(--ink);padding:8px 10px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
+.pwa-showcase{background:radial-gradient(220px 140px at 92% 0%, var(--acc-glow), transparent 75%), var(--card)!important;border:1.5px solid color-mix(in srgb,var(--acc) 60%,var(--line))!important}
+.pwa-show-in{display:flex;gap:14px;align-items:center}
+.pwa-show-txt{flex:1;min-width:0}
+.pwa-show-badge{display:inline-block;font-size:10px;font-weight:900;letter-spacing:.06em;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--acc) 20%,transparent);color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 45%,transparent)}
+.pwa-mini-phone{flex:0 0 74px;width:74px;height:120px;border-radius:15px;border:3px solid var(--ink);background:linear-gradient(180deg,var(--p),#061514);padding:6px 5px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;box-shadow:0 10px 22px -8px rgba(0,0,0,.55)}
+.pwa-mini-notch{width:26px;height:4px;border-radius:9px;background:#061514}
+.pwa-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;width:100%}
+.pwa-mini-grid i{font-style:normal;aspect-ratio:1;border-radius:7px;background:rgba(255,255,255,.14);display:grid;place-items:center;font-size:11px}
+.pwa-mini-grid i.on{background:#fbbf24;box-shadow:0 0 12px #fbbf24;animation:pwaGlow 2s infinite}
+@keyframes pwaGlow{50%{box-shadow:0 0 20px #fbbf24}}
+.pwa-mini-lbl{font-size:7.5px;font-weight:900;color:#fbbf24}
+
+/* MOBİL & TELEFON OPTİMİZASYONU (RESPONSIVE PERFECTION) */
+@media(max-width:720px){
+  .nav-in{padding:10px 12px;gap:8px}
+  .logo{font-size:17px;gap:7px}
+  .logo svg{width:34px;height:34px}
+  .logo-sub{font-size:9px;padding:2px 5px}
+  .page{padding:14px 12px 84px}
+  .hero{grid-template-columns:1fr!important;padding:20px 18px;border-radius:24px;gap:16px;text-align:left}
+  .hero h1{font-size:24px}
+  .hero-btns{width:100%}
+  .hero-btns button{flex:1;min-width:140px;justify-content:center;text-align:center;padding:12px 14px;font-size:13.5px}
+  .hero-r{width:100%;justify-content:space-between;padding:12px 16px}
+  .hero-ring-wrap{width:92px;height:92px}
+  .hero-ring-svg{width:92px;height:92px}
+  .hero-ring-center{inset:14px}
+  .hero-ring-center b{font-size:18px}
+  .stat-row{grid-template-columns:1fr 1fr!important;gap:8px}
+  .sc{padding:12px;border-radius:18px;gap:10px}
+  .sc-ico{width:38px;height:38px;flex:0 0 38px;font-size:18px;border-radius:12px}
+  .modes{grid-template-columns:1fr!important;gap:10px}
+  .modes.quest-map{padding-left:20px}
+  .modes.quest-map .mcard{flex-direction:column;align-items:stretch;padding:15px}
+  .flip{min-height:340px}
+  .face{padding:18px 14px}
+  .big{font-size:24px}
+  .big.tr{font-size:20px}
+  .row2{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+  .row2 > button{width:100%;justify-content:center;padding:12px 10px;font-size:13.5px}
+  .boss-vs-bar{grid-template-columns:1fr auto 1fr;padding:10px 12px;gap:8px}
+  .vs-name{font-size:10.5px}
+  .conquest-stage{padding:20px 14px 18px;border-radius:24px}
+  .crest-wrap,.crest-svg{width:165px;height:165px}
+  .conq-rewards{gap:6px}
+  .rew-val{font-size:15px}
+  .txt{font-size:16px!important}
+}
+</style>
+
+<script>
+(function(){
+  /* 0. SADECE SEÇİLEN 2 RENK PALETİ (1. AÇIK AKDENİZ, 2. KOYU AKDENİZ) */
+  const VALID_PALS = ['akdeniz', 'derin_akdeniz'];
+  const dotsEl = document.querySelector('.dots');
+  if(dotsEl){
+    dotsEl.innerHTML = `
+      <button data-pal="akdeniz" title="🌿 Açık Akdeniz (Varsayılan)" aria-label="Açık Akdeniz" style="background:#0f766e"></button>
+      <button data-pal="derin_akdeniz" title="🌌 Koyu Akdeniz (Derin Akdeniz Gecesi)" aria-label="Koyu Akdeniz" style="background:#061514;border-color:#14b8a6"></button>
+    `;
+  }
+  setPal = function(n){
+    const target = VALID_PALS.includes(n) ? n : 'akdeniz';
+    document.body.dataset.pal = target;
+    document.querySelectorAll('.dots button').forEach(b => b.classList.toggle('on', b.dataset.pal === target));
+    try{ localStorage.setItem('ka_pal', target); localStorage.setItem('ka_pal_v3', target); }catch(e){}
+  };
+  try{
+    const savedV3 = localStorage.getItem('ka_pal_v3') || localStorage.getItem('ka_pal');
+    setPal(VALID_PALS.includes(savedV3) ? savedV3 : 'akdeniz');
+  }catch(e){ setPal('akdeniz'); }
+
+  /* ⚡ TURBO HIZ & PERFORMANS OTOMASYONU (4X PARALEL HAVUZ + KALICI AI ÖNBELLEĞİ + HIZLI RENDER) */
+  let AI_CACHE = {};
+  try{ AI_CACHE = JSON.parse(localStorage.getItem('ka_ai_cache_v2') || '{}') || {}; }catch(e){ AI_CACHE = {}; }
+  let cacheSaveTimer = null;
+  function saveAiCache(){
+    clearTimeout(cacheSaveTimer);
+    cacheSaveTimer = setTimeout(() => {
+      try{
+        const keys = Object.keys(AI_CACHE);
+        if(keys.length > 600){
+          keys.slice(0, keys.length - 500).forEach(k => delete AI_CACHE[k]);
+        }
+        localStorage.setItem('ka_ai_cache_v2', JSON.stringify(AI_CACHE));
+      }catch(e){}
+    }, 400);
+  }
+  function hashPrompt(s){
+    let h = 2166136261;
+    for(let i=0; i<s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return (h >>> 0).toString(36) + '_' + s.length;
+  }
+
+  async function turboPool(items, fn, conc = 4){
+    let i = 0;
+    const workers = Array.from({length: Math.min(conc, items.length)}, async () => {
+      while(i < items.length){
+        const it = items[i++];
+        await fn(it);
+      }
+    });
+    await Promise.all(workers);
+  }
+
+  const TURBO_GATE = { n: 0, max: 4, q: [] };
+  function tAcquire(){
+    if(TURBO_GATE.n < TURBO_GATE.max){ TURBO_GATE.n++; return Promise.resolve(); }
+    return new Promise(r => TURBO_GATE.q.push(r));
+  }
+  function tRelease(){
+    const nx = TURBO_GATE.q.shift();
+    if(nx) nx(); else TURBO_GATE.n = Math.max(0, TURBO_GATE.n - 1);
+  }
+
+  askJ = async function(sys, input, ms, tier){
+    if(!SMP){ LASTERR = 'yapay zeka bu sayfada açık değil'; return null; }
+    const cacheKey = hashPrompt(sys.slice(0, 80) + '||' + input);
+    if(sys !== GRADE && sys !== GRADE2 && AI_CACHE[cacheKey]){
+      return JSON.parse(JSON.stringify(AI_CACHE[cacheKey]));
+    }
+    await tAcquire();
+    try{
+      for(let attempt=0; attempt<2; attempt++){
+        const ac = new AbortController();
+        const tm = setTimeout(() => ac.abort(), ms || (tier === 'quick' ? 40000 : 95000));
+        try{
+          const o = { cache: false, signal: ac.signal };
+          if(tier) o.modelTier = tier;
+          const r = await SMP(sys + '\n\nGİRDİ:\n' + input, o);
+          if(r && r.truncated){ LASTERR = 'çıktı kesildi'; return null; }
+          const m = String((r && r.text) || '').match(/[\[{][\s\S]*[\]}]/);
+          if(m){
+            const v = JSON.parse(m[0]);
+            if(v && typeof v === 'object'){
+              LASTERR = '';
+              if(sys !== GRADE && sys !== GRADE2){
+                AI_CACHE[cacheKey] = v;
+                saveAiCache();
+              }
+              return v;
+            }
+          }
+          LASTERR = 'geçersiz yanıt';
+        }catch(e){
+          const c = e && e.code;
+          LASTERR = c === 'rate_limited' ? 'çok fazla istek' : (e && e.name === 'AbortError') ? 'zaman aşımı' : ((e && e.message) || 'bağlantı hatası');
+          if(c !== 'rate_limited' || attempt === 1) return null;
+          await new Promise(res => setTimeout(res, 900));
+        }finally{ clearTimeout(tm); }
+      }
+      return null;
+    }finally{ tRelease(); }
+  };
+
+  let rafTick = 0;
+  const origTickUI = tickUI;
+  tickUI = function(p){
+    if(rafTick) return;
+    rafTick = requestAnimationFrame(() => {
+      rafTick = 0;
+      origTickUI(p);
+    });
+  };
+
+    /* 0. ARENA 1A-SAF KOLEZYUM LOGOSU İLE TAB FAVICON & APPLE-TOUCH-ICON DİNAMİK ENJEKSİYONU */
+  const ARENA_FAVICON_SVG = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#14968c"/><stop offset="100%" stop-color="#0b5a55"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="50%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/><stop offset="55%" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="18" fill="url(#g)"/><rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sh)"/><rect x="4.5" y="4.5" width="55" height="55" rx="15.5" stroke="#ffffff" stroke-opacity="0.2" stroke-width="1.2" fill="none"/><path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round" fill="none"/><path d="M11.8 47.5H18.2M45.8 47.5H52.2" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" stroke="url(#gold)" stroke-width="4.2" stroke-linecap="round" fill="none"/><path d="M9.5 53.5 Q20.8 49 32 53.8 Q43.2 49 54.5 53.5" stroke="url(#gold)" stroke-width="2.7" stroke-linecap="round" fill="none"/><path d="M14.5 57 Q23.2 53.8 32 57 Q40.8 53.8 49.5 57" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="50" cy="13" r="6.8" fill="#fbbf24" fill-opacity="0.25"/><circle cx="50" cy="13" r="3.7" fill="url(#gold)"/><circle cx="48.8" cy="11.8" r="1.1" fill="#ffffff" fill-opacity="0.9"/></svg>');
+
+  function drawArenaIcon(size){
+    try{
+      const c = document.createElement('canvas');
+      c.width = c.height = size;
+      const g = c.getContext('2d');
+      if(!g) return '';
+      const s = size / 64;
+      const grad = g.createLinearGradient(0, 0, size, size);
+      grad.addColorStop(0, '#14968c'); grad.addColorStop(1, '#0b5a55');
+      g.fillStyle = grad;
+      const r = Math.min(18 * s, size / 2);
+      g.beginPath();
+      g.moveTo(2*s + r, 2*s);
+      g.lineTo(size - 2*s - r, 2*s);
+      g.quadraticCurveTo(size - 2*s, 2*s, size - 2*s, 2*s + r);
+      g.lineTo(size - 2*s, size - 2*s - r);
+      g.quadraticCurveTo(size - 2*s, size - 2*s, size - 2*s - r, size - 2*s);
+      g.lineTo(2*s + r, size - 2*s);
+      g.quadraticCurveTo(2*s, size - 2*s, 2*s, size - 2*s - r);
+      g.lineTo(2*s, 2*s + r);
+      g.quadraticCurveTo(2*s, 2*s, 2*s + r, 2*s);
+      g.closePath();
+      g.fill();
+
+      const sheen = g.createLinearGradient(0, 2*s, 0, size);
+      sheen.addColorStop(0, 'rgba(255,255,255,0.25)');
+      sheen.addColorStop(0.55, 'rgba(255,255,255,0)');
+      g.fillStyle = sheen;
+      g.fill();
+
+      g.lineCap = 'round';
+      g.strokeStyle = '#ffffff'; g.lineWidth = Math.max(1.2, 4.8 * s);
+      g.beginPath(); g.moveTo(15*s, 47.5*s); g.lineTo(15*s, 30.5*s); g.arc(32*s, 30.5*s, 17*s, Math.PI, 0); g.lineTo(49*s, 47.5*s); g.stroke();
+      g.lineWidth = Math.max(1, 3 * s);
+      g.beginPath(); g.moveTo(11.8*s, 47.5*s); g.lineTo(18.2*s, 47.5*s); g.moveTo(45.8*s, 47.5*s); g.lineTo(52.2*s, 47.5*s); g.stroke();
+
+      const gold = g.createLinearGradient(24*s, 31.5*s, 40*s, 47.5*s);
+      gold.addColorStop(0, '#fef3c7'); gold.addColorStop(0.5, '#fbbf24'); gold.addColorStop(1, '#d97706');
+      g.strokeStyle = gold; g.lineWidth = Math.max(1.2, 4.2 * s);
+      g.beginPath(); g.moveTo(24*s, 47.5*s); g.lineTo(24*s, 31.5*s); g.arc(32*s, 31.5*s, 8*s, Math.PI, 0); g.lineTo(40*s, 47.5*s); g.stroke();
+
+      g.lineWidth = Math.max(1, 2.7 * s);
+      g.beginPath(); g.moveTo(9.5*s, 53.5*s); g.quadraticCurveTo(20.8*s, 49*s, 32*s, 53.8*s); g.quadraticCurveTo(43.2*s, 49*s, 54.5*s, 53.5*s); g.stroke();
+
+      g.fillStyle = '#fbbf24';
+      g.beginPath(); g.arc(50*s, 13*s, Math.max(1.2, 3.8 * s), 0, Math.PI*2); g.fill();
+      return c.toDataURL('image/png');
+    }catch(e){ return ''; }
+  }
+
+  function applyArenaFavicon(){
+    try{
+      const head = document.head || document.getElementsByTagName('head')[0];
+      if(!head) return;
+      head.querySelectorAll('link[rel*="icon"]').forEach(el => el.remove());
+
+      const l1 = document.createElement('link');
+      l1.rel = 'icon'; l1.type = 'image/svg+xml'; l1.href = ARENA_FAVICON_SVG;
+      head.appendChild(l1);
+
+      const l2 = document.createElement('link');
+      l2.rel = 'shortcut icon'; l2.type = 'image/svg+xml'; l2.href = ARENA_FAVICON_SVG;
+      head.appendChild(l2);
+
+      const png32 = drawArenaIcon(32);
+      if(png32){
+        const l3 = document.createElement('link');
+        l3.rel = 'alternate icon'; l3.type = 'image/png'; l3.sizes = '32x32'; l3.href = png32;
+        head.appendChild(l3);
+      }
+      const png180 = drawArenaIcon(180);
+      if(png180){
+        const l4 = document.createElement('link');
+        l4.rel = 'apple-touch-icon'; l4.sizes = '180x180'; l4.href = png180;
+        head.appendChild(l4);
+      }
+    }catch(e){ console.warn('Arena Favicon error:', e); }
+  }
+  applyArenaFavicon();
+
+/* 1. 1A-SAF OPTİMUM LOGO & SVG GRADYANLARINI ENJEKTE ET */
+  const lgo = document.getElementById('lgo');
+  if(lgo){
+    lgo.innerHTML = `
+      <rect x="2" y="2" width="60" height="60" rx="18" style="fill:var(--lg)"/>
+      <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sheen)"/>
+      <rect x="4.5" y="4.5" width="55" height="55" rx="15.5" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="1.2"/>
+      <path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round"/>
+      <path d="M11.8 47.5H18.2M45.8 47.5H52.2" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+      <path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" fill="none" stroke="url(#gold)" stroke-width="4.2" stroke-linecap="round"/>
+      <path d="M9.5 53.5 Q20.8 49 32 53.8 Q43.2 49 54.5 53.5" fill="none" stroke="url(#gold)" stroke-width="2.7" stroke-linecap="round"/>
+      <path d="M14.5 57 Q23.2 53.8 32 57 Q40.8 53.8 49.5 57" fill="none" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="50" cy="13" r="6.8" fill="#fbbf24" fill-opacity="0.24"/>
+      <circle cx="50" cy="13" r="3.7" fill="url(#gold)"/>
+      <circle cx="48.8" cy="11.8" r="1.1" fill="#ffffff" fill-opacity="0.85"/>`;
+    const defs = lgo.parentElement;
+    if(defs && !document.getElementById('conqGoldGrad')){
+      defs.insertAdjacentHTML('beforeend', `
+        <linearGradient id="conqGoldGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fef08a"/><stop offset="50%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#ea580c"/></linearGradient>
+        <linearGradient id="shieldCoreGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--p)"/><stop offset="100%" stop-color="var(--p2)"/></linearGradient>`);
+    }
+  }
+  const logoBtn = document.querySelector('.logo');
+  if(logoBtn && !logoBtn.querySelector('.logo-sub')){
+    logoBtn.insertAdjacentHTML('beforeend', '<span class="logo-sub">ARENA</span>');
+  }
+
+  /* 2. KOMBO, BOSS BAR, KOLEZYUM KAPISI VE FETİH TÖRENİ KATMANLARINI EKLE */
+  const acttop = document.querySelector('.acttop');
+  if(acttop && !document.getElementById('comboTag')){
+    const h = document.getElementById('hearts');
+    const sp = document.createElement('span');
+    sp.id = 'comboTag'; sp.className = 'combo-pill'; sp.hidden = true; sp.textContent = '🔥 x2';
+    if(h) acttop.insertBefore(sp, h); else acttop.appendChild(sp);
+  }
+  const stEl = document.getElementById('st');
+  if(stEl && !document.getElementById('bossBarWrap')){
+    const bw = document.createElement('div');
+    bw.id = 'bossBarWrap';
+    stEl.parentNode.insertBefore(bw, stEl);
+  }
+  if(!document.getElementById('gateOv')){
+    document.body.insertAdjacentHTML('beforeend', `
+      <div class="gate-ov" id="gateOv" aria-hidden="true">
+        <div class="g-door left"></div>
+        <div class="g-door right"></div>
+        <div class="g-seal" id="gateSealTxt">⚔️<br>ARENA</div>
+      </div>
+      <div class="conquest-ov" id="conqOv" role="dialog" aria-modal="true">
+        <div class="conquest-stage">
+          <div class="shockwave s1"></div>
+          <div class="shockwave s2"></div>
+          <div class="crest-wrap">
+            <svg class="crest-svg" viewBox="0 0 220 220">
+              <g class="sword-l">
+                <path d="M38 182 L172 48" stroke="url(#conqGoldGrad)" stroke-width="6" stroke-linecap="round"/>
+                <path d="M50 150 L70 170" stroke="#fbbf24" stroke-width="5" stroke-linecap="round"/>
+                <circle cx="35" cy="185" r="5" fill="#fbbf24"/>
+              </g>
+              <g class="sword-r">
+                <path d="M182 182 L48 48" stroke="url(#conqGoldGrad)" stroke-width="6" stroke-linecap="round"/>
+                <path d="M170 150 L150 170" stroke="#fbbf24" stroke-width="5" stroke-linecap="round"/>
+                <circle cx="185" cy="185" r="5" fill="#fbbf24"/>
+              </g>
+              <circle cx="110" cy="110" r="92" fill="none" stroke="rgba(251,191,36,.24)" stroke-width="1.5" stroke-dasharray="4 6"/>
+              <g id="ceremonyArcs"></g>
+              <path d="M58 152 C42 128 44 92 64 68" fill="none" stroke="url(#conqGoldGrad)" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 4"/>
+              <path d="M162 152 C178 128 176 92 156 68" fill="none" stroke="url(#conqGoldGrad)" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 4"/>
+              <g class="center-shield">
+                <path d="M110 56 L154 74 V114 C154 146 134 166 110 176 C86 166 66 146 66 114 V74 Z" fill="url(#shieldCoreGrad)" stroke="url(#conqGoldGrad)" stroke-width="4" stroke-linejoin="round"/>
+                <path d="M110 64 L146 79 V112 C146 138 130 155 110 164 C90 155 74 138 74 112 V79 Z" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+                <text x="110" y="118" text-anchor="middle" font-size="34" id="ceremonyEmoji">🃏</text>
+                <text x="110" y="146" text-anchor="middle" fill="#fef08a" font-weight="900" font-size="10" letter-spacing="1.5" id="ceremonyRingNum">RİNG I</text>
+              </g>
+            </svg>
+          </div>
+          <div class="conq-banner" id="conqBanner">⚔️ RİNG FETHEDİLDİ! ⚔️</div>
+          <h3 class="conq-title" id="conqTitle">Kartlar Ringi Ele Geçirildi!</h3>
+          <p class="conq-sub" id="conqSub">Arena hakimiyetin yükseldi. Sıradaki mücadele kapısı açıldı!</p>
+          <div class="conq-rewards">
+            <div class="rew-box"><span class="rew-val" id="rewXp">+20 XP</span><span class="rew-lbl">Zafer Ödülü</span></div>
+            <div class="rew-box"><span class="rew-val" id="rewRing">1 / 7</span><span class="rew-lbl">Fethedilen Ring</span></div>
+            <div class="rew-box"><span class="rew-val" id="rewPct">%14</span><span class="rew-lbl">Arena Hakimiyeti</span></div>
+          </div>
+          <div class="row2" style="margin-top:8px;position:relative;z-index:3">
+            <button class="btn3" id="conqNextBtn">⚔️ Sıradaki Ring →</button>
+            <button class="btn-ghost" id="conqCloseBtn">Kapat</button>
+          </div>
+        </div>
+      </div>`);
+  }
+
+  /* 3. MOD METADATALARINI ZENGİNLEŞTİR (TÜM KELİMELER & KARMA BOSS) */
+  const rMeta = [
+    {r:'RİNG I',mech:'Tüm Kelimeler · Tam Öğrenme',d:'Bilinmeyen kelimelere geri dönülür; hepsi bilinmeden bitmez.',xp:15},
+    {r:'RİNG II',mech:'Tüm Kelimeler · Hafıza Bağı',d:'Listedeki bütün kelimeleri Türkçe anlamlarıyla eşleştir.',xp:20},
+    {r:'RİNG III',mech:'Tüm Kelimeler · Test Düellosu',d:'Sınır yok! Listedeki tüm kelimeler sırayla test edilir.',xp:20},
+    {r:'RİNG IV',mech:'Tüm Kelimeler · 2 Haklı Yazma',d:'Tüm kelimeleri yaz; yakın yazımlarda 2. şans ve ipucu kazan!',xp:25},
+    {r:'RİNG V',mech:'12 Soruluk Karma Boss Savaşı',d:'Seç + Eşleştir + Yazma + Cümle bir arada! 3 canla Boss\'u yen.',xp:40},
+    {r:'RİNG VI',mech:'Tüm Cümleler · Akademik Bağlam',d:'Listedeki bütün kelimelerin akademik cümle çevirilerini çöz.',xp:25},
+    {r:'RİNG VII',mech:'AI Hakemli Paragraf Zirvesi',d:'Akademik paragrafları oku ve ana düşünceyi bota onaylat.',xp:35}
+  ];
+  if(typeof MODES !== 'undefined' && Array.isArray(MODES)){
+    MODES.forEach((m,i)=>{ if(rMeta[i]) Object.assign(m, rMeta[i]); });
+  }
+
+  /* ============================================================================
+     OTOMASYON 1: TÜM ETKİNLİKLERDE AMERİKAN AKSANI (const say ATAMASI YAPMADAN)
+     ============================================================================ */
+  let US_VOICE = null;
+  function pickUsVoice(){
+    try{
+      const vs = window.speechSynthesis ? (speechSynthesis.getVoices() || []) : [];
+      US_VOICE =
+        vs.find(v => /^en[-_]US/i.test(v.lang) && /Google US English|Samantha|Ava|Allison|Aria|Jenny|Guy|Zira|David|Alex|Aaron|Nicky|Microsoft/i.test(v.name)) ||
+        vs.find(v => /^en[-_]US/i.test(v.lang)) ||
+        vs.find(v => /^en/i.test(v.lang) && /US|United States|America/i.test(v.name)) ||
+        vs.find(v => /^en/i.test(v.lang)) ||
+        null;
+    }catch(e){ US_VOICE = null; }
+  }
+  try{
+    if(window.speechSynthesis){
+      const proto = Object.getPrototypeOf(window.speechSynthesis) || (typeof SpeechSynthesis !== 'undefined' && SpeechSynthesis.prototype);
+      const protoSpeak = proto && proto.speak ? proto.speak.bind(window.speechSynthesis) : window.speechSynthesis.speak.bind(window.speechSynthesis);
+      const protoCancel = proto && proto.cancel ? proto.cancel.bind(window.speechSynthesis) : window.speechSynthesis.cancel.bind(window.speechSynthesis);
+      window.speechSynthesis.cancel = function(){
+        try{ protoCancel(); }catch(e){}
+      };
+      window.speechSynthesis.speak = function(u){
+        if(typeof muted !== 'undefined' && muted) return;
+        try{
+          pickUsVoice();
+          protoCancel();
+          if(u && typeof u === 'object'){
+            u.text = String(u.text || '').replace(/\s*[\/~]\s*/g, ', ').replace(/\bpost-X\b/gi,'post harvest').replace(/\bX-intensive\b/gi,'energy intensive').trim();
+            u.lang = 'en-US';
+            if(US_VOICE) u.voice = US_VOICE;
+            if(!u.rate || u.rate === 1) u.rate = 0.92;
+            protoSpeak(u);
+          }
+        }catch(e){}
+      };
+      window.speechSynthesis.onvoiceschanged = pickUsVoice;
+      pickUsVoice();
+    }
+  }catch(e){}
+
+  /* ============================================================================
+     OTOMASYON 2: PDF / KELİME LİSTESİ AYIRICI + TURENG YAYGIN ANLAMLAR SİSTEMİ
+     ============================================================================ */
+  const FIXED_PHRASES = new Set([
+    'have to do with','at stake','in danger','at risk','behind bars','take a toll',
+    'account for','per capita','per person','a third','one third','invasion of privacy',
+    'post-x','x-intensive','water-intensive'
+  ]);
+
+  function isTurkishSegment(s){
+    const str = String(s || '').trim();
+    if(!str) return false;
+    if(/[çğıöşüİÇĞÖŞÜ]/.test(str)) return true;
+    if(/\b[a-z]{2,}(mak|mek)\b/i.test(str)) return true;
+    if(/\b(bir|ve|veya|ile|olan|etmek|olmak|yapmak|vermek|almak|tutmak|olarak|gibi|kadar|sonra|arasında|karşı|göre|ait|dair|ortak|rakip|rekabet|hanedan|veraset|varis|somut|hasat|tohum|miktar|hacim|bahane|verim|aciliyet|ittifak)\b/i.test(str)) return true;
+    return false;
+  }
+
+  function splitEnglishEntry(enRaw){
+    const clean = String(enRaw || '').trim();
+    if(!clean) return [];
+    if(/[\/~;,]/.test(clean)){
+      const parts = clean.split(/\s*[\/~;,]\s*/).map(s=>s.trim()).filter(Boolean);
+      if(parts.length > 1) return parts;
+    }
+    const low = clean.toLowerCase();
+    if(!FIXED_PHRASES.has(low) && !/^(to|a|an|the|in|on|at|by|for|with|from|of|into|out)\b/i.test(low)){
+      const words = clean.split(/\s+/);
+      if(words.length === 2 && !words[0].includes('-') && !words[1].includes('-')){
+        const stopWords = new Set(['of','to','in','on','for','with','at','by','from','up','out','off','down','over','under','as','be','have','take','make','get','give','keep','let','put','set']);
+        if(!stopWords.has(words[0].toLowerCase()) && !stopWords.has(words[1].toLowerCase()) && words[0].length >= 4 && words[1].length >= 4){
+          return [words[0], words[1]];
+        }
+      }
+    }
+    return [clean];
+  }
+
+  function smartParse(t){
+    const rawLines = String(t || '').split(/\r?\n/)
+      .map(l => l.replace(/[\u00a0 ]+/g,' ')
+        .replace(/[A-ZÇĞİÖŞÜ][A-ZÇĞİÖŞÜ ]{2,}\s*[–-]\s*VOCAB/g,'')
+        .replace(/^\s*(?:\d+[.)]|[•*·-])\s+/,'').trim())
+      .filter(l => l && !/^[A-ZÇĞİÖŞÜ ]+$/.test(l));
+
+    const out = [];
+    const seen = new Set();
+
+    for(const l of rawLines){
+      const seg = l.split(/\s+:\s+|\s+[-–—]\s+|\s*\|\s*|\t+/).map(s=>s.trim()).filter(Boolean);
+      let enSegments = [l], trPart = '';
+      if(seg.length >= 2){
+        let ti = seg.findIndex((s,i) => i > 0 && isTurkishSegment(s));
+        if(ti === -1) ti = seg.length - 1;
+        enSegments = seg.slice(0, ti);
+        trPart = seg.slice(ti).join(', ');
+      }
+      for(const segEn of enSegments){
+        const enList = splitEnglishEntry(segEn);
+        for(const enItem of enList){
+          const key = enItem.toLowerCase();
+          if(seen.has(key)) continue;
+          seen.add(key);
+          out.push({ en: enItem, tr: trPart || '', baseTr: trPart || '' });
+        }
+      }
+    }
+    return out;
+  }
+
+  function splitCombinedItemsInPack(p){
+    if(!p || !Array.isArray(p.items)) return;
+    const newItems = [];
+    const seen = new Set();
+    let changed = false;
+
+    for(const it of p.items){
+      const parts = splitEnglishEntry(it.en);
+      if(parts.length > 1){
+        changed = true;
+        for(const part of parts){
+          const k = part.toLowerCase();
+          if(seen.has(k)) continue;
+          seen.add(k);
+          const clone = Object.assign({}, it, {
+            en: part,
+            baseTr: it.baseTr || it.tr || ''
+          });
+          if(p.prog && p.prog.box && p.prog.box[it.en] && !p.prog.box[part]){
+            p.prog.box[part] = p.prog.box[it.en];
+          }
+          newItems.push(clone);
+        }
+      } else {
+        const k = String(it.en || '').toLowerCase();
+        if(!seen.has(k)){
+          seen.add(k);
+          if(it.tr && !it.baseTr) it.baseTr = it.tr;
+          newItems.push(it);
+        }
+      }
+    }
+    if(changed){
+      p.items = newItems;
+      p.words = newItems.map(x => ({ en: x.en, tr: x.tr || '' }));
+    }
+  }
+
+  const TURENG_SYS = `Sen Tureng Sözlük tabanlı akademik İngilizce-Türkçe sözlük uzmanısın.
+Girdide numaralandırılmış İngilizce kelimeler ve varsa kullanıcının listesindeki mevcut Türkçe anlamı ("[Mevcut: ...]") verilmiştir.
+Kurallar:
+1. Eğer bir satırdaki İngilizce ifadede aslında 2 ayrı İngilizce kelime yan yana kalmışsa (deyim veya phrasal verb değilse), "split" dizisinde bunları ayrı kelimeler olarak ayır.
+2. Her kelime için "tr" alanına:
+   - Eğer "[Mevcut: ...]" içinde Türkçe anlam verilmişse onu EN BAŞTA koru.
+   - Yanına Tureng Sözlük "Yaygın Kullanım (Common Usage)" kategorisindeki en yaygın 2-4 farklı Türkçe karşılığını virgülle ayırarak ekle (böylece kelimenin birden fazla anlamı olduğu net görülsün).
+   - Aynı Türkçe kelimeyi iki kez tekrarlama. Kelimeyi İngilizce bırakma.
+3. Her kelime için "syn" alanına o kelimenin en önemli 3-4 akademik İngilizce eş anlamlısını (synonyms) dizi olarak yaz.
+YALNIZCA geçerli JSON döndür:
+{"items":[{"i":1,"tr":"Mevcut anlam, Tureng yaygın anlam 1, Tureng yaygın anlam 2","syn":["synonym1","synonym2","synonym3"],"split":[]}]}`;
+
+  function combineTurengMeaning(baseTr, aiTr){
+    const parts = [];
+    const seen = new Set();
+    const add = str => {
+      String(str || '').split(/\s*[,;/]\s*/).forEach(piece => {
+        const clean = piece.trim();
+        const low = clean.toLowerCase();
+        if(clean && !seen.has(low)){
+          seen.add(low);
+          parts.push(clean);
+        }
+      });
+    };
+    if(baseTr) add(baseTr);
+    if(aiTr) add(aiTr);
+    return parts.slice(0, 5).join(', ');
+  }
+
+  fillTr = async function(p){
+    splitCombinedItemsInPack(p);
+    let todo = p.items.filter(x => !x.tr || !x.turengDone);
+    if(!todo.length) return;
+    FILL[p.id] = 1;
+    try{
+      for(const sz of [18, 8]){
+        if(!todo.length) break;
+        const ch = [];
+        for(let i=0; i<todo.length; i+=sz) ch.push(todo.slice(i, i+sz));
+        await turboPool(ch, async c => {
+          const promptLines = c.map((x,i) => `${i+1}. ${x.en}${x.tr ? ` [Mevcut: ${x.tr}]` : ''}`).join('\n');
+          const r = await askJ(TURENG_SYS, promptLines, 50000, 'quick');
+          if(r && Array.isArray(r.items)){
+            r.items.forEach(o => {
+              const x = c[Number(o && o.i) - 1];
+              if(!x) return;
+              if(Array.isArray(o.split) && o.split.length > 1){
+                const idx = p.items.indexOf(x);
+                if(idx >= 0){
+                  const replacements = o.split.filter(s => s && s.en).map(s => ({
+                    en: String(s.en).trim(),
+                    baseTr: x.baseTr || x.tr || '',
+                    tr: combineTurengMeaning(x.baseTr || x.tr, s.tr || o.tr),
+                    syn: Array.isArray(s.syn) ? s.syn : (Array.isArray(o.syn) ? o.syn : []),
+                    turengDone: true,
+                    d: [], gl: {}, mo: {}
+                  }));
+                  if(replacements.length){
+                    p.items.splice(idx, 1, ...replacements);
+                    return;
+                  }
+                }
+              }
+              if(validTr(o.tr, x.en)){
+                x.tr = combineTurengMeaning(x.baseTr || x.tr, o.tr);
+                x.turengDone = true;
+              }
+              if(Array.isArray(o.syn) && o.syn.length){
+                x.syn = o.syn.map(s=>String(s||'').trim()).filter(Boolean);
+              }
+            });
+          }
+          if(p.items.some(x => x.tr)){
+            delete FILL[p.id];
+            refreshWait(p);
+          }
+          save(p);
+        }, 4);
+        todo = p.items.filter(x => !x.tr);
+      }
+    }finally{
+      delete FILL[p.id];
+    }
+  };
+
+  /* ============================================================================
+     OTOMASYON 3: CÜMLE MODUNDA UZUNLUK EŞİTLEME & YÜKSEK ÇELDİRİCİ ŞIKLAR
+     ============================================================================ */
+  const BATCH_HARD = `Sen BUEPT düzeyinde akademik İngilizce ölçme ve değerlendirme uzmanısın. YALNIZCA geçerli JSON döndür: {"items":[...]}.
+Girdideki her satır "en - tr" biçimindedir. Her kelime için:
+- "en": girdideki kelimenin aynısı
+- "tr": mevcut Türkçe anlamları koruyarak Tureng yaygın karşılıklarıyla zenginleştirilmiş Türkçe anlam (3-4 yaygın karşılık, virgülle ayrılmış)
+- "syn": kelimenin en yaygın 3-4 akademik İngilizce eş anlamlısı (synonyms) dizisi, örn. ["presume","postulate","hypothesize"]
+- "s": kelimeyi içeren akademik C1 düzeyinde 15-22 kelimelik tek İngilizce cümle
+- "st": cümlenin doğal, eksiksiz akademik Türkçe çevirisi
+- "d": cümlenin anlamı için YÜKSEK ÇELDİRİCİLİKTE 3 yanlış Türkçe çeviri dizisi.
+  ÇELDİRİCİ KURALLARI ("d" için ZORUNLU):
+  1. UZUNLUK KURALI: Doğru cevap ("st") KESİNLİKLE en uzun şık olmamalıdır! "d" içindeki 3 şıkkın kelime ve karakter uzunluğu "st" ile birebir aynı düzeyde olmalı, hatta en az 2 çeldirici şık "st" cümlesinden 2-5 kelime DAHA UZUN olmalıdır.
+  2. İNCE AYRIM KURALI: Şıklar birbirinin basit tam tersi (olumlu/olumsuz zıttı) OLMAMALIDIR. Her çeldirici cümlenin %75-85'ini doğru çeviriyle aynı tutup sadece TEK BİR KRİTİK NOKTADA ayrılmalıdır:
+     - 1. çeldirici: Cümlenin geri kalanı doğru, fakat hedef kelimenin/eylemin anlamı bağlama yakın görünen farklı bir akademik kavramla değiştirilmiş.
+     - 2. çeldirici: Kelimeler doğru, fakat neden-sonuç, koşul veya karşıtlık ilişkisi (ör. "-mesine rağmen" yerine "-diği için", "ancak ... olduğunda" yerine "her koşulda") ince biçimde kaydırılmış.
+     - 3. çeldirici: Cümledeki kapsam, olasılık veya miktar vurgusu (ör. "kısmen/potansiyel olarak" yerine "tamamen/kaçınılmaz biçimde" veya özne-nesne vurgusu) saptırılmış.
+- "gl": cümledeki önemli kelimelerin en fazla 10 tanesi için {"kelime":"Türkçe anlam"} (küçük harf)
+- "mo": ek-kök ayrımı öğretici en fazla 3 kelime için {"kelime":[["parça","kök" veya "ek","kısa Türkçe açıklama"]]}.`;
+
+  const DIST_UPGRADE_SYS = `Sen BUEPT/YDS düzeyinde akademik İngilizce-Türkçe soru yazarısın.
+Girdide numaralandırılmış İngilizce cümleler ("s") ve doğru Türkçe çevirileri ("st") verilmiştir.
+Her cümle için 3 adet YÜKSEK ÇELDİRİCİLİKLİ yanlış Türkçe çeviri ("d") üret:
+1. KESİN UZUNLUK KURALI: Doğru çeviri ("st") en uzun şık OLMAMALIDIR! Ürettiğin 3 çeldiricinin en az 2 tanesi karakter ve kelime sayısı olarak "st" cümlesinden DAHA UZUN (2-5 kelime daha uzun), diğeri ise "st" ile aynı uzunlukta olmalıdır.
+2. İNCE NÜANS KURALI: Çeldiriciler "st" cümlesinin tam zıttı olmamalıdır! Cümlenin %80'i "st" ile aynı kelimelerden oluşmalı, sadece bağlaç yönü (rağmen/dolayı), kesinlik derecesi (tamamen/kısmen/potansiyel olarak) veya hedef kelimenin akademik nüansı farklılaşmalıdır.
+YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"d":["çeldirici 1","çeldirici 2","çeldirici 3"]}]}`;
+
+  function buildSubtleDistractors(x){
+    const st = String(x.st || '').trim();
+    if(!st) return [];
+    let rawD = Array.isArray(x.d) ? x.d.map(s=>String(s||'').trim()).filter(s=>s && s!==st) : [];
+
+    const nuanceVariants = [];
+    const swaps = [
+      [/(\b)rağmen(\b)/i, 'nedeniyle ve bunun doğrudan bir sonucu olarak'],
+      [/(\b)için(\b)/i, 'rağmen ilgili süreçte beklenen düzeyde'],
+      [/(\b)önemli(\b)/i, 'ikincil ve sınırlı düzeyde kalan'],
+      [/(\b)büyük(\b)/i, 'kısmi ve yalnızca belirli koşullarda görülen'],
+      [/(\b)art\w+/i, 'belirli dönemlerde kademeli olarak azalmakta ve sınırlandırılmaktadır'],
+      [/(\b)azal\w+/i, 'kontrolsüz biçimde artış göstererek mevcut dengeleri zorlamaktadır'],
+      [/(\b)engel\w+/i, 'dolaylı yoldan teşvik ederek sürecin hızlanmasına zemin hazırladı'],
+      [/(\b)sağla\w+/i, 'ancak uzun vadede beklenen etkiyi yaratmakta yetersiz kaldı'],
+      [/(\b)göster\w+/i, 'konusunda kesin bir kanıt sunmaktan ziyade tartışmalı bir varsayım öne sürmektedir'],
+      [/(\b)olabilir/i, 'kaçınılmaz ve geri döndürülemez bir zorunluluk haline gelmiştir']
+    ];
+    for(const [rgx, rep] of swaps){
+      if(rgx.test(st)){
+        const v = st.replace(rgx, rep);
+        if(v !== st) nuanceVariants.push(v);
+      }
+    }
+
+    const academicExtensions = [
+      ' ve bu durum ilgili alandaki mevcut uygulamaların kapsamını doğrudan etkilemektedir',
+      '; ancak bu sürecin uzun vadeli sonuçları uzmanlar arasında hâlâ tartışılmaktadır',
+      ' ve özellikle kurumsal düzeyde alınan kararların yeniden değerlendirilmesini gerektirmektedir',
+      '; üstelik bu eğilim son dönemdeki akademik araştırmaların bulgularıyla da paralellik göstermektedir',
+      ' ve söz konusu koşulların değişmesi halinde mevcut dengelerin tamamen farklılaşabileceği belirtilmektedir'
+    ];
+
+    const expandToMatchLength = (str, idx, minLen) => {
+      let res = str.replace(/[.!?]+$/, '').trim();
+      const stComma = st.indexOf(',');
+      if(res.length < st.length * 0.72 && stComma > 15 && !res.startsWith(st.slice(0, 12))){
+        res = st.slice(0, stComma + 1) + ' ' + res.charAt(0).toLowerCase() + res.slice(1);
+      }
+      let extIdx = (idx + st.length) % academicExtensions.length;
+      while(res.length < minLen){
+        res += academicExtensions[extIdx % academicExtensions.length];
+        extIdx++;
+      }
+      return res + '.';
+    };
+
+    const pool = [...rawD, ...nuanceVariants].filter((v,i,a) => v && v !== st && a.indexOf(v) === i);
+    while(pool.length < 3){
+      const base = st.replace(/[.!?]+$/, '');
+      if(pool.length === 0) pool.push(base + '; ancak bu durum yalnızca belirli istisnai koşullar altında geçerliliğini korumaktadır.');
+      else if(pool.length === 1) pool.push('İlk bakışta öyle görünse de, ' + base.charAt(0).toLowerCase() + base.slice(1) + ' iddiası henüz kesinlik kazanmamıştır.');
+      else pool.push(base + ' ve bu gelişme başlangıçta öngörülen hedeflerin tam aksine bir tablo ortaya çıkarmıştır.');
+    }
+
+    const chosen = pool.slice(0, 3);
+    return chosen.map((dStr, idx) => {
+      const targetLen = idx < 2 ? (st.length + 6 + idx * 8) : Math.max(dStr.length, st.length - 4);
+      if(dStr.length < targetLen){
+        return expandToMatchLength(dStr, idx, targetLen);
+      }
+      return dStr;
+    });
+  }
+
+  let DIST_RUN = {};
+  async function upgradePackDistractors(p){
+    if(!p || DIST_RUN[p.id] || !SMP) return;
+    const need = (p.items || []).filter(x => x.s && x.st && (!x.dV2 || !Array.isArray(x.d) || x.d.length < 3 || Math.max(0, ...x.d.map(s=>String(s||'').length)) <= x.st.length));
+    if(!need.length) return;
+    DIST_RUN[p.id] = 1;
+    try{
+      const ch = [];
+      for(let i=0; i<need.length; i+=8) ch.push(need.slice(i, i+8));
+      await turboPool(ch, async c => {
+        const inp = c.map((x,i) => `${i+1}.\nEN: ${x.s}\nDOĞRU TR (st): ${x.st}`).join('\n\n');
+        const r = await askJ(DIST_UPGRADE_SYS, inp, 75000, 'quick');
+        if(r && Array.isArray(r.items)){
+          r.items.forEach(o => {
+            const x = c[Number(o && o.i) - 1];
+            if(x && Array.isArray(o.d) && o.d.length >= 3){
+              x.d = o.d.map(s => String(s || '').trim()).filter(Boolean);
+              x.dV2 = true;
+            }
+          });
+          save(p);
+        }
+      }, 4);
+    }finally{
+      delete DIST_RUN[p.id];
+    }
+  }
+
+  enrich = async function(p){
+    if(!p || RUN[p.id]) return;
+    splitCombinedItemsInPack(p);
+    const upd = (t,bad,why) => { ENR[p.id]={t,bad,why:why||''}; if(cur===p) renderEnr(); };
+    if(!SMP){ upd('Yapay zekâ bu sayfada açık değil.',true,'yok'); return; }
+    RUN[p.id]=1; p.dict=p.dict||{};
+    p.items.forEach(x=>{ if(x.tr && !validTr(x.tr,x.en)) x.tr=''; });
+    const tick = () => {
+      const G=p.groups||[];
+      upd(`⚡ Turbo Hazırlanıyor · Tureng anlam ${p.items.filter(x=>x.tr).length}/${p.items.length} · Cümle ${p.items.filter(x=>x.s).length}/${p.items.length} · Paragraf ${G.filter(g=>g.text).length}/${G.length}`);
+      tickUI(p);
+    };
+    try{
+      await fillTr(p); tick();
+      for(let pass=0; pass<2; pass++){
+        const todo = p.items.filter(x=>x.tr && !x.s), ch=[];
+        if(!todo.length) break;
+        for(let i=0; i<todo.length; i+=8) ch.push(todo.slice(i, i+8));
+        await turboPool(ch, async c => {
+          const r = await askJ(BATCH_HARD, c.map(w=>w.en+' - '+(w.tr||'?')).join('\n'), 95000, 'quick');
+          if(r && Array.isArray(r.items)){
+            r.items.forEach(g => {
+              const it = c.find(x=>x.en.toLowerCase()===String(g&&g.en).toLowerCase());
+              if(it){
+                const prevTr = it.baseTr || it.tr || '';
+                merge(it, g);
+                if(g.tr && validTr(g.tr, it.en)) it.tr = combineTurengMeaning(prevTr, g.tr);
+                if(Array.isArray(g.syn) && g.syn.length) it.syn = g.syn.map(s=>String(s||'').trim()).filter(Boolean);
+                it.dV2 = true;
+              }
+            });
+          }
+          save(p); tick();
+        }, 4);
+      }
+      await Promise.all([
+        upgradePackDistractors(p),
+        genGroups(p, tick),
+        glossAll(p)
+      ]);
+      save(p);
+      await shareDef(p);
+      const G=p.groups||[], inT=new Set(G.filter(g=>g.text).flatMap(g=>g.w));
+      const noTr=p.items.filter(x=>!x.tr).length, noS=p.items.filter(x=>x.tr&&!x.s).length, noG=p.items.filter(x=>x.tr&&!inT.has(x.en)).length;
+      const parts=[];
+      if(noTr) parts.push(`${noTr} kelimenin anlamı yok`);
+      if(noS) parts.push(`${noS} kelimenin cümlesi yok`);
+      if(noG) parts.push(`${noG} kelime paragrafa girmedi`);
+      upd(parts.length?`Eksikler: ${parts.join(' · ')}${LASTERR?' · Neden: '+LASTERR:''}`:'', parts.length>0, LASTERR);
+      refreshWait(p);
+      if(cur===p && step===-1) renderHome();
+    }catch(e){ upd('Hata: '+e.message,true,'hata'); }
+    finally{ delete RUN[p.id]; }
+  };
+
+  /* ============================================================================
+     OTOMASYON 3B: SEÇ, YAZ, CÜMLE MODLARINDA LİSTEDEKİ TÜM KELİMELERİ KULLANMA,
+     YAZMA MODUNDA YAKIN KELİMELERE 2. HAK ("ÇOK YAKLAŞTIN!") &
+     KARIŞIK MEGA BOSS DÜELLOSU (SEÇ + CÜMLE + HIZLI EŞLEŞTİR + YAZMA)
+     ============================================================================ */
+  let Q_DECK = [];
+  let Y_DECK = [];
+  let BOSS_QUEUE = [];
+
+  /* Damerau-Levenshtein Yakınlık Mesafesi (Harf hatası, eksik/fazla harf ve yer değiştirme algılar) */
+  function editDistance(a, b){
+    a = String(a||'').toLowerCase().trim();
+    b = String(b||'').toLowerCase().trim();
+    const al = a.length, bl = b.length;
+    if(!al) return bl;
+    if(!bl) return al;
+    const dp = Array.from({length: al + 1}, () => Array(bl + 1).fill(0));
+    for(let i=0; i<=al; i++) dp[i][0] = i;
+    for(let j=0; j<=bl; j++) dp[0][j] = j;
+    for(let i=1; i<=al; i++){
+      for(let j=1; j<=bl; j++){
+        const cost = a[i-1] === b[j-1] ? 0 : 1;
+        dp[i][j] = Math.min(
+          dp[i-1][j] + 1,
+          dp[i][j-1] + 1,
+          dp[i-1][j-1] + cost
+        );
+        if(i > 1 && j > 1 && a[i-1] === b[j-2] && a[i-2] === b[j-1]){
+          dp[i][j] = Math.min(dp[i][j], dp[i-2][j-2] + cost);
+        }
+      }
+    }
+    return dp[al][bl];
+  }
+
+  function isCloseWordMatch(typed, targetWord){
+    const v = String(typed||'').toLowerCase().trim();
+    const variants = String(targetWord||'').split(/\s*[\/~]\s*/).map(s=>s.trim().toLowerCase()).filter(Boolean);
+    for(const t of variants){
+      if(v === t) return false;
+      const dist = editDistance(v, t);
+      const maxAllowed = t.length <= 4 ? 1 : (t.length <= 8 ? 2 : 3);
+      if(dist >= 1 && dist <= maxAllowed) return { target: t, dist };
+      /* İlk 3 harfi aynı ve uzunluk farkı en fazla 2 ise */
+      if(t.length >= 5 && v.length >= 3 && t.slice(0,3) === v.slice(0,3) && Math.abs(t.length - v.length) <= 2){
+        return { target: t, dist };
+      }
+    }
+    return null;
+  }
+
+  function buildWordQuizQuestion(x, xs, customSubType){
+    const dirEn = customSubType === 'pair' ? false : (Math.random() < .5);
+    const key = o => dirEn ? o.tr : o.en;
+    const ans = key(x);
+    const xMeanings = new Set(String(x.tr||'').toLowerCase().split(/\s*[,;/]\s*/).filter(Boolean));
+    const distPool = shuf(xs.filter(o => {
+      if(o === x || key(o) === ans) return false;
+      const oMeanings = String(o.tr||'').toLowerCase().split(/\s*[,;/]\s*/).filter(Boolean);
+      return !oMeanings.some(m => xMeanings.has(m));
+    })).slice(0, 3).map(key);
+    return { k:'w', sub: customSubType || 'sec', dirEn, q:dirEn ? x.en : x.tr, ans, opts:shuf([ans, ...distPool]), x };
+  }
+
+  function buildSentQuizQuestion(x){
+    upgradePackDistractors(cur);
+    const d = buildSubtleDistractors(x);
+    return { k:'s', sub:'cum', q:x.s, ans:x.st, opts:shuf([x.st, ...d]), x };
+  }
+
+  mkQ = function(sentOnly){
+    const xs = cur.items.filter(x=>x.tr);
+    if(sentOnly){
+      const cs = xs.filter(x=>x.s && x.st);
+      if(!cs.length) return null;
+      const targetX = (Q_DECK && Q_DECK[qi]) ? Q_DECK[qi] : rnd(cs);
+      return buildSentQuizQuestion(targetX);
+    }
+    const targetX = (Q_DECK && Q_DECK[qi]) ? Q_DECK[qi] : rnd(xs);
+    return buildWordQuizQuestion(targetX, xs, 'sec');
+  };
+
+  qTotal = function(){
+    if(!cur || !Array.isArray(cur.items)) return 10;
+    const xs = cur.items.filter(x => x.tr);
+    if(qmode === 'boss') return Math.min(12, Math.max(1, xs.length));
+    if(qmode === 'cum'){
+      const cs = xs.filter(x => x.s && x.st);
+      return Math.max(1, cs.length);
+    }
+    if(qmode === 'sec'){
+      return Math.max(1, xs.length);
+    }
+    return Math.max(1, xs.length);
+  };
+
+  qstart = function(m){
+    qmode = m; qi = 0; qok = 0;
+    lives = m === 'boss' ? 3 : 9999;
+    const xs = cur ? cur.items.filter(x => x.tr) : [];
+    if(m === 'sec'){
+      Q_DECK = shuf([...xs]);
+    } else if(m === 'cum'){
+      const cs = xs.filter(x => x.s && x.st);
+      Q_DECK = shuf([...cs]);
+    } else if(m === 'boss'){
+      /* BOSS RİNGİ: Önceki tüm etkinliklerin (Seç + Eşleştir + Cümle + Yazma) 12 soruluk karma düellosu! */
+      const bossCount = Math.min(12, Math.max(1, xs.length));
+      const pickedWords = shuf([...xs]).slice(0, bossCount);
+      const sentCapable = xs.filter(x => x.s && x.st);
+      const writeCapable = xs.filter(x => x.tr && !x.en.includes('X'));
+      const cycle = ['sec', 'pair', 'yaz', 'cum'];
+      BOSS_QUEUE = pickedWords.map((w, idx) => {
+        let t = cycle[idx % cycle.length];
+        if(t === 'cum' && (!w.s || !w.st)){
+          if(sentCapable.length) w = sentCapable[idx % sentCapable.length];
+          else t = 'sec';
+        }
+        if(t === 'yaz' && w.en.includes('X')){
+          if(writeCapable.length) w = writeCapable[idx % writeCapable.length];
+          else t = 'pair';
+        }
+        if(t === 'cum') return buildSentQuizQuestion(w);
+        if(t === 'yaz') return { k:'y', sub:'yaz', x:w, tries:0, done:0 };
+        if(t === 'pair') return buildWordQuizQuestion(w, xs, 'pair');
+        return buildWordQuizQuestion(w, xs, 'sec');
+      });
+    }
+    qNext();
+  };
+
+  ystart = function(){
+    qmode = 'yaz'; qi = 0; qok = 0; lives = 9999;
+    const xs = cur ? cur.items.filter(x => x.tr && !x.en.includes('X')) : [];
+    Y_DECK = shuf([...xs]);
+    ynext();
+  };
+
+  ynext = function(){
+    const total = Y_DECK.length || (cur ? cur.items.filter(x => x.tr && !x.en.includes('X')).length : 0);
+    if(qi >= total) return qEnd(true);
+    if(!cur.items.some(x=>x.tr) || FILL[cur.id]){ $('#st').innerHTML = waitBox(); return; }
+    if(!total){
+      $('#st').innerHTML = '<div class="qbox actempty"><p class="m">Bu listede yazma alıştırması için uygun kelime yok.</p></div>';
+      return;
+    }
+    const targetWord = Y_DECK[qi] || rnd(cur.items.filter(x => x.tr && !x.en.includes('X')));
+    Q = { k:'y', x: targetWord, done: 0, tries: 0 };
+    setProg((qi / total) * 100);
+    $('#st').innerHTML = `
+      <div class="coach">${mascot('',62)}<div class="bubble">Doğru yazımı düşün! Harf hatası yapıp çok yaklaşırsan <b>2. bir şans</b> kazanırsın. Tüm <b>${total}</b> kelime sorulur.</div></div>
+      <div class="qbox">
+        <div class="eyebrow">RİNG IV · YAZ · ${qi+1} / ${total} (Tüm Liste)</div>
+        <h2 class="q">${esc(Q.x.tr)}</h2>
+        <input class="txt" id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="İngilizce karşılığını yaz…">
+        <div class="row"><button class="btn3" id="ck">Kontrol et</button></div>
+        <div class="fb" id="fb"></div>
+      </div>`;
+    const a = $('#ans'); if(a) a.focus();
+  };
+
+  yCheck = function(){
+    if(!Q) return;
+    if(Q.done){
+      qi++;
+      if(qmode === 'boss') qNext(); else ynext();
+      return;
+    }
+    const inp = $('#ans'); if(!inp) return;
+    const v = inp.value.trim().toLowerCase().replace(/[.,!?']/g,'').replace(/^to /,'');
+    if(!v) return;
+
+    const targetVariants = Q.x.en.split(/\s*[\/~]\s*/).map(a=>a.trim().toLowerCase());
+    const ok = targetVariants.includes(v);
+
+    if(!ok){
+      /* 1) Aynı listedeki eş anlamlı kelime yazıldıysa hak yemeden ipucu ver */
+      const qMeanings = new Set(String(Q.x.tr||'').toLowerCase().split(/\s*[,;/]\s*/).map(s=>s.trim()).filter(Boolean));
+      const synMatch = cur.items.find(other => {
+        if(other === Q.x) return false;
+        const otherEn = other.en.toLowerCase().trim();
+        if(otherEn !== v) return false;
+        const otherMeanings = String(other.tr||'').toLowerCase().split(/\s*[,;/]\s*/).map(s=>s.trim()).filter(Boolean);
+        return otherMeanings.some(m => qMeanings.has(m));
+      });
+      if(synMatch){
+        const hintWord = Q.x.en.trim();
+        SFX.ok();
+        $('#fb').innerHTML = `<div class="close-box">💡 <b>"${esc(v)}"</b> kelimesi de bu anlama gelir; harika! Ama bu soruda listedeki <b>diğer eş anlamlı kelimeyi</b> bulmalısın.<br>İpucu: <b>${esc(hintWord.slice(0,2))}…</b> (${hintWord.length} harfli)</div>`;
+        inp.value = '';
+        inp.focus();
+        return;
+      }
+
+      /* 2) Gerçek kelimeye çok yakın yazıldıysa 2. bir hak tanı! */
+      const closeInfo = isCloseWordMatch(v, Q.x.en);
+      if(closeInfo && (Q.tries || 0) < 1){
+        Q.tries = (Q.tries || 0) + 1;
+        const hintWord = closeInfo.target;
+        const revealCount = Math.min(2, Math.max(1, Math.floor(hintWord.length / 3)));
+        const masked = hintWord.slice(0, revealCount) + '•'.repeat(Math.max(1, hintWord.length - revealCount - 1)) + (hintWord.length > 3 ? hintWord.slice(-1) : '');
+        SFX.ok();
+        $('#fb').innerHTML = `
+          <div class="close-box">
+            🔥 <b>Çok yaklaştın!</b> <i>"${esc(v)}"</i> yazdın — ufak bir harf farkı var.<br>
+            🎯 <b>2. Hakkın Aktif:</b> İpucu: <b style="color:var(--p);letter-spacing:1px">${esc(masked)}</b> (${hintWord.length} harfli). Tekrar dene!
+          </div>`;
+        inp.focus();
+        try{ inp.select(); }catch(e){}
+        return;
+      }
+    }
+
+    Q.done = 1;
+    META.tot = (META.tot||0) + 1;
+    if(ok){
+      META.ok = (META.ok||0) + 1; qok++; xp(10); SFX.ok();
+      setCombo(COMBO + 1);
+    } else {
+      if(qmode === 'boss') lives--;
+      SFX.bad();
+      setCombo(0);
+    }
+    saveMeta();
+    setHearts();
+    say(Q.x.en);
+    $('#fb').innerHTML = (ok
+      ? `<span class="good">✅ Doğru!${Q.tries ? ' (2. hakkında tam isabet!)' : ''}</span>`
+      : `<span class="bad2">❌ Doğru cevap: <b>${esc(Q.x.en)}</b></span>`) +
+      ` <button type="button" class="pill" style="padding:3px 10px;font-size:12px;margin-left:6px" data-say="${esc(Q.x.en)}">🔊 Amerikan Aksanıyla Dinle</button>`;
+    $('#ck').textContent = 'Sonraki →';
+    inp.disabled = true;
+  };
+
+  /* ============================================================================
+     OTOMASYON 4: PDF AYRIŞTIRMA & HER YENİ LİSTEDE TAMAMLANMA DURUMUNU SIFIRLAMA
+     ============================================================================ */
+  importFile = async function(f){
+    if(!f) return;
+    const out = $('#pfs');
+    if(out) out.textContent = 'Okunuyor ve birleşik kelimeler ayrıştırılıyor…';
+    try{
+      const ext = f.name.split('.').pop().toLowerCase();
+      let txt = '';
+      if(ext === 'pdf'){
+        await lib(PDFJS, 'pdfjsLib');
+        pdfjsLib.GlobalWorkerOptions.workerSrc = PDFW;
+        const pdf = await pdfjsLib.getDocument({data: new Uint8Array(await f.arrayBuffer())}).promise;
+        for(let n=1; n<=pdf.numPages; n++){
+          const c = await (await pdf.getPage(n)).getTextContent();
+          let line = '', lx = null;
+          for(const it of c.items){
+            if(it.str){
+              if(lx !== null && it.transform[4] - lx > 20) line += '\t';
+              line += it.str;
+              lx = it.transform[4] + (it.width || 0);
+            }
+            if(it.hasEOL){ txt += line + '\n'; line = ''; lx = null; }
+          }
+          txt += line + '\n';
+        }
+      } else if(ext === 'docx'){
+        await lib(MAMMOTH, 'mammoth');
+        const {value} = await mammoth.convertToHtml({arrayBuffer: await f.arrayBuffer()});
+        txt = [...new DOMParser().parseFromString(value, 'text/html').querySelectorAll('p,tr')]
+          .filter(el => el.tagName === 'TR' || !el.closest('table'))
+          .map(el => el.tagName === 'TR' ? [...el.children].map(c => c.textContent.trim()).join('\t') : el.textContent)
+          .join('\n');
+      } else {
+        txt = await f.text();
+      }
+      const separated = smartParse(txt);
+      const ta = $('#pw');
+      if(ta && separated.length){
+        const formatted = separated.map(w => w.tr ? `${w.en} - ${w.tr}` : w.en).join('\n');
+        ta.value = (ta.value.trim() ? ta.value.trim() + '\n' : '') + formatted;
+      }
+      if(out){
+        out.textContent = separated.length
+          ? `✅ ${separated.length} ayrı İngilizce kelime ayrıştırıldı (birleşik kelimeler ayrıldı). Oluşturduğunda Tureng yaygın anlamları eklenecek!`
+          : 'Dosyada kelime bulunamadı (taranmış PDF olabilir)';
+      }
+    }catch(e){
+      if(out) out.textContent = 'Dosya okunamadı: ' + e.message;
+    }
+  };
+
+  loadShared = async function(p){
+    if(!p || p.id !== 'def' || !DB) return;
+    try{
+      const s = await DB.doc('shared/def').get();
+      if(!s.exists) return;
+      const d = JSON.parse(JSON.stringify(s.data()));
+      if(Array.isArray(d.items)){
+        p.items.forEach(x => {
+          const low = x.en.toLowerCase().trim();
+          const y = d.items.find(it => it && (it.en.toLowerCase().trim() === low || it.en.toLowerCase().split(/\s*[\/~;,]\s*/).map(v=>v.trim()).includes(low)));
+          if(y){
+            if(!x.tr && y.tr) x.tr = y.tr;
+            if(!x.baseTr && y.tr) x.baseTr = y.tr;
+            if(!x.s && y.s){ x.s = y.s; x.st = y.st || ''; x.d = y.d || []; x.gl = y.gl || {}; x.mo = y.mo || {}; }
+          }
+        });
+      }
+      if(Array.isArray(d.groups) && !(p.groups || []).length) p.groups = d.groups;
+      if(d.dict && typeof d.dict === 'object') p.dict = Object.assign({}, d.dict, p.dict || {});
+    }catch(e){}
+  };
+
+  /* ============================================================================
+     OTOMASYON 4B: KULLANICI VERİLERİNİ ASLA SIFIRLAMAMA (KALICI KAYIT) &
+     BUEPT LİSTESİNİ ZORUNLU KILMAMA (HERKESE KENDİ KELİMELERİYLE ÖZGÜRLÜK)
+     ============================================================================ */
+  /* Anında kayıt: kullanıcı sayfayı kapatsa veya güncelleme yapılsa bile tek bir kelime/ilerleme kaybolmaz */
+  save = function(p = cur){
+    if(!p || !p.id) return;
+    try{
+      const uid = UID || localUid();
+      const { id, _t, ...b } = p;
+      localStorage.setItem('db:data/users/' + uid + '/' + id, JSON.stringify(b));
+      localStorage.setItem('ka_active_pack_id', id);
+      const backupIds = (packs || []).filter(x => x && x.id).map(x => x.id);
+      localStorage.setItem('ka_user_pack_ids', JSON.stringify(backupIds));
+    }catch(e){}
+    clearTimeout(p._t);
+    p._t = setTimeout(async () => {
+      if(!DB || !UID) return;
+      try{
+        const { id, _t, ...b } = p;
+        await DB.collection('data/users/' + UID).doc(id).set(b);
+      }catch(e){}
+    }, 150);
+  };
+
+  function isUntouchedDefaultPack(p){
+    if(!p || p.id !== 'def') return false;
+    const xpVal = (p.prog && p.prog.xp) || 0;
+    const anyStep = p.prog && Array.isArray(p.prog.steps) && p.prog.steps.some(Boolean);
+    const anyBoxMoved = p.prog && p.prog.box && Object.values(p.prog.box).some(v => v > 1);
+    const optedIn = localStorage.getItem('ka_keep_buept_def') === '1';
+    return !optedIn && xpVal === 0 && !anyStep && !anyBoxMoved;
+  }
+
+  function cleanUnwantedDefaultPack(){
+    if(!Array.isArray(packs)) return;
+    const defPack = packs.find(p => p && p.id === 'def');
+    if(defPack && isUntouchedDefaultPack(defPack)){
+      packs = packs.filter(p => p && p.id !== 'def');
+      try{
+        const uid = UID || localUid();
+        localStorage.removeItem('db:data/users/' + uid + '/def');
+      }catch(e){}
+    }
+    const savedActiveId = localStorage.getItem('ka_active_pack_id');
+    if(packs.length > 0){
+      const preferred = (savedActiveId && packs.find(p => p.id === savedActiveId)) || packs[packs.length - 1] || packs[0];
+      cur = preferred;
+    } else {
+      cur = null;
+    }
+  }
+
+  delPack = async function(){
+    if(!cur) return;
+    if(!confirm(`"${cur.name}" listesi silinsin mi?`)) return;
+    const id = cur.id;
+    if(id === 'def') try{ localStorage.removeItem('ka_keep_buept_def'); }catch(e){}
+    packs = packs.filter(p => p.id !== id);
+    try{
+      const uid = UID || localUid();
+      localStorage.removeItem('db:data/users/' + uid + '/' + id);
+      if(DB && UID) await DB.collection('data/users/' + UID).doc(id).delete();
+    }catch(e){}
+    cur = packs.length ? packs[packs.length - 1] : null;
+    if(cur) try{ localStorage.setItem('ka_active_pack_id', cur.id); }catch(e){}
+    else try{ localStorage.removeItem('ka_active_pack_id'); }catch(e){}
+    showHome();
+  };
+
+  function ensureFreshPackState(p){
+    if(!p) return;
+    splitCombinedItemsInPack(p);
+    if(!p.prog || typeof p.prog !== 'object'){
+      p.prog = { box:{}, steps:[0,0,0,0,0,0,0], mdone:[], xp:0 };
+    }
+    p.prog.box = Object.assign({}, p.prog.box || {});
+    p.prog.steps = Array.isArray(p.prog.steps) && p.prog.steps.length === 7 ? [...p.prog.steps] : [0,0,0,0,0,0,0];
+    p.prog.mdone = Array.isArray(p.prog.mdone) ? [...p.prog.mdone] : [];
+    p.prog.xp = Number(p.prog.xp) || 0;
+  }
+
+  badgeHtml = function(){
+    const p = cur;
+    const S = (p && p.prog && Array.isArray(p.prog.steps)) ? p.prog.steps : [0,0,0,0,0,0,0];
+    const hasBoxed = p && p.items && p.items.some(x => (p.prog.box[x.en]||1) > 1);
+    const acc = META.tot ? META.ok / META.tot : 0;
+    const B = [
+      ['🃏','İlk kart', !!(S[0] || hasBoxed)],
+      ['🎯','Keskin nişancı', !!(S[2] || ((META.tot||0)>=20 && acc>=.8))],
+      ['🔥','7 gün seri', (META.streak||0)>=7],
+      ['🐉','Boss avcısı', !!S[4]],
+      ['✍️','Yazar', !!S[3]],
+      ['📖','Paragraf ustası', !!S[6]]
+    ];
+    return B.map(([ic,n,got])=>`<div class="badge ${got?'got':''}"><i>${ic}</i>${n}</div>`).join('');
+  };
+
+  pick = function(id){
+    const found = packs.find(p => p.id === id) || packs[0] || null;
+    cur = found;
+    if(cur){
+      try{ localStorage.setItem('ka_active_pack_id', cur.id); }catch(e){}
+      ensureFreshPackState(cur);
+    }
+    GI = 0; step = -1; deck = []; di = 0; md = new Set(); Q = null;
+    renderHead();
+    showHome();
+  };
+
+  mkPack = function(){
+    const raw = ($('#pw') && $('#pw').value) || '';
+    const w = smartParse(raw);
+    const name = (($('#pn') && $('#pn').value) || '').trim() || 'Kişisel Kelime Listem';
+    if(!w.length){ setPfs('Önce kelime yaz ya da dosya seç.'); return; }
+    const p = {
+      id: 'p' + Date.now().toString(36),
+      name,
+      words: w.map(x => ({ en: x.en, tr: x.tr || '' })),
+      items: w.map(x => ({ en: x.en, tr: x.tr || '', baseTr: x.baseTr || x.tr || '', d: [], gl: {}, mo: {} })),
+      groups: [],
+      dict: {},
+      prog: { box: {}, steps: [0,0,0,0,0,0,0], mdone: [], xp: 0 }
+    };
+    cleanUnwantedDefaultPack();
+    packs.push(p);
+    cur = p;
+    try{ localStorage.setItem('ka_active_pack_id', p.id); }catch(e){}
+    GI = 0; step = -1; deck = []; di = 0; md = new Set(); Q = null;
+    save(p);
+    closeModal();
+    renderHead();
+    showHome();
+    if(SMP) enrich(p);
+  };
+
+  /* ============================================================================
+     5. GÖRSEL YARDIMCI VE ANİMASYON FONKSİYONLARI
+     ============================================================================ */
+  let HOME_VIEW = localStorage.getItem('ka_view') || 'grid';
+  let COMBO = 0, WEXP_BOX = 0, WEXP_Q = '', SEXP_Q = '', SEXP_HIDE_TR = false;
+
+  mascot = function(cls='',size=60){
+    return `<svg class="masc ${cls}" viewBox="0 0 64 64" width="${size}" height="${size}" aria-hidden="true" style="filter:drop-shadow(0 8px 18px rgba(0,0,0,.32))"><use href="#lgo"/></svg>`;
+  };
+
+  function modeSvg(i){
+    const svgs = [
+      `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="12" height="15" rx="2.5" stroke="var(--p2)" stroke-width="2"/><rect x="8" y="3" width="12" height="15" rx="2.5" fill="var(--card)" stroke="var(--acc)" stroke-width="2"/></svg>`,
+      `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" stroke="var(--acc)" stroke-width="2" fill="rgba(251,191,36,.22)"/></svg>`,
+      `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--p2)" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="var(--acc)" stroke-width="2"/><circle cx="12" cy="12" r="2" fill="#f43f5e"/></svg>`,
+      `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 19l7-7 3 3-7 7-3-3z" stroke="var(--acc)" stroke-width="2"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" stroke="var(--p2)" stroke-width="2"/></svg>`,
+      `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4" stroke="#f43f5e" stroke-width="2.2" stroke-linecap="round"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5" stroke="var(--acc)" stroke-width="2.2" stroke-linecap="round"/></svg>`,
+      `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="var(--p2)" stroke-width="2"/><path d="M8 11h8M8 15h5" stroke="var(--acc)" stroke-width="2" stroke-linecap="round"/></svg>`,
+      `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="var(--acc)" stroke-width="2"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="var(--p2)" stroke-width="2"/></svg>`
+    ];
+    return svgs[i] || svgs[0];
+  }
+
+  function polarToCartesian(cx, cy, r, angleDeg){
+    const rad = (angleDeg - 90) * Math.PI / 180;
+    return { x: cx + (r * Math.cos(rad)), y: cy + (r * Math.sin(rad)) };
+  }
+  function describeArc(cx, cy, r, startAngle, endAngle){
+    const start = polarToCartesian(cx, cy, r, endAngle);
+    const end = polarToCartesian(cx, cy, r, startAngle);
+    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+    return ["M", start.x, start.y, "A", r, r, 0, largeArcFlag, 0, end.x, end.y].join(" ");
+  }
+  function build7ArcsSVG(cx, cy, r, stepsArr, newlyIdx, strokeW){
+    const total = 7, stepAngle = 360 / total, gap = 9;
+    let html = '';
+    for(let i=0;i<total;i++){
+      const a1 = i * stepAngle + gap/2;
+      const a2 = (i+1) * stepAngle - gap/2;
+      const d = describeArc(cx, cy, r, a1, a2);
+      let cls = 'ring-seg idle';
+      if(i === newlyIdx) cls = 'ring-seg newly-conquered';
+      else if(stepsArr[i]) cls = 'ring-seg done';
+      html += `<path class="${cls}" style="stroke-width:${strokeW}px" d="${d}"/>`;
+    }
+    return html;
+  }
+  function getArenaRank(xpVal, doneCount){
+    if(doneCount === 7 || xpVal >= 600) return '👑 Arena Efsanesi';
+    if(doneCount >= 5 || xpVal >= 350) return '🏆 Kolezyum Şampiyonu';
+    if(doneCount >= 3 || xpVal >= 180) return '⚔️ Kelime Gladyatörü';
+    if(doneCount >= 1 || xpVal >= 60) return '🛡️ Arena Muhafızı';
+    return '🌱 Çaylak Savaşçı';
+  }
+  function spawnSparks(x, y, count=26){
+    const cx = x || window.innerWidth/2, cy = y || window.innerHeight/2;
+    const cols = ['#fbbf24','#fef08a','#10b981','#6366f1','#8b5cf6','#f43f5e'];
+    for(let i=0;i<count;i++){
+      const s = document.createElement('div');
+      s.className = 'spark-pt';
+      const sz = 5 + Math.random()*6;
+      s.style.width = sz+'px'; s.style.height = sz+'px';
+      s.style.left = cx+'px'; s.style.top = cy+'px';
+      s.style.background = cols[i%cols.length];
+      const ang = (Math.PI*2*i)/count + (Math.random()-.5)*.3, dist = 45 + Math.random()*135;
+      s.style.setProperty('--tx', Math.cos(ang)*dist+'px');
+      s.style.setProperty('--ty', (Math.sin(ang)*dist - 25)+'px');
+      document.body.appendChild(s);
+      setTimeout(()=>s.remove(), 850);
+    }
+  }
+  function setCombo(val){
+    COMBO = val;
+    const el = $('#comboTag');
+    if(!el) return;
+    if(COMBO >= 2){ el.hidden = false; el.textContent = `🔥 x${COMBO} KOMBO!`; }
+    else { el.hidden = true; }
+  }
+  function playGateTransition(modeIdx){
+    const ov = $('#gateOv');
+    if(!ov) return;
+    const m = MODES[modeIdx] || MODES[0];
+    $('#gateSealTxt').innerHTML = `${m.ic}<br><span style="font-size:10px;letter-spacing:1.2px;color:#fef08a">${m.r||'RİNG'}</span><br>${esc(m.n)}`;
+    ov.classList.add('active','closed');
+    setTimeout(()=>ov.classList.remove('closed'), 420);
+    setTimeout(()=>ov.classList.remove('active'), 920);
+  }
+  function showConquestCeremony(modeIdx, customSub){
+    const p = cur; if(!p) return;
+    const S = p.prog.steps || [0,0,0,0,0,0,0], m = MODES[modeIdx] || MODES[0];
+    const doneCount = S.filter(Boolean).length, pct = Math.round(doneCount / 7 * 100);
+    $('#ceremonyArcs').innerHTML = build7ArcsSVG(110, 110, 82, S, modeIdx, 10);
+    $('#ceremonyEmoji').textContent = m.ic;
+    $('#ceremonyRingNum').textContent = m.r || `RİNG ${modeIdx+1}`;
+    $('#conqBanner').textContent = doneCount===7 ? '👑 TÜM ARENA FETHEDİLDİ! 👑' : `⚔️ ${m.r||'RİNG'} FETHEDİLDİ! ⚔️`;
+    $('#conqTitle').textContent = `${m.n} Ringi Ele Geçirildi!`;
+    $('#conqSub').textContent = customSub || `${m.mech||'Arena'} etabını zaferle tamamladın. Arena halkası altın mühürle kilitlendi!`;
+    $('#rewXp').textContent = `+${m.xp||20} XP`;
+    $('#rewRing').textContent = `${doneCount} / 7`;
+    $('#rewPct').textContent = `%${pct}`;
+    const ni = nextIdx(p), nxtBtn = $('#conqNextBtn');
+    if(doneCount < 7 && ni !== modeIdx){
+      nxtBtn.hidden = false; nxtBtn.textContent = `⚔️ Sıradaki Ring: ${MODES[ni].n} →`; nxtBtn.dataset.conqOpen = ni;
+    } else if(modeIdx < 6){
+      nxtBtn.hidden = false; nxtBtn.textContent = `⚔️ Sıradaki Ring: ${MODES[modeIdx+1].n} →`; nxtBtn.dataset.conqOpen = modeIdx + 1;
+    } else { nxtBtn.hidden = true; }
+    const ov = $('#conqOv');
+    ov.classList.remove('show'); void ov.offsetWidth; ov.classList.add('show');
+    SFX.win(); confetti();
+    setTimeout(()=>spawnSparks(window.innerWidth/2, window.innerHeight/2, 34), 260);
+  }
+  function closeConquestCeremony(){ const ov = $('#conqOv'); if(ov) ov.classList.remove('show'); }
+
+  function towerHtml(p){
+    const tiers = [
+      {b:5, cls:'t5', lbl:'👑 5. Efsane Zirvesi'},
+      {b:4, cls:'t4', lbl:'🏆 4. Şampiyon'},
+      {b:3, cls:'t3', lbl:'⚔️ 3. Gladyatör'},
+      {b:2, cls:'t2', lbl:'🛡️ 2. Savaşçı'},
+      {b:1, cls:'t1', lbl:'🌱 1. Başlangıç'}
+    ];
+    return `<div class="tower-stack">${tiers.map(t=>{
+      const cnt = p.items.filter(x=>bx(x)===t.b).length;
+      return `<button type="button" class="t-tier ${t.cls}" data-tier="${t.b}"><span>${t.lbl}</span><span class="t-cnt">${cnt}</span></button>`;
+    }).join('')}</div>`;
+  }
+
+  function renderWordExplorerBody(){
+    const p = cur; if(!p) return '';
+    const tierBadges = {5:'👑 Kutu 5',4:'🏆 Kutu 4',3:'⚔️ Kutu 3',2:'🛡️ Kutu 2',1:'🌱 Kutu 1'};
+    const q = WEXP_Q.trim().toLowerCase();
+    const filtered = p.items.filter(x => {
+      if(WEXP_BOX > 0 && bx(x) !== WEXP_BOX) return false;
+      if(q && !x.en.toLowerCase().includes(q) && !String(x.tr||'').toLowerCase().includes(q)) return false;
+      return true;
+    });
+    return `
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px">
+        <input class="txt" id="wexpInput" value="${esc(WEXP_Q)}" placeholder="🔍 İngilizce kelime veya Tureng anlamı ara…" style="flex:1;min-width:220px;padding:11px 14px;font-size:14.5px">
+        <button type="button" class="btn3 small" data-sent-modal="1">📖 Örnek Cümlelerin Anlamları</button>
+        <div class="pillsg" style="margin:0;width:100%;justify-content:flex-start">
+          <button type="button" class="pill ${WEXP_BOX===0?'on':''}" data-wbox="0">Tümü (${p.items.length})</button>
+          ${[1,2,3,4,5].map(b=>`<button type="button" class="pill ${WEXP_BOX===b?'on':''}" data-wbox="${b}">${tierBadges[b]} (${p.items.filter(x=>bx(x)===b).length})</button>`).join('')}
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:10px;margin-top:14px;max-height:410px;overflow:auto;padding-right:4px">
+        ${filtered.length ? filtered.map(w=>`
+          <div style="background:var(--soft);border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;gap:8px">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+                <b style="color:var(--acc);font-size:15.5px">${esc(w.en)}</b>
+                <button type="button" class="pill" style="padding:3px 9px;font-size:12px" data-say="${esc(w.en)}">🔊 US</button>
+              </div>
+              <div style="font-size:13.5px;font-weight:700;margin-top:4px">${esc(w.tr||'Anlam hazırlanıyor…')}</div>
+              ${w.s ? `<div style="margin-top:8px;padding-top:7px;border-top:1px dashed var(--line);font-size:12px;color:var(--ink)"><b>Örnek:</b> ${esc(w.s)}${w.st ? `<div style="color:var(--acc);margin-top:3px;font-weight:700">🇹🇷 ${esc(w.st)}</div>` : ''}</div>` : ''}
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px dashed var(--line);font-size:11.5px;font-weight:800;color:var(--mut)">
+              <span>${tierBadges[bx(w)]}</span>
+              <div style="display:flex;gap:4px">
+                <button type="button" class="pill" style="padding:2px 8px;font-size:11px" data-wshift="-1" data-wen="${esc(w.en)}">↓</button>
+                <button type="button" class="pill" style="padding:2px 8px;font-size:11px" data-wshift="1" data-wen="${esc(w.en)}">↑ Kulede Yükselt</button>
+              </div>
+            </div>
+          </div>
+        `).join('') : `<p class="m" style="grid-column:1/-1;text-align:center;padding:24px">Aramana uygun kelime bulunamadı.</p>`}
+      </div>`;
+  }
+
+  function openTierModal(boxNum=0){
+    WEXP_BOX = boxNum || 0; WEXP_Q = '';
+    if(!cur) return;
+    openModalWith(`<section class="addp"><div class="addp-h"><div><div class="eyebrow">ARENA KELİME GEZGİNİ · ${esc(cur.name)}</div><h2>🔍 Kelimeleri, Tureng Anlamlarını İncele & Dinle</h2></div></div><div id="wexpWrap">${renderWordExplorerBody()}</div></section>`);
+  }
+
+  /* TÜM ÖRNEK CÜMLELER VE TÜRKÇE ANLAMLARI PENCERESİ */
+  function renderSentencesExplorerBody(){
+    const p = cur; if(!p) return '';
+    const q = SEXP_Q.trim().toLowerCase();
+    const withSentCount = p.items.filter(x => x.s && x.st).length;
+    const filtered = p.items.filter(x => {
+      if(!q) return true;
+      return x.en.toLowerCase().includes(q)
+        || String(x.tr||'').toLowerCase().includes(q)
+        || String(x.s||'').toLowerCase().includes(q)
+        || String(x.st||'').toLowerCase().includes(q);
+    });
+    return `
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:14px">
+        <input class="txt" id="sexpInput" value="${esc(SEXP_Q)}" placeholder="🔍 Kelime, İngilizce örnek cümle veya Türkçe çevirisinde ara…" style="flex:1;min-width:230px;padding:11px 14px;font-size:14.5px;margin:0">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <button type="button" class="pill ${!SEXP_HIDE_TR?'on':''}" id="toggleAllSentTr">
+            ${SEXP_HIDE_TR ? '👁️ Türkçe Anlamları Göster' : '🙈 Türkçe Anlamları Gizle (Kendini Dene)'}
+          </button>
+          <button type="button" class="pill" data-tier="0">🔍 Kelime Gezginine Dön</button>
+        </div>
+      </div>
+      <div class="m" style="margin-top:10px;font-weight:700;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <span>Toplam <b>${p.items.length}</b> kelimeden <b>${withSentCount}</b> tanesinin örnek cümlesi ve Türkçe anlamı hazır.</span>
+        ${withSentCount < p.items.length ? `<button type="button" class="btn3 small" id="hz">✨ Eksik Cümleleri Oluştur</button>` : ''}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px;max-height:440px;overflow:auto;padding-right:4px">
+        ${filtered.length ? filtered.map((w, idx) => `
+          <div style="background:var(--soft);border:1.5px solid var(--line);border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px dashed var(--line);padding-bottom:8px">
+              <div>
+                <span style="font-size:11.5px;font-weight:900;color:var(--mut);margin-right:6px">#${idx+1}</span>
+                <b style="color:var(--acc);font-size:16.5px">${esc(w.en)}</b>
+                <span style="font-size:13.5px;font-weight:700;color:var(--ink);margin-left:8px">— ${esc(w.tr || 'Anlam hazırlanıyor…')}</span>
+              </div>
+              <div style="display:flex;gap:6px;align-items:center">
+                <button type="button" class="pill" style="padding:4px 10px;font-size:12px" data-say="${esc(w.en)}">🔊 Kelime (US)</button>
+                ${w.s ? `<button type="button" class="pill" style="padding:4px 10px;font-size:12px" data-say="${esc(w.s)}">🔊 Cümleyi Dinle (US)</button>` : ''}
+              </div>
+            </div>
+            ${w.s ? `
+              <div class="sent-card-ex-wrap" style="font-size:14.5px;line-height:1.65;color:var(--ink)">
+                <span style="font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--p2);display:block;margin-bottom:2px">🇬🇧 İNGİLİZCE ÖRNEK CÜMLE (Kelimeye dokun → Anlamı gör & Listeye ekle)</span>
+                <div class="ex" style="margin-top:4px;padding:10px 12px">${sent(w.s)}</div>
+                <div class="tip sent-inline-tip" hidden style="margin-top:8px"></div>
+              </div>
+              <div style="background:var(--card);border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.5;${SEXP_HIDE_TR ? 'display:none' : ''}">
+                <span style="font-size:10.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--acc);display:block;margin-bottom:2px">🇹🇷 CÜMLENİN TAM TÜRKÇE ANLAMI</span>
+                <span style="font-weight:700;color:var(--ink)">${esc(w.st || 'Türkçe çeviri hazırlanıyor…')}</span>
+              </div>
+            ` : `<div class="m" style="font-size:13px">Bu kelime için örnek cümle henüz oluşturulmamış. Yukarıdaki "Hazırla" düğmesiyle oluşturabilirsin.</div>`}
+          </div>
+        `).join('') : `<p class="m" style="text-align:center;padding:24px">Aramana uygun kelime veya cümle bulunamadı.</p>`}
+      </div>`;
+  }
+
+  function openSentencesModal(){
+    SEXP_Q = '';
+    if(!cur) return;
+    openModalWith(`<section class="addp"><div class="addp-h"><div><div class="eyebrow">ÖRNEK CÜMLELER VE TÜRKÇE ÇEVİRİLERİ · ${esc(cur.name)}</div><h2>📖 Tüm Örnek Cümleler & Türkçe Anlamları</h2></div></div><div id="sexpWrap">${renderSentencesExplorerBody()}</div></section>`);
+  }
+
+  /* 6. EKRAN RENDER FONKSİYONLARI */
+  renderHome = function(){
+    if(typeof packs !== 'undefined' && Array.isArray(packs)) packs.forEach(pk => ensureFreshPackState(pk));
+    if(!cur && packs && packs.length){
+      const savedActiveId = localStorage.getItem('ka_active_pack_id');
+      cur = (savedActiveId && packs.find(x => x.id === savedActiveId)) || packs[packs.length - 1] || packs[0];
+    }
+    if(!cur){
+      $('#home').innerHTML = `
+        <section class="hero">
+          <div>
+            <div class="hero-meta">
+              <span class="eyebrow">ÖZGÜR KELİME ARENASI</span>
+              <span class="rank-badge">🌱 Kendi Arenanı Kur</span>
+            </div>
+            <h1>Kendi Kelime Listenle Başla!</h1>
+            <p>Burada sabit veya zorunlu bir liste yok. PDF, Word (.docx), TXT dosyanı yükle ya da öğrenmek istediğin kelimeleri doğrudan yaz; Tureng yaygın anlamları, akademik eş anlamlılar, örnek cümleler ve 7 Arena Ringi senin kelimelerin için hazırlansın!</p>
+            <div class="hero-btns" style="margin-top:16px">
+              <button class="btn3" id="addb2">＋ Kendi Kelime Listeni Oluştur →</button>
+              <button class="btn-hero-sec" type="button" id="loadSampleDefBtn">📚 Örnek Akademik Liste Yükle (İsteğe Bağlı)</button>
+            </div>
+          </div>
+          <div class="hero-r">
+            ${mascot('wink',96)}
+          </div>
+        </section>
+        <div class="card" style="text-align:center;padding:32px 20px;margin-top:18px">
+          <div style="font-size:38px;margin-bottom:8px">📄 ✨ ⚔️</div>
+          <h3 style="font-family:Fraunces,serif;font-size:22px;margin-bottom:6px">Henüz Kişisel Bir Kelime Listen Yok</h3>
+          <p class="m" style="max-width:540px;margin:0 auto 16px">İster okul/sınav PDF'ini yükle, ister kendi seçtiğin kelimeleri yapıştır, istersen de üst menüden <b>📰 Haber</b> bölümüne gidip haber okurken bilmediğin kelimelere dokunarak listeni sıfırdan oluştur.</p>
+          <button class="btn3" id="addb">＋ Hemen İlk Listeni Ekle</button>
+        </div>
+        ${pwaCardHtml()}
+        <p class="foot-note" style="text-align:center;color:var(--mut);font-size:13px;margin-top:34px">Kelime Arenası · Kendi kelimelerinle özgürce çalış</p>`;
+      return;
+    }
+    ensureFreshPackState(cur);
+    const p=cur,S=p.prog.steps,done=S.filter(Boolean).length,pct=Math.round(done/7*100),ni=nextIdx(p);
+    const hasTr=p.items.some(x=>x.tr),trCount=p.items.filter(x=>x.tr).length;
+    const sentCount=p.items.filter(x=>x.s&&x.st).length;
+    const acc=META.tot?Math.round(META.ok/META.tot*100):null;
+    const rank=getArenaRank(totalXp(), done);
+    const hint=!hasTr?'Bu listede henüz Türkçe anlamı olan kelime yok. Yukarıdaki “Hazırla” düğmesiyle Tureng anlamlarını ve cümleleri tamamla.'
+      :(done===0?'Arena kapıları açıldı! İlk ring olan Kartlar ile kelimeleri fethetmeye başla.':(done===7?'Muazzam! Bu listedeki 7 Arena Ringinin tamamını fethettin!':`${done} / 7 ring fethedildi. Sıradaki hedef: ${MODES[ni].r} · ${MODES[ni].n}.`));
+
+    $('#home').innerHTML=`
+     <section class="hero">
+       <div>
+         <div class="hero-meta">
+           <span class="eyebrow">AKTİF LİSTE · ${esc(p.name)}</span>
+           <span class="rank-badge">${rank}</span>
+         </div>
+         <h1>${done===7?'Tüm Ringler Fethedildi!':'Kelime Arenası Seni Bekliyor.'}</h1>
+         <p>${esc(hint)}</p>
+         <div class="hero-btns">
+           <button class="btn3" data-open="${ni}" ${hasTr?'':'disabled'}>⚔️ Devam et · ${MODES[ni].n} →</button>
+           <button class="btn-hero-sec" type="button" data-sent-modal="1">📖 Örnek Cümleler & Anlamları (${sentCount})</button>
+         </div>
+       </div>
+       <div class="hero-r">
+         ${mascot('wink',88)}
+         <div class="hero-ring-wrap" title="${done}/7 Ring Fethedildi">
+           <svg class="hero-ring-svg" viewBox="0 0 120 120">${build7ArcsSVG(60, 60, 50, S, -1, 8)}</svg>
+           <div class="hero-ring-center"><b>${pct}%</b><small>${done}/7 RİNG</small></div>
+         </div>
+       </div>
+     </section>
+     <section class="stat-row">
+       <div class="sc"><div class="sc-ico">🔥</div><div><span>Günlük Seri</span><b>${META.streak||0} gün</b></div></div>
+       <div class="sc"><div class="sc-ico">⭐</div><div><span>Toplam XP</span><b>${totalXp().toLocaleString('tr-TR')}</b></div></div>
+       <div class="sc"><div class="sc-ico">🧠</div><div><span>Öğrenilen Kelime</span><b>${learnedCount()}</b></div></div>
+       <div class="sc"><div class="sc-ico">🎯</div><div><span>İsabet Oranı</span><b>${acc===null?'—':'%'+acc}</b></div></div>
+     </section>
+     <div class="homegrid">
+       <div>
+         <div class="sec-bar">
+           <h2 class="sec">⚔️ Arena Ringleri (7 Mod)</h2>
+           <div class="view-switch">
+             <button type="button" class="vbtn ${HOME_VIEW==='grid'?'on':''}" data-view="grid">🔥 Portallar</button>
+             <button type="button" class="vbtn ${HOME_VIEW==='map'?'on':''}" data-view="map">🗺️ Fetih Yolu</button>
+           </div>
+         </div>
+         <div class="modes ${HOME_VIEW==='map'?'quest-map':''}">
+           ${MODES.map((m,i)=>`
+             <button class="mcard ${i===4?'boss-card':''} ${S[i]?'done':''}" data-open="${i}" ${hasTr?'':'disabled'}>
+               <div class="mcard-top">
+                 <span class="ic">${modeSvg(i)}</span>
+                 <div class="mcard-badges">
+                   <span class="ring-lbl">${m.r||'RİNG '+(i+1)}</span>
+                   <span class="tag">${S[i]?'✓ Fethedildi':(hasTr?(i===ni?'🎯 Hedef Ring':'Başla'):'Bekliyor')}</span>
+                 </div>
+               </div>
+               <div class="mcard-body"><h3>${m.n}</h3><p>${m.d}</p></div>
+               <div class="mcard-foot">
+                 <span>⚡ ${m.mech||'Arena'} · +${m.xp||20} XP</span>
+                 <span>${S[i]?'✓ Tamamlandı':'Giriş →'}</span>
+               </div>
+             </button>`).join('')}
+         </div>
+       </div>
+       <aside>
+         <div class="card">
+           <h3>📚 Kelime Listesi</h3>
+           <select class="lsel" id="pk">${packs.map(x=>`<option value="${esc(x.id)}" ${x.id===p.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select>
+           <p class="m">${p.items.length} ayrı kelime · ${trCount} anlam · ${sentCount} örnek cümle · ${(p.groups||[]).length} paragraf</p>
+           <div class="listrow">
+             <button class="pill" type="button" data-sent-modal="1">📖 Örnek Cümle Anlamları</button>
+             <button class="pill" type="button" data-tier="0">🔍 Kelime Gezgini</button>
+             <button class="pill" id="addb2">＋ Yeni liste</button>
+             <button class="pill" type="button" id="resetProgBtn" title="Bu listenin ilerlemesini sıfırla">🔄 Sıfırla</button>
+             <button class="pill" id="xj">📋 Dışa aktar</button>
+             <button class="pill" id="del">🗑 Listeyi sil</button>
+           </div>
+         </div>
+         ${pwaCardHtml()}
+         <div class="card" style="margin-top:16px">
+           <h3><span>🏛️ Ustalaşma Kulesi</span></h3>
+           <p class="m" style="margin-top:-4px;margin-bottom:8px">Kelimeleri görmek için katmana dokun:</p>
+           ${towerHtml(p)}
+         </div>
+         <div class="card" style="margin-top:16px">
+           <h3>🏅 Bu Listenin Rozetleri</h3>
+           <div class="badges">${badgeHtml()}</div>
+         </div>
+       </aside>
+     </div>
+     <p class="foot-note" style="text-align:center;color:var(--mut);font-size:13px;margin-top:34px">Kelime Arenası · Akademik İngilizce için oyunlaştırılmış çalışma</p>`;
+  };
+
+  showAct = function(i){
+    step=i; setCombo(0); playGateTransition(i);
+    $('#home').hidden=true; $('#act').hidden=false; $('#hearts').hidden=true;
+    if($('#bossBarWrap')) $('#bossBarWrap').innerHTML='';
+    setProg(0); runStep(i); renderFoot(); renderEnr(); window.scrollTo(0,0);
+  };
+
+  showHome = function(){
+    step=-1; setCombo(0);
+    $('#act').hidden=true; $('#home').hidden=false; $('#hearts').hidden=true;
+    if($('#bossBarWrap')) $('#bossBarWrap').innerHTML='';
+    renderHome(); renderEnr(); renderFoot(); window.scrollTo(0,0);
+  };
+
+  /* AKADEMİK EŞ ANLAMLILAR (SYNONYMS) SÖZLÜĞÜ VE OTOMATİK EŞLEŞTİRİCİ */
+  const ACADEMIC_SYNS = {
+    'rule': ['govern', 'reign', 'administer', 'command'],
+    'ruler': ['sovereign', 'monarch', 'leader', 'governor'],
+    'ally': ['partner', 'confederate', 'associate', 'supporter'],
+    'alliance': ['coalition', 'pact', 'federation', 'league'],
+    'boundary': ['border', 'frontier', 'limit', 'perimeter'],
+    'rationale': ['reasoning', 'justification', 'logic', 'grounds'],
+    'hinder': ['impede', 'obstruct', 'hamper', 'inhibit'],
+    'hesitate': ['waver', 'falter', 'pause', 'vacillate'],
+    'prevail': ['predominate', 'triumph', 'persuade', 'endure'],
+    'prevalent': ['widespread', 'pervasive', 'common', 'dominant'],
+    'concerning': ['regarding', 'about', 'as to', 'pertaining to'],
+    'about': ['concerning', 'regarding', 'as to', 'respecting'],
+    'regarding': ['concerning', 'about', 'as to', 'with respect to'],
+    'as to': ['regarding', 'concerning', 'about', 'as for'],
+    'fallacy': ['misconception', 'delusion', 'error', 'flaw'],
+    'misconception': ['fallacy', 'misunderstanding', 'illusion', 'delusion'],
+    'suppose': ['assume', 'presume', 'hypothesize', 'postulate'],
+    'assume': ['suppose', 'presume', 'postulate', 'surmise'],
+    'supposition': ['assumption', 'hypothesis', 'presumption', 'conjecture'],
+    'assumption': ['supposition', 'presumption', 'premise', 'postulate'],
+    'rival': ['competitor', 'contender', 'opponent', 'adversary'],
+    'rivalry': ['competition', 'contention', 'antagonism', 'conflict'],
+    'treaty': ['accord', 'pact', 'compact', 'convention'],
+    'legitimacy': ['validity', 'lawfulness', 'authenticity', 'authority'],
+    'legitimate': ['lawful', 'valid', 'rightful', 'authentic'],
+    'dynasty': ['lineage', 'empire', 'regime', 'house'],
+    'succeed': ['triumph', 'flourish', 'follow', 'replace'],
+    'succession': ['sequence', 'inheritance', 'progression', 'lineage'],
+    'successor': ['heir', 'replacement', 'next in line', 'descendant'],
+    'expand': ['extend', 'enlarge', 'broaden', 'amplify'],
+    'expansion': ['growth', 'extension', 'enlargement', 'proliferation'],
+    'overt': ['explicit', 'open', 'apparent', 'undisguised'],
+    'covert': ['clandestine', 'secret', 'concealed', 'ulterior'],
+    'means': ['method', 'instrument', 'way', 'mechanism'],
+    'retain': ['preserve', 'maintain', 'keep', 'withhold'],
+    'trace': ['vestige', 'remnant', 'sign', 'track'],
+    'susceptible': ['vulnerable', 'prone', 'liable', 'sensitive'],
+    'vulnerable': ['susceptible', 'exposed', 'defenseless', 'fragile'],
+    'remark': ['comment', 'statement', 'observation', 'note'],
+    'instant': ['immediate', 'prompt', 'momentary', 'rapid'],
+    'at stake': ['in danger', 'at risk', 'in jeopardy', 'on the line'],
+    'in danger': ['at stake', 'at risk', 'imperiled', 'endangered'],
+    'at risk': ['at stake', 'in danger', 'vulnerable', 'jeopardized'],
+    'bleed': ['hemorrhage', 'ooze', 'drain', 'seep'],
+    'extract': ['derive', 'obtain', 'withdraw', 'distill'],
+    'fraction': ['portion', 'fragment', 'segment', 'part'],
+    'heat': ['warmth', 'temperature', 'intensity', 'fever'],
+    'forge': ['fabricate', 'counterfeit', 'falsify', 'shape'],
+    'fabricate': ['forge', 'invent', 'concoct', 'manufacture'],
+    'behind bars': ['imprisoned', 'incarcerated', 'jailed', 'detained'],
+    'worry': ['anxiety', 'apprehension', 'concern', 'distress'],
+    'worrying': ['worrisome', 'alarming', 'troubling', 'disturbing'],
+    'worrisome': ['worrying', 'concerning', 'unsettling', 'daunting'],
+    'deceive': ['mislead', 'fool', 'trick', 'delude'],
+    'fool': ['deceive', 'trick', 'mislead', 'dupe'],
+    'trick': ['deceive', 'mislead', 'fool', 'outwit'],
+    'mislead': ['deceive', 'misinform', 'trick', 'delude'],
+    'concrete': ['tangible', 'solid', 'definite', 'substantial'],
+    'tangible': ['concrete', 'palpable', 'real', 'measurable'],
+    'invasion': ['incursion', 'intrusion', 'occupation', 'assault'],
+    'invasion of privacy': ['intrusion', 'breach of confidentiality', 'surveillance'],
+    'have to do with': ['relate to', 'concern', 'pertain to', 'involve'],
+    'reveal': ['disclose', 'uncover', 'expose', 'unveil'],
+    'consent': ['permission', 'approval', 'assent', 'agreement'],
+    'surveillance': ['monitoring', 'observation', 'scrutiny', 'supervision'],
+    'harvest': ['crop', 'yield', 'reap', 'gather'],
+    'following': ['after', 'subsequent to', 'ensuing', 'succeeding'],
+    'after': ['following', 'subsequent to', 'behind', 'next to'],
+    'retail': ['commercial', 'consumer sale', 'merchandising'],
+    'leftover': ['remnant', 'surplus', 'remainder', 'residue'],
+    'toss': ['discard', 'throw', 'cast', 'fling'],
+    'expire': ['lapse', 'terminate', 'run out', 'cease'],
+    'take a toll': ['damage', 'harm', 'wear down', 'impair'],
+    'fertilizer': ['compost', 'manure', 'nutrient', 'plant food'],
+    'pesticide': ['insecticide', 'herbicide', 'chemical control'],
+    'seed': ['grain', 'kernel', 'germ', 'origin'],
+    'quantity': ['amount', 'volume', 'abundance', 'measure'],
+    'trivial': ['insignificant', 'minor', 'negligible', 'petty'],
+    'annual': ['yearly', 'perennial', 'year-long'],
+    'volume': ['capacity', 'quantity', 'bulk', 'magnitude'],
+    'discard': ['dispose of', 'toss', 'abandon', 'scrap'],
+    'equivalent': ['equal', 'comparable', 'counterpart', 'tantamount'],
+    'finite': ['limited', 'restricted', 'bounded', 'exhaustible'],
+    'extravagancy': ['excess', 'lavishness', 'prodigality', 'wastefulness'],
+    'impeccable': ['flawless', 'perfect', 'faultless', 'immaculate'],
+    'perfect': ['impeccable', 'flawless', 'ideal', 'supreme'],
+    'flawless': ['impeccable', 'perfect', 'unblemished', 'intact'],
+    'evaluate': ['assess', 'appraise', 'estimate', 'gauge'],
+    'dispute': ['controversy', 'conflict', 'debate', 'disagreement'],
+    'excuse': ['pretext', 'justification', 'apology', 'alibi'],
+    'compensate': ['reimburse', 'offset', 'make up for', 'indemnify'],
+    'trim': ['prune', 'cut', 'curtail', 'reduce'],
+    'grain': ['cereal', 'kernel', 'crop', 'particle'],
+    'yield': ['produce', 'generate', 'output', 'harvest'],
+    'unprecedented': ['unparalleled', 'unmatched', 'extraordinary', 'novel'],
+    'account for': ['constitute', 'explain', 'comprise', 'represent'],
+    'per capita': ['per person', 'per head', 'individually'],
+    'per person': ['per capita', 'individually', 'for each person'],
+    'urgency': ['acuteness', 'exigency', 'pressing need', 'priority'],
+    'allot': ['allocate', 'assign', 'apportion', 'distribute'],
+    'allocate': ['allot', 'earmark', 'assign', 'designate'],
+    'shrink': ['contract', 'diminish', 'dwindle', 'decrease'],
+    'water-intensive': ['high-water', 'resource-heavy', 'thirsty']
+  };
+
+  const SYN_AI_SYS = `Sen akademik İngilizce (BUEPT/IELTS) kelime uzmanısın. Verilen İngilizce kelimenin en yakın 3-4 akademik İngilizce eş anlamlısını (synonyms) döndür. YALNIZCA geçerli JSON döndür: {"syn":["synonym1","synonym2","synonym3"]}`;
+  const SYN_PENDING = {};
+
+  function getSynonymsForWord(p, x){
+    if(!x || !x.en) return [];
+    const k = x.en.toLowerCase().trim();
+    const list = [];
+    const seen = new Set([k]);
+    const add = (w, inPack) => {
+      const clean = String(w||'').trim();
+      const low = clean.toLowerCase();
+      if(!clean || seen.has(low)) return;
+      seen.add(low);
+      list.push({ en: clean, inPack: !!inPack });
+    };
+
+    /* 1. Aynı listede Türkçe anlamı örtüşen diğer İngilizce eş anlamlıları bul */
+    if(p && Array.isArray(p.items) && x.tr){
+      const xTrSet = new Set(String(x.baseTr || x.tr).toLowerCase().split(/\s*[,;/]\s*/).map(s=>s.trim()).filter(s=>s.length>2));
+      p.items.forEach(other => {
+        if(!other || other === x) return;
+        const oTrs = String(other.baseTr || other.tr || '').toLowerCase().split(/\s*[,;/]\s*/).map(s=>s.trim()).filter(s=>s.length>2);
+        if(oTrs.some(m => xTrSet.has(m))){
+          add(other.en, true);
+        }
+      });
+    }
+
+    /* 2. Kelime nesnesinde kayıtlı AI syn dizisi varsa ekle */
+    if(Array.isArray(x.syn)){
+      x.syn.forEach(s => {
+        const inP = p && findWordInPack(p, s);
+        add(s, !!inP);
+      });
+    }
+
+    /* 3. Yerleşik Akademik Eş Anlamlılar Sözlüğünden ekle */
+    if(ACADEMIC_SYNS[k]){
+      ACADEMIC_SYNS[k].forEach(s => {
+        const inP = p && findWordInPack(p, s);
+        add(s, !!inP);
+      });
+    }
+
+    return list.slice(0, 5);
+  }
+
+  async function ensureCardSynonyms(p, x){
+    if(!p || !x || !x.en || !SMP) return;
+    const curSyns = getSynonymsForWord(p, x);
+    if(curSyns.length >= 2 || SYN_PENDING[x.en]) return;
+    SYN_PENDING[x.en] = 1;
+    try{
+      const r = await askJ(SYN_AI_SYS, `${x.en} (${x.tr || ''})`, 30000, 'quick');
+      if(r && Array.isArray(r.syn) && r.syn.length){
+        x.syn = r.syn.map(s=>String(s||'').trim()).filter(Boolean);
+        save(p);
+        const box = document.getElementById('cardSynBox');
+        if(box && step === 0 && deck[di] === x){
+          box.outerHTML = renderCardSynonymsHtml(p, x);
+        }
+      }
+    }catch(e){}
+    finally{ delete SYN_PENDING[x.en]; }
+  }
+
+  function renderCardSynonymsHtml(p, x){
+    const syns = getSynonymsForWord(p, x);
+    if(!syns.length){
+      if(SMP) ensureCardSynonyms(p, x);
+      return `<div class="syn-box" id="cardSynBox"><span class="syn-lbl">🔗 Synonyms:</span><span class="m" style="font-size:12px">${SMP ? 'Eş anlamlılar hazırlanıyor…' : '—'}</span></div>`;
+    }
+    return `
+      <div class="syn-box" id="cardSynBox">
+        <span class="syn-lbl">🔗 Synonyms (Eş Anlamlılar):</span>
+        ${syns.map(s => `<span class="syn-chip tk ${s.inPack?'in-pack':''}" data-w="${esc(s.en)}" title="Tıkla: Telaffuzu dinle, anlamını gör veya listeye ekle">🔊 ${esc(s.en)}${s.inPack ? ' <i>★ Listede</i>' : ''}</span>`).join('')}
+      </div>`;
+  }
+
+  let KART_TOTAL = 0;
+  startKart = function(){
+    const pool = cur.items.filter(x => x.tr);
+    if(!pool.length || FILL[cur.id]){ $('#st').innerHTML = waitBox(); return; }
+    pool.forEach(x => delete x._retry);
+    deck = shuf(pool).sort((a,b) => bx(a) - bx(b));
+    KART_TOTAL = deck.length;
+    di = 0; flip = false;
+    drawK();
+  };
+
+  kartAns = function(know){
+    const x = deck[di];
+    if(!x) return;
+    if(know){
+      cur.prog.box[x.en] = Math.min(5, bx(x) + 1);
+      delete x._retry;
+      META.kart = (META.kart || 0) + 1;
+      xp(5);
+      SFX.ok();
+    } else {
+      cur.prog.box[x.en] = 1;
+      x._retry = (x._retry || 0) + 1;
+      deck.push(x);
+      SFX.bad();
+    }
+    saveMeta();
+    di++;
+    flip = false;
+    drawK();
+    save();
+  };
+
+  drawK = function(){
+    const totalUnique = KART_TOTAL || cur.items.filter(w => w.tr).length || 1;
+    const remCount = Math.max(0, deck.length - di);
+    const knownCount = Math.max(0, totalUnique - remCount);
+    if(di>=deck.length){
+      cur.prog.steps[0]=1; save(); renderHead(); setProg(100);
+      $('#st').innerHTML=`<div class="result">${mascot('wink',110)}<div class="eyebrow" style="margin-top:12px">RİNG I · KARTLAR</div><h2>Kartlar Ringi Fethedildi!</h2><p class="m">Listedeki tüm ${totalUnique} kelimeye "Biliyorum" diyerek eksiksiz tamamladın!</p><div class="row2"><button class="btn3" data-open="1">⚔️ Eşleştir Ringine Geç →</button><button class="btn-ghost" data-home="1">Ana sayfa</button></div></div>`;
+      showConquestCeremony(0, `Tüm ${totalUnique} kelime eksiksiz öğrenildi! Kartlar Ringi mühürlendi.`);
+      return;
+    }
+    const x=deck[di]; SRC=x;
+    setProg((knownCount / totalUnique) * 100);
+    const synHtml = renderCardSynonymsHtml(cur, x);
+    const ex=x.s?`<div class="ex">${sent(x.s)}</div>`:'<div class="ex m">Örnek cümle hazırlanıyor…</div>';
+    const retryBadge = x._retry ? `<span style="display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:2px 9px;border-radius:999px;background:rgba(244,63,94,.16);border:1px solid rgba(244,63,94,.45);color:var(--bad);font-size:11.5px;font-weight:900">🔁 Tekrar Turu (${x._retry}. kez)</span>` : '';
+    $('#st').innerHTML=`
+       <div class="coach">${mascot('',62)}<div class="bubble">${x._retry ? '🔁 Daha önce "Bilmiyorum" dediğin kelime geri geldi! Şimdi tekrar dene.' : 'Kartı çevir, Tureng anlamlarını, eş anlamlılarını (Synonyms) ve cümleyi gör! Tüm kelimelere "Biliyorum" demeden ring bitmez.'}</div></div>
+       <div class="m" style="text-align:center;margin-bottom:8px;font-weight:800">✅ Öğrenilen: ${knownCount} / ${totalUnique} · ⏳ Kalan: ${remCount} · 🏛️ Kutu ${bx(x)}${retryBadge}</div>
+       <div class="deck-stage">
+         <div class="flip ${flip?'is':''}" id="cd" role="button" tabindex="0">
+           <div class="face front"><div class="eyebrow">RİNG I · ENGLISH ${x._retry ? '· 🔁 TEKRAR' : ''}</div><div class="big">${esc(x.en)}</div><div class="m">🔄 Dokun ve çevir · [Boşluk]</div></div>
+           <div class="face back"><div class="tureng-badge">📚 Mevcut + Tureng Yaygın Karşılıklar</div><div class="big tr">${esc(x.tr)}</div>${synHtml}${ex}${x.st?`<div class="m" id="trs" hidden style="margin-top:8px">${esc(x.st)}</div>`:''}<div class="tip" id="tip">${tipHtml()}</div></div>
+         </div>
+       </div>
+       <div class="row2"><button class="pill" data-say="${esc(x.en)}">🔊 Kelimeyi Dinle (US)</button>${x.s?`<button class="pill" data-say="${esc(x.s)}">🔊 Cümleyi Dinle (US)</button>`:''}${x.st?'<button class="pill" id="tt">🇹🇷 Çeviri</button>':''}<button class="pill" type="button" data-sent-modal="1">📖 Tüm Cümle Anlamları</button></div>
+       <div class="row2"><button class="btn-ghost" id="no">🔁 Bilmiyorum (Sonra Tekrar Sor)</button><button class="btn3" id="yes">⚡ Biliyorum · Kulede Yükselt</button></div>`;
+  };
+
+  const baseMstart = window.__kaOrigMstart || (window.__kaOrigMstart = mstart);
+  mstart = function(){
+    const all=cur.items.filter(x=>x.tr);
+    if(!all.length||FILL[cur.id]){$('#st').innerHTML=waitBox();return}
+    const got=new Set(cur.prog.mdone||[]),rem=all.filter(x=>!got.has(x.en));
+    if(!rem.length){
+      cur.prog.steps[1]=1; save(); renderHead(); setProg(100);
+      $('#st').innerHTML=`<div class="result">${mascot('wink',110)}<div class="eyebrow" style="margin-top:12px">RİNG II · EŞLEŞTİR</div><h2>Eşleştirme Ringi Fethedildi!</h2><div class="row2"><button class="btn3" data-open="2">⚔️ Seç Ringine Geç →</button><button class="btn-ghost" data-home="1">Ana sayfa</button></div></div>`;
+      showConquestCeremony(1, 'Tüm kelime-anlam bağları kuruldu ve Eşleştirme Ringi fethedildi!');
+      return;
+    }
+    baseMstart();
+  };
+
+  setHearts = function(){
+    const hs=$('#hearts'), bw=$('#bossBarWrap');
+    if(qmode==='boss'){
+      hs.hidden=false;
+      const hStr = '❤️'.repeat(Math.max(0,lives))+'🖤'.repeat(Math.max(0,3-lives));
+      hs.textContent = hStr;
+      const tot = qTotal() || 12;
+      const bossHp = Math.max(0, Math.round(((tot - qi) / tot) * 100));
+      if(bw) bw.innerHTML = `<div class="boss-vs-bar"><div class="vs-side"><span class="vs-name">🛡️ SEN (${hStr})</span><div class="vs-hp"><i style="width:${Math.round(lives/3*100)}%;background:linear-gradient(90deg,#10b981,#34d399)"></i></div></div><div class="vs-badge">VS</div><div class="vs-side right"><span class="vs-name">🐉 ARENA BOSS (%${bossHp})</span><div class="vs-hp"><i style="width:${bossHp}%"></i></div></div></div>`;
+    } else {
+      hs.hidden=true;
+      if(bw) bw.innerHTML='';
+    }
+  };
+
+  const baseQAns = window.__kaOrigQAns || (window.__kaOrigQAns = qAns);
+  qAns = function(i){
+    if(!Q || Q.done) return;
+    const willOk = Q.opts[i] === Q.ans;
+    setCombo(willOk ? COMBO + 1 : 0);
+    baseQAns(i);
+  };
+
+  qEnd = function(won){
+    const K={sec:2,yaz:3,boss:4,cum:5}[qmode];
+    if(won){cur.prog.steps[K]=1;xp(20);save();SFX.win();confetti()}
+    renderHead(); $('#hearts').hidden=true;
+    if($('#bossBarWrap')) $('#bossBarWrap').innerHTML='';
+    setProg(100);
+    $('#st').innerHTML=`<div class="result">${mascot(won?'wink':'sad',110)}<div class="eyebrow" style="margin-top:12px">${esc(MODES[K].r||'RİNG')} · ${esc(MODES[K].n)}</div><h2>${won?'Ring Fethedildi!':'Canların Tükendi'}</h2><p class="m">${qok} doğru hamle</p><div class="row2">${won?(K<6?`<button class="btn3" data-open="${K+1}">⚔️ Sıradaki Ring: ${esc(MODES[K+1].n)} →</button>`:''):'<button class="btn3" data-restart="1">🔁 Tekrar Dene</button>'}<button class="btn-ghost" data-home="1">Ana sayfa</button></div></div>`;
+    if(won) showConquestCeremony(K, `${MODES[K].n} mücadelesini ${qok} doğru hamleyle zaferle tamamladın!`);
+  };
+
+  const baseGrade = window.__kaOrigGrade || (window.__kaOrigGrade = grade);
+  grade = async function(){
+    const p = cur, wasAll = p && p.groups && p.groups.length && p.groups.every(x=>x.ok);
+    await baseGrade();
+    if(p && p.groups && p.groups.length && p.groups.every(x=>x.ok) && !wasAll){
+      showConquestCeremony(6, 'Tüm akademik paragraf gruplarının ana düşüncesini başarıyla onaylattın!');
+    }
+  };
+
+  /* ============================================================================
+     OTOMASYON 5: ÖRNEK CÜMLEDEKİ BİLİNMEYEN KELİMEYE TIKLAYINCA ANLAM YANINDA
+     "➕ LİSTEYE EKLE" BUTONU & OTOMATİK TURENG + CÜMLE ÜRETİMİ
+     ============================================================================ */
+  function findWordInPack(p, wordStr){
+    if(!p || !Array.isArray(p.items)) return null;
+    const k = String(wordStr||'').toLowerCase().trim();
+    if(!k) return null;
+    return p.items.find(x =>
+      x.en.toLowerCase().trim() === k ||
+      x.en.toLowerCase().split(/\s*[\/~]\s*/).map(s=>s.trim()).includes(k)
+    ) || null;
+  }
+
+  async function enrichSingleAddedWord(p, item){
+    if(!p || !item || !SMP) return;
+    try{
+      if(!item.turengDone){
+        const rTr = await askJ(TURENG_SYS, `1. ${item.en}${item.tr ? ` [Mevcut: ${item.tr}]` : ''}`, 45000, 'quick');
+        if(rTr && Array.isArray(rTr.items) && rTr.items[0]){
+          const o = rTr.items[0];
+          if(validTr(o.tr, item.en)){
+            item.tr = combineTurengMeaning(item.baseTr || item.tr, o.tr);
+            item.turengDone = true;
+          }
+        }
+      }
+      if(item.tr && !item.s){
+        const rB = await askJ(BATCH_HARD, `${item.en} - ${item.tr}`, 60000, 'quick');
+        if(rB && Array.isArray(rB.items) && rB.items[0]){
+          const g = rB.items[0];
+          merge(item, g);
+          if(Array.isArray(g.syn) && g.syn.length) item.syn = g.syn.map(s=>String(s||'').trim()).filter(Boolean);
+          item.d = buildSubtleDistractors(item);
+          item.dV2 = true;
+        }
+      }
+      save(p);
+      renderFoot();
+      document.querySelectorAll(`[data-added-status="${CSS && CSS.escape ? CSS.escape(item.en.toLowerCase()) : item.en.toLowerCase()}"]`).forEach(el => {
+        el.innerHTML = `✅ <b>"${esc(item.en)}"</b> Listede (Kutu 1 · Tureng & Cümlesi Hazır!)`;
+      });
+    }catch(e){}
+  }
+
+  function addUnknownWordToPack(wordEn, initialTr, btnEl){
+    if(!cur) return;
+    const cleanEn = String(wordEn||'').trim().toLowerCase();
+    if(!cleanEn) return;
+    const existing = findWordInPack(cur, cleanEn);
+    if(existing){
+      if(btnEl) btnEl.outerHTML = `<span class="added-word-badge">✓ Zaten Listede (Kutu ${bx(existing)})</span>`;
+      return;
+    }
+    const cleanTr = String(initialTr||'').trim();
+    const newItem = {
+      en: cleanEn,
+      tr: cleanTr,
+      baseTr: cleanTr,
+      turengDone: false,
+      s: '',
+      st: '',
+      d: [],
+      gl: {},
+      mo: {}
+    };
+    cur.items.push(newItem);
+    if(Array.isArray(cur.words)) cur.words.push({ en: cleanEn, tr: cleanTr });
+    cur.prog = cur.prog || { box:{}, steps:[0,0,0,0,0,0,0], mdone:[], xp:0 };
+    cur.prog.box = cur.prog.box || {};
+    cur.prog.box[cleanEn] = 1;
+    if(step === 0 && Array.isArray(deck) && !deck.some(d => d.en.toLowerCase() === cleanEn)){
+      deck.push(newItem);
+      if(KART_TOTAL) KART_TOTAL++;
+    }
+    save(cur);
+    SFX.ok();
+    renderFoot();
+    if(step === -1) renderHome();
+    if(btnEl){
+      btnEl.outerHTML = `<span class="added-word-badge" data-added-status="${esc(cleanEn)}">✅ <b>"${esc(cleanEn)}"</b> Listeye Eklendi! (Kutu 1${SMP ? ' · Detayları Hazırlanıyor…' : ''})</span>`;
+    }
+    if(SMP) enrichSingleAddedWord(cur, newItem);
+  }
+
+  function renderAddWordActionHtml(wordStr, meaningStr){
+    const k = String(wordStr||'').toLowerCase().trim();
+    if(!k || !cur) return '';
+    const existing = findWordInPack(cur, k);
+    if(existing){
+      return `<span class="added-word-badge">✓ Listede Mevcut (Kutu ${bx(existing)})</span>`;
+    }
+    return `<button type="button" class="add-word-btn" data-add-word="${esc(k)}" data-add-tr="${esc(meaningStr||'')}">➕ Listeye Ekle</button>`;
+  }
+
+  qNext = function(){
+    const total = qTotal();
+    if(qi >= total || lives <= 0) return qEnd(lives > 0);
+    if(!cur.items.some(x=>x.tr) || FILL[cur.id]){ $('#st').innerHTML = waitBox(); return; }
+    if(qmode === 'cum' && !cur.items.some(x=>x.s && x.st)){
+      $('#st').innerHTML = `<div class="qbox waitc" data-wait="1"><div class="eyebrow">Cümle</div><p class="m">Cümleler henüz hazırlanıyor… Hazırlamak için yukarıdaki “Hazırla” düğmesine bas.</p><div class="row"><button class="pill" id="re">Yeniden dene</button></div></div>`;
+      return;
+    }
+
+    if(qmode === 'boss' && BOSS_QUEUE[qi]){
+      Q = BOSS_QUEUE[qi];
+      Q.done = 0;
+      Q.tries = 0;
+    } else {
+      Q = (qmode === 'cum' && mkQ(true)) || mkQ(false);
+      if(Q) Q.done = 0;
+    }
+    if(!Q){ $('#st').innerHTML = waitBox(); return; }
+    SRC = Q.x || null;
+    setProg((qi / total) * 100);
+    setHearts();
+
+    /* Eğer Boss turundaki soru "Yazma (Kelime Ocağı)" aşamasıysa: */
+    if(Q.k === 'y'){
+      $('#st').innerHTML = `
+        <div class="coach">${mascot('',62)}<div class="bubble">🐉 <b>Boss Düellosu · Yazma Aşaması!</b> Kelimeye çok yaklaşırsan canın gitmez, <b>2. bir hak</b> kazanırsın!</div></div>
+        <div class="qbox">
+          <div class="boss-phase-tag">🐉 BOSS HAMLESİ ${qi+1}/${total} · ✍️ KELİME OCAĞI (YAZMA)</div>
+          <h2 class="q">${esc(Q.x.tr)}</h2>
+          <input class="txt" id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="İngilizce karşılığını yaz…">
+          <div class="row"><button class="btn3" id="ck">⚔️ Saldır (Kontrol Et)</button></div>
+          <div class="fb" id="fb"></div>
+        </div>`;
+      const a = $('#ans'); if(a) a.focus();
+      return;
+    }
+
+    const phaseBadges = {
+      sec: '🎯 KELİME DÜELLOSU (SEÇ)',
+      pair: '⚡ HIZLI EŞLEŞTİRME BAĞI',
+      cum: '📖 AKADEMİK CÜMLE ANALİZİ'
+    };
+    const label = qmode === 'boss'
+      ? `🐉 BOSS DÜELLOSU · ${qi+1} / ${total}`
+      : (qmode === 'cum' ? `RİNG VI · CÜMLE · ${qi+1} / ${total} (Tüm Liste)` : `RİNG III · SEÇ · ${qi+1} / ${total} (Tüm Liste)`);
+
+    $('#st').innerHTML = `
+      <div class="coach">${mascot('',62)}<div class="bubble">${qmode==='boss' ? '🐉 Boss tüm ringlerin sınavını birleştirdi! Dikkatli ol, 3 canın var.' : esc(rnd(CHEER))}</div></div>
+      <div class="qbox">
+        ${qmode === 'boss' ? `<div class="boss-phase-tag">🐉 BOSS HAMLESİ ${qi+1}/${total} · ${phaseBadges[Q.sub] || 'KARMA DÜELLO'}</div>` : `<div class="eyebrow">${label}</div>`}
+        ${Q.k === 's'
+          ? `<div class="m" style="margin:-2px 0 8px">Bu akademik cümlenin doğru Türkçe çevirisi hangisi?</div><div class="ex" style="margin-top:0">${sent(Q.q)}</div><div class="tip" id="tip" style="margin-top:10px">${tipHtml()}</div><div class="row" style="justify-content:flex-start"><button class="pill" data-say="${esc(Q.q)}">🔊 Cümleyi Dinle (US)</button></div>`
+          : `<div class="m" style="margin:-2px 0 4px">${Q.sub === 'pair' ? '⚡ Hızlı Eşleştir: Bu Türkçe anlam hangi İngilizce kelimeye ait?' : (Q.dirEn ? 'İngilizce → Türkçe' : 'Türkçe → İngilizce')}</div><h2 class="q">${esc(Q.q)}</h2>${Q.dirEn ? `<div class="row" style="justify-content:flex-start"><button class="pill" data-say="${esc(Q.x.en.split(/\s*[\/~]\s*/)[0])}">🔊 Kelimeyi Dinle (US)</button></div>` : ''}`}
+        <div class="opts">${Q.opts.map((o,i)=>`<button class="opt" data-o="${i}">${esc(o)}</button>`).join('')}</div>
+        <div class="fb" id="fb"></div>
+        <div class="row"><button class="btn3" id="nx" hidden>Sonraki →</button></div>
+      </div>`;
+  };
+
+  tap = async function(w, el){
+    document.querySelectorAll('.tk.sel').forEach(x => x.classList.remove('sel'));
+    if(el) el.classList.add('sel');
+    const cleanW = String(w||'').trim();
+    const k = cleanW.toLowerCase();
+    const mo = SRC && SRC.mo ? aMo(SRC.mo[k]) : [];
+    const my = ++TAPN, q = encodeURIComponent(k), ctx = tipCtx();
+    say(cleanW);
+
+    const inlineTip = el && el.closest ? (el.closest('.sent-card-ex-wrap') && el.closest('.sent-card-ex-wrap').querySelector('.sent-inline-tip')) : null;
+    const writeTip = html => {
+      if(inlineTip){
+        inlineTip.hidden = false;
+        inlineTip.innerHTML = html;
+      } else {
+        let tEl = $('#tip');
+        if(!tEl && el && el.closest){
+          const exBox = el.closest('.ex,.para');
+          if(exBox){
+            exBox.insertAdjacentHTML('afterend', '<div class="tip" id="tip" style="margin-top:10px"></div>');
+            tEl = $('#tip');
+          }
+        }
+        setTip(html);
+      }
+    };
+
+    const show = (g, note) => {
+      const addBtnHtml = renderAddWordActionHtml(cleanW, g);
+      writeTip(
+        `<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">` +
+          `<div><b>${esc(cleanW)}</b> — ${g ? `<span class="good" style="font-weight:800">${esc(g)}</span>` : `<span class="m">${esc(note||'')}</span>`} ${addBtnHtml}</div>` +
+          `<div><a class="m" href="https://dictionary.cambridge.org/dictionary/english-turkish/${q}" target="_blank" rel="noopener">Cambridge ↗</a> <a class="m" href="https://tureng.com/en/turkish-english/${q}" target="_blank" rel="noopener">Tureng ↗</a></div>` +
+        `</div>` +
+        (mo.length ? `<div style="margin-top:6px">${mo.map(([p,t,d])=>`<span class="chip">${esc(p)} · ${esc(t)}: ${esc(d)}</span>`).join('')}</div>` : '')
+      );
+    };
+
+    const g = meaningOf(k);
+    if(g) return show(g);
+    show('', 'anlam aranıyor…');
+    const r = await askJ(GLOSS, k, 60000, 'quick');
+    const v = r ? (typeof r[k] === 'string' ? r[k].trim() : String(Object.values(r).find(x => typeof x === 'string') || '').trim()) : '';
+    if(v && cur){ cur.dict = cur.dict || {}; cur.dict[k] = v; save(cur); }
+    if(my === TAPN && (inlineTip || tipCtx() === ctx)) show(v, 'anlam bulunamadı (yine de listeye ekleyebilirsin)');
+  };
+
+  /* 7. ETKİLEŞİM DİNLEYİCİLERİ (ÇİFT TETİKLENME KORUMALI) */
+  if(!window.__kaListenersBound){
+    window.__kaListenersBound = true;
+    document.addEventListener('click', e => {
+      const t = e.target;
+      const addW = t.closest('[data-add-word]');
+      if(addW){
+        e.stopPropagation();
+        addUnknownWordToPack(addW.dataset.addWord, addW.dataset.addTr || '', addW);
+        spawnSparks(e.clientX, e.clientY, 18);
+        return;
+      }
+      if(t.closest('#conqCloseBtn') || t.id==='conqOv'){ closeConquestCeremony(); return; }
+      const cNext = t.closest('#conqNextBtn');
+      if(cNext && cNext.dataset.conqOpen!=null){ closeConquestCeremony(); showAct(+cNext.dataset.conqOpen); return; }
+      const vw = t.closest('[data-view]');
+      if(vw){ HOME_VIEW = vw.dataset.view; try{localStorage.setItem('ka_view',HOME_VIEW)}catch(err){} renderHome(); return; }
+      const tr = t.closest('[data-tier]');
+      if(tr){ openTierModal(+tr.dataset.tier); return; }
+      const wb = t.closest('[data-wbox]');
+      if(wb){ WEXP_BOX = +wb.dataset.wbox; const w=$('#wexpWrap'); if(w) w.innerHTML=renderWordExplorerBody(); return; }
+      if(t.closest('[data-sent-modal]')){ openSentencesModal(); return; }
+      if(t.closest('#toggleAllSentTr')){
+        SEXP_HIDE_TR = !SEXP_HIDE_TR;
+        const sw = $('#sexpWrap');
+        if(sw) sw.innerHTML = renderSentencesExplorerBody();
+        return;
+      }
+      if(t.closest('#loadSampleDefBtn')){
+        try{ localStorage.setItem('ka_keep_buept_def', '1'); }catch(e){}
+        if(!packs.some(x => x.id === 'def')){
+          const defP = mk('def', 'BUEPT Akademik Örnek Liste', parse(DEF));
+          ensureFreshPackState(defP);
+          packs.push(defP);
+          cur = defP;
+        } else {
+          cur = packs.find(x => x.id === 'def');
+        }
+        try{ localStorage.setItem('ka_active_pack_id', cur.id); }catch(e){}
+        loadShared(cur).then(() => { save(cur); renderHead(); showHome(); });
+        return;
+      }
+      if(t.closest('#resetProgBtn') && cur){
+        if(confirm(`"${cur.name}" listesindeki mod tamamlama ve kutu ilerlemeleri sıfırlansın mı?`)){
+          cur.prog = { box:{}, steps:[0,0,0,0,0,0,0], mdone:[], xp:0 };
+          if(Array.isArray(cur.groups)) cur.groups.forEach(g => delete g.ok);
+          save(cur); renderHead(); showHome();
+        }
+        return;
+      }
+      const ws = t.closest('[data-wshift]');
+      if(ws && cur){
+        const en = ws.dataset.wen, delta = +ws.dataset.wshift;
+        cur.prog.box[en] = Math.max(1, Math.min(5, (cur.prog.box[en]||1) + delta));
+        save(cur);
+        const w = $('#wexpWrap'); if(w) w.innerHTML = renderWordExplorerBody();
+        if(step===-1) renderHome();
+        return;
+      }
+      const ml = t.closest('[data-l]');
+      if(ml && step===1 && rd && rd[+ml.dataset.l]){
+        say(rd[+ml.dataset.l].en);
+      }
+      if(t.closest('#yes') || t.closest('[data-o]') || t.closest('#ck') || t.closest('[data-l],[data-r]')){
+        spawnSparks(e.clientX, e.clientY, 16);
+      }
+    });
+
+    document.addEventListener('input', e => {
+      if(e.target && e.target.id==='wexpInput'){
+        WEXP_Q = e.target.value;
+        const pos = e.target.selectionStart || WEXP_Q.length;
+        const w = $('#wexpWrap');
+        if(w){ w.innerHTML = renderWordExplorerBody(); const inp = $('#wexpInput'); if(inp){ inp.focus(); try{inp.setSelectionRange(pos,pos)}catch(err){} } }
+      }
+      if(e.target && e.target.id==='sexpInput'){
+        SEXP_Q = e.target.value;
+        const pos = e.target.selectionStart || SEXP_Q.length;
+        const sw = $('#sexpWrap');
+        if(sw){ sw.innerHTML = renderSentencesExplorerBody(); const inp = $('#sexpInput'); if(inp){ inp.focus(); try{inp.setSelectionRange(pos,pos)}catch(err){} } }
+      }
+    });
+  } else if(!window.__kaAddWordListenersBound){
+    window.__kaAddWordListenersBound = true;
+    /* Eğer önceki yama zaten dinleyici bağladıysa, yeni Listeye Ekle, Cümleler Modalı ve Sıfırla dinleyicisini ekle */
+    document.addEventListener('click', e => {
+      const t = e.target;
+      const addW = t.closest('[data-add-word]');
+      if(addW){
+        e.stopPropagation();
+        addUnknownWordToPack(addW.dataset.addWord, addW.dataset.addTr || '', addW);
+        spawnSparks(e.clientX, e.clientY, 18);
+        return;
+      }
+      if(t.closest('[data-sent-modal]')){ openSentencesModal(); return; }
+      if(t.closest('#toggleAllSentTr')){
+        SEXP_HIDE_TR = !SEXP_HIDE_TR;
+        const sw = $('#sexpWrap');
+        if(sw) sw.innerHTML = renderSentencesExplorerBody();
+        return;
+      }
+      if(t.closest('#loadSampleDefBtn')){
+        try{ localStorage.setItem('ka_keep_buept_def', '1'); }catch(e){}
+        if(!packs.some(x => x.id === 'def')){
+          const defP = mk('def', 'BUEPT Akademik Örnek Liste', parse(DEF));
+          ensureFreshPackState(defP);
+          packs.push(defP);
+          cur = defP;
+        } else {
+          cur = packs.find(x => x.id === 'def');
+        }
+        try{ localStorage.setItem('ka_active_pack_id', cur.id); }catch(e){}
+        loadShared(cur).then(() => { save(cur); renderHead(); showHome(); });
+        return;
+      }
+      if(t.closest('#resetProgBtn') && cur){
+        if(confirm(`"${cur.name}" listesindeki mod tamamlama ve kutu ilerlemeleri sıfırlansın mı?`)){
+          cur.prog = { box:{}, steps:[0,0,0,0,0,0,0], mdone:[], xp:0 };
+          if(Array.isArray(cur.groups)) cur.groups.forEach(g => delete g.ok);
+          save(cur); renderHead(); showHome();
+        }
+        return;
+      }
+      const ml = t.closest('[data-l]');
+      if(ml && step===1 && rd && rd[+ml.dataset.l]){
+        say(rd[+ml.dataset.l].en);
+      }
+    });
+    document.addEventListener('input', e => {
+      if(e.target && e.target.id==='sexpInput'){
+        SEXP_Q = e.target.value;
+        const pos = e.target.selectionStart || SEXP_Q.length;
+        const sw = $('#sexpWrap');
+        if(sw){ sw.innerHTML = renderSentencesExplorerBody(); const inp = $('#sexpInput'); if(inp){ inp.focus(); try{inp.setSelectionRange(pos,pos)}catch(err){} } }
+      }
+    });
+  }
+
+  function syncNewsAddedWordsToPack(p){
+    try{
+      const q = JSON.parse(localStorage.getItem('ka_news_added_words') || '[]');
+      if(!Array.isArray(q) || !q.length) return;
+      if(!p){
+        const newP = {
+          id: 'p_haber_' + Date.now().toString(36),
+          name: 'Haberlerden Eklediklerim',
+          words: [],
+          items: [],
+          groups: [],
+          dict: {},
+          prog: { box:{}, steps:[0,0,0,0,0,0,0], mdone:[], xp:0 }
+        };
+        packs.push(newP);
+        cur = newP;
+        p = newP;
+        try{ localStorage.setItem('ka_active_pack_id', p.id); }catch(e){}
+      }
+      if(!Array.isArray(p.items)) return;
+      let changed = false;
+      q.forEach(nw => {
+        const cleanEn = String(nw && nw.en || '').trim().toLowerCase();
+        if(!cleanEn) return;
+        const ex = findWordInPack(p, cleanEn);
+        if(!ex){
+          const cleanTr = String(nw.tr || '').trim();
+          const newItem = {
+            en: cleanEn,
+            tr: cleanTr,
+            baseTr: cleanTr,
+            turengDone: !!cleanTr,
+            syn: Array.isArray(nw.syn) ? nw.syn : [],
+            s: String(nw.s || '').trim(),
+            st: String(nw.st || '').trim(),
+            d: [],
+            gl: {},
+            mo: {}
+          };
+          if(newItem.st) newItem.d = buildSubtleDistractors(newItem);
+          p.items.push(newItem);
+          if(Array.isArray(p.words)) p.words.push({ en: cleanEn, tr: cleanTr });
+          p.prog = p.prog || { box:{}, steps:[0,0,0,0,0,0,0], mdone:[], xp:0 };
+          p.prog.box = p.prog.box || {};
+          p.prog.box[cleanEn] = 1;
+          changed = true;
+          if(SMP && (!newItem.s || !newItem.st)) enrichSingleAddedWord(p, newItem);
+        }
+      });
+      if(changed){
+        save(p);
+        renderFoot();
+      }
+    }catch(e){}
+  }
+
+  /* ============================================================================
+     📲 SEÇENEK 4: "ARENAYI CEBİNE TAŞI" TELEFON VİTRİN KARTI + ANA EKRANA EKLE (PWA)
+     ============================================================================ */
+  let PWA_PROMPT = null;
+  function isStandaloneApp(){
+    try{
+      return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+    }catch(e){ return false; }
+  }
+  function isIOSDevice(){
+    const ua = navigator.userAgent || '';
+    return /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
+  function drawArenaIcon(size){
+    try{
+      const c = document.createElement('canvas');
+      c.width = c.height = size;
+      const g = c.getContext('2d');
+      const s = size / 64;
+      const grad = g.createLinearGradient(0, 0, size, size);
+      grad.addColorStop(0, '#14968c'); grad.addColorStop(1, '#0b5a55');
+      g.fillStyle = grad;
+      g.fillRect(0, 0, size, size);
+      g.lineCap = 'round';
+      g.strokeStyle = '#ffffff'; g.lineWidth = 4.8 * s;
+      g.beginPath(); g.moveTo(15*s, 47.5*s); g.lineTo(15*s, 30.5*s); g.arc(32*s, 30.5*s, 17*s, Math.PI, 0); g.lineTo(49*s, 47.5*s); g.stroke();
+      g.lineWidth = 3 * s;
+      g.beginPath(); g.moveTo(11.8*s, 47.5*s); g.lineTo(18.2*s, 47.5*s); g.moveTo(45.8*s, 47.5*s); g.lineTo(52.2*s, 47.5*s); g.stroke();
+      g.strokeStyle = '#fbbf24'; g.lineWidth = 4.2 * s;
+      g.beginPath(); g.moveTo(24*s, 47.5*s); g.lineTo(24*s, 31.5*s); g.arc(32*s, 31.5*s, 8*s, Math.PI, 0); g.lineTo(40*s, 47.5*s); g.stroke();
+      g.lineWidth = 2.7 * s;
+      g.beginPath(); g.moveTo(9.5*s, 53.5*s); g.quadraticCurveTo(20.8*s, 49*s, 32*s, 53.8*s); g.quadraticCurveTo(43.2*s, 49*s, 54.5*s, 53.5*s); g.stroke();
+      g.fillStyle = '#fbbf24';
+      g.beginPath(); g.arc(50*s, 13*s, 3.9*s, 0, Math.PI*2); g.fill();
+      return c.toDataURL('image/png');
+    }catch(e){ return ''; }
+  }
+  function setupPwaMeta(){
+    if(window.__kaPwaMeta) return;
+    window.__kaPwaMeta = true;
+    const head = document.head;
+    const addMeta = (name, content) => {
+      if(head.querySelector(`meta[name="${name}"]`)) return;
+      const m = document.createElement('meta'); m.name = name; m.content = content; head.appendChild(m);
+    };
+    addMeta('apple-mobile-web-app-capable', 'yes');
+    addMeta('mobile-web-app-capable', 'yes');
+    addMeta('apple-mobile-web-app-status-bar-style', 'black-translucent');
+    addMeta('apple-mobile-web-app-title', 'K. Arenası');
+    addMeta('theme-color', '#0f766e');
+    const icon180 = drawArenaIcon(180);
+    const icon512 = drawArenaIcon(512);
+    if(icon180 && !head.querySelector('link[rel="apple-touch-icon"]')){
+      const l = document.createElement('link'); l.rel = 'apple-touch-icon'; l.href = icon180; head.appendChild(l);
+    }
+    if(!head.querySelector('link[rel="manifest"]') && icon512){
+      try{
+        const origin = location.origin;
+        const manifest = {
+          name: 'Kelime Arenası',
+          short_name: 'K. Arenası',
+          description: 'Kendi kelimelerinle oyunlaştırılmış akademik İngilizce çalışma arenası',
+          start_url: origin + '/',
+          scope: origin + '/',
+          display: 'standalone',
+          orientation: 'portrait',
+          background_color: '#f3f8f6',
+          theme_color: '#0f766e',
+          icons: [
+            { src: icon180, sizes: '180x180', type: 'image/png' },
+            { src: icon512, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+          ]
+        };
+        const blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+        const l = document.createElement('link'); l.rel = 'manifest'; l.href = URL.createObjectURL(blob); head.appendChild(l);
+      }catch(e){}
+    }
+  }
+  setupPwaMeta();
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); PWA_PROMPT = e; });
+  window.addEventListener('appinstalled', () => {
+    PWA_PROMPT = null;
+    try{ localStorage.setItem('ka_pwa_installed', '1'); }catch(e){}
+    document.querySelectorAll('.pwa-showcase').forEach(el => el.remove());
+  });
+
+  function pwaCardHtml(){
+    if(isStandaloneApp() || localStorage.getItem('ka_pwa_installed') === '1') return '';
+    return `
+      <div class="card pwa-showcase" style="margin-top:16px">
+        <div class="pwa-show-in">
+          <div class="pwa-mini-phone">
+            <div class="pwa-mini-notch"></div>
+            <div class="pwa-mini-grid"><i>📅</i><i class="on"><svg viewBox="0 0 64 64" width="18" height="18"><path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/><path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" fill="none" stroke="#1f1300" stroke-width="5" stroke-linecap="round"/></svg></i><i>📷</i><i>🎵</i></div>
+            <div class="pwa-mini-lbl">K. Arenası</div>
+          </div>
+          <div class="pwa-show-txt">
+            <span class="pwa-show-badge">📱 MOBİL UYGULAMA MODU</span>
+            <h3 style="margin:4px 0 4px">Arenayı Cebine Taşı!</h3>
+            <p class="m" style="margin:0 0 10px;font-size:13px">App Store'a veya Play Store'a gerek yok. Kelime Arenası'nı telefonunun ana ekranına ekle; tarayıcı çubuğu olmadan tam ekran, gerçek bir uygulama gibi açılsın. Listelerin ve ilerlemen aynen kalır.</p>
+            <button type="button" class="btn3 small" data-pwa-install="1">📲 Ana Ekrana Ekle</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function openPwaGuide(){
+    const ios = isIOSDevice();
+    openModalWith(`
+      <section class="addp">
+        <div class="addp-h"><div><div class="eyebrow">MOBİL UYGULAMA KURULUMU</div><h2>📲 Kelime Arenası'nı Telefonuna Ekle</h2></div></div>
+        <p class="m" style="margin-top:6px">Kurulum yaklaşık 5 saniye sürer. Ana ekranındaki <b>K. Arenası</b> ikonuna dokunduğunda site tam ekran, uygulama gibi açılır.</p>
+        <div class="pwa-steps">
+          <div class="pwa-card" style="${ios ? 'border-color:var(--acc)' : ''}">
+            <h4>🍎 iPhone / iPad (Safari)</h4>
+            <div class="pwa-step-item">1. Siteyi <b>Safari</b> ile aç (Chrome'da iPhone'da da "Paylaş" menüsü vardır).</div>
+            <div class="pwa-step-item">2. Alttaki <b>Paylaş [↑]</b> simgesine dokun.</div>
+            <div class="pwa-step-item">3. Listeyi aşağı kaydır ve <b>"Ana Ekrana Ekle"</b>yi seç.</div>
+            <div class="pwa-step-item">4. Sağ üstten <b>"Ekle"</b>ye bas. Bitti! ✅</div>
+          </div>
+          <div class="pwa-card" style="${!ios ? 'border-color:var(--acc)' : ''}">
+            <h4>🤖 Android (Chrome)</h4>
+            <div class="pwa-step-item">1. Sağ üstteki <b>⋮ (üç nokta)</b> menüsüne dokun.</div>
+            <div class="pwa-step-item">2. <b>"Ana ekrana ekle"</b> veya <b>"Uygulamayı yükle"</b>yi seç.</div>
+            <div class="pwa-step-item">3. Açılan pencerede <b>"Ekle / Yükle"</b>ye bas. Bitti! ✅</div>
+          </div>
+        </div>
+        <p class="m" style="margin-top:12px;font-size:12.5px">💡 Bilgisayarda (Chrome/Edge) adres çubuğunun sağındaki <b>⊕ Yükle</b> simgesiyle de masaüstü uygulaması olarak kurabilirsin.</p>
+      </section>`);
+  }
+
+  async function handlePwaInstall(){
+    if(isStandaloneApp()){ alert('Kelime Arenası zaten uygulama olarak açık! 🎉'); return; }
+    if(PWA_PROMPT){
+      try{
+        PWA_PROMPT.prompt();
+        const choice = await PWA_PROMPT.userChoice;
+        PWA_PROMPT = null;
+        if(choice && choice.outcome === 'accepted'){
+          try{ localStorage.setItem('ka_pwa_installed', '1'); }catch(e){}
+          document.querySelectorAll('.pwa-showcase').forEach(el => el.remove());
+        }
+        return;
+      }catch(e){}
+    }
+    openPwaGuide();
+  }
+
+  if(!window.__kaPwaBound){
+    window.__kaPwaBound = true;
+    document.addEventListener('click', e => {
+      const b = e.target.closest && e.target.closest('[data-pwa-install]');
+      if(b){ e.preventDefault(); handlePwaInstall(); }
+    });
+  }
+
+  function applyNow(){
+    if(typeof packs !== 'undefined' && Array.isArray(packs)){
+      cleanUnwantedDefaultPack();
+      packs.forEach(p => ensureFreshPackState(p));
+    }
+    syncNewsAddedWordsToPack(cur);
+    if(typeof cur !== 'undefined' && cur){
+      ensureFreshPackState(cur);
+    }
+    if(step===-1) renderHome();
+    try{ document.querySelectorAll('[data-conq-demo]').forEach(el => el.remove()); }catch(e){}
+  }
+  applyNow();
+  setTimeout(applyNow, 180);
+  setTimeout(applyNow, 650);
+})();
+</script>
+<!-- ===== KELİME ARENASI YENİ ARAYÜZ & OTOMASYON YAMASI SONU ===== -->
 
 
