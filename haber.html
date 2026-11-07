@@ -248,6 +248,611 @@ document.addEventListener('click',e=>{
 window.addEventListener('hashchange',route);
 load();
 </script>
+<!-- ===== HABER ARENASI: 4 ÖZEL RENK PALETİ, DİNAMİK ANİMASYONLAR, TURENG + SYNONYMS + LİSTEYE EKLE & CÜMLE ÇEVİRİLERİ (TEK PARÇA FİNAL SÜRÜM) ===== -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* 1. AKDENİZ (AÇIK YEŞİL - İLK AÇILIŞ VARSAYILAN) */
+body[data-pal="akdeniz"], body[data-pal="gece"]{
+  --bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;
+  --p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--ok:#059669;
+  --lg:url(#lgC);--shadow:0 22px 44px -26px rgba(13,43,42,.38);
+  --glow:rgba(20,184,166,.22);--acc-glow:rgba(245,158,11,.28);
+}
+/* 2. DERİN AKDENİZ (KOYU YEŞİL) */
+body[data-pal="derin_akdeniz"]{
+  --bg:#061514;--card:#0c2423;--line:#194240;--ink:#f3f8f6;--mut:#7ca39e;
+  --p:#0f766e;--p2:#14b8a6;--acc:#fbbf24;--bad:#f43f5e;--soft:#11312f;--ok:#34d399;
+  --lg:url(#lgC);--shadow:0 22px 44px -24px rgba(0,0,0,.82);
+  --glow:rgba(20,184,166,.28);--acc-glow:rgba(251,191,36,.30);
+}
+/* 3. KÜTÜPHANE / KİTAPLIK (AÇIK KREM & BORDO) */
+body[data-pal="kitaplik"]{
+  --bg:#f7f1e3;--card:#fffaf0;--line:#e6d9bf;--ink:#2e1a1f;--mut:#7d6a5f;
+  --p:#7a1f2e;--p2:#a33a4a;--acc:#c08a2b;--bad:#b42318;--soft:#f1e5cc;--ok:#15803d;
+  --lg:url(#lgB);--shadow:0 22px 44px -26px rgba(46,26,31,.42);
+  --glow:rgba(122,31,46,.16);--acc-glow:rgba(192,138,43,.26);
+}
+/* 4. SICAK ESPRESSO (KOYU KÜTÜPHANE & BORDO) */
+body[data-pal="sicak_espresso"]{
+  --bg:#181412;--card:#241e1b;--line:#3d322c;--ink:#f7f1e3;--mut:#a8998c;
+  --p:#7a1f2e;--p2:#a33a4a;--acc:#c08a2b;--bad:#f43f5e;--soft:#2e2622;--ok:#22c55e;
+  --lg:url(#lgB);--shadow:0 22px 44px -24px rgba(0,0,0,.82);
+  --glow:rgba(163,58,74,.24);--acc-glow:rgba(192,138,43,.26);
+}
+body{
+  font-family:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif!important;
+  background-image:
+    radial-gradient(820px 380px at 14% 0%, var(--glow), transparent 70%),
+    radial-gradient(680px 340px at 88% 8%, var(--acc-glow), transparent 70%),
+    radial-gradient(color-mix(in srgb,var(--mut) 12%,transparent) 1px,transparent 1.4px)!important;
+  background-size:100% 100%, 100% 100%, 24px 24px!important;
+  background-attachment:fixed;
+}
+.logo svg{width:40px;height:40px;filter:drop-shadow(0 4px 10px var(--glow));transition:transform .2s}
+.logo:hover svg{transform:scale(1.06) rotate(-3deg)}
+.logo-sub{
+  font-family:"Plus Jakarta Sans",sans-serif;font-size:10px;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--acc);
+  border:1px solid var(--line);margin-left:2px;
+}
+.hero{
+  border-radius:30px;padding:30px;
+  background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;
+  box-shadow:0 28px 54px -26px var(--p), inset 0 1px 0 rgba(255,255,255,.25);
+  border:1.5px solid rgba(255,255,255,.16);
+}
+.card{
+  background:radial-gradient(240px 140px at 90% 0%, var(--glow), transparent 75%), var(--card);
+  border:1.5px solid var(--line);border-radius:22px;padding:20px;margin:14px 0;
+  box-shadow:0 5px 0 var(--line),var(--shadow);transition:transform .16s,border-color .2s,box-shadow .2s;
+}
+.card:hover{transform:translateY(-3px);border-color:var(--acc);box-shadow:0 8px 0 var(--line),0 18px 34px -16px rgba(0,0,0,.45),0 0 22px var(--glow)}
+.box{
+  background:radial-gradient(280px 160px at 92% 0%, var(--glow), transparent 75%), var(--card);
+  border:1.5px solid var(--line);border-radius:26px;padding:22px;margin:14px 0;
+  box-shadow:0 6px 0 var(--line),var(--shadow);
+}
+.tk{
+  border-bottom:2px dotted color-mix(in srgb,var(--mut) 65%,transparent);
+  cursor:pointer;border-radius:6px;padding:1px 2px;transition:background .12s,color .12s;
+}
+.tk:hover,.tk.sel{
+  background:var(--soft);color:var(--p2);border-bottom-color:var(--acc);font-weight:700;
+}
+.tip{
+  min-height:58px;margin-top:16px;background:var(--soft);border:1.5px solid var(--line);
+  border-radius:18px;padding:14px 16px;font-size:15px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+.tureng-badge{
+  display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;
+  padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--acc) 18%,transparent);
+  color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 42%,transparent);
+}
+.add-word-btn{
+  display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:5px 12px;
+  border-radius:999px;border:1.5px solid var(--acc);background:linear-gradient(135deg,var(--acc),#f59e0b);
+  color:#1f1300;font-size:12px;font-weight:900;cursor:pointer;
+  box-shadow:0 3px 10px var(--acc-glow);transition:transform .15s,filter .15s;vertical-align:middle;
+}
+.add-word-btn:hover{transform:translateY(-1px) scale(1.03);filter:brightness(1.06)}
+.added-word-badge{
+  display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:4px 11px;
+  border-radius:999px;background:color-mix(in srgb,var(--ok) 16%,transparent);
+  border:1px solid color-mix(in srgb,var(--ok) 48%,transparent);color:var(--ok);
+  font-size:11.5px;font-weight:800;vertical-align:middle;
+}
+.syn-box{
+  margin-top:10px;padding:8px 12px;border-radius:14px;
+  background:color-mix(in srgb,var(--card) 75%,var(--soft));border:1px solid var(--line);
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+}
+.syn-lbl{
+  font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--acc);display:inline-flex;align-items:center;gap:4px;margin-right:2px;
+}
+.syn-chip{
+  display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;
+  background:var(--card);border:1.5px solid var(--line);color:var(--ink);
+  font-size:12px;font-weight:800;cursor:pointer;transition:transform .14s,border-color .14s,color .14s;
+}
+.syn-chip:hover{transform:translateY(-1px);border-color:var(--p);color:var(--p)}
+.news-sent-panel{
+  margin-top:14px;padding:16px;border-radius:20px;background:var(--card);
+  border:1.5px solid var(--line);box-shadow:var(--shadow);
+}
+.news-sent-row{
+  padding:10px 12px;border-radius:14px;background:var(--soft);border:1px solid var(--line);
+  margin-bottom:8px;display:flex;flex-direction:column;gap:4px;
+}
+.news-sent-row:last-child{margin-bottom:0}
+.news-sent-en{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.45}
+.news-sent-tr{font-size:14px;font-weight:700;color:var(--p2);line-height:1.45}
+.spark-pt{
+  position:fixed;pointer-events:none;z-index:200;width:8px;height:8px;border-radius:50%;
+  animation:spkMove .85s cubic-bezier(.16,1,.3,1) forwards;box-shadow:0 0 8px currentColor;
+}
+@keyframes spkMove{0%{transform:translate(0,0) scale(1.2);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
+.conquest-ov{
+  position:fixed;inset:0;z-index:180;
+  background:radial-gradient(circle at 50% 45%, color-mix(in srgb,var(--card) 85%,transparent), color-mix(in srgb,var(--bg) 95%,#000));
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:flex;align-items:center;justify-content:center;padding:18px;
+  opacity:0;pointer-events:none;transition:opacity .32s ease;
+}
+.conquest-ov.show{opacity:1;pointer-events:auto}
+.conquest-stage{
+  position:relative;width:min(500px,100%);
+  background:radial-gradient(380px 220px at 50% 18%, color-mix(in srgb,var(--acc) 26%,transparent), transparent 70%),
+             radial-gradient(320px 240px at 50% 85%, var(--glow), transparent 70%),var(--card);
+  border:2px solid color-mix(in srgb,var(--acc) 65%,var(--line));border-radius:30px;
+  padding:28px 22px 24px;text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.78), 0 0 60px var(--acc-glow);
+  transform:scale(.82) translateY(24px);transition:transform .5s cubic-bezier(.22,1,.36,1);overflow:hidden;
+}
+.conquest-ov.show .conquest-stage{transform:scale(1) translateY(0)}
+.conq-banner{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--acc),#f59e0b,var(--acc-glow));color:#1f1300;
+  font-weight:900;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  padding:6px 18px;border-radius:999px;box-shadow:0 6px 20px var(--acc-glow);
+}
+.conq-title{font-family:Fraunces,serif;font-size:clamp(24px,4.2vw,30px);font-weight:900;margin:12px 0 6px;color:var(--ink)}
+.conq-sub{font-size:14px;color:var(--mut);font-weight:600;margin-bottom:18px}
+</style>
+
+<script>
+(function(){
+  /* 1. SADECE SEÇİLEN 4 RENK PALETİ (ANA SAYFA İLE %100 SENKRONİZE) */
+  const VALID_PALS = ['akdeniz', 'derin_akdeniz', 'kitaplik', 'sicak_espresso'];
+  const dotsEl = document.querySelector('.dots');
+  if(dotsEl){
+    dotsEl.innerHTML = `
+      <button data-pal="akdeniz" title="🌿 Akdeniz (Açık Yeşil · Varsayılan)" aria-label="Akdeniz" style="background:#0f766e"></button>
+      <button data-pal="derin_akdeniz" title="🌌 Derin Akdeniz Gecesi (Koyu Yeşil)" aria-label="Derin Akdeniz" style="background:#061514;border-color:#14b8a6"></button>
+      <button data-pal="kitaplik" title="📜 Kütüphane / Kitaplık (Açık Krem & Bordo)" aria-label="Kütüphane" style="background:#7a1f2e"></button>
+      <button data-pal="sicak_espresso" title="☕ Sıcak Espresso & Bordo (Koyu Kütüphane)" aria-label="Sıcak Espresso" style="background:#181412;border-color:#c08a2b"></button>
+    `;
+  }
+  setPal = function(n){
+    const target = VALID_PALS.includes(n) ? n : 'akdeniz';
+    document.body.dataset.pal = target;
+    document.querySelectorAll('.dots button').forEach(b => b.classList.toggle('on', b.dataset.pal === target));
+    try{ localStorage.setItem('ka_pal', target); localStorage.setItem('ka_pal_v3', target); }catch(e){}
+  };
+  try{
+    const savedV3 = localStorage.getItem('ka_pal_v3') || localStorage.getItem('ka_pal');
+    setPal(VALID_PALS.includes(savedV3) ? savedV3 : 'akdeniz');
+  }catch(e){ setPal('akdeniz'); }
+
+  /* 2. 1A-SAF OPTİMUM LOGO & ARENA ROZETİ */
+  const lgo = document.getElementById('lgo');
+  if(lgo){
+    lgo.innerHTML = `
+      <rect x="2" y="2" width="60" height="60" rx="18" style="fill:var(--lg)"/>
+      <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sheen)"/>
+      <rect x="4.5" y="4.5" width="55" height="55" rx="15.5" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="1.2"/>
+      <path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round"/>
+      <path d="M11.8 47.5H18.2M45.8 47.5H52.2" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+      <path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" fill="none" stroke="url(#gold)" stroke-width="4.2" stroke-linecap="round"/>
+      <path d="M9.5 53.5 Q20.8 49 32 53.8 Q43.2 49 54.5 53.5" fill="none" stroke="url(#gold)" stroke-width="2.7" stroke-linecap="round"/>
+      <path d="M14.5 57 Q23.2 53.8 32 57 Q40.8 53.8 49.5 57" fill="none" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="50" cy="13" r="6.8" fill="#fbbf24" fill-opacity="0.24"/>
+      <circle cx="50" cy="13" r="3.7" fill="url(#gold)"/>
+      <circle cx="48.8" cy="11.8" r="1.1" fill="#ffffff" fill-opacity="0.85"/>`;
+  }
+  const logoLink = document.querySelector('.logo');
+  if(logoLink && !logoLink.querySelector('.logo-sub')){
+    const sub = document.createElement('span');
+    sub.className = 'logo-sub';
+    sub.textContent = 'ARENA';
+    logoLink.appendChild(sub);
+  }
+
+  /* 3. DİNAMİK PALET KIVILCIM & FETİH ANİMASYONU */
+  function getActivePaletteColors(){
+    const st = getComputedStyle(document.body);
+    const p = st.getPropertyValue('--p').trim() || '#0f766e';
+    const p2 = st.getPropertyValue('--p2').trim() || '#14b8a6';
+    const acc = st.getPropertyValue('--acc').trim() || '#f59e0b';
+    const ok = st.getPropertyValue('--ok').trim() || '#10b981';
+    const soft = st.getPropertyValue('--soft').trim() || '#e2f1ed';
+    return [acc, p, p2, ok, soft];
+  }
+  function spawnSparks(x, y, count=22){
+    const colors = getActivePaletteColors();
+    for(let i=0;i<count;i++){
+      const s = document.createElement('i');
+      s.className = 'spark-pt';
+      const ang = (Math.PI * 2 * i) / count + (Math.random() - .5) * .4;
+      const dist = 40 + Math.random() * 110;
+      s.style.left = x + 'px';
+      s.style.top = y + 'px';
+      s.style.background = colors[i % colors.length];
+      s.style.color = colors[i % colors.length];
+      s.style.setProperty('--tx', Math.cos(ang)*dist + 'px');
+      s.style.setProperty('--ty', Math.sin(ang)*dist + 'px');
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 900);
+    }
+  }
+
+  if(!document.getElementById('newsConqOv')){
+    const ov = document.createElement('div');
+    ov.className = 'conquest-ov';
+    ov.id = 'newsConqOv';
+    ov.innerHTML = `
+      <div class="conquest-stage">
+        <div class="conq-banner">⚔️ HABER QUİZİ FETHEDİLDİ ⚔️</div>
+        <h2 class="conq-title" id="nConqTitle">Seviye Tamamlandı!</h2>
+        <p class="conq-sub" id="nConqSub"></p>
+        <div class="row" style="justify-content:center;gap:10px">
+          <button class="btn3" id="nConqClose">🏛️ Habere Dön</button>
+        </div>
+      </div>`;
+    document.body.appendChild(ov);
+  }
+
+  /* 4. KELİME LİSTESİNE EKLEME MOTORU (ANA SAYFADAKİ TÜM PAKETLERLE DOĞRUDAN ENTEGRE) */
+  function getUserUid(){
+    let u = localStorage.getItem('ka_uid');
+    if(!u){
+      u = (crypto.randomUUID ? crypto.randomUUID() : Date.now()+'-'+Math.random().toString(36).slice(2));
+      localStorage.setItem('ka_uid', u);
+    }
+    return u;
+  }
+
+  function isWordAlreadyAdded(wordStr){
+    const k = String(wordStr||'').toLowerCase().trim();
+    if(!k) return false;
+    try{
+      const q = JSON.parse(localStorage.getItem('ka_news_added_words') || '[]');
+      if(Array.isArray(q) && q.some(x => String(x && x.en || '').toLowerCase().trim() === k)) return true;
+      const uid = getUserUid();
+      const pre = 'db:data/users/' + uid + '/';
+      for(const key of Object.keys(localStorage)){
+        if(key.startsWith(pre)){
+          const pack = JSON.parse(localStorage.getItem(key) || 'null');
+          if(pack && Array.isArray(pack.items)){
+            if(pack.items.some(it => String(it && it.en || '').toLowerCase().trim() === k)) return true;
+          }
+        }
+      }
+    }catch(e){}
+    return false;
+  }
+
+  function addNewsWordToArena(wordEn, trMeaning, synArr, sentenceEn, sentenceTr, btnEl){
+    const cleanEn = String(wordEn||'').trim().toLowerCase();
+    if(!cleanEn) return;
+    const cleanTr = String(trMeaning||'').trim();
+    const cleanSyn = Array.isArray(synArr) ? synArr.map(s=>String(s||'').trim()).filter(Boolean) : [];
+    const cleanS = String(sentenceEn||'').trim();
+    const cleanSt = String(sentenceTr||'').trim();
+
+    try{
+      /* 1) Ortak haber kelime kuyruğuna kaydet (Ana sayfa açıldığında otomatik senkronize eder) */
+      const q = JSON.parse(localStorage.getItem('ka_news_added_words') || '[]');
+      if(!q.some(x => String(x && x.en || '').toLowerCase() === cleanEn)){
+        q.push({ en: cleanEn, tr: cleanTr, syn: cleanSyn, s: cleanS, st: cleanSt, addedAt: Date.now() });
+        localStorage.setItem('ka_news_added_words', JSON.stringify(q));
+      }
+
+      /* 2) Kullanıcının localStorage'daki mevcut kelime paketlerine doğrudan ekle */
+      const uid = getUserUid();
+      const pre = 'db:data/users/' + uid + '/';
+      const packKeys = Object.keys(localStorage).filter(k => k.startsWith(pre));
+      packKeys.forEach(pk => {
+        try{
+          const pack = JSON.parse(localStorage.getItem(pk) || 'null');
+          if(pack && Array.isArray(pack.items)){
+            const exists = pack.items.some(it => String(it && it.en || '').toLowerCase().trim() === cleanEn);
+            if(!exists){
+              pack.items.push({
+                en: cleanEn,
+                tr: cleanTr,
+                baseTr: cleanTr,
+                turengDone: true,
+                syn: cleanSyn,
+                s: cleanS,
+                st: cleanSt,
+                d: [],
+                gl: {},
+                mo: {}
+              });
+              if(Array.isArray(pack.words)) pack.words.push({ en: cleanEn, tr: cleanTr });
+              pack.prog = pack.prog || { box:{}, steps:[0,0,0,0,0,0,0], mdone:[], xp:0 };
+              pack.prog.box = pack.prog.box || {};
+              pack.prog.box[cleanEn] = 1;
+              localStorage.setItem(pk, JSON.stringify(pack));
+            }
+          }
+        }catch(err){}
+      });
+    }catch(e){}
+
+    if(btnEl){
+      btnEl.outerHTML = `<span class="added-word-badge">✅ <b>"${esc(cleanEn)}"</b> Ana Sayfa Listene Eklendi! (Kutu 1)</span>`;
+    }
+  }
+
+  /* 5. HABER OKUYUCU (TÜM CÜMLE ÇEVİRİLERİ PANELİ + DİNLEME + QUIZ) */
+  let SHOW_NEWS_TR = false;
+  let NEWS_TR_CACHE = {};
+  try{ NEWS_TR_CACHE = JSON.parse(localStorage.getItem('ka_news_tr_v2') || '{}') || {}; }catch(e){ NEWS_TR_CACHE = {}; }
+
+  function getSentences(text){
+    return String(text || '').split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
+  }
+
+  async function translateNewsSentences(storyId, level, text){
+    const cacheKey = storyId + '_' + level;
+    if(NEWS_TR_CACHE[cacheKey] && Array.isArray(NEWS_TR_CACHE[cacheKey]) && NEWS_TR_CACHE[cacheKey].length){
+      return NEWS_TR_CACHE[cacheKey];
+    }
+    const sents = getSentences(text);
+    if(!sents.length) return [];
+    const prompt = `Sen akademik İngilizce-Türkçe çeviri uzmanısın. Aşağıdaki haber metninin numaralı İngilizce cümlelerini doğal ve akıcı Türkçeye çevir.
+YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"tr":"..."}]}
+
+CÜMLELER:
+${sents.map((s,idx)=>`${idx+1}. ${s}`).join('\n')}`;
+
+    try{
+      const r = await fetch('/api/claude',{
+        method:'POST',
+        headers:{'content-type':'application/json'},
+        body:JSON.stringify({prompt, tier:'quick'})
+      });
+      const d = await r.json();
+      const m = String(d.text||'').match(/\{[\s\S]*\}/);
+      if(m){
+        const parsed = JSON.parse(m[0]);
+        if(parsed && Array.isArray(parsed.items)){
+          const out = sents.map((enStr, idx) => {
+            const found = parsed.items.find(o => Number(o.i) === idx + 1) || parsed.items[idx];
+            return { en: enStr, tr: found && found.tr ? String(found.tr).trim() : '' };
+          });
+          NEWS_TR_CACHE[cacheKey] = out;
+          try{ localStorage.setItem('ka_news_tr_v2', JSON.stringify(NEWS_TR_CACHE)); }catch(e){}
+          return out;
+        }
+      }
+    }catch(e){}
+    return sents.map(enStr => ({ en: enStr, tr: '' }));
+  }
+
+  reader = function(){
+    const lv = CUR.levels[LEVEL] || CUR.levels['1'];
+    const done = DONE();
+    const tabs = [1,2,3].map(l=>`<button class="pill ${String(l)===LEVEL?'on':''}" data-lv="${l}">${LV[l]}${done[CUR.id+'-'+l]!=null?' ✓ %'+done[CUR.id+'-'+l]:''}</button>`).join('');
+    const story = String(lv.text).split(/([A-Za-z][A-Za-z'-]*)/).map((t,i)=>i%2?`<span class="tk" data-w="${esc(t)}">${esc(t)}</span>`:esc(t)).join('');
+    $('#main').innerHTML = `<a class="pill" href="#">← Haberler</a>
+<div class="row" style="margin-top:14px"><span class="tag">${esc(CUR.category)}</span><span class="date">${esc(CUR.date)}</span></div>
+<h2 class="ttl" style="font-size:28px">${esc(CUR.title)}</h2>
+<div class="row">${tabs}</div>
+<div class="box">
+  <div class="row" style="margin-top:0;justify-content:space-between">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <button class="btn3" id="play">🔊 Dinle (US)</button>
+      <select id="spd"><option value="0.8">Yavaş</option><option value="1" selected>Normal</option><option value="1.15">Hızlı</option></select>
+      <button class="pill" id="stop">■ Durdur</button>
+    </div>
+    <button class="pill" id="toggleNewsTrBtn" type="button" style="border:1.5px solid var(--line);font-weight:800">📖 Haberin Türkçe Çevirisi (Cümle Cümle)</button>
+  </div>
+  <div class="story">${story}</div>
+  <div id="newsTrPanelWrap" hidden></div>
+  <div class="tip" id="tip"><span class="muted">💡 Haberdeki herhangi bir kelimeye dokunun: <b>Tureng yaygın anlamları</b>, <b>İngilizce eş anlamlıları (Synonyms)</b> ve <b>➕ Kelime Listesine Ekle</b> butonu açılır.</span></div>
+</div>
+<div class="row"><button class="btn3" id="quiz">⚔️ Quiz'e Geç →</button></div>
+<p class="muted">Kaynak: <a class="src" href="${esc(CUR.src)}" target="_blank" rel="noopener">${esc(CUR.source)}</a> · Metin bu haberden yapay zekâyla sadeleştirilmiştir.</p>`;
+  };
+
+  /* 6. KELİMEYE DOKUNUNCA: TURENG YAYGIN ANLAMLAR + SYNONYMS + LİSTEYE EKLE */
+  let WORD_CACHE = {};
+  try{ WORD_CACHE = JSON.parse(localStorage.getItem('ka_hw_rich_v2') || '{}') || {}; }catch(e){ WORD_CACHE = {}; }
+
+  let LAST_TAPPED_INFO = null;
+
+  function renderRichTip(w, data, sentence){
+    const cleanW = String(w||'').trim();
+    const k = cleanW.toLowerCase();
+    const q = encodeURIComponent(k);
+    const trText = data && data.tr ? data.tr : '';
+    const syns = data && Array.isArray(data.syn) ? data.syn.filter(Boolean) : [];
+    const sentTr = data && data.st ? data.st : '';
+
+    LAST_TAPPED_INFO = {
+      en: cleanW,
+      tr: trText,
+      syn: syns,
+      s: sentence || '',
+      st: sentTr
+    };
+
+    const already = isWordAlreadyAdded(cleanW);
+    const addBtnHtml = already
+      ? `<span class="added-word-badge">✓ Kelime Listende Mevcut</span>`
+      : `<button type="button" class="add-word-btn" id="newsAddWordBtn" data-nw="${esc(cleanW)}">➕ Kelime Listesine Ekle</button>`;
+
+    const synHtml = syns.length
+      ? `<div class="syn-box"><span class="syn-lbl">🔗 Synonyms (Eş Anlamlılar):</span>${syns.map(s => `<span class="syn-chip tk" data-w="${esc(s)}" title="Tıkla: Dinle ve anlamını gör">🔊 ${esc(s)}</span>`).join('')}</div>`
+      : '';
+
+    const sentTrHtml = sentTr
+      ? `<div style="margin-top:8px;font-size:13.5px;color:var(--mut)"><b>Cümle Çevirisi:</b> ${esc(sentTr)}</div>`
+      : '';
+
+    return `
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px">
+          <span class="tureng-badge">📚 Bağlam + Tureng Yaygın Karşılıklar</span>
+          <b style="font-size:17px">${esc(cleanW)}</b> —
+          <span style="font-weight:800;color:var(--p)">${esc(trText)}</span>
+          ${addBtnHtml}
+        </div>
+        <div style="font-size:13px;display:flex;gap:10px">
+          <a class="src" href="https://dictionary.cambridge.org/dictionary/english-turkish/${q}" target="_blank" rel="noopener">Cambridge ↗</a>
+          <a class="src" href="https://tureng.com/en/turkish-english/${q}" target="_blank" rel="noopener">Tureng ↗</a>
+        </div>
+      </div>
+      ${synHtml}
+      ${sentTrHtml}
+    `;
+  }
+
+  tapWord = async function(w, el){
+    document.querySelectorAll('.tk.sel').forEach(x=>x.classList.remove('sel'));
+    if(el) el.classList.add('sel');
+    const cleanW = String(w||'').trim();
+    const k = cleanW.toLowerCase();
+    const tip = $('#tip');
+    say(cleanW);
+
+    const sentence = (CUR && CUR.levels && CUR.levels[LEVEL] ? CUR.levels[LEVEL].text : '')
+      .split(/(?<=[.!?])\s+/)
+      .find(s => new RegExp('\\b'+cleanW.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i').test(s)) || '';
+
+    if(WORD_CACHE[k] && WORD_CACHE[k].tr){
+      tip.innerHTML = renderRichTip(cleanW, WORD_CACHE[k], sentence);
+      return;
+    }
+
+    const oldSimple = localStorage.getItem('ka_hw_' + k);
+    tip.innerHTML = `<b>${esc(cleanW)}</b> — <span class="muted">${oldSimple ? esc(oldSimple) + ' · (Tureng & eş anlamlılar yükleniyor…)' : 'Tureng anlamları ve eş anlamlılar aranıyor…'}</span>`;
+
+    try{
+      const prompt = `Sen akademik İngilizce ve Tureng sözlük uzmanısın.
+Hedef kelime: "${cleanW}"
+Geçtiği haber cümlesi: "${sentence}"
+
+Görev:
+1. "tr": Kelimenin bu cümledeki anlamını ve Tureng sözlüğündeki en yaygın 2-3 Türkçe karşılığını virgülle ayırarak yaz (kısa ve net, toplam 2-5 kelime).
+2. "syn": Kelimenin en yaygın 3 İngilizce eş anlamlısı (synonyms) dizisi.
+3. "st": Geçtiği haber cümlesinin doğal Türkçe çevirisi.
+YALNIZCA geçerli JSON döndür: {"tr":"...","syn":["...","...","..."],"st":"..."}`;
+
+      const r = await fetch('/api/claude',{
+        method:'POST',
+        headers:{'content-type':'application/json'},
+        body:JSON.stringify({prompt, tier:'quick'})
+      });
+      const d = await r.json();
+      const m = String(d.text||'').match(/\{[\s\S]*\}/);
+      const parsed = m ? JSON.parse(m[0]) : null;
+      if(parsed && parsed.tr){
+        const entry = {
+          tr: String(parsed.tr).trim(),
+          syn: Array.isArray(parsed.syn) ? parsed.syn.map(s=>String(s||'').trim()).filter(Boolean).slice(0,4) : [],
+          st: String(parsed.st||'').trim()
+        };
+        WORD_CACHE[k] = entry;
+        try{
+          localStorage.setItem('ka_hw_rich_v2', JSON.stringify(WORD_CACHE));
+          localStorage.setItem('ka_hw_' + k, entry.tr);
+        }catch(e){}
+        tip.innerHTML = renderRichTip(cleanW, entry, sentence);
+      } else if(oldSimple){
+        tip.innerHTML = renderRichTip(cleanW, { tr: oldSimple, syn: [], st: '' }, sentence);
+      } else {
+        tip.innerHTML = `<b>${esc(cleanW)}</b> — <span class="muted">anlam bulunamadı</span>`;
+      }
+    }catch(e){
+      if(oldSimple){
+        tip.innerHTML = renderRichTip(cleanW, { tr: oldSimple, syn: [], st: '' }, sentence);
+      } else {
+        tip.innerHTML = `<b>${esc(cleanW)}</b> — <span style="color:var(--bad)">bağlantı hatası</span>`;
+      }
+    }
+  };
+
+  /* 7. QUIZ CEVAPLAMA & PALET UYUMLU ZAFER KUTLAMASI */
+  const origAnswer = answer;
+  answer = function(i, k){
+    origAnswer(i, k);
+    const qs = CUR && CUR.levels && CUR.levels[LEVEL] ? CUR.levels[LEVEL].quiz : null;
+    if(qs && QS && QS.ans && QS.ans.every(v => v !== null)){
+      const total = qs.length, right = QS.ans.filter((v,j)=>v===qs[j].ans).length, pct = Math.round(right/total*100);
+      spawnSparks(window.innerWidth/2, window.innerHeight/2, 28);
+      const ov = document.getElementById('newsConqOv');
+      if(ov){
+        const ttl = document.getElementById('nConqTitle');
+        const sub = document.getElementById('nConqSub');
+        if(ttl) ttl.textContent = `${LV[LEVEL]} · %${pct} Başarı!`;
+        if(sub) sub.textContent = `${total} soruda ${right} doğru yanıtla bu haber seviyesini tamamladın.`;
+        ov.classList.add('show');
+      }
+    }
+  };
+
+  /* 8. TIKLAMA DİNLEYİCİLERİ */
+  document.addEventListener('click', async e => {
+    const t = e.target;
+
+    /* Kelime Listesine Ekle butonu */
+    const addBtn = t.closest('#newsAddWordBtn');
+    if(addBtn && LAST_TAPPED_INFO){
+      e.stopPropagation();
+      addNewsWordToArena(
+        LAST_TAPPED_INFO.en,
+        LAST_TAPPED_INFO.tr,
+        LAST_TAPPED_INFO.syn,
+        LAST_TAPPED_INFO.s,
+        LAST_TAPPED_INFO.st,
+        addBtn
+      );
+      spawnSparks(e.clientX, e.clientY, 20);
+      return;
+    }
+
+    /* Haberin Türkçe Çevirisi (Cümle Cümle) Butonu */
+    const trBtn = t.closest('#toggleNewsTrBtn');
+    if(trBtn && CUR && CUR.levels && CUR.levels[LEVEL]){
+      const wrap = document.getElementById('newsTrPanelWrap');
+      if(!wrap) return;
+      if(!wrap.hidden){
+        wrap.hidden = true;
+        trBtn.textContent = '📖 Haberin Türkçe Çevirisi (Cümle Cümle)';
+        return;
+      }
+      wrap.hidden = false;
+      trBtn.textContent = '🙈 Çeviriyi Gizle';
+      wrap.innerHTML = `<div class="news-sent-panel"><div class="muted">⚡ Haberin cümle cümle Türkçe çevirisi hazırlanıyor…</div></div>`;
+      const pairs = await translateNewsSentences(CUR.id, LEVEL, CUR.levels[LEVEL].text);
+      wrap.innerHTML = `
+        <div class="news-sent-panel">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <span class="eyebrow" style="color:var(--p)">🇹🇷 CÜMLE CÜMLE HABER ÇEVİRİSİ (${esc(LV[LEVEL])})</span>
+            <span class="muted" style="font-size:12px">${pairs.length} cümle</span>
+          </div>
+          ${pairs.map((p, idx) => `
+            <div class="news-sent-row">
+              <div class="news-sent-en">${idx+1}. ${esc(p.en)}</div>
+              <div class="news-sent-tr">${p.tr ? esc(p.tr) : '<span class="muted">Çeviri alınamadı.</span>'}</div>
+            </div>
+          `).join('')}
+        </div>`;
+      return;
+    }
+
+    /* Fetih modalı kapatma */
+    if(t.closest('#nConqClose') || t.id === 'newsConqOv'){
+      const ov = document.getElementById('newsConqOv');
+      if(ov) ov.classList.remove('show');
+      return;
+    }
+
+    /* Quiz şıkkı tıklanınca kıvılcım */
+    if(t.closest('[data-q]')){
+      spawnSparks(e.clientX, e.clientY, 14);
+    }
+  });
+
+  if(CUR) reader(); else list();
+})();
+</script>
+<!-- ===== HABER ARENASI YENİ ARAYÜZ & OTOMASYON YAMASI SONU ===== -->
+
 </body>
 </html>
 <!-- ===== KELİME ARENASI HABER: YENİ ARAYÜZ & 1A-SAF LOGO (SADECE GÖRSEL YAMA) ===== -->
