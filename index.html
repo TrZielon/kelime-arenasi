@@ -7557,3 +7557,395 @@ body::before{
   setTimeout(injectPwa,250);window.addEventListener('hashchange',()=>setTimeout(injectPwa,200));
 })();
 </script>
+<!-- ===== KELİME ARENASI: BUEPT READING SINAV ODASI EKLENTİSİ ===== -->
+<style>
+.buept-banner{background:linear-gradient(135deg,var(--card),var(--soft));border:2px solid var(--p2);border-radius:24px;padding:20px 22px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;box-shadow:0 6px 0 var(--line),var(--shadow);transition:transform .18s,border-color .18s}
+.buept-banner:hover{transform:translateY(-2px);border-color:var(--acc)}
+.buept-room{display:none;background:var(--card);border:1.5px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:0 14px 40px -20px rgba(0,0,0,.35);margin-top:14px}
+.buept-room.on{display:block}
+.ex-bar{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1.5px solid var(--line);background:var(--bg);flex-wrap:wrap}
+.ex-title{font-weight:900;font-size:15px;color:var(--ink)}
+.ex-timer{margin-left:auto;font-weight:900;background:#fff7e6;color:#b45309;border:1.5px solid #fcd34d;border-radius:10px;padding:4px 12px;font-variant-numeric:tabular-nums;font-size:14px}
+.ex-split{display:grid;grid-template-columns:1.2fr 1fr;height:650px}
+@media(max-width:850px){.ex-split{grid-template-columns:1fr;height:auto}}
+.ex-pane{overflow-y:auto;padding:16px 20px}
+.ex-pane.right{border-left:1.5px solid var(--line);background:var(--bg)}
+@media(max-width:850px){.ex-pane.right{border-left:0;border-top:1.5px solid var(--line)}}
+.ex-tools{position:sticky;top:-16px;background:var(--card);z-index:10;display:flex;gap:6px;flex-wrap:wrap;padding:8px 0;border-bottom:1px dashed var(--line);margin-bottom:12px}
+.ex-tools button{border:1.5px solid var(--line);background:var(--bg);border-radius:10px;padding:5px 10px;font-weight:800;font-size:12.5px;color:var(--ink);cursor:pointer}
+.ex-tools button.on{border-color:var(--p);background:var(--soft);color:var(--p)}
+.ex-passage{font-family:Georgia,serif;line-height:1.8}
+.ex-pp{display:grid;grid-template-columns:26px 1fr;gap:8px;margin:0 0 14px;font-size:15px;transition:background .3s;padding:4px 6px;border-radius:8px}
+.ex-pp b.pl{font-family:-apple-system,sans-serif;color:var(--p);font-size:13px;padding-top:2px}
+.ex-pp.flash{animation:exFlash 1.8s}
+@keyframes exFlash{0%,60%{background:#fef3c7;box-shadow:0 0 0 3px #fbbf24}100%{background:transparent}}
+mark.y{background:#fde68a}mark.g{background:#a7f3d0}mark.k{background:#fbcfe8}
+mark.u{background:none;text-decoration:underline;text-decoration-color:var(--bad);text-decoration-thickness:2.5px;text-underline-offset:3px}
+mark.n{background:#dbeafe;border-bottom:2px dotted #2563eb;cursor:help}
+.ex-qnav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.ex-qnav span{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:12.5px;font-weight:800;border:1.5px solid var(--line);background:var(--card);cursor:pointer}
+.ex-qnav span.done{background:var(--p);border-color:var(--p);color:#fff}
+.ex-qnav span.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.ex-qnav span.wrong{background:var(--bad);border-color:var(--bad);color:#fff}
+.ex-qcard{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.ex-qh{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:800;color:var(--mut);margin-bottom:6px}
+.ex-opt{display:flex;gap:8px;align-items:flex-start;padding:8px 12px;border:1.5px solid var(--line);border-radius:12px;margin:6px 0;cursor:pointer;font-size:13.5px}
+.ex-opt:hover{border-color:var(--p2)}
+.ex-opt.sel{border-color:var(--p);background:var(--soft);font-weight:700}
+.ex-opt.ok{border-color:var(--ok);background:rgba(16,185,129,.15);font-weight:800}
+.ex-opt.no{border-color:var(--bad);background:rgba(239,68,68,.15)}
+.ex-tfng{display:flex;gap:6px}.ex-tfng .ex-opt{flex:1;justify-content:center;font-weight:800}
+.ex-ev{display:none;margin-top:10px;font-size:12.5px;background:rgba(16,185,129,.1);border-radius:10px;padding:8px 12px;border:1px solid rgba(16,185,129,.2)}
+.ex-qcard.graded .ex-ev{display:block}
+.ex-res{display:none;padding:24px;background:var(--card);border-top:1.5px solid var(--line)}
+.ex-res.on{display:block}
+.ex-ring{width:130px;height:130px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--p) calc(var(--v)*1%),var(--soft) 0)}
+.ex-ring span{width:104px;height:104px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-weight:900;font-size:24px;text-align:center;line-height:1.1}
+</style>
+
+<script>
+(function(){
+  const BUEPT_PASSAGE = {
+    title: "Urban Heat Islands",
+    sub: "BUEPT Reading · Metni seçerek renklendirebilir, not ekleyebilir veya altını çizebilirsin.",
+    paragraphs: [
+      { id: "pA", pl: "A", t: "Cities are often several degrees warmer than the countryside that surrounds them. This phenomenon, known as the urban heat island effect, was first documented in London in the early nineteenth century. Today, it affects nearly every major city on the planet, and its consequences are becoming more serious as urban populations continue to grow." },
+      { id: "pB", pl: "B", t: "The causes are well understood. Dark surfaces such as asphalt roads and rooftops absorb sunlight during the day and release it slowly at night. In addition, cities have far fewer trees than rural areas, so they lose the natural cooling that comes from evaporation. Heat produced by cars, air conditioners and factories adds further to the problem." },
+      { id: "pC", pl: "C", t: "The effects are not merely uncomfortable. During heatwaves, death rates in cities can rise sharply, particularly among elderly residents. Higher temperatures also increase energy demand, as more people rely on air conditioning, which in turn releases more heat outdoors — a cycle that is difficult to break." },
+      { id: "pD", pl: "D", t: "Fortunately, several strategies can mitigate the problem. Painting roofs white, for instance, reflects a large proportion of sunlight back into the atmosphere. Planting trees and creating green roofs provide shade and cool the air. Some cities, such as Singapore, have made urban greenery a central part of their planning policy." },
+      { id: "pE", pl: "E", t: "Nevertheless, experts warn that no single solution will be enough. Reducing the urban heat island effect requires cooperation between architects, city planners and local communities, as well as long-term investment that many governments are reluctant to make." }
+    ],
+    questions: [
+      { t: "Main idea", type: "mc", q: "What is the passage mainly about?", o: ["The history of London's climate", "The causes, effects and solutions of urban heat islands", "Why air conditioners are dangerous to human health", "Singapore's sustainable urban planning policy"], a: 1, ev: "pA", why: "Metin A'dan E'ye kadar kentsel ısı adalarının nedenlerini, ölümcül etkilerini ve azaltma çözümlerini kapsamlı biçimde ele almaktadır." },
+      { t: "Reference", type: "txt", q: "What does 'they' in paragraph B refer to?", a: ["cities"], ev: "pB", why: "'...cities have far fewer trees... so they lose...' cümlesinde 'they' doğrudan şehirleri (cities) kastetmektedir." },
+      { t: "True / False / NG", type: "tf", q: "Trees help cool cities through evaporation.", a: "True", ev: "pB", why: "Paragraf B: '...lose the natural cooling that comes from evaporation' ifadesi ağaçların buharlaşmayla soğutma sağladığını doğrular." },
+      { t: "True / False / NG", type: "tf", q: "The heat island effect was first recorded in Paris.", a: "False", ev: "pA", why: "Paragraf A: '...was first documented in London in the early nineteenth century' belirtilmiştir, Paris değil Londra'dır." },
+      { t: "Vocabulary", type: "mc", q: "The word 'mitigate' in paragraph D is closest in meaning to:", o: ["increase", "reduce", "explain", "ignore"], a: 1, ev: "pD", why: "'mitigate' hafifletmek, azaltmak (reduce / alleviate) anlamına gelen kritik bir akademik kelimedir." },
+      { t: "Short answer", type: "txt", q: "Which group is most at risk during heatwaves? (max 2 words)", a: ["elderly residents", "elderly", "the elderly", "old people"], ev: "pC", why: "Paragraf C: '...death rates in cities can rise sharply, particularly among elderly residents' ifadesinde açıkça belirtilmiştir." },
+      { t: "Matching headings", type: "sel", q: "Choose the best heading for paragraph E:", o: ["— bir başlık seç —", "A vicious cycle that is hard to break", "Simple ways to cool down homes", "A complex challenge requiring teamwork and investment", "Where it all began in London"], a: 3, ev: "pE", why: "Paragraf E, sorunun tek bir yolla çözülemeyeceğini; mimarlar, şehir planlamacıları ve yatırımların ortak işbirliğini gerektirdiğini vurgular." }
+    ]
+  };
+
+  function injectBueptUI(){
+    const navLinks = document.querySelector('.navlinks');
+    if(navLinks && !document.getElementById('navBueptBtn')){
+      const btn = document.createElement('button');
+      btn.id = 'navBueptBtn';
+      btn.style.cssText = 'background:var(--soft);color:var(--p);border:1.5px solid var(--line);border-radius:12px;padding:7px 13px;font-weight:800;font-size:13px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;margin-left:4px';
+      btn.innerHTML = '📝 BUEPT Sınavı';
+      btn.onclick = openBueptRoom;
+      navLinks.appendChild(btn);
+    }
+    const homeEl = document.getElementById('home');
+    if(homeEl && !document.getElementById('bueptBannerBox')){
+      const banner = document.createElement('div');
+      banner.id = 'bueptBannerBox';
+      banner.className = 'buept-banner';
+      banner.innerHTML = `
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:50px;height:50px;border-radius:16px;background:linear-gradient(135deg,var(--p),var(--p2));display:grid;place-items:center;font-size:24px;color:#fff;box-shadow:0 6px 16px var(--glow)">📝</div>
+          <div>
+            <div style="font-size:11px;font-weight:900;letter-spacing:1px;color:var(--p)">BUEPT / AKADEMİK SINAV HAZIRLIK</div>
+            <h3 style="margin:2px 0 4px;font-size:18px;color:var(--ink)">BUEPT Reading Sınav Odası</h3>
+            <p style="margin:0;font-size:13px;color:var(--mut)">Gerçek sınav gibi: Metni sol tarafta oku, altını çiz & not al; sağda 6 soru tipini çöz ve puanlan!</p>
+          </div>
+        </div>
+        <button class="btn3" id="bueptEnterBtn" style="padding:11px 20px;font-size:13.5px;white-space:nowrap">Sınav Odasına Gir →</button>`;
+      homeEl.prepend(banner);
+      document.getElementById('bueptEnterBtn').onclick = openBueptRoom;
+    }
+  }
+
+  let exAnswers = {}, exDone = false, exLeft = 3600, exTimer = null, exMode = 'y', exFontSize = 15;
+
+  function openBueptRoom(){
+    const main = document.getElementById('main');
+    if(!main) return;
+    let room = document.getElementById('bueptRoom');
+    if(!room){
+      room = document.createElement('div');
+      room.id = 'bueptRoom';
+      room.className = 'buept-room';
+      main.prepend(room);
+    }
+    const home = document.getElementById('home'); if(home) home.style.display = 'none';
+    const act = document.getElementById('act'); if(act) act.style.display = 'none';
+    room.classList.add('on');
+    buildBueptRoomDOM(room);
+    room.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function closeBueptRoom(){
+    const room = document.getElementById('bueptRoom');
+    if(room) room.classList.remove('on');
+    const home = document.getElementById('home'); if(home) home.style.display = 'block';
+    if(exTimer) clearInterval(exTimer);
+  }
+
+  function buildBueptRoomDOM(room){
+    exAnswers = {}; exDone = false; exLeft = 3599;
+    const P = BUEPT_PASSAGE;
+    room.innerHTML = `
+      <div class="ex-bar">
+        <button class="pill" id="exExitBtn" style="padding:6px 12px;font-size:12.5px">← Arenaya Dön</button>
+        <span class="ex-title">📖 ${P.title}</span>
+        <span class="tag" id="exCountBadge">0 / ${P.questions.length} cevaplandı</span>
+        <span class="ex-timer" id="exTimerBadge">⏱ 59:59</span>
+        <button class="btn3" id="exFinishBtn" style="padding:8px 16px;font-size:13.5px;margin-left:auto">Bitir & Puanla</button>
+      </div>
+      <div class="ex-split">
+        <div class="ex-pane" id="exPassagePane">
+          <div class="ex-tools" id="exTools">
+            <button data-m="y" class="on">🟨 Sarı</button>
+            <button data-m="g">🟩 Yeşil</button>
+            <button data-m="k">🩷 Pembe</button>
+            <button data-m="u">U̲ Altını çiz</button>
+            <button data-m="n">📝 Not</button>
+            <button data-m="w" title="Seçtiğin kelimeyi paketine ekle">➕ Kelimeye ekle</button>
+            <button id="exClrBtn">⌫ Temizle</button>
+            <button id="exFmBtn">A−</button>
+            <button id="exFpBtn">A+</button>
+          </div>
+          <div class="ex-passage" id="exPassageText">
+            <h3 style="margin:4px 0 2px;font-family:Fraunces,serif;font-size:22px">${P.title}</h3>
+            <p style="font-size:12.5px;color:var(--mut);margin:0 0 14px">${P.sub}</p>
+            ${P.paragraphs.map(p => `
+              <div class="ex-pp" id="${p.id}">
+                <b class="pl">${p.pl}</b>
+                <span class="pp-content">${p.t}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="ex-pane right" id="exQuestionsPane">
+          <div class="ex-qnav" id="exQNav">
+            ${P.questions.map((_, i) => `<span id="exNav_${i}" data-q="${i}">${i+1}</span>`).join('')}
+          </div>
+          <div id="exQuestionList">
+            ${P.questions.map((q, i) => renderQuestionHtml(q, i)).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="ex-res" id="exResultPane">
+        <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+          <div class="ex-ring" id="exScoreRing" style="--v:0"><span id="exScoreText">0%<br><small style="font-size:12px;color:var(--mut)">0 / 7</small></span></div>
+          <div style="flex:1;min-width:240px" id="exCategoryBars"></div>
+          <div style="min-width:180px">
+            <div class="eyebrow">Tahmini BUEPT Seviyesi</div>
+            <div style="font-size:26px;font-weight:900" id="exBandGrade">—</div>
+            <div style="font-size:13px;color:var(--mut);margin:4px 0 12px">Süre: <b id="exDuration">—</b></div>
+            <button class="btn3" id="exReviewBtn" style="padding:9px 16px;font-size:13px">🔍 Kanıtları İncele</button>
+          </div>
+        </div>
+      </div>`;
+
+    document.getElementById('exExitBtn').onclick = closeBueptRoom;
+    document.getElementById('exFinishBtn').onclick = finishBueptExam;
+    document.getElementById('exFpBtn').onclick = () => { exFontSize = Math.min(22, exFontSize + 1); updateFontSize(); };
+    document.getElementById('exFmBtn').onclick = () => { exFontSize = Math.max(12, exFontSize - 1); updateFontSize(); };
+    document.getElementById('exClrBtn').onclick = () => {
+      document.querySelectorAll('#exPassageText mark').forEach(m => m.replaceWith(...m.childNodes));
+    };
+
+    const toolsEl = document.getElementById('exTools');
+    toolsEl.addEventListener('click', e => {
+      const b = e.target.closest('button[data-m]');
+      if(!b) return;
+      exMode = b.dataset.m;
+      toolsEl.querySelectorAll('[data-m]').forEach(x => x.classList.toggle('on', x === b));
+    });
+
+    const passageText = document.getElementById('exPassageText');
+    passageText.addEventListener('mouseup', () => {
+      const sel = window.getSelection();
+      if(!sel.rangeCount || sel.isCollapsed) return;
+      const range = sel.getRangeAt(0);
+      if(!passageText.contains(range.commonAncestorContainer)) return;
+      const str = sel.toString().trim();
+      if(exMode === 'w'){
+        if(typeof packs !== 'undefined' && packs[0]){
+          packs[0].items.push({ en: str.toLowerCase(), tr: '' });
+          if(window.save) save(packs[0]);
+          alert(`➕ "${str}" kelimesi aktif çalışma paketine eklendi!`);
+        }
+        sel.removeAllRanges(); return;
+      }
+      const mark = document.createElement('mark');
+      mark.className = exMode;
+      if(exMode === 'n'){
+        const note = prompt('Bu kısma notun:');
+        if(!note) return;
+        mark.title = '📝 ' + note;
+      }
+      try{ range.surroundContents(mark); }catch(err){ mark.appendChild(range.extractContents()); range.insertNode(mark); }
+      sel.removeAllRanges();
+    });
+
+    const qList = document.getElementById('exQuestionList');
+    qList.addEventListener('click', e => {
+      const opt = e.target.closest('.ex-opt');
+      if(!opt || exDone) return;
+      const qIdx = opt.dataset.q;
+      opt.parentElement.querySelectorAll('.ex-opt').forEach(x => x.classList.remove('sel'));
+      opt.classList.add('sel');
+      exAnswers[qIdx] = opt.dataset.v;
+      updateAnswerProgress();
+    });
+    qList.addEventListener('input', e => {
+      const qIdx = e.target.dataset.q;
+      if(qIdx == null || exDone) return;
+      exAnswers[qIdx] = e.target.value.trim();
+      updateAnswerProgress();
+    });
+
+    qList.addEventListener('click', e => {
+      const evBtn = e.target.closest('[data-ev]');
+      if(!evBtn) return;
+      const p = document.getElementById(evBtn.dataset.ev);
+      if(p){
+        p.classList.remove('flash'); void p.offsetWidth; p.classList.add('flash');
+        p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+
+    if(exTimer) clearInterval(exTimer);
+    exTimer = setInterval(() => {
+      if(exDone) return;
+      exLeft = Math.max(0, exLeft - 1);
+      const m = String(Math.floor(exLeft / 60)).padStart(2, '0');
+      const s = String(exLeft % 60).padStart(2, '0');
+      const badge = document.getElementById('exTimerBadge');
+      if(badge) badge.textContent = `⏱ ${m}:${s}`;
+    }, 1000);
+  }
+
+  function renderQuestionHtml(q, i){
+    let body = '';
+    if(q.type === 'mc'){
+      body = q.o.map((opt, k) => `<div class="ex-opt" data-q="${i}" data-v="${k}"><b>${'ABCD'[k]})</b> ${opt}</div>`).join('');
+    } else if(q.type === 'tf'){
+      body = '<div class="ex-tfng">' + ['True', 'False', 'Not Given'].map(v => `<div class="ex-opt" data-q="${i}" data-v="${v}">${v}</div>`).join('') + '</div>';
+    } else if(q.type === 'txt'){
+      body = `<input data-q="${i}" placeholder="Cevabını buraya yaz…" style="width:100%;padding:10px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font:inherit">`;
+    } else if(q.type === 'sel'){
+      body = `<select data-q="${i}" style="width:100%;padding:10px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font:inherit">${q.o.map((v, k) => `<option value="${k}">${v}</option>`).join('')}</select>`;
+    }
+    return `
+      <div class="ex-qcard" id="exQCard_${i}">
+        <div class="ex-qh"><span>SORU ${i+1}</span><span>${q.t}</span></div>
+        <p style="margin:0 0 8px;font-weight:700">${q.q}</p>
+        ${body}
+        <div class="ex-ev"></div>
+      </div>`;
+  }
+
+  function updateFontSize(){
+    document.querySelectorAll('.ex-pp').forEach(p => p.style.fontSize = exFontSize + 'px');
+  }
+
+  function updateAnswerProgress(){
+    const P = BUEPT_PASSAGE;
+    let answered = 0;
+    P.questions.forEach((q, i) => {
+      const val = exAnswers[i];
+      const isAns = val !== undefined && val !== '' && !(q.type === 'sel' && val === '0');
+      if(isAns) answered++;
+      const navSpan = document.getElementById('exNav_' + i);
+      if(navSpan) navSpan.classList.toggle('done', isAns);
+    });
+    const badge = document.getElementById('exCountBadge');
+    if(badge) badge.textContent = `${answered} / ${P.questions.length} cevaplandı`;
+  }
+
+  function finishBueptExam(){
+    if(exDone) return;
+    exDone = true;
+    if(exTimer) clearInterval(exTimer);
+    const P = BUEPT_PASSAGE;
+    let rightCount = 0;
+    const typeStats = {};
+
+    P.questions.forEach((q, i) => {
+      const userVal = (exAnswers[i] || '').toString().trim().toLowerCase();
+      let isCorrect = false;
+      if(q.type === 'mc' || q.type === 'sel') isCorrect = Number(exAnswers[i]) === q.a;
+      else if(q.type === 'tf') isCorrect = userVal === q.a.toLowerCase();
+      else if(q.type === 'txt') isCorrect = q.a.some(a => userVal.replace(/^the /,'') === a.replace(/^the /,''));
+
+      if(isCorrect) rightCount++;
+      typeStats[q.t] = typeStats[q.t] || [0, 0];
+      typeStats[q.t][1]++;
+      if(isCorrect) typeStats[q.t][0]++;
+
+      const card = document.getElementById('exQCard_' + i);
+      const nav = document.getElementById('exNav_' + i);
+      if(card){
+        card.classList.add('graded');
+        card.style.borderColor = isCorrect ? 'var(--ok)' : 'var(--bad)';
+      }
+      if(nav){
+        nav.classList.remove('done');
+        nav.classList.add(isCorrect ? 'right' : 'wrong');
+      }
+
+      if(q.type === 'mc' || q.type === 'tf'){
+        card.querySelectorAll('.ex-opt').forEach(opt => {
+          const val = opt.dataset.v;
+          if(q.type === 'mc' && Number(val) === q.a) opt.classList.add('ok');
+          else if(q.type === 'tf' && val === q.a) opt.classList.add('ok');
+          else if(opt.classList.contains('sel')) opt.classList.add('no');
+        });
+      }
+
+      const correctStr = (q.type === 'mc' || q.type === 'sel') ? q.o[q.a] : (q.type === 'tf' ? q.a : q.a[0]);
+      const evBox = card.querySelector('.ex-ev');
+      if(evBox){
+        evBox.innerHTML = `
+          <div style="font-weight:800;color:${isCorrect ? 'var(--ok)' : 'var(--bad)'}">${isCorrect ? '✅ Doğru!' : '❌ Doğru Cevap: ' + correctStr}</div>
+          <div style="margin:4px 0">${q.why}</div>
+          <button type="button" class="pill" data-ev="${q.ev}" style="padding:4px 10px;font-size:12px;margin-top:4px">📍 Metindeki Kanıtı Göster</button>`;
+      }
+    });
+
+    const pct = Math.round((rightCount / P.questions.length) * 100);
+    const ring = document.getElementById('exScoreRing');
+    if(ring) ring.style.setProperty('--v', pct);
+    const scoreText = document.getElementById('exScoreText');
+    if(scoreText) scoreText.innerHTML = `${pct}%<br><small style="font-size:12px;color:var(--mut)">${rightCount} / ${P.questions.length} Doğru</small>`;
+
+    const barBox = document.getElementById('exCategoryBars');
+    if(barBox){
+      barBox.innerHTML = '<div class="eyebrow" style="margin-bottom:6px">Soru Tipine Göre Başarı</div>' +
+        Object.entries(typeStats).map(([tName, [ok, tot]]) => `
+          <div style="margin:6px 0;font-size:13px">
+            <div style="display:flex;justify-content:space-between"><span>${tName}</span><b>${ok}/${tot}</b></div>
+            <div style="height:8px;background:var(--soft);border-radius:999px;overflow:hidden;margin-top:3px">
+              <div style="width:${Math.round(ok/tot*100)}%;height:100%;background:${ok/tot >= 0.5 ? 'var(--p2)' : 'var(--bad)'}"></div>
+            </div>
+          </div>
+        `).join('');
+    }
+
+    const bandEl = document.getElementById('exBandGrade');
+    if(bandEl) bandEl.textContent = pct >= 85 ? 'A · Muaf ✨' : (pct >= 70 ? 'B · Geçti ✅' : (pct >= 55 ? 'C · Sınırda ⚠️' : 'D · Tekrar 📚'));
+
+    const durEl = document.getElementById('exDuration');
+    const elapsed = 3599 - exLeft;
+    if(durEl) durEl.textContent = `${Math.floor(elapsed / 60)} dk ${elapsed % 60} sn`;
+
+    const resPane = document.getElementById('exResultPane');
+    if(resPane){
+      resPane.classList.add('on');
+      resPane.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  window.addEventListener('hashchange', () => {
+    if(location.hash === '#sinav') openBueptRoom();
+  });
+  setTimeout(() => {
+    injectBueptUI();
+    if(location.hash === '#sinav') openBueptRoom();
+  }, 350);
+})();
+</script>
