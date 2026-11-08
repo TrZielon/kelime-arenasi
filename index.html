@@ -7098,5 +7098,220 @@ YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"d":["çeldirici 1","çeldiric
 })();
 </script>
 <!-- ===== KELİME ARENASI YENİ ARAYÜZ & OTOMASYON YAMASI SONU ===== -->
+<!-- ============================================================================
+     🏛️ KELİME ARENASI: TÜM SON EKLENTİLER TEK KOD (FİNAL ENTEGRASYON)
+     ============================================================================ -->
+<style>
+/* 1. SADECE 2 AKDENİZ TEMASI (KAHVE VE KÜTÜPHANE TAMAMEN SİLİNDİ) */
+body[data-pal="akdeniz"],body[data-pal="gece"],body[data-pal="kitaplik"]{
+  --bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;
+  --p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--ok:#059669;
+  --lg:url(#lgC);--shadow:0 20px 40px -24px rgba(13,43,42,.35);--glow:rgba(20,184,166,.22);--acc-glow:rgba(245,158,11,.25);
+}
+body[data-pal="derin_akdeniz"],body[data-pal="sicak_espresso"]{
+  --bg:#061514;--card:#0c2423;--line:#194240;--ink:#f3f8f6;--mut:#7ca39e;
+  --p:#0f766e;--p2:#14b8a6;--acc:#fbbf24;--bad:#f43f5e;--soft:#11312f;--ok:#34d399;
+  --lg:url(#lgC);--shadow:0 22px 44px -24px rgba(0,0,0,.8);--glow:rgba(20,184,166,.28);--acc-glow:rgba(251,191,36,.30);
+}
+body{
+  font-family:"Plus Jakarta Sans",system-ui,sans-serif!important;
+  background-image:radial-gradient(820px 380px at 14% 0%,var(--glow),transparent 70%),radial-gradient(680px 340px at 88% 8%,var(--acc-glow),transparent 70%),radial-gradient(color-mix(in srgb,var(--mut) 12%,transparent) 1px,transparent 1.4px)!important;
+  background-size:100% 100%,100% 100%,24px 24px!important;background-attachment:fixed;
+}
+.logo svg{width:40px;height:40px;filter:drop-shadow(0 4px 10px var(--glow));transition:transform .2s}
+.logo:hover svg{transform:scale(1.06) rotate(-3deg)}
+.logo-sub{font-size:10px;font-weight:800;letter-spacing:.08em;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--acc);border:1px solid var(--line);margin-left:2px}
+@media(max-width:720px){
+  .nav-in{padding:10px 12px;gap:8px}.logo{font-size:17px;gap:7px}.logo svg{width:34px;height:34px}
+  .wrap{padding:14px 12px 84px!important}.hero{grid-template-columns:1fr!important;padding:20px 18px!important;border-radius:24px!important;gap:16px!important}.hero h1{font-size:24px!important}.hero-r{width:100%;justify-content:center}.modes{grid-template-columns:1fr!important}.txt,input,textarea{font-size:16px!important}
+}
+.pwa-card{margin-top:16px;background:radial-gradient(280px 140px at 90% 0%,var(--glow),transparent 75%),var(--card);border:1.5px solid var(--line);border-radius:22px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 6px 0 var(--line),var(--shadow);transition:transform .18s,border-color .18s}
+.pwa-card:hover{transform:translateY(-2px);border-color:var(--acc)}
+.pwa-left{display:flex;align-items:center;gap:14px}
+.pwa-badge-icon{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--p),var(--p2));display:grid;place-items:center;box-shadow:0 6px 14px var(--glow);flex-shrink:0}
+.pwa-btn{background:linear-gradient(135deg,var(--acc),#d97706);color:#1f1300;border:0;border-radius:14px;padding:11px 18px;font-weight:900;font-size:13.5px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 0 #b45309;white-space:nowrap}
+.pwa-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #b45309}
+.pwa-modal-ov{position:fixed;inset:0;background:rgba(4,13,12,.75);backdrop-filter:blur(8px);z-index:999;display:none;align-items:center;justify-content:center;padding:16px}
+.pwa-modal-ov.show{display:flex}
+.pwa-modal{background:var(--card);border:2px solid var(--line);border-radius:26px;max-width:440px;width:100%;padding:24px;box-shadow:0 24px 60px rgba(0,0,0,.6);position:relative}
+.pwa-mstep{display:grid;grid-template-columns:auto 1fr;gap:12px;margin:12px 0;align-items:flex-start;font-size:13.5px}
+.pwa-mnum{width:26px;height:26px;border-radius:50%;background:var(--p);color:#fff;font-weight:900;display:grid;place-items:center;font-size:12px}
+</style>
 
+<script>
+(function(){
+  /* 1. 1A-SAF LOGO & SEKME FAVICON ENJEKSİYONU */
+  const ARENA_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="lgC" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#14968c"/><stop offset="100%" stop-color="#0b5a55"/></linearGradient><linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/><stop offset="55%" stop-color="#ffffff" stop-opacity="0"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="50%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="18" fill="url(#lgC)"/><rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sheen)"/><rect x="4.5" y="4.5" width="55" height="55" rx="15.5" stroke="#ffffff" stroke-opacity="0.2" stroke-width="1.2" fill="none"/><path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round" fill="none"/><path d="M11.8 47.5H18.2M45.8 47.5H52.2" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" stroke="url(#gold)" stroke-width="4.2" stroke-linecap="round" fill="none"/><path d="M9.5 53.5 Q20.8 49 32 53.8 Q43.2 49 54.5 53.5" stroke="url(#gold)" stroke-width="2.7" stroke-linecap="round" fill="none"/><path d="M14.5 57 Q23.2 53.8 32 57 Q40.8 53.8 49.5 57" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="50" cy="13" r="6.8" fill="#fbbf24" fill-opacity="0.25"/><circle cx="50" cy="13" r="3.7" fill="url(#gold)"/><circle cx="48.8" cy="11.8" r="1.1" fill="#ffffff" fill-opacity="0.9"/></svg>';
+  const ARENA_DATA = 'data:image/svg+xml,' + encodeURIComponent(ARENA_SVG);
+  try{
+    document.querySelectorAll("link[rel*='icon']").forEach(l=>l.remove());
+    const l1=document.createElement('link');l1.rel='icon';l1.type='image/svg+xml';l1.href=ARENA_DATA;document.head.appendChild(l1);
+    const l2=document.createElement('link');l2.rel='shortcut icon';l2.type='image/svg+xml';l2.href=ARENA_DATA;document.head.appendChild(l2);
+    const l3=document.createElement('link');l3.rel='apple-touch-icon';l3.href=ARENA_DATA;document.head.appendChild(l3);
+    document.querySelectorAll('.logo svg').forEach(svg=>{svg.outerHTML='<div style="width:38px;height:38px;display:flex;flex-shrink:0">'+ARENA_SVG+'</div>';});
+    const logoBtn=document.querySelector('.logo');
+    if(logoBtn&&!logoBtn.querySelector('.logo-sub')){logoBtn.insertAdjacentHTML('beforeend','<span class="logo-sub">ARENA</span>');}
+  }catch(e){}
+
+  /* 2. SADECE 2 AKDENİZ TEMASI */
+  const VALID_PALS=['akdeniz','derin_akdeniz'];
+  const dotsEl=document.querySelector('.dots');
+  if(dotsEl){
+    dotsEl.innerHTML=`<button data-pal="akdeniz" title="🌿 Açık Akdeniz" aria-label="Açık Akdeniz" style="background:#0f766e"></button><button data-pal="derin_akdeniz" title="🌌 Koyu Akdeniz" aria-label="Koyu Akdeniz" style="background:#061514;border-color:#14b8a6"></button>`;
+  }
+  window.setPal=function(n){
+    const target=VALID_PALS.includes(n)?n:'akdeniz';
+    document.body.dataset.pal=target;
+    document.querySelectorAll('.dots button').forEach(b=>b.classList.toggle('on',b.dataset.pal===target));
+    try{localStorage.setItem('ka_pal',target);localStorage.setItem('ka_pal_v3',target);}catch(e){}
+  };
+  try{const s=localStorage.getItem('ka_pal_v3')||localStorage.getItem('ka_pal');setPal(VALID_PALS.includes(s)?s:'akdeniz');}catch(e){setPal('akdeniz');}
+
+  /* 3. KALICI VERİ DEPOLAMA (SIFIRLANMAZ) & ÖZGÜR KELİME LİSTESİ */
+  const origSave=window.save;
+  window.save=function(p=cur){
+    try{
+      if(p&&p.id)localStorage.setItem('ka_active_pack_id',p.id);
+      if(origSave)origSave(p);
+      localStorage.setItem('ka_packs_backup_v4',JSON.stringify(packs));
+    }catch(e){}
+  };
+  try{
+    const b=localStorage.getItem('ka_packs_backup_v4');
+    if(b){const parsed=JSON.parse(b);if(Array.isArray(parsed)&&parsed.length){packs=parsed;const lastId=localStorage.getItem('ka_active_pack_id');cur=(lastId&&packs.find(x=>x.id===lastId))||packs[0];}}
+  }catch(e){}
+
+  /* 4. YAZMA 2. HAK: "ÇOK YAKLAŞTIN!" & HARF İPUCU */
+  function lev(a,b){
+    const al=a.length,bl=b.length;if(!al)return bl;if(!bl)return al;
+    const m=[];for(let i=0;i<=bl;i++)m[i]=[i];for(let j=0;j<=al;j++)m[0][j]=j;
+    for(let i=1;i<=bl;i++){for(let j=1;j<=al;j++){m[i][j]=b[i-1]===a[j-1]?m[i-1][j-1]:Math.min(m[i-1][j-1]+1,m[i][j-1]+1,m[i-1][j]+1);}}
+    return m[bl][al];
+  }
+  function mask(w){return w.length<=3?w[0]+'••':w[0]+'•'.repeat(w.length-2)+w[w.length-1];}
+
+  let ySecondChance=false;
+  window.yCheck=function(){
+    if(!Q)return;
+    if(Q.done){ySecondChance=false;qi++;ynext();return;}
+    const inp=document.getElementById('ans');if(!inp)return;
+    const v=inp.value.trim().toLowerCase().replace(/[.,!?']/g,'').replace(/^to /,'');
+    if(!v)return;
+    const cor=Q.x.en.split(/\s*[\/~]\s*/).map(a=>a.trim().toLowerCase());
+    if(cor.some(a=>a===v)){
+      ySecondChance=false;Q.done=1;META.tot=(META.tot||0)+1;META.ok=(META.ok||0)+1;qok++;xp(10);
+      if(window.SFX&&SFX.ok)SFX.ok();saveMeta();
+      document.getElementById('fb').innerHTML='<span class="good" style="font-weight:800;color:var(--ok)">✅ Mükemmel Doğru!</span>';
+      document.getElementById('ck').textContent='Sonraki →';inp.disabled=true;return;
+    }
+    const closest=cor.reduce((b,ans)=>{const d=lev(v,ans);return d<b.d?{d,ans}:b;},{d:999,ans:cor[0]});
+    if(!ySecondChance&&closest.d<=2&&closest.ans.length>=4){
+      ySecondChance=true;if(window.SFX&&SFX.tick)SFX.tick();
+      document.getElementById('fb').innerHTML=`<div style="background:rgba(245,158,11,.15);border:1.5px solid var(--acc);border-radius:12px;padding:8px 12px;margin-top:6px"><b style="color:var(--acc)">🔥 Çok yaklaştın!</b> 2. bir şansın var.<br><span style="font-size:12.5px;color:var(--ink)">İpucu: <b>${mask(closest.ans)}</b></span></div>`;
+      inp.focus();inp.select();return;
+    }
+    ySecondChance=false;Q.done=1;META.tot=(META.tot||0)+1;
+    if(window.SFX&&SFX.bad)SFX.bad();saveMeta();
+    document.getElementById('fb').innerHTML='<span class="bad2" style="font-weight:800;color:var(--bad)">❌ Doğru cevap: <b>'+esc(Q.x.en)+'</b></span>';
+    document.getElementById('ck').textContent='Sonraki →';inp.disabled=true;
+  };
+
+  /* 5. TÜM ETKİNLİKLERDE BÜTÜN KELİMELER & 12 SORULUK MEGA KARMA BOSS */
+  window.qstart=function(mode){
+    if(!cur||!cur.items||!cur.items.length)return;
+    const hasTr=cur.items.filter(x=>x.tr);if(!hasTr.length)return;
+    if(mode==='boss'){
+      qmode='boss';qi=0;qok=0;qlives=3;Q_DECK=[];
+      const shuffled=[...hasTr].sort(()=>Math.random()-.5);
+      const pool=shuffled.slice(0,Math.min(12,shuffled.length));
+      const types=['sec','esle','yaz','cum'];
+      pool.forEach((x,idx)=>{Q_DECK.push({x,type:types[idx%types.length],done:0});});
+      renderBossHp();qNext();return;
+    }
+    qmode=mode;qi=0;qok=0;qlives=3;
+    Q_DECK=[...hasTr].sort(()=>Math.random()-.5).map(x=>({x,type:mode,done:0}));
+    qNext();
+  };
+  function renderBossHp(){
+    const acttop=document.querySelector('.acttop');if(!acttop)return;
+    let bWrap=document.getElementById('bossWrap');
+    if(!bWrap){
+      bWrap=document.createElement('div');bWrap.id='bossWrap';
+      bWrap.style.cssText='width:100%;margin-bottom:10px;background:rgba(239,68,68,.12);border:1.5px solid var(--bad);border-radius:14px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;font-size:12.5px;font-weight:800;color:var(--bad)';
+      acttop.after(bWrap);
+    }
+    const rem=Q_DECK.length-qi;
+    bWrap.innerHTML='<span>🐉 KARMA BOSS CANI:</span><div style="flex:1;height:8px;background:var(--soft);border-radius:999px;margin:0 10px;overflow:hidden"><div style="width:'+Math.round(rem/Math.max(1,Q_DECK.length)*100)+'%;height:100%;background:var(--bad)"></div></div><span>'+rem+' / '+Q_DECK.length+'</span>';
+  }
+
+  /* 6. PARAGRAF: "GENEL OLARAK NE ANLATIYOR" KISA ÖZET MOTORU & ANTİ-%0 KALKANI */
+  const GRADE_SUMMARY=`Sen motive edici bir İngilizce öğretmenisin. Öğrencinin Türkçe kısa özetini değerlendir. Katı tez/ana fikir arama; metnin genel olarak ne anlattığını kendi cümleleriyle özetlemişse MUTLAKA ONAY VER ve 75-100 ver. ASLA %0 verme. Yalnızca JSON döndür: {"skor": 0-100, "yorum": "Türkçe 1-2 cümle sıcak değerlendirme."}`;
+
+  window.pview=function(){
+    const p=cur;if(!p)return;
+    const G=p.groups||[];
+    setProg(G.length?G.filter(x=>x.ok).length/G.length*100:0);
+    if(!G.length){
+      document.getElementById('st').innerHTML='<div class="qbox"><div class="eyebrow">📖 Paragraf</div><p class="m">Kelimeler paragraflara ayrılıyor…</p><button class="btn3" id="pg">Paragrafları Oluştur</button></div>';return;
+    }
+    GI=Math.min(Math.max(GI,0),G.length-1);
+    const i=GI,g=G[i];SRC=g;
+    document.getElementById('st').innerHTML=`
+      <div class="coach">${mascot('',66)}<div class="bubble">Metni oku ve <b>genel olarak ne anlattığını</b> çok uzatmadan 1-2 cümleyle özetle.</div></div>
+      <div class="pillsg">${G.map((x,k)=>`<button class="pill ${k===i?'on':''}" data-g="${k}">${x.ok?'✓ ':''}${k+1}. Paragraf</button>`).join('')}</div>
+      <div class="qbox">
+        <div class="eyebrow">📖 Paragraf ${i+1}</div>
+        <div class="para">${sent(g.text||'')}</div>
+        <div class="m" style="margin-top:10px">Kelimeler: ${(g.w||[]).map(w=>'<span class="chip">'+esc(w)+'</span>').join(' ')}</div>
+      </div>
+      <div class="qbox" style="border:1.5px solid var(--p2)">
+        <div class="eyebrow" style="color:var(--acc)">✍️ Paragrafın Kısa Özeti</div>
+        <p class="m" style="margin-bottom:8px">Metnin çok uzatmadan <b>genel olarak ne anlattığını</b> kendi cümlelerinle özetle. Bot genel kavrayışını değerlendirecektir.</p>
+        <textarea id="ap" placeholder="Örn: Metinde genel olarak yapay zekanın sağladığı faydalardan ve olası risklerden bahsediliyor…" style="width:100%;min-height:90px;padding:12px;border-radius:14px;background:var(--bg);color:var(--ink);border:1.5px solid var(--line);font-size:15px"></textarea>
+        <div class="row" style="margin-top:10px"><button class="btn3" id="gr">📝 Özeti Değerlendir</button></div>
+        <div class="fb" id="gfb" style="margin-top:10px">${g.ok?'<div class="good big" style="font-size:15px">✅ Bu paragrafın özeti onaylandı</div>':''}</div>
+      </div>`;
+  };
+
+  window.grade=async function(){
+    const p=cur;if(!p)return;
+    const gi=GI,g=p.groups&&p.groups[gi];
+    const inp=document.getElementById('ap');const t=inp?inp.value.trim():'';
+    if(!t||!g||!g.text)return;
+    const gfb=document.getElementById('gfb');
+    if(gfb)gfb.innerHTML='<span class="m">⏳ Bot özetini ve metin kavrayışını inceliyor…</span>';
+    let r=null;
+    try{r=await askJ(GRADE_SUMMARY,`METİN: ${g.text}\n\nÖĞRENCİ ÖZETİ: ${t}`,45000,'quick');}catch(e){r=null;}
+    let skor=r?Math.max(0,Math.min(100,Math.round(Number(r.skor)||0))):0;
+    let yorum=(r&&r.yorum)?String(r.yorum).trim():'';
+    if(skor<50&&t.split(/\s+/).length>=4){skor=75;yorum='Paragrafın genel hatlarını ve konusunu gayet güzel kavrayıp özetledin!';}
+    const isPass=skor>=50;
+    if(isPass){
+      g.ok=true;p.prog.xp=(p.prog.xp||0)+15;
+      if(p.groups.every(x=>x.ok))p.prog.steps[6]=1;
+      save(p);renderHead();
+      if(window.SFX&&SFX.win)SFX.win();
+      if(gfb)gfb.innerHTML=`<div style="background:rgba(16,185,129,.12);border:1.5px solid #10b981;border-radius:14px;padding:12px"><div style="font-weight:900;color:var(--ok)">✅ %${skor} - Harika Özet! Onaylandı</div><div style="font-size:13px;color:var(--ink);margin-top:4px">${esc(yorum)}</div></div>`;
+    }else{
+      if(window.SFX&&SFX.bad)SFX.bad();
+      if(gfb)gfb.innerHTML=`<div style="background:rgba(239,68,68,.1);border:1.5px solid var(--bad);border-radius:14px;padding:12px"><div style="font-weight:900;color:var(--bad)">⚠️ %${skor} - Biraz Daha Açabilirsin</div><div style="font-size:13px;color:var(--ink);margin-top:4px">${esc(yorum||'Metnin genel konusunu 1-2 cümleyle biraz daha netleştirebilirsin.')}</div></div>`;
+    }
+  };
+
+  /* 7. SEÇENEK 4: "ARENAYI CEBİNE TAŞI" VİTRİN BUTONU & PWA MODALI */
+  function injectPwa(){
+    const main=document.getElementById('main');if(!main||document.getElementById('pwaCardBox'))return;
+    const card=document.createElement('div');card.id='pwaCardBox';card.className='pwa-card';
+    card.innerHTML=`<div class="pwa-left"><div class="pwa-badge-icon">${ARENA_SVG}</div><div><b style="font-size:15px;color:var(--ink);display:block">📲 Arenayı Cebine Taşı</b><span style="font-size:12px;color:var(--mut)">Telefona tek tıkla ekle, uygulama gibi tam ekran çalış</span></div></div><button class="pwa-btn" id="pwaAddBtn">📲 Telefona Ekle</button>`;
+    const homeEl=document.getElementById('home');if(homeEl)homeEl.appendChild(card);else main.appendChild(card);
+    const modal=document.createElement('div');modal.id='pwaModal';modal.className='pwa-modal-ov';
+    modal.innerHTML=`<div class="pwa-modal"><button style="position:absolute;top:14px;right:14px;background:none;border:0;font-size:20px;cursor:pointer;color:var(--mut)" id="pwaCloseBtn">✕</button><div style="text-align:center;margin-bottom:14px"><div style="width:64px;height:64px;margin:0 auto 10px">${ARENA_SVG}</div><h3 style="font-family:Fraunces,serif;font-size:20px;color:var(--ink)">Kelime Arenasını Telefona Ekle</h3><p style="font-size:12.5px;color:var(--mut);margin-top:4px">App Store olmadan doğrudan telefon ana ekranına ekle:</p></div><div class="pwa-mstep"><div class="pwa-mnum">1</div><div class="pwa-txt"><b>iPhone (Safari):</b> Alttaki <b>Paylaş (⎋)</b> butonuna dokun.</div></div><div class="pwa-mstep"><div class="pwa-mnum">2</div><div class="pwa-txt">Aşağı kaydırıp <b>"Ana Ekrana Ekle"</b> seçeneğini seç.</div></div><div class="pwa-mstep"><div class="pwa-mnum">3</div><div class="pwa-txt"><b>Android (Chrome):</b> Sağ üstteki (⋮) menüsünden <b>"Uygulamayı Yükle"</b> de.</div></div><button class="btn3" style="width:100%;margin-top:14px" id="pwaGotIt">Harika, Anladım! ⚔️</button></div>`;
+    document.body.appendChild(modal);
+    document.getElementById('pwaAddBtn').onclick=()=>modal.classList.add('show');
+    document.getElementById('pwaCloseBtn').onclick=()=>modal.classList.remove('show');
+    document.getElementById('pwaGotIt').onclick=()=>modal.classList.remove('show');
+  }
+  setTimeout(injectPwa,350);window.addEventListener('hashchange',()=>setTimeout(injectPwa,300));
+})();
+</script>
 
