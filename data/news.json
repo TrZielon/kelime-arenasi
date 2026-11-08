@@ -1,6 +1,441 @@
 {
-  "updated": "2026-11-07T06:20:43.510Z",
+  "updated": "2026-11-08T06:20:21.844Z",
   "items": [
+    {
+      "id": "mw7g0ucnzjy0",
+      "date": "2026-11-08",
+      "category": "World",
+      "title": "What we know so far after Krakow gun attack",
+      "src": "https://www.bbc.co.uk/news/articles/cmd7q15drwgeo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "A sad event happened in Krakow. Six people died in a random shooting. The shooting was in the city's main square. Later, police found three more bodies. These bodies were at the home of the attacker. In total, nine people died in this event. People in the city are very sad and scared after the attack. Police are looking into the case to learn more.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Nine people died after a shooting attack in Krakow.",
+                "Police caught three bad people in the city.",
+                "Krakow is building a new city square.",
+                "Six people moved to a new home in Krakow."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does 'random' mean in this text?",
+              "opts": [
+                "Very slow",
+                "With many friends",
+                "Without a plan or clear reason",
+                "Very happy"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Where did the shooting happen?",
+              "opts": [
+                "At a school",
+                "In the city's main square",
+                "At a police station",
+                "In a big park"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "True or false: Three bodies were found at the attacker's home.",
+              "opts": [
+                "The text does not say",
+                "Only two bodies were found",
+                "False",
+                "True"
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "2": {
+          "text": "A violent event has shocked the city of Krakow. Six people were killed during a random shooting that took place in the city's main square. The public was scared by the sudden violence in such a busy area. Later, officers made another sad discovery. They found three more bodies at the home of the attacker. This brought the total number of victims to nine. Authorities are now working to understand what happened during the attack. The community is mourning the loss of the victims while police continue their investigation.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the news report?",
+              "opts": [
+                "A shooting attack in Krakow that killed nine people",
+                "A report on new houses in Krakow",
+                "A celebration in the main square",
+                "A police safety course for local residents"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'attacker' mean in the text?",
+              "opts": [
+                "A person who writes news stories",
+                "A person who hurts others with violence",
+                "A person who helps police",
+                "A person who cleans the city square"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "How many bodies were found at the home of the attacker?",
+              "opts": [
+                "Six",
+                "Zero",
+                "Three",
+                "Nine"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which of the following statements is TRUE based on the text?",
+              "opts": [
+                "The attacker had no home.",
+                "The shooting happened at a school.",
+                "Nobody died during the shooting.",
+                "Six people were killed in the main square."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "3": {
+          "text": "A tragic gun attack has taken place in Krakow, leaving a total of nine people dead. The violence began when an armed individual opened fire in a random shooting in the city's main square, instantly claiming the lives of six victims. The incident caused widespread shock and panic among people present in the area. Following the public shooting, investigators searched the home of the attacker, where they made another grim discovery. Officers found three additional bodies inside the residence. Authorities are currently investigating the events surrounding the tragedy to determine the full circumstances of the deadly event.",
+          "quiz": [
+            {
+              "q": "What is the primary focus of this news article?",
+              "opts": [
+                "A deadly attack in Krakow resulting in nine deaths",
+                "A city police investigation into a robbery",
+                "The discovery of a historical home in Krakow",
+                "A public safety meeting held in Krakow's main square"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'grim' mean as used in the context of the story?",
+              "opts": [
+                "Unpleasant and shocking",
+                "Bright and cheerful",
+                "Easy to understand",
+                "Very fast"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Where did the initial shooting take place?",
+              "opts": [
+                "In the city's main square",
+                "At a local police station",
+                "Inside a private residence",
+                "In a busy train station"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is FALSE according to the text?",
+              "opts": [
+                "The shooting in the main square was random.",
+                "Six people died in the city's main square.",
+                "The shooting happened inside a crowded store.",
+                "Three bodies were discovered at the attacker's home."
+              ],
+              "ans": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mw7g0ua54t84",
+      "date": "2026-11-08",
+      "category": "World",
+      "title": "Israel's President Tasks Opposition Leader Eisenkot with Forming Government",
+      "src": "https://www.bbc.co.uk/news/articles/cmy8367lj5xlo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Israel had an election last week. Neither Prime Minister Benjamin Netanyahu's group nor his rival's group won a majority of the votes. Because of this, Israel's president gave a new job to Gadi Eisenkot. Eisenkot is an opposition leader. The president asked him to form a new government. Now, Eisenkot must try to get enough political support to lead the country. It is a big task because the election results were very close and no single group has control.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this news story?",
+              "opts": [
+                "Benjamin Netanyahu won the election easily.",
+                "Gadi Eisenkot was asked to form a government.",
+                "Israel will not have a president anymore.",
+                "The election was canceled last week."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'majority' mean in this story?",
+              "opts": [
+                "A brand new election",
+                "The smallest part of a group",
+                "More than half of the votes",
+                "A very famous leader"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Who is Gadi Eisenkot?",
+              "opts": [
+                "An opposition leader",
+                "A famous voter",
+                "The Prime Minister",
+                "The President"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Neither main group secured a majority.",
+                "Benjamin Netanyahu's group secured a majority.",
+                "Eisenkot refused to help the president.",
+                "The rival's group secured a majority."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "Following last week's election in Israel, neither Prime Minister Benjamin Netanyahu's political bloc nor the rival group managed to secure a majority. As a result of the stalemate, Israel's president has officially tasked opposition leader Gadi Eisenkot with forming the next government. Eisenkot now faces the difficult challenge of bringing different political groups together to create a working coalition. Without a clear majority from last week's vote, political leaders must negotiate to see if a stable government can be established under Eisenkot's leadership. If he succeeds, he will lead the nation forward after a very close election.",
+          "quiz": [
+            {
+              "q": "What main event happened after Israel's election?",
+              "opts": [
+                "Voters held a second election right away.",
+                "The president resigned from his position.",
+                "Netanyahu formed a new government immediately.",
+                "Eisenkot was tasked with forming a government."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "In the text, what does the word 'bloc' mean?",
+              "opts": [
+                "A country's leader",
+                "A physical wall",
+                "A group of political allies",
+                "A type of election ballot"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "When did the election in Israel take place?",
+              "opts": [
+                "Last year",
+                "Yesterday",
+                "Last month",
+                "Last week"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is FALSE according to the story?",
+              "opts": [
+                "Netanyahu's bloc failed to get a majority.",
+                "Netanyahu won a clear majority in the election.",
+                "Israel's president tasked Eisenkot with forming a government.",
+                "Netanyahu's rival group failed to get a majority."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "Following last week's inconclusive election in Israel, neither Prime Minister Benjamin Netanyahu's bloc nor that of his rival managed to secure a majority. In light of this political deadlock, Israel's president has formally tasked opposition leader Gadi Eisenkot with the responsibility of forming a new government. The decision places Eisenkot at the center of complex political negotiations as he attempts to assemble a viable coalition. With neither main faction holding a decisive victory from the recent vote, building a functional administration will require significant compromise among political rivals. It remains to be seen whether Eisenkot can successfully bring the opposing sides together to lead the country.",
+          "quiz": [
+            {
+              "q": "What is the central focus of the article?",
+              "opts": [
+                "A complete change in Israel's voting laws",
+                "Netanyahu's retirement from politics",
+                "The president of Israel stepping down from office",
+                "Eisenkot being appointed to form a government after a tied election"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does the word 'tasked' mean as used in the text?",
+              "opts": [
+                "Punished for failing a job",
+                "Fired from an official position",
+                "Elected by a public vote",
+                "Given a specific duty or responsibility"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Why was Eisenkot asked to form a government?",
+              "opts": [
+                "He received the most individual votes.",
+                "Netanyahu asked the president to choose him.",
+                "Neither major political bloc secured a majority.",
+                "He is currently the Prime Minister."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which of the following statements is TRUE based on the text?",
+              "opts": [
+                "Neither main bloc secured a majority in last week's election.",
+                "The rival group secured a clear majority in last week's vote.",
+                "Netanyahu's bloc secured a majority in last week's vote.",
+                "Eisenkot has already successfully formed the new government."
+              ],
+              "ans": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mw7g0us4u491",
+      "date": "2026-11-08",
+      "category": "World",
+      "title": "No clear winner after tight New Zealand general election",
+      "src": "https://www.bbc.co.uk/news/articles/c3ewev11g1e0o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "New Zealand had a general election. The results are very close. There is no clear winner yet. The votes show a highly divided national parliament. Because the results are so tight, political parties need to talk to each other. These coalition talks could take many weeks. The parties must work together to form a new government. People must wait to see who will lead the country. It will take time to get final answers after this close election.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "The political parties refused to talk.",
+                "New Zealand canceled its national election.",
+                "A new leader was chosen immediately.",
+                "The election result is very close and uncertain."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does the word 'divided' mean in this text?",
+              "opts": [
+                "Fully united",
+                "Very happy",
+                "Extremely fast",
+                "Split into different parts"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "How long could the coalition talks take?",
+              "opts": [
+                "Exactly two days",
+                "Many weeks",
+                "One full year",
+                "A few hours"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE based on the text?",
+              "opts": [
+                "No talks are needed after the election.",
+                "The final government is already formed.",
+                "The national parliament is highly divided.",
+                "There was a clear winner right away."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "2": {
+          "text": "New Zealand recently held its general election, but the outcome remains uncertain. Preliminary results show a very tight race, leaving no clear winner. The votes indicate that the national parliament is highly divided among different political parties. Because no single party gained a clear victory, leaders must now negotiate with each other. Experts say that weeks of coalition talks could follow as parties try to form a working government. Until these discussions are complete, the final result of the election will not be known. Citizens now have to wait while the political parties discuss how to share power and rule the country together.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the text?",
+              "opts": [
+                "The retirement of a popular political leader",
+                "The uncertain outcome of New Zealand's tight election",
+                "The start of a voting campaign",
+                "A law passed by the national parliament"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "In the text, what does 'preliminary' mean?",
+              "opts": [
+                "Secretly hidden",
+                "Completely wrong",
+                "Final and permanent",
+                "Coming before the main or final part"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What indicates that the national parliament is divided?",
+              "opts": [
+                "A statement by foreign leaders",
+                "The total number of voters",
+                "The preliminary election results",
+                "A vote inside a single party"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is FALSE based on the text?",
+              "opts": [
+                "Coalition talks could last for weeks.",
+                "The political parties must negotiate.",
+                "The election race was very tight.",
+                "A single party won a clear victory immediately."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "3": {
+          "text": "Following the recent general election in New Zealand, the nation faces political uncertainty as preliminary results point to a highly divided national parliament. The election race was extremely tight, resulting in no immediate clear winner. As a consequence of the split vote, weeks of coalition talks could follow as rival political factions attempt to negotiate and secure enough support to form a new government. Parliament remains split, meaning that no single party can govern alone based on these early figures. The process to determine the country's leadership will require extensive discussions among party leaders in the coming weeks. Until these negotiations conclude, the official composition of the government remains undecided, leaving citizens waiting for a clear resolution.",
+          "quiz": [
+            {
+              "q": "Which statement best summarizes the news report?",
+              "opts": [
+                "A single party won the election by a massive majority.",
+                "The national parliament decided to hold another election immediately.",
+                "New Zealand's election produced a tight result leading to coalition talks.",
+                "New Zealand citizens refused to participate in the general election."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'coalition' refer to in the text?",
+              "opts": [
+                "A single politician ruling alone",
+                "A quick voting process",
+                "A total defeat of all candidates",
+                "A temporary union of different political parties"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What must happen before a new government can be formed?",
+              "opts": [
+                "The parliament must be closed permanently.",
+                "Citizens must vote for a second time.",
+                "Parties must engage in weeks of negotiations.",
+                "A new election must be called immediately."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "The preliminary results showed a clear winner.",
+                "The government was officially decided on election night.",
+                "One party can easily govern alone.",
+                "Weeks of coalition talks could follow the election."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mw60l4ccpqkr",
       "date": "2026-11-07",
