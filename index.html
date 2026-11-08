@@ -9754,3 +9754,23 @@ mark.n{background:#dbeafe;border-bottom:2px dotted #2563eb;cursor:help}
   },300);
 })();
 </script>
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  // Menüyü otomatik bulur, bulamazsa ekranın sağ altına iki şık buton koyar
+  const nav = document.querySelector('.navlinks') || document.querySelector('nav') || document.querySelector('.nav-in');
+  if (nav) {
+    nav.insertAdjacentHTML('beforeend', `
+      <a href="/fetih.html" style="padding:6px 12px;margin-left:6px;border-radius:10px;font-weight:800;font-size:13px;text-decoration:none;color:#fff;background:linear-gradient(135deg,#f59e0b,#d97706)">⚔️ Arena Fethi</a>
+      <a href="/sinav.html" style="padding:6px 12px;margin-left:4px;border-radius:10px;font-weight:800;font-size:13px;text-decoration:none;color:#fff;background:#0f766e">📝 Sınav</a>
+    `);
+  } else {
+    const bar = document.createElement('div');
+    bar.style.cssText = "position:fixed;bottom:18px;right:18px;z-index:99999;display:flex;gap:8px;background:rgba(13,43,42,0.92);padding:8px 12px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,0.3);backdrop-filter:blur(6px)";
+    bar.innerHTML = `
+      <a href="/fetih.html" style="color:#fff;background:#f59e0b;padding:8px 14px;border-radius:10px;font-weight:800;font-size:13px;text-decoration:none">⚔️ Arena Fethi</a>
+      <a href="/sinav.html" style="color:#fff;background:#0f766e;padding:8px 14px;border-radius:10px;font-weight:800;font-size:13px;text-decoration:none">📝 Sınav</a>
+    `;
+    document.body.appendChild(bar);
+  }
+});
+</script>
