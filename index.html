@@ -1859,6 +1859,33 @@ async function askJ(sys,input,ms,tier){
 }
 </script>
 </body>
+<script>
+// Navbar Otomatik Temizliği: BUEPT linkini kaldır, Sınav ve Fetih'i tek tıkla sabitle
+(function(){
+  function fixNav(){
+    document.querySelectorAll('a, button').forEach(el => {
+      if(/buept/i.test(el.textContent) && el.closest('.nav')) el.remove();
+    });
+    const nav = document.querySelector('.navlinks');
+    if(nav){
+      if(!document.getElementById('fetihlink')){
+        const fl = document.createElement('a');
+        fl.id = 'fetihlink'; fl.className = 'haberlink'; fl.href = '/fetih.html';
+        fl.innerHTML = '⚔️ Arena Fethi';
+        nav.insertBefore(fl, document.getElementById('addb') || null);
+      }
+      if(!document.getElementById('sinavlink')){
+        const sl = document.createElement('a');
+        sl.id = 'sinavlink'; sl.className = 'haberlink'; sl.href = '/sinav.html';
+        sl.innerHTML = '📝 Sınav';
+        nav.insertBefore(sl, document.getElementById('addb') || null);
+      }
+    }
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fixNav);
+  else fixNav();
+})();
+</script>
 </html>
 <script>
 /* ===== TÜM SİTE: SESLER SUNUCUDAKİ AMERİKAN SESİYLE ÇALAR ===== */
