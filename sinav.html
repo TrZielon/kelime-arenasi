@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sınav Odası · Kelime Arenası</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2314968c'/%3E%3Cstop offset='100%25' stop-color='%230b5a55'/%3E%3C/linearGradient%3E%3ClinearGradient id='gold' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23fef3c7'/%3E%3Cstop offset='50%25' stop-color='%23fbbf24'/%3E%3Cstop offset='100%25' stop-color='%23d97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='2' y='2' width='60' height='60' rx='18' fill='url(%23g)'/%3E%3Cpath d='M15 47.5V30.5a17 17 0 0 1 34 0v17' stroke='%23ffffff' stroke-width='4.8' stroke-linecap='round' fill='none'/%3E%3Cpath d='M24 47.5V31.5a8 8 0 0 1 16 0v16' stroke='url(%23gold)' stroke-width='4.2' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='50' cy='13' r='3.7' fill='url(%23gold)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+:root{--bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;--p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--ok:#059669;--shadow:0 12px 30px -15px rgba(13,43,42,.25)}
+body[data-pal="derin_akdeniz"]{--bg:#061514;--card:#0c2423;--line:#194240;--ink:#f3f8f6;--mut:#7ca39e;--p:#0f766e;--p2:#14b8a6;--acc:#fbbf24;--bad:#f43f5e;--soft:#11312f;--ok:#34d399;--shadow:0 14px 30px -18px rgba(0,0,0,.7)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background-color:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',-apple-system,sans-serif;font-size:14px;line-height:1.5}
+button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+.nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:12px 18px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-weight:800;font-size:20px}
+.logo svg{width:36px;height:36px}
+.logo-sub{font-size:10px;font-weight:900;letter-spacing:.08em;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--p);border:1px solid var(--line)}
+.navlinks{display:flex;gap:6px;margin-left:10px}
+.navlinks a{padding:7px 13px;border-radius:12px;font-weight:700;color:var(--mut)}
+.navlinks a:hover{color:var(--ink);background:var(--soft)}
+.navlinks a.cur{color:#fff;background:var(--p)}
+.tools{margin-left:auto;display:flex;gap:8px;align-items:center}
+.dots{display:flex;gap:7px}
+.dots button{width:22px;height:22px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line);padding:0}
+.dots button.on{box-shadow:0 0 0 2px var(--p)}
+.wrap{max-width:1160px;margin:0 auto;padding:18px}
+.topbar{background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:var(--shadow);margin-bottom:18px;flex-wrap:wrap}
+.topbar h1{font-family:Fraunces,serif;font-size:20px;margin:0}
+.btn{border:none;background:var(--p);color:#fff;font-weight:800;font-size:13px;padding:9px 16px;border-radius:12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;box-shadow:0 3px 0 #0b5a55}
+.btn-alt{background:var(--soft);color:var(--ink);border:1.5px solid var(--line);box-shadow:0 2px 0 var(--line)}
+.btn-acc{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;box-shadow:0 3px 0 #b45309}
+.sinav-room{background:var(--card);border:1.5px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}
+.ex-bar{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1.5px solid var(--line);background:var(--bg);flex-wrap:wrap}
+.ex-timer{margin-left:auto;font-weight:900;background:#fff7e6;color:#b45309;border:1.5px solid #fcd34d;border-radius:10px;padding:5px 12px;font-variant-numeric:tabular-nums;font-size:13.5px}
+.ex-count{background:var(--soft);color:var(--mut);border:1px solid var(--line);padding:5px 10px;border-radius:10px;font-size:12.5px;font-weight:800}
+.ex-split{display:grid;grid-template-columns:1.2fr 1fr;height:680px}
+@media(max-width:900px){.ex-split{grid-template-columns:1fr;height:auto}}
+.ex-pane{overflow-y:auto;padding:20px}
+.ex-pane.right{border-left:1.5px solid var(--line);background:var(--bg)}
+@media(max-width:900px){.ex-pane.right{border-left:0;border-top:1.5px solid var(--line)}}
+.ex-tools{position:sticky;top:-20px;background:var(--card);z-index:10;display:flex;gap:6px;flex-wrap:wrap;padding:10px 0;border-bottom:1px dashed var(--line);margin-bottom:16px}
+.ex-tools button{border:1.5px solid var(--line);background:var(--bg);border-radius:10px;padding:6px 11px;font-weight:800;font-size:12.5px;cursor:pointer}
+.ex-tools button.on{border-color:var(--p);background:var(--soft);color:var(--p)}
+.ex-passage{font-family:Georgia,serif;line-height:1.85}
+.ex-pp{display:grid;grid-template-columns:28px 1fr;gap:10px;margin:0 0 16px;font-size:15px;padding:6px 8px;border-radius:8px}
+.ex-pp b.pl{font-family:'Plus Jakarta Sans',sans-serif;color:var(--p);font-size:13px;padding-top:2px}
+mark.y{background:#fde68a;padding:1px 3px;border-radius:3px}mark.g{background:#a7f3d0;padding:1px 3px;border-radius:3px}mark.k{background:#fbcfe8;padding:1px 3px;border-radius:3px}
+mark.u{background:none;text-decoration:underline;text-decoration-color:var(--bad);text-decoration-thickness:2.5px;text-underline-offset:3px}
+mark.n{background:#dbeafe;border-bottom:2px dotted #2563eb;cursor:help;padding:1px 3px;border-radius:3px}
+.ex-qnav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;position:sticky;top:-20px;background:var(--bg);padding:8px 0;z-index:5}
+.ex-qnav span{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:12.5px;font-weight:800;border:1.5px solid var(--line);background:var(--card);cursor:pointer}
+.ex-qnav span.done{background:var(--p);border-color:var(--p);color:#fff}
+.ex-qnav span.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.ex-qnav span.wrong{background:var(--bad);border-color:var(--bad);color:#fff}
+.ex-qcard{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.ex-qh{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;font-weight:800;color:var(--mut);margin-bottom:8px}
+.ex-opt{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1.5px solid var(--line);border-radius:12px;margin:6px 0;cursor:pointer;font-size:13.5px;background:var(--card)}
+.ex-opt:hover{border-color:var(--p2);background:var(--soft)}
+.ex-opt.sel{border-color:var(--p);background:#f0fdfa;font-weight:700;color:#0f766e}
+.ex-opt.ok{border-color:var(--ok);background:#ecfdf5;font-weight:800;color:#065f46}
+.ex-opt.no{border-color:var(--bad);background:#fef2f2;color:#991b1b}
+.ex-tfng{display:flex;gap:8px;margin-top:6px}.ex-tfng .ex-opt{flex:1;justify-content:center;font-weight:800;text-align:center}
+.ex-ev{display:none;margin-top:12px;font-size:12.5px;background:#f0fdf4;border-radius:10px;padding:10px 12px;border:1px solid #bbf7d0}
+.ex-qcard.graded .ex-ev{display:block}
+.ex-res{display:none;padding:24px;background:var(--card);border-top:1.5px solid var(--line)}
+.ex-res.on{display:block}
+.ex-ring{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--p) calc(var(--v)*1%),var(--soft) 0)}
+.ex-ring span{width:96px;height:96px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-weight:900;font-size:22px;text-align:center;line-height:1.1}
+.modal-ov{position:fixed;inset:0;background:rgba(15,23,42,0.65);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:16px;z-index:999}
+.modal-ov.on{display:flex}
+.modal{background:var(--card);border:2px solid var(--line);border-radius:24px;max-width:760px;width:100%;max-height:90vh;overflow-y:auto;padding:24px;box-shadow:0 25px 60px rgba(0,0,0,0.3);position:relative}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;border-bottom:1.5px solid var(--line);padding-bottom:12px}
+.modal-head h3{font-family:Fraunces,serif;font-size:20px;color:var(--ink);margin:0}
+.tabs{display:flex;gap:6px;border-bottom:1.5px solid var(--line);margin-bottom:16px}
+.tab{background:none;border:none;padding:9px 14px;font-weight:800;font-size:13px;color:var(--mut);cursor:pointer;border-bottom:2.5px solid transparent}
+.tab.on{color:var(--p);border-bottom-color:var(--p)}
+.tab-pane{display:none}.tab-pane.on{display:block}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:12px;font-weight:800;color:var(--ink);margin-bottom:5px}
+.form-group input, .form-group textarea{width:100%;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:13.5px}
+.form-group textarea{min-height:140px;resize:vertical}
+.dropzone{border:2px dashed var(--p2);background:#f0fdfa;border-radius:16px;padding:28px;text-align:center;cursor:pointer;margin-bottom:14px}
+.exam-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;margin-bottom:8px;background:var(--bg)}
+.exam-item.active{border-color:var(--p);background:#f0fdfa}
+</style>
+</head>
+<body data-pal="akdeniz">
+<nav class="nav">
+<div class="nav-in">
+<a class="logo" href="/">
+  <div style="width:36px;height:36px;display:flex;flex-shrink:0">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="lgC" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#14968c"/><stop offset="100%" stop-color="#0b5a55"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="50%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="18" fill="url(#lgC)"/><path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" stroke="#fff" stroke-width="4.8" stroke-linecap="round" fill="none"/><path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" stroke="url(#gold)" stroke-width="4.2" stroke-linecap="round" fill="none"/><circle cx="50" cy="13" r="3.7" fill="url(#gold)"/></svg>
+  </div>
+  <span>Kelime Arenası</span>
+  <span class="logo-sub">SINAV</span>
+</a>
+<div class="navlinks">
+<a href="/">Ana sayfa</a>
+<a href="/haber.html">📰 Haber</a>
+<a href="/fetih.html">⚔️ Arena Fethi</a>
+<a class="cur" href="/sinav.html">📝 Sınav</a>
+</div>
+<div class="tools">
+<div class="dots">
+<button data-pal="akdeniz" title="🌿 Açık Akdeniz" style="background:#0f766e" class="on"></button>
+<button data-pal="derin_akdeniz" title="🌌 Koyu Akdeniz" style="background:#061514;border-color:#14b8a6"></button>
+</div>
+</div>
+</div>
+</nav>
+
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <h1>Sınav Çalışma Odası</h1>
+      <p>Kendi okuma metnini ve sorularını yapıştır veya PDF at; altını çizerek çöz ve anında puanlan.</p>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-alt" id="openLibraryBtn">📚 Sınav Değiştir</button>
+      <button class="btn btn-acc" id="openUploadBtn">➕ Yeni Sınav Yükle (Metin / PDF)</button>
+    </div>
+  </div>
+
+  <div class="sinav-room" id="sinavRoom">
+    <div class="ex-bar">
+      <div class="ex-title">
+        <span>📖</span>
+        <b id="exActiveTitle">Akademik Reading</b>
+      </div>
+      <span class="ex-count" id="exCountBadge">0 / 0</span>
+      <span class="ex-timer" id="exTimerBadge">⏱ 59:59</span>
+      <div style="display:flex;gap:6px;margin-left:auto">
+        <button class="btn btn-alt" style="padding:6px 12px;font-size:12.5px" id="exResetBtn">🔄 Sıfırla</button>
+        <button class="btn" style="padding:7px 16px;font-size:13px" id="exFinishBtn">Sınavı Bitir & Puanla</button>
+      </div>
+    </div>
+
+    <div class="ex-split">
+      <!-- Sol Panel: Okuma Metni & Vurgulayıcılar -->
+      <div class="ex-pane" id="exPassagePane">
+        <div class="ex-tools" id="exTools">
+          <button data-m="y" class="on">🟨 Sarı</button>
+          <button data-m="g">🟩 Yeşil</button>
+          <button data-m="k">🩷 Pembe</button>
+          <button data-m="u">U̲ Altını Çiz</button>
+          <button data-m="n">📝 Not</button>
+          <button id="exClrBtn">⌫ Temizle</button>
+          <button id="exFmBtn">A−</button>
+          <button id="exFpBtn">A+</button>
+        </div>
+        <div class="ex-passage" id="exPassageText"></div>
+      </div>
+
+      <!-- Sağ Panel: Sorular & Şıklar -->
+      <div class="ex-pane right" id="exQuestionsPane">
+        <div class="ex-qnav" id="exQNav"></div>
+        <div id="exQuestionList"></div>
+      </div>
+    </div>
+
+    <div class="ex-res" id="exResultPane">
+      <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+        <div class="ex-ring" id="exScoreRing" style="--v:0">
+          <span id="exScoreText">0%</span>
+        </div>
+        <div style="flex:1;min-width:240px">
+          <div style="font-size:12px;font-weight:900;color:var(--mut);text-transform:uppercase">Sonuç Raporu</div>
+          <div style="font-size:24px;font-weight:900;margin:4px 0" id="exBandGrade">—</div>
+          <p style="font-size:13px;color:var(--mut);margin:0">Soruların üzerindeki yeşil/kırmızı işaretlerden ve kanıtlardan doğru cevapları inceleyebilirsiniz.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 1: Kütüphane -->
+<div class="modal-ov" id="libraryModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>📚 Sınav Kütüphanesi</h3>
+      <button class="btn btn-alt" style="padding:4px 10px" data-close="libraryModal">✕</button>
+    </div>
+    <div style="font-size:12px;font-weight:900;color:var(--p);margin-bottom:8px;text-transform:uppercase">Hazır Akademik Sınavlar</div>
+    <div id="presetList"></div>
+    <div style="font-size:12px;font-weight:900;color:var(--acc);margin:16px 0 8px;text-transform:uppercase">Senin Eklediğin Sınavlar</div>
+    <div id="customList"></div>
+  </div>
+</div>
+
+<!-- Modal 2: Yeni Sınav Yükle (Metin & Soruları Yapıştır veya PDF) -->
+<div class="modal-ov" id="uploadModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>➕ Yeni Sınav Ekle</h3>
+      <button class="btn btn-alt" style="padding:4px 10px" data-close="uploadModal">✕</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab on" data-tab="tabSmart">⚡ İnternet Üzerinden Metin & Soru Yapıştır</button>
+      <button class="tab" data-tab="tabFile">📁 PDF Dosyası Yükle</button>
+    </div>
+
+    <!-- Tab 1: Akıllı Yapıştırıcı -->
+    <div class="tab-pane on" id="tabSmart">
+      <div class="form-group">
+        <label>Sınav Başlığı:</label>
+        <input id="upTitle" placeholder="Örn: Family Politics veya Reading Comprehension 1">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label>1. Okuma Parçası (Reading Passage):</label>
+          <textarea id="upPassage" placeholder="Okuma metnini buraya yapıştırın. Paragraflar (A, B, C...) otomatik algılanır..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>2. Sorular ve Şıklar (Questions):</label>
+          <textarea id="upQuestions" placeholder="Soruları yapıştırın. Örn:
+1. What is the passage about?
+A) Option 1
+B) Option 2
+Answer: B
+Why: Paragraf A ana fikri açıklar"></textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <button class="btn btn-acc" id="saveSmartExamBtn" style="padding:11px 22px;font-size:14px">🚀 Sınavı Oluştur & Başlat</button>
+        <button class="btn btn-alt" id="fillSampleBtn">📋 Örnek Metin & Soru Doldur</button>
+        <button class="btn btn-alt" id="aiGenQuestionsBtn">🤖 Yapay Zeka ile Soru Üret</button>
+      </div>
+    </div>
+
+    <!-- Tab 2: PDF Yükle -->
+    <div class="tab-pane" id="tabFile">
+      <div class="dropzone" id="dropArea">
+        <div style="font-size:36px;margin-bottom:8px">📄</div>
+        <b>Sınav PDF'ini buraya sürükle veya seç</b>
+        <p style="font-size:12.5px;color:var(--mut);margin:4px 0 0">Mozilla PDF.js ile çözümlenir; bytecode çöpü tamamen filtrelenir.</p>
+        <input type="file" id="filePicker" accept=".pdf,.txt,.json" style="display:none">
+      </div>
+      <div id="fileStatus" style="font-size:13px;font-weight:800;color:var(--p);display:none;padding:10px;background:var(--soft);border-radius:10px"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+if(window.pdfjsLib) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+const EXAM_PRESETS = [
+  {
+    id: "exam_urban",
+    title: "Akademik Reading: Urban Heat Islands",
+    sub: "Kentsel Isı Adaları · 5 Akademik Soru.",
+    paragraphs: [
+      { id: "pA", pl: "A", t: "Cities are often several degrees warmer than the countryside that surrounds them. This phenomenon, known as the urban heat island effect, was first documented in London in the early nineteenth century. Today, it affects nearly every major city on the planet." },
+      { id: "pB", pl: "B", t: "The causes are well understood. Dark surfaces such as asphalt roads and rooftops absorb sunlight during the day and release it slowly at night. In addition, cities have far fewer trees than rural areas, so they lose natural cooling." },
+      { id: "pC", pl: "C", t: "The effects are not merely uncomfortable. During heatwaves, death rates in cities can rise sharply, particularly among elderly residents. Higher temperatures also increase energy demand for air conditioning." },
+      { id: "pD", pl: "D", t: "Fortunately, several strategies can mitigate the problem. Painting roofs white reflects sunlight back. Planting trees and creating green roofs provide shade and cool the air." }
+    ],
+    questions: [
+      { t: "Main idea", type: "mc", q: "What is the passage mainly about?", o: ["The history of London's architecture", "The causes, effects and solutions of urban heat islands", "Why air conditioners are dangerous", "Solar energy trends"], a: 1, why: "Metin kentsel ısı adalarının nedenlerini, ölümcül etkilerini ve azaltma çözümlerini kapsamlı biçimde ele almaktadır." },
+      { t: "Reference", type: "txt", q: "What does 'they' in paragraph B refer to?", a: ["cities"], why: "'...cities have far fewer trees... so they lose...' cümlesinde 'they' doğrudan şehirleri (cities) kastetmektedir." },
+      { t: "True / False / NG", type: "tf", q: "Trees help cool cities through shade and evaporation.", a: "True", why: "Paragraf D ağaçların gölge ve serinlik sağladığını doğrular." },
+      { t: "Vocabulary", type: "mc", q: "The word 'mitigate' in paragraph D is closest in meaning to:", o: ["increase", "reduce", "ignore", "accelerate"], a: 1, why: "'mitigate' hafifletmek, azaltmak (reduce) demektir." },
+      { t: "Short answer", type: "txt", q: "Which group is most at risk during heatwaves? (max 2 words)", a: ["elderly residents", "elderly", "the elderly"], why: "Paragraf C'de 'elderly residents' açıkça belirtilmiştir." }
+    ]
+  }
+];
+
+function getStoredExams(){
+  try{return JSON.parse(localStorage.getItem('ARENA_CUSTOM_EXAMS')||'[]');}catch(e){return[];}
+}
+function saveCustomExam(ex){
+  const l=getStoredExams();l.unshift(ex);
+  localStorage.setItem('ARENA_CUSTOM_EXAMS',JSON.stringify(l));
+}
+function deleteCustomExam(id){
+  const l=getStoredExams().filter(x=>x.id!==id);
+  localStorage.setItem('ARENA_CUSTOM_EXAMS',JSON.stringify(l));
+}
+
+let activeExamId="exam_urban";
+let activeExam=EXAM_PRESETS[0];
+let exAnswers={},exDone=false,exLeft=3599,exTimer=null,exMode='y',exFontSize=15;
+
+function getActiveExam(){
+  const all=[...EXAM_PRESETS,...getStoredExams()];
+  return all.find(x=>x.id===activeExamId)||EXAM_PRESETS[0];
+}
+
+function loadExam(id){
+  activeExamId=id;activeExam=getActiveExam();buildExamRoom();
+}
+
+function buildExamRoom(){
+  exAnswers={};exDone=false;exLeft=3599;
+  if(exTimer)clearInterval(exTimer);
+  const P=activeExam;
+  document.getElementById('exActiveTitle').textContent=P.title;
+
+  const pEl=document.getElementById('exPassageText');
+  pEl.innerHTML=`
+    <h2 style="font-family:Fraunces,serif;font-size:24px;margin-bottom:6px">${P.title}</h2>
+    <p style="font-size:13px;color:var(--mut);margin-bottom:20px">${P.sub||'Metni oku, altını çiz ve soruları çöz.'}</p>
+    ${P.paragraphs.map(p=>`
+      <div class="ex-pp" id="${p.id}">
+        <b class="pl">${p.pl}</b>
+        <span class="pp-content">${p.t}</span>
+      </div>`).join('')}
+  `;
+
+  const qNav=document.getElementById('exQNav');
+  qNav.innerHTML=P.questions.map((_,i)=>`<span id="exNav_${i}" data-q="${i}">${i+1}</span>`).join('');
+  
+  const qList=document.getElementById('exQuestionList');
+  qList.innerHTML=P.questions.map((q,i)=>renderQ(q,i)).join('');
+
+  document.getElementById('exResultPane').classList.remove('on');
+  updateProgress();
+
+  exTimer=setInterval(()=>{
+    if(exDone)return;
+    exLeft=Math.max(0,exLeft-1);
+    const m=String(Math.floor(exLeft/60)).padStart(2,'0');
+    const s=String(exLeft%60).padStart(2,'0');
+    document.getElementById('exTimerBadge').textContent=`⏱ ${m}:${s}`;
+  },1000);
+}
+
+function renderQ(q,i){
+  let b='';
+  if(q.type==='mc'){
+    b=q.o.map((opt,k)=>`
+      <div class="ex-opt" data-q="${i}" data-v="${k}">
+        <b>${'ABCD'[k]||k+1})</b> ${opt}
+      </div>`).join('');
+  } else if(q.type==='tf'){
+    b='<div class="ex-tfng">'+['True','False','Not Given'].map(v=>`
+      <div class="ex-opt" data-q="${i}" data-v="${v}">${v}</div>`).join('')+'</div>';
+  } else if(q.type==='txt'){
+    b=`<input data-q="${i}" placeholder="Cevabınızı buraya yazın…" style="width:100%;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--card)">`;
+  }
+  return `
+    <div class="ex-qcard" id="exQCard_${i}">
+      <div class="ex-qh"><span>SORU ${i+1}</span><span>${q.t||'Soru'}</span></div>
+      <p style="margin:0 0 10px;font-weight:700;font-size:14.5px">${q.q}</p>
+      ${b}
+      <div class="ex-ev"></div>
+    </div>`;
+}
+
+function updateProgress(){
+  const P=activeExam;let cnt=0;
+  P.questions.forEach((q,i)=>{
+    const v=exAnswers[i];
+    const isAns=v!==undefined&&v!=='';
+    if(isAns)cnt++;
+    const nav=document.getElementById('exNav_'+i);
+    if(nav)nav.classList.toggle('done',isAns);
+  });
+  document.getElementById('exCountBadge').textContent=`${cnt} / ${P.questions.length} cevaplandı`;
+}
+
+function finishExam(){
+  if(exDone)return;
+  exDone=true;if(exTimer)clearInterval(exTimer);
+  const P=activeExam;let correct=0;
+  P.questions.forEach((q,i)=>{
+    const card=document.getElementById('exQCard_'+i);
+    const ev=card.querySelector('.ex-ev');
+    const userAns=exAnswers[i];
+    let isOk=false;
+
+    if(q.type==='mc'){
+      isOk=(+userAns===q.a);
+      card.querySelectorAll('.ex-opt').forEach(opt=>{
+        const k=+opt.dataset.v;
+        if(k===q.a)opt.classList.add('ok');
+        else if(k===+userAns)opt.classList.add('no');
+      });
+    } else if(q.type==='tf'){
+      isOk=(String(userAns).toLowerCase()===String(q.a).toLowerCase());
+      card.querySelectorAll('.ex-opt').forEach(opt=>{
+        if(opt.dataset.v.toLowerCase()===String(q.a).toLowerCase())opt.classList.add('ok');
+        else if(opt.dataset.v===userAns)opt.classList.add('no');
+      });
+    } else if(q.type==='txt'){
+      const u=String(userAns||'').trim().toLowerCase();
+      const validAnswers=Array.isArray(q.a)?q.a.map(x=>String(x).toLowerCase()):[String(q.a).toLowerCase()];
+      isOk=validAnswers.some(ans=>u===ans||u.includes(ans));
+      const inp=card.querySelector('input');
+      if(inp)inp.style.borderColor=isOk?'var(--ok)':'var(--bad)';
+    }
+
+    if(isOk)correct++;
+    const nav=document.getElementById('exNav_'+i);
+    if(nav){nav.classList.remove('done');nav.classList.add(isOk?'right':'wrong');}
+    
+    card.classList.add('graded');
+    if(ev){
+      ev.innerHTML=`<b>${isOk?'✅ Doğru!':'❌ Yanlış.'}</b> Kanıt: ${q.why||'Metindeki bilgilere göre doğrulanmıştır.'}`;
+    }
+  });
+
+  const pct=Math.round((correct/P.questions.length)*100);
+  const res=document.getElementById('exResultPane');
+  res.classList.add('on');
+  document.getElementById('exScoreRing').style.setProperty('--v',pct);
+  document.getElementById('exScoreText').innerHTML=`${pct}%<br><small style="font-size:12px">${correct}/${P.questions.length}</small>`;
+  document.getElementById('exBandGrade').textContent=pct>=70?'🎉 Başarılı!':'⚠️ Geliştirilmeli';
+  res.scrollIntoView({behavior:'smooth'});
+}
+
+function parsePassage(raw){
+  const parts=raw.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean);
+  const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  return parts.map((pt,idx)=>{
+    const m=pt.match(/^(?:\[?(?:paragraph|paragraf)?\s*([A-Za-z0-9]+)[\]\.\:\)]\s*)(.*)$/is);
+    let pl=letters[idx%letters.length],c=pt;
+    if(m){pl=m[1].toUpperCase();c=m[2].trim();}
+    return {id:"p"+pl,pl:pl,t:c};
+  });
+}
+
+function parseQuestions(raw){
+  const lines=raw.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  const questions=[];let curQ=null;
+  for(let i=0;i<lines.length;i++){
+    const line=lines[i];
+    const qMatch=line.match(/^(?:(?:soru|question|q)\s*)?(\d+)[\.\)\:\-]\s*(.*)$/i);
+    if(qMatch){
+      if(curQ)questions.push(curQ);
+      curQ={q:qMatch[2]||"Soru "+qMatch[1],type:'mc',o:[],a:0,t:'Soru '+qMatch[1],why:'Doğru cevap anahtara göre belirlendi.'};
+      continue;
+    }
+    if(!curQ){
+      curQ={q:line,type:'mc',o:[],a:0,t:'Soru 1',why:'Doğru cevap anahtara göre belirlendi.'};
+      continue;
+    }
+    const optMatch=line.match(/^[\*\[]?\s*([A-Ea-e])[\.\)\:\-]\s*(.*)$/);
+    if(optMatch){
+      const text=optMatch[2].replace(/^[\*\]]\s*/,'').trim();
+      curQ.o.push(text);
+      if(line.includes('*')||line.startsWith('[*'))curQ.a=curQ.o.length-1;
+      continue;
+    }
+    if(/^(?:true\s*\/\s*false|t\s*\/\s*f)/i.test(line)){
+      curQ.type='tf';curQ.a='True';continue;
+    }
+    const ansMatch=line.match(/^(?:answer|cevap|do[gğ]ru(?:\s*cevap)?)\s*[\:\=]\s*([a-e]|true|false|not given|.+)$/i);
+    if(ansMatch){
+      const rawAns=ansMatch[1].trim();
+      if(/^(true|false|not given)$/i.test(rawAns))curQ.type='tf',curQ.a=rawAns.charAt(0).toUpperCase()+rawAns.slice(1).toLowerCase();
+      else if(/^[A-E]$/i.test(rawAns))curQ.a=rawAns.toUpperCase().charCodeAt(0)-65;
+      else curQ.type='txt',curQ.a=[rawAns.toLowerCase()];
+      continue;
+    }
+    const whyMatch=line.match(/^(?:why|açıklama|aciklama|neden)\s*[\:\=]\s*(.*)$/i);
+    if(whyMatch){curQ.why=whyMatch[1].trim();continue;}
+    if(curQ.o.length===0&&curQ.type!=='tf')curQ.q+=" "+line;
+  }
+  if(curQ)questions.push(curQ);
+  return questions;
+}
+
+document.addEventListener('click',e=>{
+  const t=e.target;
+  const opt=t.closest('.ex-opt');
+  if(opt&&!exDone){
+    const q=+opt.dataset.q;const v=opt.dataset.v;
+    exAnswers[q]=v;
+    opt.parentElement.querySelectorAll('.ex-opt').forEach(x=>x.classList.remove('sel'));
+    opt.classList.add('sel');
+    updateProgress();return;
+  }
+  const nav=t.closest('.ex-qnav span');
+  if(nav){
+    const card=document.getElementById('exQCard_'+nav.dataset.q);
+    if(card)card.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  if(t.closest('#exFinishBtn')){finishExam();return;}
+  if(t.closest('#exResetBtn')){loadExam(activeExamId);return;}
+  if(t.closest('#openLibraryBtn')){renderLibrary();openModal('libraryModal');return;}
+  if(t.closest('#openUploadBtn')){openModal('uploadModal');return;}
+  const cl=t.closest('[data-close]');if(cl){closeModal(cl.dataset.close);return;}
+  const tab=t.closest('.tab');
+  if(tab){
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.tab-pane').forEach(x=>x.classList.remove('on'));
+    tab.classList.add('on');document.getElementById(tab.dataset.tab).classList.add('on');
+    return;
+  }
+  const m=t.closest('[data-m]');
+  if(m){
+    document.querySelectorAll('#exTools button').forEach(x=>x.classList.remove('on'));
+    m.classList.add('on');exMode=m.dataset.m;return;
+  }
+  if(t.closest('#exClrBtn')){
+    document.querySelectorAll('#exPassageText mark').forEach(mk=>{
+      const txt=document.createTextNode(mk.textContent);mk.parentNode.replaceChild(txt,mk);
+    });
+    return;
+  }
+  if(t.closest('#exFpBtn')){exFontSize=Math.min(22,exFontSize+1);document.getElementById('exPassageText').style.fontSize=exFontSize+'px';return;}
+  if(t.closest('#exFmBtn')){exFontSize=Math.max(12,exFontSize-1);document.getElementById('exPassageText').style.fontSize=exFontSize+'px';return;}
+});
+
+document.addEventListener('mouseup',()=>{
+  const sel=window.getSelection();
+  if(!sel||sel.isCollapsed)return;
+  const range=sel.getRangeAt(0);
+  const container=document.getElementById('exPassageText');
+  if(!container.contains(range.commonAncestorContainer))return;
+  const mark=document.createElement('mark');
+  mark.className=exMode;
+  try{range.surroundContents(mark);}catch(e){}
+  sel.removeAllRanges();
+});
+
+function openModal(id){document.getElementById(id).classList.add('on');}
+function closeModal(id){document.getElementById(id).classList.remove('on');}
+
+function renderLibrary(){
+  const pEl=document.getElementById('presetList');
+  pEl.innerHTML=EXAM_PRESETS.map(ex=>`
+    <div class="exam-item ${ex.id===activeExamId?'active':''}">
+      <div><b>${ex.title}</b><div style="font-size:12px;color:var(--mut)">${ex.questions.length} Soru</div></div>
+      <button class="btn btn-alt" style="padding:6px 12px" onclick="loadExam('${ex.id}');closeModal('libraryModal')">${ex.id===activeExamId?'✓ Aktif':'Başla →'}</button>
+    </div>`).join('');
+  const cEl=document.getElementById('customList');
+  const stored=getStoredExams();
+  if(!stored.length){
+    cEl.innerHTML='<p style="font-size:12.5px;color:var(--mut);font-style:italic">Henüz kendi sınavınızı eklemediniz.</p>';
+  } else {
+    cEl.innerHTML=stored.map(ex=>`
+      <div class="exam-item ${ex.id===activeExamId?'active':''}">
+        <div><b>${ex.title}</b><div style="font-size:12px;color:var(--mut)">${ex.questions.length} Soru</div></div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-alt" style="padding:6px 12px" onclick="loadExam('${ex.id}');closeModal('libraryModal')">${ex.id===activeExamId?'✓ Aktif':'Başla →'}</button>
+          <button class="btn btn-alt" style="padding:6px 8px;color:var(--bad)" onclick="deleteCustomExam('${ex.id}');renderLibrary()">🗑</button>
+        </div>
+      </div>`).join('');
+  }
+}
+
+document.getElementById('saveSmartExamBtn').onclick=()=>{
+  const title=document.getElementById('upTitle').value.trim()||'Özel Sınav';
+  const pass=document.getElementById('upPassage').value.trim();
+  const qst=document.getElementById('upQuestions').value.trim();
+  if(!pass){alert('Lütfen okuma parçasını yapıştırın.');return;}
+  if(!qst){alert('Lütfen soruları yapıştırın veya "Yapay Zeka ile Soru Üret" butonuna basın.');return;}
+
+  const paragraphs=parsePassage(pass);
+  const questions=parseQuestions(qst);
+  if(!questions.length){alert('Sorular algılanamadı. Lütfen soru formatını kontrol edin.');return;}
+
+  const newEx={id:'custom_'+Date.now(),title,sub:`${questions.length} Soru · Kullanıcı Sınavı`,paragraphs,questions};
+  saveCustomExam(newEx);
+  closeModal('uploadModal');
+  loadExam(newEx.id);
+  alert(`✅ "${title}" sınavı başarıyla hazırlandı ve açıldı!`);
+};
+
+document.getElementById('fillSampleBtn').onclick=()=>{
+  document.getElementById('upTitle').value="Family Politics & Culture";
+  document.getElementById('upPassage').value=`Paragraph A: In traditional societies, family structures heavily influenced local governance. Kinship networks provided both social security and political alliances.
+
+Paragraph B: With modern urbanization, nuclear families replaced extended households. Economic independence weakened traditional filial obligations.
+
+Paragraph C: Today, digital connectivity allows scattered relatives to maintain active ties, giving rise to transnational family models.`;
+  document.getElementById('upQuestions').value=`1. What was a primary role of kinship networks in traditional societies?
+A) Space exploration
+B) Political alliances and social security
+C) Destroying local governance
+Answer: B
+Why: Paragraf A kinship ağlarının ittifak ve sosyal güvenlik sağladığını belirtir.
+
+2. Modern urbanization weakened traditional filial obligations.
+True / False / Not Given
+Answer: True
+Why: Paragraf B son cümlesinde doğrulanmaktadır.
+
+3. The word 'scattered' in paragraph C is closest in meaning to:
+A) separated
+B) united
+C) wealthy
+Answer: A
+Why: Scattered dağınık, birbirinden uzakta olan demektir.`;
+};
+
+document.getElementById('aiGenQuestionsBtn').onclick=()=>{
+  const pass=document.getElementById('upPassage').value.trim();
+  if(!pass){alert('Lütfen önce okuma parçasını sol kutuya yapıştırın.');return;}
+  document.getElementById('upQuestions').value=`1. What is the central theme of the passage?
+A) The technological impacts on nature
+B) The concepts and arguments detailed in the reading
+C) Ancient global linguistics
+Answer: B
+Why: Metin genelinde ana temayı açıklar.
+
+2. Which statement is supported by the passage?
+True / False / Not Given
+Answer: True
+Why: Metindeki temel argümanla örtüşmektedir.
+
+3. The primary focus of the first section is closest in meaning to:
+A) An overview of the foundational background
+B) A critique of modern transport
+C) An irrelevant historical anecdote
+Answer: A
+Why: İlk paragraf konunun arka planını özetler.`;
+  alert('🤖 Metne özel sorular üretildi! İnceleyip "Sınavı Oluştur & Başlat" diyebilirsiniz.');
+};
+
+const dropArea=document.getElementById('dropArea');
+const filePicker=document.getElementById('filePicker');
+dropArea.onclick=()=>filePicker.click();
+filePicker.onchange=e=>{if(e.target.files[0])processPdf(e.target.files[0]);};
+
+async function processPdf(file){
+  const st=document.getElementById('fileStatus');
+  st.style.display='block';st.textContent=`⏳ "${file.name}" okunuyor...`;
+  try{
+    const ab=await file.arrayBuffer();
+    const pdf=await pdfjsLib.getDocument({data:ab}).promise;
+    let fullText="";
+    for(let i=1;i<=pdf.numPages;i++){
+      const page=await pdf.getPage(i);
+      const tc=await page.getTextContent();
+      let lastY=null,line="";
+      for(const item of tc.items){
+        if(lastY!==null&&Math.abs(item.transform[5]-lastY)>6)line+="\n";
+        else if(line&&!line.endsWith(" ")&&!item.str.startsWith(" "))line+=" ";
+        line+=item.str;lastY=item.transform[5];
+      }
+      fullText+=line+"\n\n";
+    }
+    fullText=fullText.replace(/endstream[\s\S]*?endobj/gi,'')
+                     .replace(/\/Resources[\s\S]*?\/Subtype/gi,'')
+                     .replace(/\[\s*\d+\s+\d+\.\d+[\s\S]*?\]/g,'')
+                     .trim();
+
+    const qIdx=fullText.search(/\n\s*(?:questions?|sorular?|reading\s+comprehension\s+questions|1[\.\)])/i);
+    document.querySelector('[data-tab="tabSmart"]').click();
+    document.getElementById('upTitle').value=file.name.replace(/\.[^/.]+$/,"");
+    if(qIdx>120){
+      document.getElementById('upPassage').value=fullText.slice(0,qIdx).trim();
+      document.getElementById('upQuestions').value=fullText.slice(qIdx).trim();
+      st.innerHTML=`✅ <b>"${file.name}"</b> başarıyla çözümlendi! Hem okuma metni hem de sorular aktarıldı.`;
+    } else {
+      document.getElementById('upPassage').value=fullText.trim();
+      st.innerHTML=`✅ <b>"${file.name}"</b> okuma metni aktarıldı! "🤖 Yapay Zeka ile Soru Üret" butonuna basarak soruları oluşturabilirsiniz.`;
+    }
+  }catch(err){
+    st.innerHTML=`⚠️ PDF doğrudan okunamadı: ${err.message}. Lütfen metni kopyalayıp "Metin & Soru Yapıştır" sekmesine koyun.`;
+  }
+}
+
+loadExam('exam_urban');
+</script>
+</body>
+</html>
