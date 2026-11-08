@@ -3,25 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Günlük haberler: üç seviye, dinleme ve quiz.">
+<meta name="description" content="Günlük haberler: üç seviye, görseller, dinleme ve quiz.">
 <title>Haber · Kelime Arenası</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔</text></svg>">
+<!-- 1A-SAF KOLEZYUM LOGOSU FAVICONLARI -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2314968c'/%3E%3Cstop offset='100%25' stop-color='%230b5a55'/%3E%3C/linearGradient%3E%3ClinearGradient id='gold' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23fef3c7'/%3E%3Cstop offset='50%25' stop-color='%23fbbf24'/%3E%3Cstop offset='100%25' stop-color='%23d97706'/%3E%3C/linearGradient%3E%3ClinearGradient id='sh' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23ffffff' stop-opacity='0.25'/%3E%3Cstop offset='55%25' stop-color='%23ffffff' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='2' y='2' width='60' height='60' rx='18' fill='url(%23g)'/%3E%3Crect x='2' y='2' width='60' height='60' rx='18' fill='url(%23sh)'/%3E%3Crect x='4.5' y='4.5' width='55' height='55' rx='15.5' stroke='%23ffffff' stroke-opacity='0.2' stroke-width='1.2' fill='none'/%3E%3Cpath d='M15 47.5V30.5a17 17 0 0 1 34 0v17' stroke='%23ffffff' stroke-width='4.8' stroke-linecap='round' fill='none'/%3E%3Cpath d='M11.8 47.5H18.2M45.8 47.5H52.2' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' fill='none'/%3E%3Cpath d='M24 47.5V31.5a8 8 0 0 1 16 0v16' stroke='url(%23gold)' stroke-width='4.2' stroke-linecap='round' fill='none'/%3E%3Cpath d='M9.5 53.5 Q20.8 49 32 53.8 Q43.2 49 54.5 53.5' stroke='url(%23gold)' stroke-width='2.7' stroke-linecap='round' fill='none'/%3E%3Cpath d='M14.5 57 Q23.2 53.8 32 57 Q40.8 53.8 49.5 57' stroke='%23ffffff' stroke-opacity='0.6' stroke-width='1.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='50' cy='13' r='6.8' fill='%23fbbf24' fill-opacity='0.25'/%3E%3Ccircle cx='50' cy='13' r='3.7' fill='url(%23gold)'/%3E%3Ccircle cx='48.8' cy='11.8' r='1.1' fill='%23ffffff' fill-opacity='0.9'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
-body[data-pal="gece"]{--bg:#0f1224;--card:#171b33;--line:#2a3050;--ink:#f4f1ff;--mut:#9aa3c7;--p:#6366f1;--p2:#8b5cf6;--acc:#fbbf24;--bad:#f43f5e;--soft:#1f2545;--lg:url(#lgA);--shadow:0 22px 40px -26px rgba(0,0,0,.7)}
-body[data-pal="kitaplik"]{--bg:#f7f1e3;--card:#fffaf0;--line:#e6d9bf;--ink:#2e1a1f;--mut:#7d6a5f;--p:#7a1f2e;--p2:#a33a4a;--acc:#c08a2b;--bad:#b42318;--soft:#f1e5cc;--lg:url(#lgB);--shadow:0 22px 40px -28px rgba(46,26,31,.45)}
-body[data-pal="akdeniz"]{--bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;--p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--lg:url(#lgC);--shadow:0 22px 40px -28px rgba(13,43,42,.4)}
-body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:16px;line-height:1.5;transition:background .3s,color .3s;background-image:radial-gradient(color-mix(in srgb,var(--mut) 13%,transparent) 1px,transparent 1.4px);background-size:24px 24px;padding-bottom:env(safe-area-inset-bottom,0px)}
+/* 2 AKDENİZ TEMASI & ULTRA HIZLI GPU ARKA PLAN */
+body[data-pal="akdeniz"],body[data-pal="gece"],body[data-pal="kitaplik"]{
+  --bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;
+  --p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--ok:#059669;
+  --shadow:0 12px 28px -18px rgba(13,43,42,.28);--glow:rgba(20,184,166,.18);--acc-glow:rgba(245,158,11,.2);
+}
+body[data-pal="derin_akdeniz"],body[data-pal="sicak_espresso"]{
+  --bg:#061514;--card:#0c2423;--line:#194240;--ink:#f3f8f6;--mut:#7ca39e;
+  --p:#0f766e;--p2:#14b8a6;--acc:#fbbf24;--bad:#f43f5e;--soft:#11312f;--ok:#34d399;
+  --shadow:0 14px 30px -18px rgba(0,0,0,.7);--glow:rgba(20,184,166,.22);--acc-glow:rgba(251,191,36,.22);
+}
+body{
+  margin:0;min-height:100vh;background-color:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Plus Jakarta Sans","DM Sans",sans-serif;
+  font-size:16px;line-height:1.5;padding-bottom:env(safe-area-inset-bottom,0px);
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(800px 360px at 12% 0%,var(--glow),transparent 70%),radial-gradient(650px 320px at 88% 8%,var(--acc-glow),transparent 70%),radial-gradient(color-mix(in srgb,var(--mut) 10%,transparent) 1px,transparent 1.4px);
+  background-size:100% 100%,100% 100%,24px 24px;
+  transform:translateZ(0);will-change:transform;
+}
 *{box-sizing:border-box}
 button{font:inherit;color:inherit;cursor:pointer}
-a{color:inherit}
-.nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+a{color:inherit;text-decoration:none}
+.nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-bottom:1px solid var(--line);transform:translateZ(0)}
 .nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:12px 18px;flex-wrap:wrap}
-.logo{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-weight:800;font-size:20px;text-decoration:none;letter-spacing:-.3px}
+.logo{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-weight:800;font-size:20px;letter-spacing:-.3px}
 .logo svg{width:38px;height:38px}
-.navlinks{display:flex;gap:4px;margin-left:10px;flex-wrap:wrap}
-.navlinks a{padding:8px 13px;border-radius:12px;font-weight:700;color:var(--mut);text-decoration:none}
+.logo-sub{font-size:10px;font-weight:800;letter-spacing:.08em;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--acc);border:1px solid var(--line);margin-left:2px}
+.navlinks{display:flex;gap:6px;margin-left:10px;flex-wrap:wrap}
+.navlinks a{padding:8px 14px;border-radius:12px;font-weight:700;color:var(--mut)}
 .navlinks a:hover{color:var(--ink);background:var(--soft)}
 .navlinks a.cur{color:#fff;background:var(--p)}
 .tools{margin-left:auto;display:flex;gap:8px;align-items:center}
@@ -29,83 +49,88 @@ a{color:inherit}
 .dots button{width:22px;height:22px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line);padding:0}
 .dots button.on{box-shadow:0 0 0 2px var(--p)}
 .sndbtn{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;min-height:34px}
-.page{max-width:840px;margin:0 auto;padding:24px 18px 90px}
+.page{max-width:1100px;margin:0 auto;padding:24px 18px 90px}
 .eyebrow{font-size:11px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--mut)}
-.hero{position:relative;overflow:hidden;border-radius:30px;padding:30px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;box-shadow:0 26px 46px -30px var(--p);margin-bottom:22px}
-.hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 88% 0%,rgba(255,255,255,.2),transparent 42%),repeating-linear-gradient(115deg,rgba(255,255,255,.06) 0 2px,transparent 2px 18px)}
-.hero .eyebrow{color:rgba(255,255,255,.8)}
-.hero h1{position:relative;font-family:Fraunces,serif;font-weight:800;font-size:clamp(26px,4vw,38px);margin:6px 0 8px;letter-spacing:-.7px;line-height:1.12}
-.hero p{position:relative;margin:0;opacity:.92;max-width:560px}
-h2.sec{font-family:Fraunces,serif;font-size:22px;margin:8px 0 12px;letter-spacing:-.3px}
-.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;margin:12px 0;box-shadow:0 5px 0 var(--line),var(--shadow);text-decoration:none;transition:transform .15s,border-color .2s}
-.card:hover{transform:translateY(-2px);border-color:var(--p)}
-.tag{display:inline-block;font-size:11px;font-weight:800;background:var(--soft);color:var(--p);border-radius:999px;padding:3px 10px}
-.date{color:var(--mut);font-size:13px;margin-left:6px}
-.ttl{font-family:Fraunces,serif;font-weight:800;font-size:22px;line-height:1.25;margin:8px 0 6px;letter-spacing:-.3px}
-.muted{color:var(--mut);font-size:14px}
-.pill{background:var(--soft);border:0;border-radius:999px;padding:8px 14px;min-height:38px;font-weight:700;font-size:14px;text-decoration:none;display:inline-flex;align-items:center}
+.hero{position:relative;overflow:hidden;border-radius:26px;padding:28px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;box-shadow:0 20px 40px -25px var(--p);margin-bottom:24px}
+.hero h1{font-family:Fraunces,serif;font-weight:800;font-size:clamp(24px,3.8vw,36px);margin:6px 0 8px;line-height:1.15}
+.hero p{margin:0;opacity:.94;max-width:620px;font-size:15px}
+h2.sec{font-family:Fraunces,serif;font-size:22px;margin:14px 0 14px;letter-spacing:-.3px}
+
+/* GÖRSELLİ HABER GRIDİ */
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px}
+.ncard{display:flex;flex-direction:column;background:var(--card);border:1.5px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 6px 0 var(--line),var(--shadow);transition:transform .18s,border-color .2s;contain:layout style}
+.ncard:hover{transform:translateY(-3px);border-color:var(--p2)}
+.ncard.featured{grid-column:1/-1;display:grid;grid-template-columns:1.35fr 1fr}
+@media(max-width:760px){.ncard.featured{grid-template-columns:1fr}}
+.nthumb{height:180px;position:relative;overflow:hidden;background:#0d2b2a}
+.ncard.featured .nthumb{height:100%;min-height:240px}
+.nthumb svg,.nthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.nbadge{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.94);backdrop-filter:blur(4px);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:800;color:#0d2b2a;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.ndate{position:absolute;top:12px;right:12px;background:rgba(13,43,42,.85);color:#f3f8f6;border-radius:8px;padding:3px 8px;font-size:11.5px;font-weight:700}
+.nbody{padding:16px 18px;display:flex;flex-direction:column;flex:1}
+.nttl{font-family:Fraunces,serif;font-weight:800;font-size:18px;line-height:1.3;margin:0 0 8px;color:var(--ink)}
+.ncard.featured .nttl{font-size:23px}
+.nfoot{margin-top:auto;padding-top:12px;border-top:1px dashed var(--line);display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--mut)}
+.nlv{font-weight:800;color:var(--p)}
+.ncta{font-weight:800;color:var(--acc);display:inline-flex;align-items:center;gap:4px}
+
+/* HABER DETAY (READER) */
+.reader-box{background:var(--card);border:1.5px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:0 12px 36px -20px rgba(0,0,0,.3)}
+.reader-hero{position:relative;height:240px;overflow:hidden;background:#0d2b2a}
+.reader-hero svg,.reader-hero img{width:100%;height:100%;object-fit:cover;display:block}
+.reader-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25) 0%,rgba(6,21,20,.88) 100%);padding:22px 24px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff}
+.reader-hero-overlay h1{font-family:Fraunces,serif;font-size:clamp(22px,3.5vw,32px);margin:6px 0 0;line-height:1.2}
+.reader-body{padding:24px}
+.tag{display:inline-block;font-size:11px;font-weight:800;background:var(--soft);color:var(--p);border-radius:999px;padding:4px 11px}
+.pill{background:var(--soft);border:0;border-radius:999px;padding:8px 16px;min-height:38px;font-weight:800;font-size:14px;display:inline-flex;align-items:center;gap:6px}
 .pill.on{background:var(--p);color:#fff}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0;justify-content:flex-start}
-.btn3{background:var(--acc);color:#1f1300;border:0;border-radius:18px;padding:13px 22px;font-weight:800;font-size:15px;box-shadow:0 6px 0 color-mix(in srgb,var(--acc) 55%,#000);transition:transform .08s,box-shadow .08s}
-.btn3:active{transform:translateY(4px);box-shadow:0 2px 0 color-mix(in srgb,var(--acc) 55%,#000)}
-.box{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:22px;margin:12px 0;box-shadow:0 6px 0 var(--line),var(--shadow)}
-.story{font-size:18px;line-height:1.9}
-.tk{border-bottom:2px dotted var(--mut);cursor:pointer;border-radius:5px;padding:0 1px}
+.pill.back{background:rgba(255,255,255,.2);color:#fff;backdrop-filter:blur(6px);align-self:flex-start}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
+.btn3{background:var(--acc);color:#1f1300;border:0;border-radius:18px;padding:13px 22px;font-weight:800;font-size:15px;box-shadow:0 5px 0 #b45309;transition:transform .08s}
+.btn3:active{transform:translateY(3px);box-shadow:0 2px 0 #b45309}
+.box{background:var(--bg);border:1.5px solid var(--line);border-radius:22px;padding:22px;margin:14px 0}
+.story{font-size:18px;line-height:1.9;font-family:Georgia,serif}
+.tk{border-bottom:2px dotted var(--mut);cursor:pointer;border-radius:5px;padding:0 2px}
 .tk:hover,.tk.sel{background:var(--soft);color:var(--p);border-bottom-color:transparent}
-.tip{min-height:50px;margin-top:14px;background:var(--soft);border-radius:16px;padding:12px 14px;font-size:15px}
+.tip{min-height:50px;margin-top:16px;background:var(--soft);border-radius:16px;padding:12px 16px;font-size:15px}
 .tip b{color:var(--p)}
 .bar{height:12px;background:var(--soft);border-radius:999px;overflow:hidden;margin:12px 0}
 .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--acc));border-radius:999px;transition:width .5s}
-.qn{font-weight:800;margin-bottom:8px}
-.opt{display:block;width:100%;margin:8px 0;padding:14px 16px;min-height:52px;border-radius:16px;border:2px solid var(--line);background:var(--card);color:var(--ink);text-align:left;font-size:15px;font-weight:700;box-shadow:0 4px 0 var(--line)}
-.opt:hover:not(:disabled){border-color:var(--mut)}
-.opt:disabled{cursor:default}
-.opt.ok{border-color:#16a34a;background:color-mix(in srgb,#16a34a 14%,var(--card))}
-.opt.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 11%,var(--card))}
-.src{color:var(--p);font-weight:700}
-.empty{text-align:center;padding:34px 18px}
-select{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:9px 12px;font-weight:700;color:var(--ink);font-family:inherit}
-@media(max-width:640px){.navlinks{order:3;width:100%;margin:0}.navlinks a{flex:1;text-align:center;padding:8px 6px;font-size:14px}.tools{margin-left:auto}.hero{padding:22px}.story{font-size:17px}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.qn{font-weight:800;margin-bottom:8px;font-size:16px}
+.opt{display:block;width:100%;margin:8px 0;padding:13px 16px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);text-align:left;font-size:15px;font-weight:700}
+.opt:hover:not(:disabled){border-color:var(--p2)}
+.opt.ok{border-color:#16a34a;background:rgba(22,163,74,.15)}
+.opt.bad{border-color:var(--bad);background:rgba(225,29,72,.15)}
+select{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:8px 12px;font-weight:700;color:var(--ink)}
+@media(max-width:640px){.page{padding:14px 12px 80px}.story{font-size:17px}}
 </style>
 </head>
-<body data-pal="gece">
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-<defs>
-<linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#6d28d9"/></linearGradient>
-<linearGradient id="lgB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8f2a3b"/><stop offset="1" stop-color="#5c1420"/></linearGradient>
-<linearGradient id="lgC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14968c"/><stop offset="1" stop-color="#0b5a55"/></linearGradient>
-<linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/><stop offset="0.6" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
-<linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset="0.5" stop-color="#fbbf24"/><stop offset="1" stop-color="#d97706"/></linearGradient>
-<symbol id="lgo" viewBox="0 0 64 64">
-<rect x="2" y="2" width="60" height="60" rx="18" style="fill:var(--lg)"/>
-<rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sheen)"/>
-<path d="M15 50V31a17 17 0 0 1 34 0v19" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
-<path d="M25 50V33a7 7 0 0 1 14 0v17" fill="none" stroke="url(#gold)" stroke-width="4.5" stroke-linecap="round"/>
-<path d="M9 55 Q20 51.5 32 55 Q44 51.5 55 55" fill="none" stroke="url(#gold)" stroke-width="2.2" stroke-linecap="round"/>
-<circle cx="50" cy="13" r="6.2" fill="#fbbf24" fill-opacity="0.25"/>
-<circle cx="50" cy="13" r="3.6" fill="url(#gold)"/>
-</symbol>
-</defs>
-</svg>
+<body data-pal="akdeniz">
 <nav class="nav" aria-label="Ana gezinme">
 <div class="nav-in">
-<a class="logo" href="/" aria-label="Kelime Arenası ana sayfa"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#lgo"/></svg><span>Kelime Arenası</span></a>
+<a class="logo" href="/" aria-label="Kelime Arenası ana sayfa">
+  <div style="width:38px;height:38px;display:flex;flex-shrink:0">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="lgC" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#14968c"/><stop offset="100%" stop-color="#0b5a55"/></linearGradient><linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/><stop offset="55%" stop-color="#ffffff" stop-opacity="0"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="50%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="18" fill="url(#lgC)"/><rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sheen)"/><rect x="4.5" y="4.5" width="55" height="55" rx="15.5" stroke="#ffffff" stroke-opacity="0.2" stroke-width="1.2" fill="none"/><path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round" fill="none"/><path d="M11.8 47.5H18.2M45.8 47.5H52.2" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" stroke="url(#gold)" stroke-width="4.2" stroke-linecap="round" fill="none"/><path d="M9.5 53.5 Q20.8 49 32 53.8 Q43.2 49 54.5 53.5" stroke="url(#gold)" stroke-width="2.7" stroke-linecap="round" fill="none"/><path d="M14.5 57 Q23.2 53.8 32 57 Q40.8 53.8 49.5 57" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="50" cy="13" r="6.8" fill="#fbbf24" fill-opacity="0.25"/><circle cx="50" cy="13" r="3.7" fill="url(#gold)"/><circle cx="48.8" cy="11.8" r="1.1" fill="#ffffff" fill-opacity="0.9"/></svg>
+  </div>
+  <span>Kelime Arenası</span>
+  <span class="logo-sub">HABER</span>
+</a>
 <div class="navlinks">
 <a href="/">Ana sayfa</a>
 <a class="cur" href="/haber.html">📰 Haber</a>
+<a href="/#sinav">📝 BUEPT Sınavı</a>
 </div>
 <div class="tools">
 <div class="dots" role="group" aria-label="Renk paleti">
-<button data-pal="gece" title="Gece" aria-label="Gece paleti" style="background:#6366f1"></button>
-<button data-pal="kitaplik" title="Kitaplık" aria-label="Kitaplık paleti" style="background:#7a1f2e"></button>
-<button data-pal="akdeniz" title="Akdeniz" aria-label="Akdeniz paleti" style="background:#0f766e"></button>
+<button data-pal="akdeniz" title="🌿 Açık Akdeniz" aria-label="Açık Akdeniz" style="background:#0f766e"></button>
+<button data-pal="derin_akdeniz" title="🌌 Koyu Akdeniz" aria-label="Koyu Akdeniz" style="background:#061514;border-color:#14b8a6"></button>
 </div>
 <button class="sndbtn" id="snd" aria-label="Sesi aç/kapat">🔊</button>
 </div>
 </div>
 </nav>
 <main class="page" id="main"></main>
+
 <script>
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -114,13 +139,38 @@ let DATA=[],CUR=null,LEVEL='1',QS=null,LAST=null,MUTED=localStorage.getItem('ka_
 const DONE=()=>{try{return JSON.parse(localStorage.getItem('ka_hn_done')||'{}')}catch(e){return {}}};
 const saveDone=d=>localStorage.setItem('ka_hn_done',JSON.stringify(d));
 
-/* ----- SES: İngilizce (ABD) sesi seçilir ----- */
+/* KONUYA ÖZEL DİNAMİK SANAT MOTORU (HER HABERE RESİM) */
+const ARTS={
+ ocean:(id)=>`<svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="o${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#0c4a6e"/></linearGradient></defs><rect width="400" height="220" fill="url(#o${id})"/><g opacity=".25" fill="#fff"><path d="M0 30 Q100 10 200 30 T400 30 V0H0z"/></g><g fill="#fb7185"><path d="M60 220 q10-60 0-90 q20 30 15 90z"/><path d="M90 220 q-5-50 20-80 q-5 40 0 80z" fill="#f97316"/><circle cx="300" cy="190" r="34" fill="#f472b6"/><circle cx="330" cy="200" r="24" fill="#fbbf24"/></g><g fill="#fde047"><path d="M200 100 q25-18 50 0 q-25 18-50 0z"/><path d="M250 100 l14-10 v20z"/></g><g fill="#fff" opacity=".7"><circle cx="180" cy="80" r="4"/><circle cx="175" cy="60" r="3"/></g></svg>`,
+ space:(id)=>`<svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice"><rect width="400" height="220" fill="#0f172a"/><g fill="#fff">${Array.from({length:32},(_,i)=>`<circle cx="${(i*97)%400}" cy="${(i*53)%220}" r="${i%3?1:1.8}" opacity=".8"/>`).join('')}</g><circle cx="300" cy="70" r="40" fill="#f97316"/><ellipse cx="300" cy="70" rx="64" ry="12" fill="none" stroke="#fde68a" stroke-width="4" transform="rotate(-18 300 70)"/><g transform="translate(110 150) rotate(-35)"><path d="M0 -40 q14 20 14 50 h-28 q0-30 14-50z" fill="#e2e8f0"/><circle cy="-8" r="6" fill="#38bdf8"/><path d="M-14 10 l-10 14 h10z M14 10 l10 14 h-10z" fill="#ef4444"/></g></svg>`,
+ tech:(id)=>`<svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="t${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#0f766e"/></linearGradient></defs><rect width="400" height="220" fill="url(#t${id})"/><g stroke="#a5f3fc" stroke-width="2" fill="none" opacity=".5"><path d="M0 60 h120 v40 h80"/><path d="M400 160 h-110 v-50 h-60"/><path d="M200 0 v60"/><path d="M200 220 v-60"/></g><rect x="150" y="60" width="100" height="100" rx="16" fill="#0f172a" stroke="#67e8f9" stroke-width="3"/><text x="200" y="122" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="34" fill="#67e8f9">AI</text><g fill="#67e8f9"><circle cx="120" cy="60" r="5"/><circle cx="290" cy="160" r="5"/></g></svg>`,
+ health:(id)=>`<svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice"><rect width="400" height="220" fill="#ecfdf5"/><circle cx="320" cy="40" r="90" fill="#a7f3d0"/><path d="M0 160 q100-40 200 0 t200 0 v60H0z" fill="#6ee7b7"/><g transform="translate(150 50)"><path d="M50 110 C-20 60 0 0 50 30 C100 0 120 60 50 110z" fill="#f43f5e"/><path d="M10 60 h25 l10-20 l14 40 l10-20 h30" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></svg>`,
+ climate:(id)=>`<svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="c${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fb923c"/><stop offset="1" stop-color="#fde68a"/></linearGradient></defs><rect width="400" height="220" fill="url(#c${id})"/><circle cx="200" cy="110" r="46" fill="#fef08a"/><g fill="#7c2d12" opacity=".85"><rect x="20" y="120" width="40" height="100"/><rect x="70" y="90" width="30" height="130"/><rect x="290" y="100" width="36" height="120"/><rect x="335" y="130" width="45" height="90"/></g><path d="M0 200 h400 v20H0z" fill="#78350f"/><text x="200" y="120" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="22" fill="#c2410c">+3°C</text></svg>`,
+ sport:(id)=>`<svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice"><rect width="400" height="220" fill="#16a34a"/><g stroke="#fff" stroke-width="3" fill="none" opacity=".7"><rect x="20" y="20" width="360" height="180"/><path d="M200 20v180"/><circle cx="200" cy="110" r="36"/></g><circle cx="250" cy="95" r="16" fill="#fff"/><path d="M250 83 l8 6 -3 9 h-10 l-3-9z" fill="#0f172a"/></svg>`,
+ culture:(id)=>`<svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice"><rect width="400" height="220" fill="#fef3c7"/><g fill="#b45309"><path d="M100 70 L200 25 L300 70z"/><rect x="100" y="70" width="200" height="12"/><rect x="100" y="185" width="200" height="14"/></g><g fill="#d97706">${[0,1,2,3,4].map(i=>`<rect x="${112+i*40}" y="88" width="16" height="96" rx="3"/>`).join('')}</g><circle cx="340" cy="45" r="22" fill="#fbbf24"/></svg>`,
+ world:(id)=>`<svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="w${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f766e"/><stop offset="1" stop-color="#1e293b"/></linearGradient></defs><rect width="400" height="220" fill="url(#w${id})"/><circle cx="200" cy="110" r="64" fill="none" stroke="#14b8a6" stroke-width="3" stroke-dasharray="8 6"/><ellipse cx="200" cy="110" rx="34" ry="64" fill="none" stroke="#14b8a6" stroke-width="2.5"/><path d="M136 110 h128" stroke="#14b8a6" stroke-width="2.5"/><text x="200" y="117" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="20" fill="#fbbf24">GLOBAL</text></svg>`
+};
+
+function getNewsArt(item, idx){
+  if(item.image) return `<img src="${esc(item.image)}" alt="${esc(item.title)}" loading="lazy">`;
+  const t = (String(item.title||'') + ' ' + String(item.category||'')).toLowerCase();
+  let k = 'world';
+  if(/coral|ocean|sea|fish|reef|marine|water|nature|animal/.test(t)) k = 'ocean';
+  else if(/ai|tech|model|software|data|computer|robot|cyber|app|google|meta|chip/.test(t)) k = 'tech';
+  else if(/space|moon|mars|saturn|orbit|nasa|planet|star|rocket|galaxy/.test(t)) k = 'space';
+  else if(/heat|climate|warm|temperature|fire|weather|emission|carbon/.test(t)) k = 'climate';
+  else if(/health|heart|walk|hospital|cancer|sleep|doctor|drug|virus/.test(t)) k = 'health';
+  else if(/sport|football|cup|championship|win|match|race|olympic/.test(t)) k = 'sport';
+  else if(/theatre|ancient|art|history|museum|culture|book|music/.test(t)) k = 'culture';
+  return (ARTS[k] || ARTS.world)(idx);
+}
+
+/* SES */
 let VOICE=null;
 function pickVoice(){
   try{
     const vs=speechSynthesis.getVoices()||[];
-    VOICE=vs.find(v=>/^en[-_]US/i.test(v.lang)&&/Google|Samantha|Zira|David|Aria|Jenny|Guy|Ava|Allison/i.test(v.name))
-      ||vs.find(v=>/^en[-_]US/i.test(v.lang))||null;
+    VOICE=vs.find(v=>/^en[-_]US/i.test(v.lang)&&/Google|Samantha|Zira|David|Aria|Jenny|Guy|Ava|Allison/i.test(v.name))||vs.find(v=>/^en[-_]US/i.test(v.lang))||null;
   }catch(e){VOICE=null}
 }
 try{speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
@@ -128,26 +178,22 @@ pickVoice();
 function say(t,rate){
   if(MUTED)return;
   try{
-    pickVoice();
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(t);
-    u.lang='en-US';
-    if(VOICE)u.voice=VOICE;
-    u.rate=rate||1;
-    speechSynthesis.speak(u);
+    pickVoice();speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(t);u.lang='en-US';if(VOICE)u.voice=VOICE;u.rate=rate||1;speechSynthesis.speak(u);
   }catch(e){}
 }
 
 function setPal(n){
-  document.body.dataset.pal=n;
-  document.querySelectorAll('.dots button').forEach(b=>b.classList.toggle('on',b.dataset.pal===n));
-  try{localStorage.setItem('ka_pal',n)}catch(e){}
+  const t = (n==='derin_akdeniz'||n==='sicak_espresso')?'derin_akdeniz':'akdeniz';
+  document.body.dataset.pal=t;
+  document.querySelectorAll('.dots button').forEach(b=>b.classList.toggle('on',b.dataset.pal===t));
+  try{localStorage.setItem('ka_pal',t)}catch(e){}
 }
 function setMute(){
-  $('#snd').textContent=MUTED?'🔇':'🔊';
+  const s=$('#snd');if(s)s.textContent=MUTED?'🔇':'🔊';
   if(MUTED){try{speechSynthesis.cancel()}catch(e){}}
 }
-setPal(localStorage.getItem('ka_pal')||'gece');
+setPal(localStorage.getItem('ka_pal')||'akdeniz');
 setMute();
 
 async function load(){
@@ -165,39 +211,78 @@ function route(){
   if(id!==LAST){LEVEL='1';LAST=id}
   reader();
 }
+
 function list(){
   const done=DONE();
-  const hero=`<section class="hero"><div class="eyebrow">Günlük haber · Üç seviye</div><h1>Haberi oku, dinle, quiz çöz.</h1><p>Her gün güncel haberler eklenir. Her haber üç İngilizce seviyesinde yazılır ve her seviyenin kendi quizi vardır.</p></section>`;
+  const hero=`<section class="hero"><div class="eyebrow">Günlük haber · Görsel & Üç seviye</div><h1>Dünyadan Haberler, Gerçek İngilizce.</h1><p>Görselli haberleri oku, bilmediğin kelimelere tıkla, dinle ve quiz çözerek dil becerini pekiştir.</p></section>`;
   const body=DATA.length
-    ? `<h2 class="sec">Son haberler</h2>`+DATA.map(x=>`<a class="card" href="#${esc(x.id)}"><span class="tag">${esc(x.category)}</span><span class="date">${esc(x.date)}</span><div class="ttl">${esc(x.title)}</div><div class="muted">${[1,2,3].map(l=>LV[l]+(done[x.id+'-'+l]!=null?' ✓ %'+done[x.id+'-'+l]:'')).join(' · ')}</div></a>`).join('')
-    : `<div class="box empty"><p class="muted">Henüz haber yok. Haberler her sabah otomatik eklenir.</p></div>`;
+    ? `<h2 class="sec">📰 Günün Haberleri</h2><div class="news-grid">`+DATA.map((x,i)=>`
+      <a class="ncard ${i===0?'featured':''}" href="#${esc(x.id)}">
+        <div class="nthumb">
+          ${getNewsArt(x,i)}
+          <span class="nbadge">${esc(x.category||'Dünya')}</span>
+          <span class="ndate">${esc(x.date||'')}</span>
+        </div>
+        <div class="nbody">
+          <h3 class="nttl">${esc(x.title)}</h3>
+          <div class="nfoot">
+            <span class="nlv">${[1,2,3].map(l=>LV[l]+(done[x.id+'-'+l]!=null?' ✓ %'+done[x.id+'-'+l]:'')).join(' · ')}</span>
+            <span class="ncta">Haberi Oku →</span>
+          </div>
+        </div>
+      </a>`).join('')+`</div>`
+    : `<div class="box" style="text-align:center;padding:40px"><p style="color:var(--mut);margin:0">Henüz haber yüklenmedi. Haberler her sabah otomatik olarak eklenir.</p></div>`;
   $('#main').innerHTML=hero+body;
 }
+
 function reader(){
   const lv=CUR.levels[LEVEL]||CUR.levels['1'];
   const done=DONE();
   const tabs=[1,2,3].map(l=>`<button class="pill ${String(l)===LEVEL?'on':''}" data-lv="${l}">${LV[l]}${done[CUR.id+'-'+l]!=null?' ✓ %'+done[CUR.id+'-'+l]:''}</button>`).join('');
   const story=String(lv.text).split(/([A-Za-z][A-Za-z'-]*)/).map((t,i)=>i%2?`<span class="tk" data-w="${esc(t)}">${esc(t)}</span>`:esc(t)).join('');
-  $('#main').innerHTML=`<a class="pill" href="#">← Haberler</a>
-<div class="row" style="margin-top:14px"><span class="tag">${esc(CUR.category)}</span><span class="date">${esc(CUR.date)}</span></div>
-<h2 class="ttl" style="font-size:28px">${esc(CUR.title)}</h2>
-<div class="row">${tabs}</div>
-<div class="box">
-<div class="row" style="margin-top:0"><button class="btn3" id="play">🔊 Dinle</button><select id="spd"><option value="0.8">Yavaş</option><option value="1" selected>Normal</option><option value="1.15">Hızlı</option></select><button class="pill" id="stop">■ Durdur</button></div>
-<div class="story">${story}</div>
-<div class="tip" id="tip"><span class="muted">Bir kelimeye dokunun, Türkçe anlamı çıksın.</span></div>
-</div>
-<div class="row"><button class="btn3" id="quiz">Quiz'e geç →</button></div>
-<p class="muted">Kaynak: <a class="src" href="${esc(CUR.src)}" target="_blank" rel="noopener">${esc(CUR.source)}</a> · Metin bu haberden yapay zekâyla sadeleştirilmiştir.</p>`;
+  
+  $('#main').innerHTML=`
+  <div class="reader-box">
+    <div class="reader-hero">
+      ${getNewsArt(CUR,'hero')}
+      <div class="reader-hero-overlay">
+        <a class="pill back" href="#">← Haberlere Dön</a>
+        <div class="row" style="margin:10px 0 2px">
+          <span class="tag" style="background:rgba(255,255,255,.9);color:#0d2b2a">${esc(CUR.category||'Dünya')}</span>
+          <span style="font-size:13px;opacity:.9">${esc(CUR.date)}</span>
+        </div>
+        <h1>${esc(CUR.title)}</h1>
+      </div>
+    </div>
+    <div class="reader-body">
+      <div class="row">${tabs}</div>
+      <div class="box">
+        <div class="row" style="margin-top:0">
+          <button class="btn3" id="play" style="padding:10px 18px">🔊 Dinle</button>
+          <select id="spd"><option value="0.8">Yavaş</option><option value="1" selected>Normal</option><option value="1.15">Hızlı</option></select>
+          <button class="pill" id="stop">■ Durdur</button>
+        </div>
+        <div class="story">${story}</div>
+        <div class="tip" id="tip"><span style="color:var(--mut)">💡 Bir kelimeye dokunun, Türkçe anlamı çıksın.</span></div>
+      </div>
+      <div class="row"><button class="btn3" id="quiz">Quiz'e geç →</button></div>
+      <p style="font-size:12.5px;color:var(--mut);margin-top:16px">Kaynak: <a href="${esc(CUR.src)}" target="_blank" rel="noopener" style="color:var(--p);font-weight:700">${esc(CUR.source||'BBC News')}</a> · Metin bu haberden yapay zekâyla sadeleştirilmiştir.</p>
+    </div>
+  </div>`;
 }
+
 function quiz(){
   const qs=CUR.levels[LEVEL].quiz;
   QS={ans:Array(qs.length).fill(null)};
-  $('#main').innerHTML=`<button class="pill" data-back="1">← Metne dön</button>
-<h2 class="sec" style="margin-top:14px">${LV[LEVEL]} · Quiz</h2>
-${qs.map((q,i)=>`<div class="box"><div class="qn">${i+1}. ${esc(q.q)}</div>${q.opts.map((o,k)=>`<button class="opt" data-q="${i}" data-k="${k}">${esc(o)}</button>`).join('')}</div>`).join('')}
-<div id="res"></div>`;
+  $('#main').innerHTML=`
+  <div class="box">
+    <button class="pill" data-back="1" style="margin-bottom:14px">← Metne dön</button>
+    <h2 class="sec" style="margin-top:0">${LV[LEVEL]} · Quiz</h2>
+    ${qs.map((q,i)=>`<div class="box" style="background:var(--card)"><div class="qn">${i+1}. ${esc(q.q)}</div>${q.opts.map((o,k)=>`<button class="opt" data-q="${i}" data-k="${k}">${esc(o)}</button>`).join('')}</div>`).join('')}
+    <div id="res"></div>
+  </div>`;
 }
+
 function answer(i,k){
   const qs=CUR.levels[LEVEL].quiz;
   if(QS.ans[i]!==null)return;
@@ -211,16 +296,17 @@ function answer(i,k){
   if(QS.ans.every(v=>v!==null)){
     const total=qs.length,right=QS.ans.filter((v,j)=>v===qs[j].ans).length,pct=Math.round(right/total*100);
     const d=DONE();d[CUR.id+'-'+LEVEL]=pct;saveDone(d);
-    $('#res').innerHTML=`<div class="box" style="text-align:center"><div class="ttl" style="margin:0">%${pct}</div><div class="bar"><i style="width:${pct}%"></i></div><p class="muted">${right} / ${total} doğru</p><button class="btn3" data-back="1">Metne dön</button></div>`;
+    $('#res').innerHTML=`<div class="box" style="text-align:center"><div style="font-family:Fraunces,serif;font-size:32px;font-weight:900">%${pct}</div><div class="bar"><i style="width:${pct}%"></i></div><p style="color:var(--mut);margin:8px 0 16px">${right} / ${total} doğru</p><button class="btn3" data-back="1">Metne dön</button></div>`;
   }
 }
+
 async function tapWord(w,el){
   document.querySelectorAll('.tk.sel').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');
   const tip=$('#tip'),key='ka_hw_'+w.toLowerCase();
   say(w);
   const cached=localStorage.getItem(key);
   if(cached){tip.innerHTML=`<b>${esc(w)}</b> — ${esc(cached)}`;return}
-  tip.innerHTML=`<b>${esc(w)}</b> — <span class="muted">anlam aranıyor…</span>`;
+  tip.innerHTML=`<b>${esc(w)}</b> — <span style="color:var(--mut)">anlam aranıyor…</span>`;
   const sentence=CUR.levels[LEVEL].text.split(/(?<=[.!?])\s+/).find(s=>new RegExp('\\b'+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i').test(s))||'';
   try{
     const r=await fetch('/api/claude',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prompt:`Translate the English word "${w}" into Turkish. It appears in this sentence: "${sentence}". Give the most fitting meaning in 1-3 Turkish words. Return ONLY JSON: {"tr":"..."}`,tier:'quick'})});
@@ -228,11 +314,11 @@ async function tapWord(w,el){
     const m=String(d.text||'').match(/\{[\s\S]*\}/);
     const v=m?String(JSON.parse(m[0]).tr||'').trim():'';
     if(v){localStorage.setItem(key,v);tip.innerHTML=`<b>${esc(w)}</b> — ${esc(v)}`}
-    else tip.innerHTML=`<b>${esc(w)}</b> — <span class="muted">anlam bulunamadı</span>`;
+    else tip.innerHTML=`<b>${esc(w)}</b> — <span style="color:var(--mut)">anlam bulunamadı</span>`;
   }catch(e){tip.innerHTML=`<b>${esc(w)}</b> — <span style="color:var(--bad)">bağlantı hatası</span>`}
 }
 
-/* ----- TIKLAMALAR ----- */
+/* EVENT DELEGATION */
 document.addEventListener('click',e=>{
   const t=e.target;
   const pal=t.closest('.dots [data-pal]');if(pal){setPal(pal.dataset.pal);return}
@@ -248,1964 +334,5 @@ document.addEventListener('click',e=>{
 window.addEventListener('hashchange',route);
 load();
 </script>
-<!-- ===== HABER ARENASI: 4 ÖZEL RENK PALETİ, DİNAMİK ANİMASYONLAR, TURENG + SYNONYMS + LİSTEYE EKLE & CÜMLE ÇEVİRİLERİ (TEK PARÇA FİNAL SÜRÜM) ===== -->
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-/* 1. AKDENİZ (AÇIK YEŞİL - İLK AÇILIŞ VARSAYILAN) */
-body[data-pal="akdeniz"], body[data-pal="gece"]{
-  --bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;
-  --p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--ok:#059669;
-  --lg:url(#lgC);--shadow:0 22px 44px -26px rgba(13,43,42,.38);
-  --glow:rgba(20,184,166,.22);--acc-glow:rgba(245,158,11,.28);
-}
-/* 2. DERİN AKDENİZ (KOYU YEŞİL) */
-body[data-pal="derin_akdeniz"]{
-  --bg:#061514;--card:#0c2423;--line:#194240;--ink:#f3f8f6;--mut:#7ca39e;
-  --p:#0f766e;--p2:#14b8a6;--acc:#fbbf24;--bad:#f43f5e;--soft:#11312f;--ok:#34d399;
-  --lg:url(#lgC);--shadow:0 22px 44px -24px rgba(0,0,0,.82);
-  --glow:rgba(20,184,166,.28);--acc-glow:rgba(251,191,36,.30);
-}
-/* 3. KÜTÜPHANE / KİTAPLIK (AÇIK KREM & BORDO) */
-body[data-pal="kitaplik"]{
-  --bg:#f7f1e3;--card:#fffaf0;--line:#e6d9bf;--ink:#2e1a1f;--mut:#7d6a5f;
-  --p:#7a1f2e;--p2:#a33a4a;--acc:#c08a2b;--bad:#b42318;--soft:#f1e5cc;--ok:#15803d;
-  --lg:url(#lgB);--shadow:0 22px 44px -26px rgba(46,26,31,.42);
-  --glow:rgba(122,31,46,.16);--acc-glow:rgba(192,138,43,.26);
-}
-/* 4. SICAK ESPRESSO (KOYU KÜTÜPHANE & BORDO) */
-body[data-pal="sicak_espresso"]{
-  --bg:#181412;--card:#241e1b;--line:#3d322c;--ink:#f7f1e3;--mut:#a8998c;
-  --p:#7a1f2e;--p2:#a33a4a;--acc:#c08a2b;--bad:#f43f5e;--soft:#2e2622;--ok:#22c55e;
-  --lg:url(#lgB);--shadow:0 22px 44px -24px rgba(0,0,0,.82);
-  --glow:rgba(163,58,74,.24);--acc-glow:rgba(192,138,43,.26);
-}
-body{
-  font-family:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif!important;
-  background-image:
-    radial-gradient(820px 380px at 14% 0%, var(--glow), transparent 70%),
-    radial-gradient(680px 340px at 88% 8%, var(--acc-glow), transparent 70%),
-    radial-gradient(color-mix(in srgb,var(--mut) 12%,transparent) 1px,transparent 1.4px)!important;
-  background-size:100% 100%, 100% 100%, 24px 24px!important;
-  background-attachment:fixed;
-}
-.logo svg{width:40px;height:40px;filter:drop-shadow(0 4px 10px var(--glow));transition:transform .2s}
-.logo:hover svg{transform:scale(1.06) rotate(-3deg)}
-.logo-sub{
-  font-family:"Plus Jakarta Sans",sans-serif;font-size:10px;font-weight:800;letter-spacing:.08em;
-  text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--acc);
-  border:1px solid var(--line);margin-left:2px;
-}
-.hero{
-  border-radius:30px;padding:30px;
-  background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;
-  box-shadow:0 28px 54px -26px var(--p), inset 0 1px 0 rgba(255,255,255,.25);
-  border:1.5px solid rgba(255,255,255,.16);
-}
-.card{
-  background:radial-gradient(240px 140px at 90% 0%, var(--glow), transparent 75%), var(--card);
-  border:1.5px solid var(--line);border-radius:22px;padding:20px;margin:14px 0;
-  box-shadow:0 5px 0 var(--line),var(--shadow);transition:transform .16s,border-color .2s,box-shadow .2s;
-}
-.card:hover{transform:translateY(-3px);border-color:var(--acc);box-shadow:0 8px 0 var(--line),0 18px 34px -16px rgba(0,0,0,.45),0 0 22px var(--glow)}
-.box{
-  background:radial-gradient(280px 160px at 92% 0%, var(--glow), transparent 75%), var(--card);
-  border:1.5px solid var(--line);border-radius:26px;padding:22px;margin:14px 0;
-  box-shadow:0 6px 0 var(--line),var(--shadow);
-}
-.tk{
-  border-bottom:2px dotted color-mix(in srgb,var(--mut) 65%,transparent);
-  cursor:pointer;border-radius:6px;padding:1px 2px;transition:background .12s,color .12s;
-}
-.tk:hover,.tk.sel{
-  background:var(--soft);color:var(--p2);border-bottom-color:var(--acc);font-weight:700;
-}
-.tip{
-  min-height:58px;margin-top:16px;background:var(--soft);border:1.5px solid var(--line);
-  border-radius:18px;padding:14px 16px;font-size:15px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
-}
-.tureng-badge{
-  display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;
-  padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--acc) 18%,transparent);
-  color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 42%,transparent);
-}
-.add-word-btn{
-  display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:5px 12px;
-  border-radius:999px;border:1.5px solid var(--acc);background:linear-gradient(135deg,var(--acc),#f59e0b);
-  color:#1f1300;font-size:12px;font-weight:900;cursor:pointer;
-  box-shadow:0 3px 10px var(--acc-glow);transition:transform .15s,filter .15s;vertical-align:middle;
-}
-.add-word-btn:hover{transform:translateY(-1px) scale(1.03);filter:brightness(1.06)}
-.added-word-badge{
-  display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:4px 11px;
-  border-radius:999px;background:color-mix(in srgb,var(--ok) 16%,transparent);
-  border:1px solid color-mix(in srgb,var(--ok) 48%,transparent);color:var(--ok);
-  font-size:11.5px;font-weight:800;vertical-align:middle;
-}
-.syn-box{
-  margin-top:10px;padding:8px 12px;border-radius:14px;
-  background:color-mix(in srgb,var(--card) 75%,var(--soft));border:1px solid var(--line);
-  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
-}
-.syn-lbl{
-  font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;
-  color:var(--acc);display:inline-flex;align-items:center;gap:4px;margin-right:2px;
-}
-.syn-chip{
-  display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;
-  background:var(--card);border:1.5px solid var(--line);color:var(--ink);
-  font-size:12px;font-weight:800;cursor:pointer;transition:transform .14s,border-color .14s,color .14s;
-}
-.syn-chip:hover{transform:translateY(-1px);border-color:var(--p);color:var(--p)}
-.news-sent-panel{
-  margin-top:14px;padding:16px;border-radius:20px;background:var(--card);
-  border:1.5px solid var(--line);box-shadow:var(--shadow);
-}
-.news-sent-row{
-  padding:10px 12px;border-radius:14px;background:var(--soft);border:1px solid var(--line);
-  margin-bottom:8px;display:flex;flex-direction:column;gap:4px;
-}
-.news-sent-row:last-child{margin-bottom:0}
-.news-sent-en{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.45}
-.news-sent-tr{font-size:14px;font-weight:700;color:var(--p2);line-height:1.45}
-.spark-pt{
-  position:fixed;pointer-events:none;z-index:200;width:8px;height:8px;border-radius:50%;
-  animation:spkMove .85s cubic-bezier(.16,1,.3,1) forwards;box-shadow:0 0 8px currentColor;
-}
-@keyframes spkMove{0%{transform:translate(0,0) scale(1.2);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
-.conquest-ov{
-  position:fixed;inset:0;z-index:180;
-  background:radial-gradient(circle at 50% 45%, color-mix(in srgb,var(--card) 85%,transparent), color-mix(in srgb,var(--bg) 95%,#000));
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  display:flex;align-items:center;justify-content:center;padding:18px;
-  opacity:0;pointer-events:none;transition:opacity .32s ease;
-}
-.conquest-ov.show{opacity:1;pointer-events:auto}
-.conquest-stage{
-  position:relative;width:min(500px,100%);
-  background:radial-gradient(380px 220px at 50% 18%, color-mix(in srgb,var(--acc) 26%,transparent), transparent 70%),
-             radial-gradient(320px 240px at 50% 85%, var(--glow), transparent 70%),var(--card);
-  border:2px solid color-mix(in srgb,var(--acc) 65%,var(--line));border-radius:30px;
-  padding:28px 22px 24px;text-align:center;
-  box-shadow:0 30px 80px rgba(0,0,0,.78), 0 0 60px var(--acc-glow);
-  transform:scale(.82) translateY(24px);transition:transform .5s cubic-bezier(.22,1,.36,1);overflow:hidden;
-}
-.conquest-ov.show .conquest-stage{transform:scale(1) translateY(0)}
-.conq-banner{
-  display:inline-flex;align-items:center;gap:8px;
-  background:linear-gradient(135deg,var(--acc),#f59e0b,var(--acc-glow));color:#1f1300;
-  font-weight:900;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
-  padding:6px 18px;border-radius:999px;box-shadow:0 6px 20px var(--acc-glow);
-}
-.conq-title{font-family:Fraunces,serif;font-size:clamp(24px,4.2vw,30px);font-weight:900;margin:12px 0 6px;color:var(--ink)}
-.conq-sub{font-size:14px;color:var(--mut);font-weight:600;margin-bottom:18px}
-</style>
-
-<script>
-(function(){
-  /* 1. SADECE SEÇİLEN 4 RENK PALETİ (ANA SAYFA İLE %100 SENKRONİZE) */
-  const VALID_PALS = ['akdeniz', 'derin_akdeniz', 'kitaplik', 'sicak_espresso'];
-  const dotsEl = document.querySelector('.dots');
-  if(dotsEl){
-    dotsEl.innerHTML = `
-      <button data-pal="akdeniz" title="🌿 Akdeniz (Açık Yeşil · Varsayılan)" aria-label="Akdeniz" style="background:#0f766e"></button>
-      <button data-pal="derin_akdeniz" title="🌌 Derin Akdeniz Gecesi (Koyu Yeşil)" aria-label="Derin Akdeniz" style="background:#061514;border-color:#14b8a6"></button>
-      <button data-pal="kitaplik" title="📜 Kütüphane / Kitaplık (Açık Krem & Bordo)" aria-label="Kütüphane" style="background:#7a1f2e"></button>
-      <button data-pal="sicak_espresso" title="☕ Sıcak Espresso & Bordo (Koyu Kütüphane)" aria-label="Sıcak Espresso" style="background:#181412;border-color:#c08a2b"></button>
-    `;
-  }
-  setPal = function(n){
-    const target = VALID_PALS.includes(n) ? n : 'akdeniz';
-    document.body.dataset.pal = target;
-    document.querySelectorAll('.dots button').forEach(b => b.classList.toggle('on', b.dataset.pal === target));
-    try{ localStorage.setItem('ka_pal', target); localStorage.setItem('ka_pal_v3', target); }catch(e){}
-  };
-  try{
-    const savedV3 = localStorage.getItem('ka_pal_v3') || localStorage.getItem('ka_pal');
-    setPal(VALID_PALS.includes(savedV3) ? savedV3 : 'akdeniz');
-  }catch(e){ setPal('akdeniz'); }
-
-  /* 2. 1A-SAF OPTİMUM LOGO & ARENA ROZETİ */
-  const lgo = document.getElementById('lgo');
-  if(lgo){
-    lgo.innerHTML = `
-      <rect x="2" y="2" width="60" height="60" rx="18" style="fill:var(--lg)"/>
-      <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sheen)"/>
-      <rect x="4.5" y="4.5" width="55" height="55" rx="15.5" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="1.2"/>
-      <path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round"/>
-      <path d="M11.8 47.5H18.2M45.8 47.5H52.2" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
-      <path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" fill="none" stroke="url(#gold)" stroke-width="4.2" stroke-linecap="round"/>
-      <path d="M9.5 53.5 Q20.8 49 32 53.8 Q43.2 49 54.5 53.5" fill="none" stroke="url(#gold)" stroke-width="2.7" stroke-linecap="round"/>
-      <path d="M14.5 57 Q23.2 53.8 32 57 Q40.8 53.8 49.5 57" fill="none" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round"/>
-      <circle cx="50" cy="13" r="6.8" fill="#fbbf24" fill-opacity="0.24"/>
-      <circle cx="50" cy="13" r="3.7" fill="url(#gold)"/>
-      <circle cx="48.8" cy="11.8" r="1.1" fill="#ffffff" fill-opacity="0.85"/>`;
-  }
-  const logoLink = document.querySelector('.logo');
-  if(logoLink && !logoLink.querySelector('.logo-sub')){
-    const sub = document.createElement('span');
-    sub.className = 'logo-sub';
-    sub.textContent = 'ARENA';
-    logoLink.appendChild(sub);
-  }
-
-  /* 3. DİNAMİK PALET KIVILCIM & FETİH ANİMASYONU */
-  function getActivePaletteColors(){
-    const st = getComputedStyle(document.body);
-    const p = st.getPropertyValue('--p').trim() || '#0f766e';
-    const p2 = st.getPropertyValue('--p2').trim() || '#14b8a6';
-    const acc = st.getPropertyValue('--acc').trim() || '#f59e0b';
-    const ok = st.getPropertyValue('--ok').trim() || '#10b981';
-    const soft = st.getPropertyValue('--soft').trim() || '#e2f1ed';
-    return [acc, p, p2, ok, soft];
-  }
-  function spawnSparks(x, y, count=22){
-    const colors = getActivePaletteColors();
-    for(let i=0;i<count;i++){
-      const s = document.createElement('i');
-      s.className = 'spark-pt';
-      const ang = (Math.PI * 2 * i) / count + (Math.random() - .5) * .4;
-      const dist = 40 + Math.random() * 110;
-      s.style.left = x + 'px';
-      s.style.top = y + 'px';
-      s.style.background = colors[i % colors.length];
-      s.style.color = colors[i % colors.length];
-      s.style.setProperty('--tx', Math.cos(ang)*dist + 'px');
-      s.style.setProperty('--ty', Math.sin(ang)*dist + 'px');
-      document.body.appendChild(s);
-      setTimeout(() => s.remove(), 900);
-    }
-  }
-
-  if(!document.getElementById('newsConqOv')){
-    const ov = document.createElement('div');
-    ov.className = 'conquest-ov';
-    ov.id = 'newsConqOv';
-    ov.innerHTML = `
-      <div class="conquest-stage">
-        <div class="conq-banner">⚔️ HABER QUİZİ FETHEDİLDİ ⚔️</div>
-        <h2 class="conq-title" id="nConqTitle">Seviye Tamamlandı!</h2>
-        <p class="conq-sub" id="nConqSub"></p>
-        <div class="row" style="justify-content:center;gap:10px">
-          <button class="btn3" id="nConqClose">🏛️ Habere Dön</button>
-        </div>
-      </div>`;
-    document.body.appendChild(ov);
-  }
-
-  /* 4. KELİME LİSTESİNE EKLEME MOTORU (ANA SAYFADAKİ TÜM PAKETLERLE DOĞRUDAN ENTEGRE) */
-  function getUserUid(){
-    let u = localStorage.getItem('ka_uid');
-    if(!u){
-      u = (crypto.randomUUID ? crypto.randomUUID() : Date.now()+'-'+Math.random().toString(36).slice(2));
-      localStorage.setItem('ka_uid', u);
-    }
-    return u;
-  }
-
-  function isWordAlreadyAdded(wordStr){
-    const k = String(wordStr||'').toLowerCase().trim();
-    if(!k) return false;
-    try{
-      const q = JSON.parse(localStorage.getItem('ka_news_added_words') || '[]');
-      if(Array.isArray(q) && q.some(x => String(x && x.en || '').toLowerCase().trim() === k)) return true;
-      const uid = getUserUid();
-      const pre = 'db:data/users/' + uid + '/';
-      for(const key of Object.keys(localStorage)){
-        if(key.startsWith(pre)){
-          const pack = JSON.parse(localStorage.getItem(key) || 'null');
-          if(pack && Array.isArray(pack.items)){
-            if(pack.items.some(it => String(it && it.en || '').toLowerCase().trim() === k)) return true;
-          }
-        }
-      }
-    }catch(e){}
-    return false;
-  }
-
-  function addNewsWordToArena(wordEn, trMeaning, synArr, sentenceEn, sentenceTr, btnEl){
-    const cleanEn = String(wordEn||'').trim().toLowerCase();
-    if(!cleanEn) return;
-    const cleanTr = String(trMeaning||'').trim();
-    const cleanSyn = Array.isArray(synArr) ? synArr.map(s=>String(s||'').trim()).filter(Boolean) : [];
-    const cleanS = String(sentenceEn||'').trim();
-    const cleanSt = String(sentenceTr||'').trim();
-
-    try{
-      /* 1) Ortak haber kelime kuyruğuna kaydet (Ana sayfa açıldığında otomatik senkronize eder) */
-      const q = JSON.parse(localStorage.getItem('ka_news_added_words') || '[]');
-      if(!q.some(x => String(x && x.en || '').toLowerCase() === cleanEn)){
-        q.push({ en: cleanEn, tr: cleanTr, syn: cleanSyn, s: cleanS, st: cleanSt, addedAt: Date.now() });
-        localStorage.setItem('ka_news_added_words', JSON.stringify(q));
-      }
-
-      /* 2) Kullanıcının localStorage'daki mevcut kelime paketlerine doğrudan ekle */
-      const uid = getUserUid();
-      const pre = 'db:data/users/' + uid + '/';
-      const packKeys = Object.keys(localStorage).filter(k => k.startsWith(pre));
-      packKeys.forEach(pk => {
-        try{
-          const pack = JSON.parse(localStorage.getItem(pk) || 'null');
-          if(pack && Array.isArray(pack.items)){
-            const exists = pack.items.some(it => String(it && it.en || '').toLowerCase().trim() === cleanEn);
-            if(!exists){
-              pack.items.push({
-                en: cleanEn,
-                tr: cleanTr,
-                baseTr: cleanTr,
-                turengDone: true,
-                syn: cleanSyn,
-                s: cleanS,
-                st: cleanSt,
-                d: [],
-                gl: {},
-                mo: {}
-              });
-              if(Array.isArray(pack.words)) pack.words.push({ en: cleanEn, tr: cleanTr });
-              pack.prog = pack.prog || { box:{}, steps:[0,0,0,0,0,0,0], mdone:[], xp:0 };
-              pack.prog.box = pack.prog.box || {};
-              pack.prog.box[cleanEn] = 1;
-              localStorage.setItem(pk, JSON.stringify(pack));
-            }
-          }
-        }catch(err){}
-      });
-    }catch(e){}
-
-    if(btnEl){
-      btnEl.outerHTML = `<span class="added-word-badge">✅ <b>"${esc(cleanEn)}"</b> Ana Sayfa Listene Eklendi! (Kutu 1)</span>`;
-    }
-  }
-
-  /* 5. HABER OKUYUCU (TÜM CÜMLE ÇEVİRİLERİ PANELİ + DİNLEME + QUIZ) */
-  let SHOW_NEWS_TR = false;
-  let NEWS_TR_CACHE = {};
-  try{ NEWS_TR_CACHE = JSON.parse(localStorage.getItem('ka_news_tr_v2') || '{}') || {}; }catch(e){ NEWS_TR_CACHE = {}; }
-
-  function getSentences(text){
-    return String(text || '').split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
-  }
-
-  async function translateNewsSentences(storyId, level, text){
-    const cacheKey = storyId + '_' + level;
-    if(NEWS_TR_CACHE[cacheKey] && Array.isArray(NEWS_TR_CACHE[cacheKey]) && NEWS_TR_CACHE[cacheKey].length){
-      return NEWS_TR_CACHE[cacheKey];
-    }
-    const sents = getSentences(text);
-    if(!sents.length) return [];
-    const prompt = `Sen akademik İngilizce-Türkçe çeviri uzmanısın. Aşağıdaki haber metninin numaralı İngilizce cümlelerini doğal ve akıcı Türkçeye çevir.
-YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"tr":"..."}]}
-
-CÜMLELER:
-${sents.map((s,idx)=>`${idx+1}. ${s}`).join('\n')}`;
-
-    try{
-      const r = await fetch('/api/claude',{
-        method:'POST',
-        headers:{'content-type':'application/json'},
-        body:JSON.stringify({prompt, tier:'quick'})
-      });
-      const d = await r.json();
-      const m = String(d.text||'').match(/\{[\s\S]*\}/);
-      if(m){
-        const parsed = JSON.parse(m[0]);
-        if(parsed && Array.isArray(parsed.items)){
-          const out = sents.map((enStr, idx) => {
-            const found = parsed.items.find(o => Number(o.i) === idx + 1) || parsed.items[idx];
-            return { en: enStr, tr: found && found.tr ? String(found.tr).trim() : '' };
-          });
-          NEWS_TR_CACHE[cacheKey] = out;
-          try{ localStorage.setItem('ka_news_tr_v2', JSON.stringify(NEWS_TR_CACHE)); }catch(e){}
-          return out;
-        }
-      }
-    }catch(e){}
-    return sents.map(enStr => ({ en: enStr, tr: '' }));
-  }
-
-  reader = function(){
-    const lv = CUR.levels[LEVEL] || CUR.levels['1'];
-    const done = DONE();
-    const tabs = [1,2,3].map(l=>`<button class="pill ${String(l)===LEVEL?'on':''}" data-lv="${l}">${LV[l]}${done[CUR.id+'-'+l]!=null?' ✓ %'+done[CUR.id+'-'+l]:''}</button>`).join('');
-    const story = String(lv.text).split(/([A-Za-z][A-Za-z'-]*)/).map((t,i)=>i%2?`<span class="tk" data-w="${esc(t)}">${esc(t)}</span>`:esc(t)).join('');
-    $('#main').innerHTML = `<a class="pill" href="#">← Haberler</a>
-<div class="row" style="margin-top:14px"><span class="tag">${esc(CUR.category)}</span><span class="date">${esc(CUR.date)}</span></div>
-<h2 class="ttl" style="font-size:28px">${esc(CUR.title)}</h2>
-<div class="row">${tabs}</div>
-<div class="box">
-  <div class="row" style="margin-top:0;justify-content:space-between">
-    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-      <button class="btn3" id="play">🔊 Dinle (US)</button>
-      <select id="spd"><option value="0.8">Yavaş</option><option value="1" selected>Normal</option><option value="1.15">Hızlı</option></select>
-      <button class="pill" id="stop">■ Durdur</button>
-    </div>
-    <button class="pill" id="toggleNewsTrBtn" type="button" style="border:1.5px solid var(--line);font-weight:800">📖 Haberin Türkçe Çevirisi (Cümle Cümle)</button>
-  </div>
-  <div class="story">${story}</div>
-  <div id="newsTrPanelWrap" hidden></div>
-  <div class="tip" id="tip"><span class="muted">💡 Haberdeki herhangi bir kelimeye dokunun: <b>Tureng yaygın anlamları</b>, <b>İngilizce eş anlamlıları (Synonyms)</b> ve <b>➕ Kelime Listesine Ekle</b> butonu açılır.</span></div>
-</div>
-<div class="row"><button class="btn3" id="quiz">⚔️ Quiz'e Geç →</button></div>
-<p class="muted">Kaynak: <a class="src" href="${esc(CUR.src)}" target="_blank" rel="noopener">${esc(CUR.source)}</a> · Metin bu haberden yapay zekâyla sadeleştirilmiştir.</p>`;
-  };
-
-  /* 6. KELİMEYE DOKUNUNCA: TURENG YAYGIN ANLAMLAR + SYNONYMS + LİSTEYE EKLE */
-  let WORD_CACHE = {};
-  try{ WORD_CACHE = JSON.parse(localStorage.getItem('ka_hw_rich_v2') || '{}') || {}; }catch(e){ WORD_CACHE = {}; }
-
-  let LAST_TAPPED_INFO = null;
-
-  function renderRichTip(w, data, sentence){
-    const cleanW = String(w||'').trim();
-    const k = cleanW.toLowerCase();
-    const q = encodeURIComponent(k);
-    const trText = data && data.tr ? data.tr : '';
-    const syns = data && Array.isArray(data.syn) ? data.syn.filter(Boolean) : [];
-    const sentTr = data && data.st ? data.st : '';
-
-    LAST_TAPPED_INFO = {
-      en: cleanW,
-      tr: trText,
-      syn: syns,
-      s: sentence || '',
-      st: sentTr
-    };
-
-    const already = isWordAlreadyAdded(cleanW);
-    const addBtnHtml = already
-      ? `<span class="added-word-badge">✓ Kelime Listende Mevcut</span>`
-      : `<button type="button" class="add-word-btn" id="newsAddWordBtn" data-nw="${esc(cleanW)}">➕ Kelime Listesine Ekle</button>`;
-
-    const synHtml = syns.length
-      ? `<div class="syn-box"><span class="syn-lbl">🔗 Synonyms (Eş Anlamlılar):</span>${syns.map(s => `<span class="syn-chip tk" data-w="${esc(s)}" title="Tıkla: Dinle ve anlamını gör">🔊 ${esc(s)}</span>`).join('')}</div>`
-      : '';
-
-    const sentTrHtml = sentTr
-      ? `<div style="margin-top:8px;font-size:13.5px;color:var(--mut)"><b>Cümle Çevirisi:</b> ${esc(sentTr)}</div>`
-      : '';
-
-    return `
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px">
-          <span class="tureng-badge">📚 Bağlam + Tureng Yaygın Karşılıklar</span>
-          <b style="font-size:17px">${esc(cleanW)}</b> —
-          <span style="font-weight:800;color:var(--p)">${esc(trText)}</span>
-          ${addBtnHtml}
-        </div>
-        <div style="font-size:13px;display:flex;gap:10px">
-          <a class="src" href="https://dictionary.cambridge.org/dictionary/english-turkish/${q}" target="_blank" rel="noopener">Cambridge ↗</a>
-          <a class="src" href="https://tureng.com/en/turkish-english/${q}" target="_blank" rel="noopener">Tureng ↗</a>
-        </div>
-      </div>
-      ${synHtml}
-      ${sentTrHtml}
-    `;
-  }
-
-  tapWord = async function(w, el){
-    document.querySelectorAll('.tk.sel').forEach(x=>x.classList.remove('sel'));
-    if(el) el.classList.add('sel');
-    const cleanW = String(w||'').trim();
-    const k = cleanW.toLowerCase();
-    const tip = $('#tip');
-    say(cleanW);
-
-    const sentence = (CUR && CUR.levels && CUR.levels[LEVEL] ? CUR.levels[LEVEL].text : '')
-      .split(/(?<=[.!?])\s+/)
-      .find(s => new RegExp('\\b'+cleanW.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i').test(s)) || '';
-
-    if(WORD_CACHE[k] && WORD_CACHE[k].tr){
-      tip.innerHTML = renderRichTip(cleanW, WORD_CACHE[k], sentence);
-      return;
-    }
-
-    const oldSimple = localStorage.getItem('ka_hw_' + k);
-    tip.innerHTML = `<b>${esc(cleanW)}</b> — <span class="muted">${oldSimple ? esc(oldSimple) + ' · (Tureng & eş anlamlılar yükleniyor…)' : 'Tureng anlamları ve eş anlamlılar aranıyor…'}</span>`;
-
-    try{
-      const prompt = `Sen akademik İngilizce ve Tureng sözlük uzmanısın.
-Hedef kelime: "${cleanW}"
-Geçtiği haber cümlesi: "${sentence}"
-
-Görev:
-1. "tr": Kelimenin bu cümledeki anlamını ve Tureng sözlüğündeki en yaygın 2-3 Türkçe karşılığını virgülle ayırarak yaz (kısa ve net, toplam 2-5 kelime).
-2. "syn": Kelimenin en yaygın 3 İngilizce eş anlamlısı (synonyms) dizisi.
-3. "st": Geçtiği haber cümlesinin doğal Türkçe çevirisi.
-YALNIZCA geçerli JSON döndür: {"tr":"...","syn":["...","...","..."],"st":"..."}`;
-
-      const r = await fetch('/api/claude',{
-        method:'POST',
-        headers:{'content-type':'application/json'},
-        body:JSON.stringify({prompt, tier:'quick'})
-      });
-      const d = await r.json();
-      const m = String(d.text||'').match(/\{[\s\S]*\}/);
-      const parsed = m ? JSON.parse(m[0]) : null;
-      if(parsed && parsed.tr){
-        const entry = {
-          tr: String(parsed.tr).trim(),
-          syn: Array.isArray(parsed.syn) ? parsed.syn.map(s=>String(s||'').trim()).filter(Boolean).slice(0,4) : [],
-          st: String(parsed.st||'').trim()
-        };
-        WORD_CACHE[k] = entry;
-        try{
-          localStorage.setItem('ka_hw_rich_v2', JSON.stringify(WORD_CACHE));
-          localStorage.setItem('ka_hw_' + k, entry.tr);
-        }catch(e){}
-        tip.innerHTML = renderRichTip(cleanW, entry, sentence);
-      } else if(oldSimple){
-        tip.innerHTML = renderRichTip(cleanW, { tr: oldSimple, syn: [], st: '' }, sentence);
-      } else {
-        tip.innerHTML = `<b>${esc(cleanW)}</b> — <span class="muted">anlam bulunamadı</span>`;
-      }
-    }catch(e){
-      if(oldSimple){
-        tip.innerHTML = renderRichTip(cleanW, { tr: oldSimple, syn: [], st: '' }, sentence);
-      } else {
-        tip.innerHTML = `<b>${esc(cleanW)}</b> — <span style="color:var(--bad)">bağlantı hatası</span>`;
-      }
-    }
-  };
-
-  /* 7. QUIZ CEVAPLAMA & PALET UYUMLU ZAFER KUTLAMASI */
-  const origAnswer = answer;
-  answer = function(i, k){
-    origAnswer(i, k);
-    const qs = CUR && CUR.levels && CUR.levels[LEVEL] ? CUR.levels[LEVEL].quiz : null;
-    if(qs && QS && QS.ans && QS.ans.every(v => v !== null)){
-      const total = qs.length, right = QS.ans.filter((v,j)=>v===qs[j].ans).length, pct = Math.round(right/total*100);
-      spawnSparks(window.innerWidth/2, window.innerHeight/2, 28);
-      const ov = document.getElementById('newsConqOv');
-      if(ov){
-        const ttl = document.getElementById('nConqTitle');
-        const sub = document.getElementById('nConqSub');
-        if(ttl) ttl.textContent = `${LV[LEVEL]} · %${pct} Başarı!`;
-        if(sub) sub.textContent = `${total} soruda ${right} doğru yanıtla bu haber seviyesini tamamladın.`;
-        ov.classList.add('show');
-      }
-    }
-  };
-
-  /* 8. TIKLAMA DİNLEYİCİLERİ */
-  document.addEventListener('click', async e => {
-    const t = e.target;
-
-    /* Kelime Listesine Ekle butonu */
-    const addBtn = t.closest('#newsAddWordBtn');
-    if(addBtn && LAST_TAPPED_INFO){
-      e.stopPropagation();
-      addNewsWordToArena(
-        LAST_TAPPED_INFO.en,
-        LAST_TAPPED_INFO.tr,
-        LAST_TAPPED_INFO.syn,
-        LAST_TAPPED_INFO.s,
-        LAST_TAPPED_INFO.st,
-        addBtn
-      );
-      spawnSparks(e.clientX, e.clientY, 20);
-      return;
-    }
-
-    /* Haberin Türkçe Çevirisi (Cümle Cümle) Butonu */
-    const trBtn = t.closest('#toggleNewsTrBtn');
-    if(trBtn && CUR && CUR.levels && CUR.levels[LEVEL]){
-      const wrap = document.getElementById('newsTrPanelWrap');
-      if(!wrap) return;
-      if(!wrap.hidden){
-        wrap.hidden = true;
-        trBtn.textContent = '📖 Haberin Türkçe Çevirisi (Cümle Cümle)';
-        return;
-      }
-      wrap.hidden = false;
-      trBtn.textContent = '🙈 Çeviriyi Gizle';
-      wrap.innerHTML = `<div class="news-sent-panel"><div class="muted">⚡ Haberin cümle cümle Türkçe çevirisi hazırlanıyor…</div></div>`;
-      const pairs = await translateNewsSentences(CUR.id, LEVEL, CUR.levels[LEVEL].text);
-      wrap.innerHTML = `
-        <div class="news-sent-panel">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-            <span class="eyebrow" style="color:var(--p)">🇹🇷 CÜMLE CÜMLE HABER ÇEVİRİSİ (${esc(LV[LEVEL])})</span>
-            <span class="muted" style="font-size:12px">${pairs.length} cümle</span>
-          </div>
-          ${pairs.map((p, idx) => `
-            <div class="news-sent-row">
-              <div class="news-sent-en">${idx+1}. ${esc(p.en)}</div>
-              <div class="news-sent-tr">${p.tr ? esc(p.tr) : '<span class="muted">Çeviri alınamadı.</span>'}</div>
-            </div>
-          `).join('')}
-        </div>`;
-      return;
-    }
-
-    /* Fetih modalı kapatma */
-    if(t.closest('#nConqClose') || t.id === 'newsConqOv'){
-      const ov = document.getElementById('newsConqOv');
-      if(ov) ov.classList.remove('show');
-      return;
-    }
-
-    /* Quiz şıkkı tıklanınca kıvılcım */
-    if(t.closest('[data-q]')){
-      spawnSparks(e.clientX, e.clientY, 14);
-    }
-  });
-
-  if(CUR) reader(); else list();
-})();
-</script>
-<!-- ===== HABER ARENASI YENİ ARAYÜZ & OTOMASYON YAMASI SONU ===== -->
-
 </body>
 </html>
-<!-- ===== KELİME ARENASI HABER: YENİ ARAYÜZ & 1A-SAF LOGO (SADECE GÖRSEL YAMA) ===== -->
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-body[data-pal="gece"]{--glow:rgba(99,102,241,.28);--acc-glow:rgba(251,191,36,.32)}
-body[data-pal="kitaplik"]{--glow:rgba(122,31,46,.16);--acc-glow:rgba(192,138,43,.26)}
-body[data-pal="akdeniz"]{--glow:rgba(20,184,166,.22);--acc-glow:rgba(245,158,11,.28)}
-body{
-  font-family:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif!important;
-  background-image:
-    radial-gradient(820px 380px at 14% 0%, var(--glow), transparent 70%),
-    radial-gradient(680px 340px at 88% 8%, var(--acc-glow), transparent 70%),
-    radial-gradient(color-mix(in srgb,var(--mut) 12%,transparent) 1px,transparent 1.4px)!important;
-  background-size:100% 100%, 100% 100%, 24px 24px!important;
-  background-attachment:fixed;
-}
-.logo svg{width:40px;height:40px;filter:drop-shadow(0 4px 10px var(--glow));transition:transform .2s}
-.logo:hover svg{transform:scale(1.06) rotate(-3deg)}
-.logo-sub{
-  font-family:"Plus Jakarta Sans",sans-serif;font-size:10px;font-weight:800;letter-spacing:.08em;
-  text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--acc);
-  border:1px solid var(--line);margin-left:2px;
-}
-.hero{
-  border:1.5px solid rgba(255,255,255,.16);
-  box-shadow:0 28px 54px -26px var(--p), inset 0 1px 0 rgba(255,255,255,.25);
-}
-.card{
-  background:radial-gradient(220px 130px at 88% 0%, var(--glow), transparent 75%), var(--card);
-  border:1.5px solid var(--line);
-  transition:transform .16s,border-color .2s,box-shadow .2s;
-}
-.card:hover{transform:translateY(-3px);border-color:var(--acc);box-shadow:0 7px 0 var(--line),var(--shadow),0 0 22px var(--glow)}
-</style>
-<script>
-(function(){
-  const lgo = document.getElementById('lgo');
-  if(lgo){
-    lgo.innerHTML = `
-      <rect x="2" y="2" width="60" height="60" rx="18" style="fill:var(--lg)"/>
-      <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sheen)"/>
-      <rect x="4.5" y="4.5" width="55" height="55" rx="15.5" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="1.2"/>
-      <path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round"/>
-      <path d="M11.8 47.5H18.2M45.8 47.5H52.2" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
-      <path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" fill="none" stroke="url(#gold)" stroke-width="4.2" stroke-linecap="round"/>
-      <path d="M9.5 53.5 Q20.8 49 32 53.8 Q43.2 49 54.5 53.5" fill="none" stroke="url(#gold)" stroke-width="2.7" stroke-linecap="round"/>
-      <path d="M14.5 57 Q23.2 53.8 32 57 Q40.8 53.8 49.5 57" fill="none" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round"/>
-      <circle cx="50" cy="13" r="6.8" fill="#fbbf24" fill-opacity="0.24"/>
-      <circle cx="50" cy="13" r="3.7" fill="url(#gold)"/>
-      <circle cx="48.8" cy="11.8" r="1.1" fill="#ffffff" fill-opacity="0.85"/>`;
-  }
-  const logoBtn = document.querySelector('.logo');
-  if(logoBtn && !logoBtn.querySelector('.logo-sub')){
-    logoBtn.insertAdjacentHTML('beforeend', '<span class="logo-sub">HABER</span>');
-  }
-})();
-</script>
-<!-- ===== KELİME ARENASI HABER YENİ ARAYÜZ YAMASI SONU ===== -->
-<!-- ===== HABER ARENASI: 2 AKDENİZ PALETİ, DİNAMİK ANİMASYONLAR, TURENG + SYNONYMS + LİSTEYE EKLE & CÜMLE ÇEVİRİLERİ (TEK PARÇA FİNAL SÜRÜM) ===== -->
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-/* 1. AKDENİZ (AÇIK YEŞİL - İLK AÇILIŞ VARSAYILAN) */
-body[data-pal="akdeniz"], body[data-pal="gece"], body[data-pal="kitaplik"]{
-  --bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;
-  --p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--ok:#059669;
-  --lg:url(#lgC);--shadow:0 22px 44px -26px rgba(13,43,42,.38);
-  --glow:rgba(20,184,166,.22);--acc-glow:rgba(245,158,11,.28);
-}
-/* 2. DERİN AKDENİZ (KOYU YEŞİL) */
-body[data-pal="derin_akdeniz"], body[data-pal="sicak_espresso"]{
-  --bg:#061514;--card:#0c2423;--line:#194240;--ink:#f3f8f6;--mut:#7ca39e;
-  --p:#0f766e;--p2:#14b8a6;--acc:#fbbf24;--bad:#f43f5e;--soft:#11312f;--ok:#34d399;
-  --lg:url(#lgC);--shadow:0 22px 44px -24px rgba(0,0,0,.82);
-  --glow:rgba(20,184,166,.28);--acc-glow:rgba(251,191,36,.30);
-}
-body{
-  font-family:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif!important;
-  background-image:
-    radial-gradient(820px 380px at 14% 0%, var(--glow), transparent 70%),
-    radial-gradient(680px 340px at 88% 8%, var(--acc-glow), transparent 70%),
-    radial-gradient(color-mix(in srgb,var(--mut) 12%,transparent) 1px,transparent 1.4px)!important;
-  background-size:100% 100%, 100% 100%, 24px 24px!important;
-  background-attachment:fixed;
-}
-.logo svg{width:40px;height:40px;filter:drop-shadow(0 4px 10px var(--glow));transition:transform .2s}
-.logo:hover svg{transform:scale(1.06) rotate(-3deg)}
-.logo-sub{
-  font-family:"Plus Jakarta Sans",sans-serif;font-size:10px;font-weight:800;letter-spacing:.08em;
-  text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--acc);
-  border:1px solid var(--line);margin-left:2px;
-}
-.hero{
-  border-radius:30px;padding:30px;
-  background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;
-  box-shadow:0 28px 54px -26px var(--p), inset 0 1px 0 rgba(255,255,255,.25);
-  border:1.5px solid rgba(255,255,255,.16);
-}
-.card{
-  background:radial-gradient(240px 140px at 90% 0%, var(--glow), transparent 75%), var(--card);
-  border:1.5px solid var(--line);border-radius:22px;padding:20px;margin:14px 0;
-  box-shadow:0 5px 0 var(--line),var(--shadow);transition:transform .16s,border-color .2s,box-shadow .2s;
-}
-.card:hover{transform:translateY(-3px);border-color:var(--acc);box-shadow:0 8px 0 var(--line),0 18px 34px -16px rgba(0,0,0,.45),0 0 22px var(--glow)}
-.box{
-  background:radial-gradient(280px 160px at 92% 0%, var(--glow), transparent 75%), var(--card);
-  border:1.5px solid var(--line);border-radius:26px;padding:22px;margin:14px 0;
-  box-shadow:0 6px 0 var(--line),var(--shadow);
-}
-.tk{
-  border-bottom:2px dotted color-mix(in srgb,var(--mut) 65%,transparent);
-  cursor:pointer;border-radius:6px;padding:1px 2px;transition:background .12s,color .12s;
-}
-.tk:hover,.tk.sel{
-  background:var(--soft);color:var(--p2);border-bottom-color:var(--acc);font-weight:700;
-}
-.tip{
-  min-height:58px;margin-top:16px;background:var(--soft);border:1.5px solid var(--line);
-  border-radius:18px;padding:14px 16px;font-size:15px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
-}
-.tureng-badge{
-  display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;
-  padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--acc) 18%,transparent);
-  color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 42%,transparent);
-}
-.add-word-btn{
-  display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:5px 12px;
-  border-radius:999px;border:1.5px solid var(--acc);background:linear-gradient(135deg,var(--acc),#f59e0b);
-  color:#1f1300;font-size:12px;font-weight:900;cursor:pointer;
-  box-shadow:0 3px 10px var(--acc-glow);transition:transform .15s,filter .15s;vertical-align:middle;
-}
-.add-word-btn:hover{transform:translateY(-1px) scale(1.03);filter:brightness(1.06)}
-.added-word-badge{
-  display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:4px 11px;
-  border-radius:999px;background:color-mix(in srgb,var(--ok) 16%,transparent);
-  border:1px solid color-mix(in srgb,var(--ok) 48%,transparent);color:var(--ok);
-  font-size:11.5px;font-weight:800;vertical-align:middle;
-}
-.syn-box{
-  margin-top:10px;padding:8px 12px;border-radius:14px;
-  background:color-mix(in srgb,var(--card) 75%,var(--soft));border:1px solid var(--line);
-  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
-}
-.syn-lbl{
-  font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;
-  color:var(--acc);display:inline-flex;align-items:center;gap:4px;margin-right:2px;
-}
-.syn-chip{
-  display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;
-  background:var(--card);border:1.5px solid var(--line);color:var(--ink);
-  font-size:12px;font-weight:800;cursor:pointer;transition:transform .14s,border-color .14s,color .14s;
-}
-.syn-chip:hover{transform:translateY(-1px);border-color:var(--p);color:var(--p)}
-.news-sent-panel{
-  margin-top:14px;padding:16px;border-radius:20px;background:var(--card);
-  border:1.5px solid var(--line);box-shadow:var(--shadow);
-}
-.news-sent-row{
-  padding:10px 12px;border-radius:14px;background:var(--soft);border:1px solid var(--line);
-  margin-bottom:8px;display:flex;flex-direction:column;gap:4px;
-}
-.news-sent-row:last-child{margin-bottom:0}
-.news-sent-en{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.45}
-.news-sent-tr{font-size:14px;font-weight:700;color:var(--p2);line-height:1.45}
-.spark-pt{
-  position:fixed;pointer-events:none;z-index:200;width:8px;height:8px;border-radius:50%;
-  animation:spkMove .85s cubic-bezier(.16,1,.3,1) forwards;box-shadow:0 0 8px currentColor;
-}
-@keyframes spkMove{0%{transform:translate(0,0) scale(1.2);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
-.conquest-ov{
-  position:fixed;inset:0;z-index:180;
-  background:radial-gradient(circle at 50% 45%, color-mix(in srgb,var(--card) 85%,transparent), color-mix(in srgb,var(--bg) 95%,#000));
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  display:flex;align-items:center;justify-content:center;padding:18px;
-  opacity:0;pointer-events:none;transition:opacity .32s ease;
-}
-.conquest-ov.show{opacity:1;pointer-events:auto}
-.conquest-stage{
-  position:relative;width:min(500px,100%);
-  background:radial-gradient(380px 220px at 50% 18%, color-mix(in srgb,var(--acc) 26%,transparent), transparent 70%),
-             radial-gradient(320px 240px at 50% 85%, var(--glow), transparent 70%),var(--card);
-  border:2px solid color-mix(in srgb,var(--acc) 65%,var(--line));border-radius:30px;
-  padding:28px 22px 24px;text-align:center;
-  box-shadow:0 30px 80px rgba(0,0,0,.78), 0 0 60px var(--acc-glow);
-  transform:scale(.82) translateY(24px);transition:transform .5s cubic-bezier(.22,1,.36,1);overflow:hidden;
-}
-.conquest-ov.show .conquest-stage{transform:scale(1) translateY(0)}
-.conq-banner{
-  display:inline-flex;align-items:center;gap:8px;
-  background:linear-gradient(135deg,var(--acc),#f59e0b,var(--acc-glow));color:#1f1300;
-  font-weight:900;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
-  padding:6px 18px;border-radius:999px;box-shadow:0 6px 20px var(--acc-glow);
-}
-.conq-title{font-family:Fraunces,serif;font-size:clamp(24px,4.2vw,30px);font-weight:900;margin:12px 0 6px;color:var(--ink)}
-.conq-sub{font-size:14px;color:var(--mut);font-weight:600;margin-bottom:18px}
-/* MOBİL & TELEFON OPTİMİZASYONU */
-@media(max-width:640px){
-  .nav-in{padding:10px 12px;gap:8px}
-  .logo{font-size:17px}
-  .logo svg{width:34px;height:34px}
-  .page{padding:14px 12px 80px}
-  .hero{padding:20px 18px;border-radius:24px}
-  .box{padding:16px 14px;border-radius:22px}
-  .story{font-size:17px;line-height:1.85}
-  .tip{font-size:14px;padding:12px}
-  #toggleNewsTrBtn{width:100%;justify-content:center}
-  .add-word-btn,.added-word-badge{margin-left:0;margin-top:6px}
-  .opt{font-size:14.5px}
-  .conquest-stage{padding:22px 14px 18px;border-radius:24px}
-}
-</style>
-
-<script>
-(function(){
-  /* 0. TELEFONDA UYGULAMA MODU (Ana ekrandan açılınca tam ekran kalsın) */
-  [['apple-mobile-web-app-capable','yes'],['mobile-web-app-capable','yes'],['apple-mobile-web-app-status-bar-style','black-translucent'],['theme-color','#0f766e']].forEach(([n,c]) => {
-    if(!document.head.querySelector(`meta[name="${n}"]`)){ const m = document.createElement('meta'); m.name = n; m.content = c; document.head.appendChild(m); }
-  });
-  /* 1. SADECE SEÇİLEN 2 RENK PALETİ (1. AÇIK AKDENİZ, 2. KOYU AKDENİZ) */
-  const VALID_PALS = ['akdeniz', 'derin_akdeniz'];
-  const dotsEl = document.querySelector('.dots');
-  if(dotsEl){
-    dotsEl.innerHTML = `
-      <button data-pal="akdeniz" title="🌿 Açık Akdeniz (Varsayılan)" aria-label="Açık Akdeniz" style="background:#0f766e"></button>
-      <button data-pal="derin_akdeniz" title="🌌 Koyu Akdeniz (Derin Akdeniz Gecesi)" aria-label="Koyu Akdeniz" style="background:#061514;border-color:#14b8a6"></button>
-    `;
-  }
-  setPal = function(n){
-    const target = VALID_PALS.includes(n) ? n : 'akdeniz';
-    document.body.dataset.pal = target;
-    document.querySelectorAll('.dots button').forEach(b => b.classList.toggle('on', b.dataset.pal === target));
-    try{ localStorage.setItem('ka_pal', target); localStorage.setItem('ka_pal_v3', target); }catch(e){}
-  };
-  try{
-    const savedV3 = localStorage.getItem('ka_pal_v3') || localStorage.getItem('ka_pal');
-    setPal(VALID_PALS.includes(savedV3) ? savedV3 : 'akdeniz');
-  }catch(e){ setPal('akdeniz'); }
-
-  /* 2. 1A-SAF OPTİMUM LOGO & ARENA ROZETİ */
-  const lgo = document.getElementById('lgo');
-  if(lgo){
-    lgo.innerHTML = `
-      <rect x="2" y="2" width="60" height="60" rx="18" style="fill:var(--lg)"/>
-      <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sheen)"/>
-      <rect x="4.5" y="4.5" width="55" height="55" rx="15.5" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="1.2"/>
-      <path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round"/>
-      <path d="M11.8 47.5H18.2M45.8 47.5H52.2" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
-      <path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" fill="none" stroke="url(#gold)" stroke-width="4.2" stroke-linecap="round"/>
-      <path d="M9.5 53.5 Q20.8 49 32 53.8 Q43.2 49 54.5 53.5" fill="none" stroke="url(#gold)" stroke-width="2.7" stroke-linecap="round"/>
-      <path d="M14.5 57 Q23.2 53.8 32 57 Q40.8 53.8 49.5 57" fill="none" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round"/>
-      <circle cx="50" cy="13" r="6.8" fill="#fbbf24" fill-opacity="0.24"/>
-      <circle cx="50" cy="13" r="3.7" fill="url(#gold)"/>
-      <circle cx="48.8" cy="11.8" r="1.1" fill="#ffffff" fill-opacity="0.85"/>`;
-  }
-  const logoLink = document.querySelector('.logo');
-  if(logoLink && !logoLink.querySelector('.logo-sub')){
-    const sub = document.createElement('span');
-    sub.className = 'logo-sub';
-    sub.textContent = 'ARENA';
-    logoLink.appendChild(sub);
-  }
-
-  /* 3. DİNAMİK PALET KIVILCIM & FETİH ANİMASYONU */
-  function getActivePaletteColors(){
-    const st = getComputedStyle(document.body);
-    const p = st.getPropertyValue('--p').trim() || '#0f766e';
-    const p2 = st.getPropertyValue('--p2').trim() || '#14b8a6';
-    const acc = st.getPropertyValue('--acc').trim() || '#f59e0b';
-    const ok = st.getPropertyValue('--ok').trim() || '#10b981';
-    const soft = st.getPropertyValue('--soft').trim() || '#e2f1ed';
-    return [acc, p, p2, ok, soft];
-  }
-  function spawnSparks(x, y, count=22){
-    const colors = getActivePaletteColors();
-    for(let i=0;i<count;i++){
-      const s = document.createElement('i');
-      s.className = 'spark-pt';
-      const ang = (Math.PI * 2 * i) / count + (Math.random() - .5) * .4;
-      const dist = 40 + Math.random() * 110;
-      s.style.left = x + 'px';
-      s.style.top = y + 'px';
-      s.style.background = colors[i % colors.length];
-      s.style.color = colors[i % colors.length];
-      s.style.setProperty('--tx', Math.cos(ang)*dist + 'px');
-      s.style.setProperty('--ty', Math.sin(ang)*dist + 'px');
-      document.body.appendChild(s);
-      setTimeout(() => s.remove(), 900);
-    }
-  }
-
-  if(!document.getElementById('newsConqOv')){
-    const ov = document.createElement('div');
-    ov.className = 'conquest-ov';
-    ov.id = 'newsConqOv';
-    ov.innerHTML = `
-      <div class="conquest-stage">
-        <div class="conq-banner">⚔️ HABER QUİZİ FETHEDİLDİ ⚔️</div>
-        <h2 class="conq-title" id="nConqTitle">Seviye Tamamlandı!</h2>
-        <p class="conq-sub" id="nConqSub"></p>
-        <div class="row" style="justify-content:center;gap:10px">
-          <button class="btn3" id="nConqClose">🏛️ Habere Dön</button>
-        </div>
-      </div>`;
-    document.body.appendChild(ov);
-  }
-
-  /* 4. KELİME LİSTESİNE EKLEME MOTORU (ANA SAYFADAKİ TÜM PAKETLERLE DOĞRUDAN ENTEGRE) */
-  function getUserUid(){
-    let u = localStorage.getItem('ka_uid');
-    if(!u){
-      u = (crypto.randomUUID ? crypto.randomUUID() : Date.now()+'-'+Math.random().toString(36).slice(2));
-      localStorage.setItem('ka_uid', u);
-    }
-    return u;
-  }
-
-  function isWordAlreadyAdded(wordStr){
-    const k = String(wordStr||'').toLowerCase().trim();
-    if(!k) return false;
-    try{
-      const q = JSON.parse(localStorage.getItem('ka_news_added_words') || '[]');
-      if(Array.isArray(q) && q.some(x => String(x && x.en || '').toLowerCase().trim() === k)) return true;
-      const uid = getUserUid();
-      const pre = 'db:data/users/' + uid + '/';
-      for(const key of Object.keys(localStorage)){
-        if(key.startsWith(pre)){
-          const pack = JSON.parse(localStorage.getItem(key) || 'null');
-          if(pack && Array.isArray(pack.items)){
-            if(pack.items.some(it => String(it && it.en || '').toLowerCase().trim() === k)) return true;
-          }
-        }
-      }
-    }catch(e){}
-    return false;
-  }
-
-  function addNewsWordToArena(wordEn, trMeaning, synArr, sentenceEn, sentenceTr, btnEl){
-    const cleanEn = String(wordEn||'').trim().toLowerCase();
-    if(!cleanEn) return;
-    const cleanTr = String(trMeaning||'').trim();
-    const cleanSyn = Array.isArray(synArr) ? synArr.map(s=>String(s||'').trim()).filter(Boolean) : [];
-    const cleanS = String(sentenceEn||'').trim();
-    const cleanSt = String(sentenceTr||'').trim();
-
-    try{
-      /* 1) Ortak haber kelime kuyruğuna kaydet (Ana sayfa açıldığında otomatik senkronize eder) */
-      const q = JSON.parse(localStorage.getItem('ka_news_added_words') || '[]');
-      if(!q.some(x => String(x && x.en || '').toLowerCase() === cleanEn)){
-        q.push({ en: cleanEn, tr: cleanTr, syn: cleanSyn, s: cleanS, st: cleanSt, addedAt: Date.now() });
-        localStorage.setItem('ka_news_added_words', JSON.stringify(q));
-      }
-
-      /* 2) Kullanıcının localStorage'daki mevcut kelime paketlerine doğrudan ekle */
-      const uid = getUserUid();
-      const pre = 'db:data/users/' + uid + '/';
-      const packKeys = Object.keys(localStorage).filter(k => k.startsWith(pre));
-      packKeys.forEach(pk => {
-        try{
-          const pack = JSON.parse(localStorage.getItem(pk) || 'null');
-          if(pack && Array.isArray(pack.items)){
-            const exists = pack.items.some(it => String(it && it.en || '').toLowerCase().trim() === cleanEn);
-            if(!exists){
-              pack.items.push({
-                en: cleanEn,
-                tr: cleanTr,
-                baseTr: cleanTr,
-                turengDone: true,
-                syn: cleanSyn,
-                s: cleanS,
-                st: cleanSt,
-                d: [],
-                gl: {},
-                mo: {}
-              });
-              if(Array.isArray(pack.words)) pack.words.push({ en: cleanEn, tr: cleanTr });
-              pack.prog = pack.prog || { box:{}, steps:[0,0,0,0,0,0,0], mdone:[], xp:0 };
-              pack.prog.box = pack.prog.box || {};
-              pack.prog.box[cleanEn] = 1;
-              localStorage.setItem(pk, JSON.stringify(pack));
-            }
-          }
-        }catch(err){}
-      });
-    }catch(e){}
-
-    if(btnEl){
-      btnEl.outerHTML = `<span class="added-word-badge">✅ <b>"${esc(cleanEn)}"</b> Ana Sayfa Listene Eklendi! (Kutu 1)</span>`;
-    }
-  }
-
-  /* 5. HABER OKUYUCU (TÜM CÜMLE ÇEVİRİLERİ PANELİ + DİNLEME + QUIZ) */
-  let SHOW_NEWS_TR = false;
-  let NEWS_TR_CACHE = {};
-  try{ NEWS_TR_CACHE = JSON.parse(localStorage.getItem('ka_news_tr_v2') || '{}') || {}; }catch(e){ NEWS_TR_CACHE = {}; }
-
-  function getSentences(text){
-    return String(text || '').split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
-  }
-
-  async function translateNewsSentences(storyId, level, text){
-    const cacheKey = storyId + '_' + level;
-    if(NEWS_TR_CACHE[cacheKey] && Array.isArray(NEWS_TR_CACHE[cacheKey]) && NEWS_TR_CACHE[cacheKey].length){
-      return NEWS_TR_CACHE[cacheKey];
-    }
-    const sents = getSentences(text);
-    if(!sents.length) return [];
-    const prompt = `Sen akademik İngilizce-Türkçe çeviri uzmanısın. Aşağıdaki haber metninin numaralı İngilizce cümlelerini doğal ve akıcı Türkçeye çevir.
-YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"tr":"..."}]}
-
-CÜMLELER:
-${sents.map((s,idx)=>`${idx+1}. ${s}`).join('\n')}`;
-
-    try{
-      const r = await fetch('/api/claude',{
-        method:'POST',
-        headers:{'content-type':'application/json'},
-        body:JSON.stringify({prompt, tier:'quick'})
-      });
-      const d = await r.json();
-      const m = String(d.text||'').match(/\{[\s\S]*\}/);
-      if(m){
-        const parsed = JSON.parse(m[0]);
-        if(parsed && Array.isArray(parsed.items)){
-          const out = sents.map((enStr, idx) => {
-            const found = parsed.items.find(o => Number(o.i) === idx + 1) || parsed.items[idx];
-            return { en: enStr, tr: found && found.tr ? String(found.tr).trim() : '' };
-          });
-          NEWS_TR_CACHE[cacheKey] = out;
-          try{ localStorage.setItem('ka_news_tr_v2', JSON.stringify(NEWS_TR_CACHE)); }catch(e){}
-          return out;
-        }
-      }
-    }catch(e){}
-    return sents.map(enStr => ({ en: enStr, tr: '' }));
-  }
-
-  reader = function(){
-    const lv = CUR.levels[LEVEL] || CUR.levels['1'];
-    const done = DONE();
-    const tabs = [1,2,3].map(l=>`<button class="pill ${String(l)===LEVEL?'on':''}" data-lv="${l}">${LV[l]}${done[CUR.id+'-'+l]!=null?' ✓ %'+done[CUR.id+'-'+l]:''}</button>`).join('');
-    const story = String(lv.text).split(/([A-Za-z][A-Za-z'-]*)/).map((t,i)=>i%2?`<span class="tk" data-w="${esc(t)}">${esc(t)}</span>`:esc(t)).join('');
-    $('#main').innerHTML = `<a class="pill" href="#">← Haberler</a>
-<div class="row" style="margin-top:14px"><span class="tag">${esc(CUR.category)}</span><span class="date">${esc(CUR.date)}</span></div>
-<h2 class="ttl" style="font-size:28px">${esc(CUR.title)}</h2>
-<div class="row">${tabs}</div>
-<div class="box">
-  <div class="row" style="margin-top:0;justify-content:space-between">
-    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-      <button class="btn3" id="play">🔊 Dinle (US)</button>
-      <select id="spd"><option value="0.8">Yavaş</option><option value="1" selected>Normal</option><option value="1.15">Hızlı</option></select>
-      <button class="pill" id="stop">■ Durdur</button>
-    </div>
-    <button class="pill" id="toggleNewsTrBtn" type="button" style="border:1.5px solid var(--line);font-weight:800">📖 Haberin Türkçe Çevirisi (Cümle Cümle)</button>
-  </div>
-  <div class="story">${story}</div>
-  <div id="newsTrPanelWrap" hidden></div>
-  <div class="tip" id="tip"><span class="muted">💡 Haberdeki herhangi bir kelimeye dokunun: <b>Tureng yaygın anlamları</b>, <b>İngilizce eş anlamlıları (Synonyms)</b> ve <b>➕ Kelime Listesine Ekle</b> butonu açılır.</span></div>
-</div>
-<div class="row"><button class="btn3" id="quiz">⚔️ Quiz'e Geç →</button></div>
-<p class="muted">Kaynak: <a class="src" href="${esc(CUR.src)}" target="_blank" rel="noopener">${esc(CUR.source)}</a> · Metin bu haberden yapay zekâyla sadeleştirilmiştir.</p>`;
-  };
-
-  /* 6. KELİMEYE DOKUNUNCA: TURENG YAYGIN ANLAMLAR + SYNONYMS + LİSTEYE EKLE */
-  let WORD_CACHE = {};
-  try{ WORD_CACHE = JSON.parse(localStorage.getItem('ka_hw_rich_v2') || '{}') || {}; }catch(e){ WORD_CACHE = {}; }
-
-  let LAST_TAPPED_INFO = null;
-
-  function renderRichTip(w, data, sentence){
-    const cleanW = String(w||'').trim();
-    const k = cleanW.toLowerCase();
-    const q = encodeURIComponent(k);
-    const trText = data && data.tr ? data.tr : '';
-    const syns = data && Array.isArray(data.syn) ? data.syn.filter(Boolean) : [];
-    const sentTr = data && data.st ? data.st : '';
-
-    LAST_TAPPED_INFO = {
-      en: cleanW,
-      tr: trText,
-      syn: syns,
-      s: sentence || '',
-      st: sentTr
-    };
-
-    const already = isWordAlreadyAdded(cleanW);
-    const addBtnHtml = already
-      ? `<span class="added-word-badge">✓ Kelime Listende Mevcut</span>`
-      : `<button type="button" class="add-word-btn" id="newsAddWordBtn" data-nw="${esc(cleanW)}">➕ Kelime Listesine Ekle</button>`;
-
-    const synHtml = syns.length
-      ? `<div class="syn-box"><span class="syn-lbl">🔗 Synonyms (Eş Anlamlılar):</span>${syns.map(s => `<span class="syn-chip tk" data-w="${esc(s)}" title="Tıkla: Dinle ve anlamını gör">🔊 ${esc(s)}</span>`).join('')}</div>`
-      : '';
-
-    const sentTrHtml = sentTr
-      ? `<div style="margin-top:8px;font-size:13.5px;color:var(--mut)"><b>Cümle Çevirisi:</b> ${esc(sentTr)}</div>`
-      : '';
-
-    return `
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px">
-          <span class="tureng-badge">📚 Bağlam + Tureng Yaygın Karşılıklar</span>
-          <b style="font-size:17px">${esc(cleanW)}</b> —
-          <span style="font-weight:800;color:var(--p)">${esc(trText)}</span>
-          ${addBtnHtml}
-        </div>
-        <div style="font-size:13px;display:flex;gap:10px">
-          <a class="src" href="https://dictionary.cambridge.org/dictionary/english-turkish/${q}" target="_blank" rel="noopener">Cambridge ↗</a>
-          <a class="src" href="https://tureng.com/en/turkish-english/${q}" target="_blank" rel="noopener">Tureng ↗</a>
-        </div>
-      </div>
-      ${synHtml}
-      ${sentTrHtml}
-    `;
-  }
-
-  tapWord = async function(w, el){
-    document.querySelectorAll('.tk.sel').forEach(x=>x.classList.remove('sel'));
-    if(el) el.classList.add('sel');
-    const cleanW = String(w||'').trim();
-    const k = cleanW.toLowerCase();
-    const tip = $('#tip');
-    say(cleanW);
-
-    const sentence = (CUR && CUR.levels && CUR.levels[LEVEL] ? CUR.levels[LEVEL].text : '')
-      .split(/(?<=[.!?])\s+/)
-      .find(s => new RegExp('\\b'+cleanW.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i').test(s)) || '';
-
-    if(WORD_CACHE[k] && WORD_CACHE[k].tr){
-      tip.innerHTML = renderRichTip(cleanW, WORD_CACHE[k], sentence);
-      return;
-    }
-
-    const oldSimple = localStorage.getItem('ka_hw_' + k);
-    tip.innerHTML = `<b>${esc(cleanW)}</b> — <span class="muted">${oldSimple ? esc(oldSimple) + ' · (Tureng & eş anlamlılar yükleniyor…)' : 'Tureng anlamları ve eş anlamlılar aranıyor…'}</span>`;
-
-    try{
-      const prompt = `Sen akademik İngilizce ve Tureng sözlük uzmanısın.
-Hedef kelime: "${cleanW}"
-Geçtiği haber cümlesi: "${sentence}"
-
-Görev:
-1. "tr": Kelimenin bu cümledeki anlamını ve Tureng sözlüğündeki en yaygın 2-3 Türkçe karşılığını virgülle ayırarak yaz (kısa ve net, toplam 2-5 kelime).
-2. "syn": Kelimenin en yaygın 3 İngilizce eş anlamlısı (synonyms) dizisi.
-3. "st": Geçtiği haber cümlesinin doğal Türkçe çevirisi.
-YALNIZCA geçerli JSON döndür: {"tr":"...","syn":["...","...","..."],"st":"..."}`;
-
-      const r = await fetch('/api/claude',{
-        method:'POST',
-        headers:{'content-type':'application/json'},
-        body:JSON.stringify({prompt, tier:'quick'})
-      });
-      const d = await r.json();
-      const m = String(d.text||'').match(/\{[\s\S]*\}/);
-      const parsed = m ? JSON.parse(m[0]) : null;
-      if(parsed && parsed.tr){
-        const entry = {
-          tr: String(parsed.tr).trim(),
-          syn: Array.isArray(parsed.syn) ? parsed.syn.map(s=>String(s||'').trim()).filter(Boolean).slice(0,4) : [],
-          st: String(parsed.st||'').trim()
-        };
-        WORD_CACHE[k] = entry;
-        try{
-          localStorage.setItem('ka_hw_rich_v2', JSON.stringify(WORD_CACHE));
-          localStorage.setItem('ka_hw_' + k, entry.tr);
-        }catch(e){}
-        tip.innerHTML = renderRichTip(cleanW, entry, sentence);
-      } else if(oldSimple){
-        tip.innerHTML = renderRichTip(cleanW, { tr: oldSimple, syn: [], st: '' }, sentence);
-      } else {
-        tip.innerHTML = `<b>${esc(cleanW)}</b> — <span class="muted">anlam bulunamadı</span>`;
-      }
-    }catch(e){
-      if(oldSimple){
-        tip.innerHTML = renderRichTip(cleanW, { tr: oldSimple, syn: [], st: '' }, sentence);
-      } else {
-        tip.innerHTML = `<b>${esc(cleanW)}</b> — <span style="color:var(--bad)">bağlantı hatası</span>`;
-      }
-    }
-  };
-
-  /* 7. QUIZ CEVAPLAMA & PALET UYUMLU ZAFER KUTLAMASI */
-  const origAnswer = answer;
-  answer = function(i, k){
-    origAnswer(i, k);
-    const qs = CUR && CUR.levels && CUR.levels[LEVEL] ? CUR.levels[LEVEL].quiz : null;
-    if(qs && QS && QS.ans && QS.ans.every(v => v !== null)){
-      const total = qs.length, right = QS.ans.filter((v,j)=>v===qs[j].ans).length, pct = Math.round(right/total*100);
-      spawnSparks(window.innerWidth/2, window.innerHeight/2, 28);
-      const ov = document.getElementById('newsConqOv');
-      if(ov){
-        const ttl = document.getElementById('nConqTitle');
-        const sub = document.getElementById('nConqSub');
-        if(ttl) ttl.textContent = `${LV[LEVEL]} · %${pct} Başarı!`;
-        if(sub) sub.textContent = `${total} soruda ${right} doğru yanıtla bu haber seviyesini tamamladın.`;
-        ov.classList.add('show');
-      }
-    }
-  };
-
-  /* 8. TIKLAMA DİNLEYİCİLERİ */
-  document.addEventListener('click', async e => {
-    const t = e.target;
-
-    /* Kelime Listesine Ekle butonu */
-    const addBtn = t.closest('#newsAddWordBtn');
-    if(addBtn && LAST_TAPPED_INFO){
-      e.stopPropagation();
-      addNewsWordToArena(
-        LAST_TAPPED_INFO.en,
-        LAST_TAPPED_INFO.tr,
-        LAST_TAPPED_INFO.syn,
-        LAST_TAPPED_INFO.s,
-        LAST_TAPPED_INFO.st,
-        addBtn
-      );
-      spawnSparks(e.clientX, e.clientY, 20);
-      return;
-    }
-
-    /* Haberin Türkçe Çevirisi (Cümle Cümle) Butonu */
-    const trBtn = t.closest('#toggleNewsTrBtn');
-    if(trBtn && CUR && CUR.levels && CUR.levels[LEVEL]){
-      const wrap = document.getElementById('newsTrPanelWrap');
-      if(!wrap) return;
-      if(!wrap.hidden){
-        wrap.hidden = true;
-        trBtn.textContent = '📖 Haberin Türkçe Çevirisi (Cümle Cümle)';
-        return;
-      }
-      wrap.hidden = false;
-      trBtn.textContent = '🙈 Çeviriyi Gizle';
-      wrap.innerHTML = `<div class="news-sent-panel"><div class="muted">⚡ Haberin cümle cümle Türkçe çevirisi hazırlanıyor…</div></div>`;
-      const pairs = await translateNewsSentences(CUR.id, LEVEL, CUR.levels[LEVEL].text);
-      wrap.innerHTML = `
-        <div class="news-sent-panel">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-            <span class="eyebrow" style="color:var(--p)">🇹🇷 CÜMLE CÜMLE HABER ÇEVİRİSİ (${esc(LV[LEVEL])})</span>
-            <span class="muted" style="font-size:12px">${pairs.length} cümle</span>
-          </div>
-          ${pairs.map((p, idx) => `
-            <div class="news-sent-row">
-              <div class="news-sent-en">${idx+1}. ${esc(p.en)}</div>
-              <div class="news-sent-tr">${p.tr ? esc(p.tr) : '<span class="muted">Çeviri alınamadı.</span>'}</div>
-            </div>
-          `).join('')}
-        </div>`;
-      return;
-    }
-
-    /* Fetih modalı kapatma */
-    if(t.closest('#nConqClose') || t.id === 'newsConqOv'){
-      const ov = document.getElementById('newsConqOv');
-      if(ov) ov.classList.remove('show');
-      return;
-    }
-
-    /* Quiz şıkkı tıklanınca kıvılcım */
-    if(t.closest('[data-q]')){
-      spawnSparks(e.clientX, e.clientY, 14);
-    }
-  });
-
-  if(CUR) reader(); else list();
-})();
-</script>
-<!-- ===== HABER ARENASI YENİ ARAYÜZ & OTOMASYON YAMASI SONU ===== -->
-<!-- ===== HABER ARENASI: 2 AKDENİZ PALETİ, DİNAMİK ANİMASYONLAR, TURENG + SYNONYMS + LİSTEYE EKLE & CÜMLE ÇEVİRİLERİ (TEK PARÇA FİNAL SÜRÜM) ===== -->
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-/* 1. AKDENİZ (AÇIK YEŞİL - İLK AÇILIŞ VARSAYILAN) */
-body[data-pal="akdeniz"], body[data-pal="gece"], body[data-pal="kitaplik"]{
-  --bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;
-  --p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--ok:#059669;
-  --lg:url(#lgC);--shadow:0 22px 44px -26px rgba(13,43,42,.38);
-  --glow:rgba(20,184,166,.22);--acc-glow:rgba(245,158,11,.28);
-}
-/* 2. DERİN AKDENİZ (KOYU YEŞİL) */
-body[data-pal="derin_akdeniz"], body[data-pal="sicak_espresso"]{
-  --bg:#061514;--card:#0c2423;--line:#194240;--ink:#f3f8f6;--mut:#7ca39e;
-  --p:#0f766e;--p2:#14b8a6;--acc:#fbbf24;--bad:#f43f5e;--soft:#11312f;--ok:#34d399;
-  --lg:url(#lgC);--shadow:0 22px 44px -24px rgba(0,0,0,.82);
-  --glow:rgba(20,184,166,.28);--acc-glow:rgba(251,191,36,.30);
-}
-body{
-  font-family:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif!important;
-  background-image:
-    radial-gradient(820px 380px at 14% 0%, var(--glow), transparent 70%),
-    radial-gradient(680px 340px at 88% 8%, var(--acc-glow), transparent 70%),
-    radial-gradient(color-mix(in srgb,var(--mut) 12%,transparent) 1px,transparent 1.4px)!important;
-  background-size:100% 100%, 100% 100%, 24px 24px!important;
-  background-attachment:fixed;
-}
-.logo svg{width:40px;height:40px;filter:drop-shadow(0 4px 10px var(--glow));transition:transform .2s}
-.logo:hover svg{transform:scale(1.06) rotate(-3deg)}
-.logo-sub{
-  font-family:"Plus Jakarta Sans",sans-serif;font-size:10px;font-weight:800;letter-spacing:.08em;
-  text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--acc);
-  border:1px solid var(--line);margin-left:2px;
-}
-.hero{
-  border-radius:30px;padding:30px;
-  background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;
-  box-shadow:0 28px 54px -26px var(--p), inset 0 1px 0 rgba(255,255,255,.25);
-  border:1.5px solid rgba(255,255,255,.16);
-}
-.card{
-  background:radial-gradient(240px 140px at 90% 0%, var(--glow), transparent 75%), var(--card);
-  border:1.5px solid var(--line);border-radius:22px;padding:20px;margin:14px 0;
-  box-shadow:0 5px 0 var(--line),var(--shadow);transition:transform .16s,border-color .2s,box-shadow .2s;
-}
-.card:hover{transform:translateY(-3px);border-color:var(--acc);box-shadow:0 8px 0 var(--line),0 18px 34px -16px rgba(0,0,0,.45),0 0 22px var(--glow)}
-.box{
-  background:radial-gradient(280px 160px at 92% 0%, var(--glow), transparent 75%), var(--card);
-  border:1.5px solid var(--line);border-radius:26px;padding:22px;margin:14px 0;
-  box-shadow:0 6px 0 var(--line),var(--shadow);
-}
-.tk{
-  border-bottom:2px dotted color-mix(in srgb,var(--mut) 65%,transparent);
-  cursor:pointer;border-radius:6px;padding:1px 2px;transition:background .12s,color .12s;
-}
-.tk:hover,.tk.sel{
-  background:var(--soft);color:var(--p2);border-bottom-color:var(--acc);font-weight:700;
-}
-.tip{
-  min-height:58px;margin-top:16px;background:var(--soft);border:1.5px solid var(--line);
-  border-radius:18px;padding:14px 16px;font-size:15px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
-}
-.tureng-badge{
-  display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;
-  padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--acc) 18%,transparent);
-  color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 42%,transparent);
-}
-.add-word-btn{
-  display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:5px 12px;
-  border-radius:999px;border:1.5px solid var(--acc);background:linear-gradient(135deg,var(--acc),#f59e0b);
-  color:#1f1300;font-size:12px;font-weight:900;cursor:pointer;
-  box-shadow:0 3px 10px var(--acc-glow);transition:transform .15s,filter .15s;vertical-align:middle;
-}
-.add-word-btn:hover{transform:translateY(-1px) scale(1.03);filter:brightness(1.06)}
-.added-word-badge{
-  display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:4px 11px;
-  border-radius:999px;background:color-mix(in srgb,var(--ok) 16%,transparent);
-  border:1px solid color-mix(in srgb,var(--ok) 48%,transparent);color:var(--ok);
-  font-size:11.5px;font-weight:800;vertical-align:middle;
-}
-.syn-box{
-  margin-top:10px;padding:8px 12px;border-radius:14px;
-  background:color-mix(in srgb,var(--card) 75%,var(--soft));border:1px solid var(--line);
-  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
-}
-.syn-lbl{
-  font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;
-  color:var(--acc);display:inline-flex;align-items:center;gap:4px;margin-right:2px;
-}
-.syn-chip{
-  display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;
-  background:var(--card);border:1.5px solid var(--line);color:var(--ink);
-  font-size:12px;font-weight:800;cursor:pointer;transition:transform .14s,border-color .14s,color .14s;
-}
-.syn-chip:hover{transform:translateY(-1px);border-color:var(--p);color:var(--p)}
-.news-sent-panel{
-  margin-top:14px;padding:16px;border-radius:20px;background:var(--card);
-  border:1.5px solid var(--line);box-shadow:var(--shadow);
-}
-.news-sent-row{
-  padding:10px 12px;border-radius:14px;background:var(--soft);border:1px solid var(--line);
-  margin-bottom:8px;display:flex;flex-direction:column;gap:4px;
-}
-.news-sent-row:last-child{margin-bottom:0}
-.news-sent-en{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.45}
-.news-sent-tr{font-size:14px;font-weight:700;color:var(--p2);line-height:1.45}
-.spark-pt{
-  position:fixed;pointer-events:none;z-index:200;width:8px;height:8px;border-radius:50%;
-  animation:spkMove .85s cubic-bezier(.16,1,.3,1) forwards;box-shadow:0 0 8px currentColor;
-}
-@keyframes spkMove{0%{transform:translate(0,0) scale(1.2);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
-.conquest-ov{
-  position:fixed;inset:0;z-index:180;
-  background:radial-gradient(circle at 50% 45%, color-mix(in srgb,var(--card) 85%,transparent), color-mix(in srgb,var(--bg) 95%,#000));
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  display:flex;align-items:center;justify-content:center;padding:18px;
-  opacity:0;pointer-events:none;transition:opacity .32s ease;
-}
-.conquest-ov.show{opacity:1;pointer-events:auto}
-.conquest-stage{
-  position:relative;width:min(500px,100%);
-  background:radial-gradient(380px 220px at 50% 18%, color-mix(in srgb,var(--acc) 26%,transparent), transparent 70%),
-             radial-gradient(320px 240px at 50% 85%, var(--glow), transparent 70%),var(--card);
-  border:2px solid color-mix(in srgb,var(--acc) 65%,var(--line));border-radius:30px;
-  padding:28px 22px 24px;text-align:center;
-  box-shadow:0 30px 80px rgba(0,0,0,.78), 0 0 60px var(--acc-glow);
-  transform:scale(.82) translateY(24px);transition:transform .5s cubic-bezier(.22,1,.36,1);overflow:hidden;
-}
-.conquest-ov.show .conquest-stage{transform:scale(1) translateY(0)}
-.conq-banner{
-  display:inline-flex;align-items:center;gap:8px;
-  background:linear-gradient(135deg,var(--acc),#f59e0b,var(--acc-glow));color:#1f1300;
-  font-weight:900;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
-  padding:6px 18px;border-radius:999px;box-shadow:0 6px 20px var(--acc-glow);
-}
-.conq-title{font-family:Fraunces,serif;font-size:clamp(24px,4.2vw,30px);font-weight:900;margin:12px 0 6px;color:var(--ink)}
-.conq-sub{font-size:14px;color:var(--mut);font-weight:600;margin-bottom:18px}
-/* MOBİL & TELEFON OPTİMİZASYONU */
-@media(max-width:640px){
-  .nav-in{padding:10px 12px;gap:8px}
-  .logo{font-size:17px}
-  .logo svg{width:34px;height:34px}
-  .page{padding:14px 12px 80px}
-  .hero{padding:20px 18px;border-radius:24px}
-  .box{padding:16px 14px;border-radius:22px}
-  .story{font-size:17px;line-height:1.85}
-  .tip{font-size:14px;padding:12px}
-  #toggleNewsTrBtn{width:100%;justify-content:center}
-  .add-word-btn,.added-word-badge{margin-left:0;margin-top:6px}
-  .opt{font-size:14.5px}
-  .conquest-stage{padding:22px 14px 18px;border-radius:24px}
-}
-</style>
-
-<script>
-(function(){
-  /* 0. TELEFONDA UYGULAMA MODU (Ana ekrandan açılınca tam ekran kalsın) */
-  [['apple-mobile-web-app-capable','yes'],['mobile-web-app-capable','yes'],['apple-mobile-web-app-status-bar-style','black-translucent'],['theme-color','#0f766e']].forEach(([n,c]) => {
-    if(!document.head.querySelector(`meta[name="${n}"]`)){ const m = document.createElement('meta'); m.name = n; m.content = c; document.head.appendChild(m); }
-  });
-    /* 0. ARENA 1A-SAF KOLEZYUM LOGOSU İLE TAB FAVICON & APPLE-TOUCH-ICON DİNAMİK ENJEKSİYONU */
-  const ARENA_FAVICON_SVG = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#14968c"/><stop offset="100%" stop-color="#0b5a55"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="50%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/><stop offset="55%" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="18" fill="url(#g)"/><rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sh)"/><rect x="4.5" y="4.5" width="55" height="55" rx="15.5" stroke="#ffffff" stroke-opacity="0.2" stroke-width="1.2" fill="none"/><path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round" fill="none"/><path d="M11.8 47.5H18.2M45.8 47.5H52.2" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" stroke="url(#gold)" stroke-width="4.2" stroke-linecap="round" fill="none"/><path d="M9.5 53.5 Q20.8 49 32 53.8 Q43.2 49 54.5 53.5" stroke="url(#gold)" stroke-width="2.7" stroke-linecap="round" fill="none"/><path d="M14.5 57 Q23.2 53.8 32 57 Q40.8 53.8 49.5 57" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="50" cy="13" r="6.8" fill="#fbbf24" fill-opacity="0.25"/><circle cx="50" cy="13" r="3.7" fill="url(#gold)"/><circle cx="48.8" cy="11.8" r="1.1" fill="#ffffff" fill-opacity="0.9"/></svg>');
-
-  function drawArenaIcon(size){
-    try{
-      const c = document.createElement('canvas');
-      c.width = c.height = size;
-      const g = c.getContext('2d');
-      if(!g) return '';
-      const s = size / 64;
-      const grad = g.createLinearGradient(0, 0, size, size);
-      grad.addColorStop(0, '#14968c'); grad.addColorStop(1, '#0b5a55');
-      g.fillStyle = grad;
-      const r = Math.min(18 * s, size / 2);
-      g.beginPath();
-      g.moveTo(2*s + r, 2*s);
-      g.lineTo(size - 2*s - r, 2*s);
-      g.quadraticCurveTo(size - 2*s, 2*s, size - 2*s, 2*s + r);
-      g.lineTo(size - 2*s, size - 2*s - r);
-      g.quadraticCurveTo(size - 2*s, size - 2*s, size - 2*s - r, size - 2*s);
-      g.lineTo(2*s + r, size - 2*s);
-      g.quadraticCurveTo(2*s, size - 2*s, 2*s, size - 2*s - r);
-      g.lineTo(2*s, 2*s + r);
-      g.quadraticCurveTo(2*s, 2*s, 2*s + r, 2*s);
-      g.closePath();
-      g.fill();
-
-      const sheen = g.createLinearGradient(0, 2*s, 0, size);
-      sheen.addColorStop(0, 'rgba(255,255,255,0.25)');
-      sheen.addColorStop(0.55, 'rgba(255,255,255,0)');
-      g.fillStyle = sheen;
-      g.fill();
-
-      g.lineCap = 'round';
-      g.strokeStyle = '#ffffff'; g.lineWidth = Math.max(1.2, 4.8 * s);
-      g.beginPath(); g.moveTo(15*s, 47.5*s); g.lineTo(15*s, 30.5*s); g.arc(32*s, 30.5*s, 17*s, Math.PI, 0); g.lineTo(49*s, 47.5*s); g.stroke();
-      g.lineWidth = Math.max(1, 3 * s);
-      g.beginPath(); g.moveTo(11.8*s, 47.5*s); g.lineTo(18.2*s, 47.5*s); g.moveTo(45.8*s, 47.5*s); g.lineTo(52.2*s, 47.5*s); g.stroke();
-
-      const gold = g.createLinearGradient(24*s, 31.5*s, 40*s, 47.5*s);
-      gold.addColorStop(0, '#fef3c7'); gold.addColorStop(0.5, '#fbbf24'); gold.addColorStop(1, '#d97706');
-      g.strokeStyle = gold; g.lineWidth = Math.max(1.2, 4.2 * s);
-      g.beginPath(); g.moveTo(24*s, 47.5*s); g.lineTo(24*s, 31.5*s); g.arc(32*s, 31.5*s, 8*s, Math.PI, 0); g.lineTo(40*s, 47.5*s); g.stroke();
-
-      g.lineWidth = Math.max(1, 2.7 * s);
-      g.beginPath(); g.moveTo(9.5*s, 53.5*s); g.quadraticCurveTo(20.8*s, 49*s, 32*s, 53.8*s); g.quadraticCurveTo(43.2*s, 49*s, 54.5*s, 53.5*s); g.stroke();
-
-      g.fillStyle = '#fbbf24';
-      g.beginPath(); g.arc(50*s, 13*s, Math.max(1.2, 3.8 * s), 0, Math.PI*2); g.fill();
-      return c.toDataURL('image/png');
-    }catch(e){ return ''; }
-  }
-
-  function applyArenaFavicon(){
-    try{
-      const head = document.head || document.getElementsByTagName('head')[0];
-      if(!head) return;
-      head.querySelectorAll('link[rel*="icon"]').forEach(el => el.remove());
-
-      const l1 = document.createElement('link');
-      l1.rel = 'icon'; l1.type = 'image/svg+xml'; l1.href = ARENA_FAVICON_SVG;
-      head.appendChild(l1);
-
-      const l2 = document.createElement('link');
-      l2.rel = 'shortcut icon'; l2.type = 'image/svg+xml'; l2.href = ARENA_FAVICON_SVG;
-      head.appendChild(l2);
-
-      const png32 = drawArenaIcon(32);
-      if(png32){
-        const l3 = document.createElement('link');
-        l3.rel = 'alternate icon'; l3.type = 'image/png'; l3.sizes = '32x32'; l3.href = png32;
-        head.appendChild(l3);
-      }
-      const png180 = drawArenaIcon(180);
-      if(png180){
-        const l4 = document.createElement('link');
-        l4.rel = 'apple-touch-icon'; l4.sizes = '180x180'; l4.href = png180;
-        head.appendChild(l4);
-      }
-    }catch(e){ console.warn('Arena Favicon error:', e); }
-  }
-  applyArenaFavicon();
-
-/* 1. SADECE SEÇİLEN 2 RENK PALETİ (1. AÇIK AKDENİZ, 2. KOYU AKDENİZ) */
-  const VALID_PALS = ['akdeniz', 'derin_akdeniz'];
-  const dotsEl = document.querySelector('.dots');
-  if(dotsEl){
-    dotsEl.innerHTML = `
-      <button data-pal="akdeniz" title="🌿 Açık Akdeniz (Varsayılan)" aria-label="Açık Akdeniz" style="background:#0f766e"></button>
-      <button data-pal="derin_akdeniz" title="🌌 Koyu Akdeniz (Derin Akdeniz Gecesi)" aria-label="Koyu Akdeniz" style="background:#061514;border-color:#14b8a6"></button>
-    `;
-  }
-  setPal = function(n){
-    const target = VALID_PALS.includes(n) ? n : 'akdeniz';
-    document.body.dataset.pal = target;
-    document.querySelectorAll('.dots button').forEach(b => b.classList.toggle('on', b.dataset.pal === target));
-    try{ localStorage.setItem('ka_pal', target); localStorage.setItem('ka_pal_v3', target); }catch(e){}
-  };
-  try{
-    const savedV3 = localStorage.getItem('ka_pal_v3') || localStorage.getItem('ka_pal');
-    setPal(VALID_PALS.includes(savedV3) ? savedV3 : 'akdeniz');
-  }catch(e){ setPal('akdeniz'); }
-
-  /* 2. 1A-SAF OPTİMUM LOGO & ARENA ROZETİ */
-  const lgo = document.getElementById('lgo');
-  if(lgo){
-    lgo.innerHTML = `
-      <rect x="2" y="2" width="60" height="60" rx="18" style="fill:var(--lg)"/>
-      <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sheen)"/>
-      <rect x="4.5" y="4.5" width="55" height="55" rx="15.5" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="1.2"/>
-      <path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round"/>
-      <path d="M11.8 47.5H18.2M45.8 47.5H52.2" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
-      <path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" fill="none" stroke="url(#gold)" stroke-width="4.2" stroke-linecap="round"/>
-      <path d="M9.5 53.5 Q20.8 49 32 53.8 Q43.2 49 54.5 53.5" fill="none" stroke="url(#gold)" stroke-width="2.7" stroke-linecap="round"/>
-      <path d="M14.5 57 Q23.2 53.8 32 57 Q40.8 53.8 49.5 57" fill="none" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round"/>
-      <circle cx="50" cy="13" r="6.8" fill="#fbbf24" fill-opacity="0.24"/>
-      <circle cx="50" cy="13" r="3.7" fill="url(#gold)"/>
-      <circle cx="48.8" cy="11.8" r="1.1" fill="#ffffff" fill-opacity="0.85"/>`;
-  }
-  const logoLink = document.querySelector('.logo');
-  if(logoLink && !logoLink.querySelector('.logo-sub')){
-    const sub = document.createElement('span');
-    sub.className = 'logo-sub';
-    sub.textContent = 'ARENA';
-    logoLink.appendChild(sub);
-  }
-
-  /* 3. DİNAMİK PALET KIVILCIM & FETİH ANİMASYONU */
-  function getActivePaletteColors(){
-    const st = getComputedStyle(document.body);
-    const p = st.getPropertyValue('--p').trim() || '#0f766e';
-    const p2 = st.getPropertyValue('--p2').trim() || '#14b8a6';
-    const acc = st.getPropertyValue('--acc').trim() || '#f59e0b';
-    const ok = st.getPropertyValue('--ok').trim() || '#10b981';
-    const soft = st.getPropertyValue('--soft').trim() || '#e2f1ed';
-    return [acc, p, p2, ok, soft];
-  }
-  function spawnSparks(x, y, count=22){
-    const colors = getActivePaletteColors();
-    for(let i=0;i<count;i++){
-      const s = document.createElement('i');
-      s.className = 'spark-pt';
-      const ang = (Math.PI * 2 * i) / count + (Math.random() - .5) * .4;
-      const dist = 40 + Math.random() * 110;
-      s.style.left = x + 'px';
-      s.style.top = y + 'px';
-      s.style.background = colors[i % colors.length];
-      s.style.color = colors[i % colors.length];
-      s.style.setProperty('--tx', Math.cos(ang)*dist + 'px');
-      s.style.setProperty('--ty', Math.sin(ang)*dist + 'px');
-      document.body.appendChild(s);
-      setTimeout(() => s.remove(), 900);
-    }
-  }
-
-  if(!document.getElementById('newsConqOv')){
-    const ov = document.createElement('div');
-    ov.className = 'conquest-ov';
-    ov.id = 'newsConqOv';
-    ov.innerHTML = `
-      <div class="conquest-stage">
-        <div class="conq-banner">⚔️ HABER QUİZİ FETHEDİLDİ ⚔️</div>
-        <h2 class="conq-title" id="nConqTitle">Seviye Tamamlandı!</h2>
-        <p class="conq-sub" id="nConqSub"></p>
-        <div class="row" style="justify-content:center;gap:10px">
-          <button class="btn3" id="nConqClose">🏛️ Habere Dön</button>
-        </div>
-      </div>`;
-    document.body.appendChild(ov);
-  }
-
-  /* 4. KELİME LİSTESİNE EKLEME MOTORU (ANA SAYFADAKİ TÜM PAKETLERLE DOĞRUDAN ENTEGRE) */
-  function getUserUid(){
-    let u = localStorage.getItem('ka_uid');
-    if(!u){
-      u = (crypto.randomUUID ? crypto.randomUUID() : Date.now()+'-'+Math.random().toString(36).slice(2));
-      localStorage.setItem('ka_uid', u);
-    }
-    return u;
-  }
-
-  function isWordAlreadyAdded(wordStr){
-    const k = String(wordStr||'').toLowerCase().trim();
-    if(!k) return false;
-    try{
-      const q = JSON.parse(localStorage.getItem('ka_news_added_words') || '[]');
-      if(Array.isArray(q) && q.some(x => String(x && x.en || '').toLowerCase().trim() === k)) return true;
-      const uid = getUserUid();
-      const pre = 'db:data/users/' + uid + '/';
-      for(const key of Object.keys(localStorage)){
-        if(key.startsWith(pre)){
-          const pack = JSON.parse(localStorage.getItem(key) || 'null');
-          if(pack && Array.isArray(pack.items)){
-            if(pack.items.some(it => String(it && it.en || '').toLowerCase().trim() === k)) return true;
-          }
-        }
-      }
-    }catch(e){}
-    return false;
-  }
-
-  function addNewsWordToArena(wordEn, trMeaning, synArr, sentenceEn, sentenceTr, btnEl){
-    const cleanEn = String(wordEn||'').trim().toLowerCase();
-    if(!cleanEn) return;
-    const cleanTr = String(trMeaning||'').trim();
-    const cleanSyn = Array.isArray(synArr) ? synArr.map(s=>String(s||'').trim()).filter(Boolean) : [];
-    const cleanS = String(sentenceEn||'').trim();
-    const cleanSt = String(sentenceTr||'').trim();
-
-    try{
-      /* 1) Ortak haber kelime kuyruğuna kaydet (Ana sayfa açıldığında otomatik senkronize eder) */
-      const q = JSON.parse(localStorage.getItem('ka_news_added_words') || '[]');
-      if(!q.some(x => String(x && x.en || '').toLowerCase() === cleanEn)){
-        q.push({ en: cleanEn, tr: cleanTr, syn: cleanSyn, s: cleanS, st: cleanSt, addedAt: Date.now() });
-        localStorage.setItem('ka_news_added_words', JSON.stringify(q));
-      }
-
-      /* 2) Kullanıcının localStorage'daki mevcut kelime paketlerine doğrudan ekle */
-      const uid = getUserUid();
-      const pre = 'db:data/users/' + uid + '/';
-      const packKeys = Object.keys(localStorage).filter(k => k.startsWith(pre));
-      packKeys.forEach(pk => {
-        try{
-          const pack = JSON.parse(localStorage.getItem(pk) || 'null');
-          if(pack && Array.isArray(pack.items)){
-            const exists = pack.items.some(it => String(it && it.en || '').toLowerCase().trim() === cleanEn);
-            if(!exists){
-              pack.items.push({
-                en: cleanEn,
-                tr: cleanTr,
-                baseTr: cleanTr,
-                turengDone: true,
-                syn: cleanSyn,
-                s: cleanS,
-                st: cleanSt,
-                d: [],
-                gl: {},
-                mo: {}
-              });
-              if(Array.isArray(pack.words)) pack.words.push({ en: cleanEn, tr: cleanTr });
-              pack.prog = pack.prog || { box:{}, steps:[0,0,0,0,0,0,0], mdone:[], xp:0 };
-              pack.prog.box = pack.prog.box || {};
-              pack.prog.box[cleanEn] = 1;
-              localStorage.setItem(pk, JSON.stringify(pack));
-            }
-          }
-        }catch(err){}
-      });
-    }catch(e){}
-
-    if(btnEl){
-      btnEl.outerHTML = `<span class="added-word-badge">✅ <b>"${esc(cleanEn)}"</b> Ana Sayfa Listene Eklendi! (Kutu 1)</span>`;
-    }
-  }
-
-  /* 5. HABER OKUYUCU (TÜM CÜMLE ÇEVİRİLERİ PANELİ + DİNLEME + QUIZ) */
-  let SHOW_NEWS_TR = false;
-  let NEWS_TR_CACHE = {};
-  try{ NEWS_TR_CACHE = JSON.parse(localStorage.getItem('ka_news_tr_v2') || '{}') || {}; }catch(e){ NEWS_TR_CACHE = {}; }
-
-  function getSentences(text){
-    return String(text || '').split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
-  }
-
-  async function translateNewsSentences(storyId, level, text){
-    const cacheKey = storyId + '_' + level;
-    if(NEWS_TR_CACHE[cacheKey] && Array.isArray(NEWS_TR_CACHE[cacheKey]) && NEWS_TR_CACHE[cacheKey].length){
-      return NEWS_TR_CACHE[cacheKey];
-    }
-    const sents = getSentences(text);
-    if(!sents.length) return [];
-    const prompt = `Sen akademik İngilizce-Türkçe çeviri uzmanısın. Aşağıdaki haber metninin numaralı İngilizce cümlelerini doğal ve akıcı Türkçeye çevir.
-YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"tr":"..."}]}
-
-CÜMLELER:
-${sents.map((s,idx)=>`${idx+1}. ${s}`).join('\n')}`;
-
-    try{
-      const r = await fetch('/api/claude',{
-        method:'POST',
-        headers:{'content-type':'application/json'},
-        body:JSON.stringify({prompt, tier:'quick'})
-      });
-      const d = await r.json();
-      const m = String(d.text||'').match(/\{[\s\S]*\}/);
-      if(m){
-        const parsed = JSON.parse(m[0]);
-        if(parsed && Array.isArray(parsed.items)){
-          const out = sents.map((enStr, idx) => {
-            const found = parsed.items.find(o => Number(o.i) === idx + 1) || parsed.items[idx];
-            return { en: enStr, tr: found && found.tr ? String(found.tr).trim() : '' };
-          });
-          NEWS_TR_CACHE[cacheKey] = out;
-          try{ localStorage.setItem('ka_news_tr_v2', JSON.stringify(NEWS_TR_CACHE)); }catch(e){}
-          return out;
-        }
-      }
-    }catch(e){}
-    return sents.map(enStr => ({ en: enStr, tr: '' }));
-  }
-
-  reader = function(){
-    const lv = CUR.levels[LEVEL] || CUR.levels['1'];
-    const done = DONE();
-    const tabs = [1,2,3].map(l=>`<button class="pill ${String(l)===LEVEL?'on':''}" data-lv="${l}">${LV[l]}${done[CUR.id+'-'+l]!=null?' ✓ %'+done[CUR.id+'-'+l]:''}</button>`).join('');
-    const story = String(lv.text).split(/([A-Za-z][A-Za-z'-]*)/).map((t,i)=>i%2?`<span class="tk" data-w="${esc(t)}">${esc(t)}</span>`:esc(t)).join('');
-    $('#main').innerHTML = `<a class="pill" href="#">← Haberler</a>
-<div class="row" style="margin-top:14px"><span class="tag">${esc(CUR.category)}</span><span class="date">${esc(CUR.date)}</span></div>
-<h2 class="ttl" style="font-size:28px">${esc(CUR.title)}</h2>
-<div class="row">${tabs}</div>
-<div class="box">
-  <div class="row" style="margin-top:0;justify-content:space-between">
-    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-      <button class="btn3" id="play">🔊 Dinle (US)</button>
-      <select id="spd"><option value="0.8">Yavaş</option><option value="1" selected>Normal</option><option value="1.15">Hızlı</option></select>
-      <button class="pill" id="stop">■ Durdur</button>
-    </div>
-    <button class="pill" id="toggleNewsTrBtn" type="button" style="border:1.5px solid var(--line);font-weight:800">📖 Haberin Türkçe Çevirisi (Cümle Cümle)</button>
-  </div>
-  <div class="story">${story}</div>
-  <div id="newsTrPanelWrap" hidden></div>
-  <div class="tip" id="tip"><span class="muted">💡 Haberdeki herhangi bir kelimeye dokunun: <b>Tureng yaygın anlamları</b>, <b>İngilizce eş anlamlıları (Synonyms)</b> ve <b>➕ Kelime Listesine Ekle</b> butonu açılır.</span></div>
-</div>
-<div class="row"><button class="btn3" id="quiz">⚔️ Quiz'e Geç →</button></div>
-<p class="muted">Kaynak: <a class="src" href="${esc(CUR.src)}" target="_blank" rel="noopener">${esc(CUR.source)}</a> · Metin bu haberden yapay zekâyla sadeleştirilmiştir.</p>`;
-  };
-
-  /* 6. KELİMEYE DOKUNUNCA: TURENG YAYGIN ANLAMLAR + SYNONYMS + LİSTEYE EKLE */
-  let WORD_CACHE = {};
-  try{ WORD_CACHE = JSON.parse(localStorage.getItem('ka_hw_rich_v2') || '{}') || {}; }catch(e){ WORD_CACHE = {}; }
-
-  let LAST_TAPPED_INFO = null;
-
-  function renderRichTip(w, data, sentence){
-    const cleanW = String(w||'').trim();
-    const k = cleanW.toLowerCase();
-    const q = encodeURIComponent(k);
-    const trText = data && data.tr ? data.tr : '';
-    const syns = data && Array.isArray(data.syn) ? data.syn.filter(Boolean) : [];
-    const sentTr = data && data.st ? data.st : '';
-
-    LAST_TAPPED_INFO = {
-      en: cleanW,
-      tr: trText,
-      syn: syns,
-      s: sentence || '',
-      st: sentTr
-    };
-
-    const already = isWordAlreadyAdded(cleanW);
-    const addBtnHtml = already
-      ? `<span class="added-word-badge">✓ Kelime Listende Mevcut</span>`
-      : `<button type="button" class="add-word-btn" id="newsAddWordBtn" data-nw="${esc(cleanW)}">➕ Kelime Listesine Ekle</button>`;
-
-    const synHtml = syns.length
-      ? `<div class="syn-box"><span class="syn-lbl">🔗 Synonyms (Eş Anlamlılar):</span>${syns.map(s => `<span class="syn-chip tk" data-w="${esc(s)}" title="Tıkla: Dinle ve anlamını gör">🔊 ${esc(s)}</span>`).join('')}</div>`
-      : '';
-
-    const sentTrHtml = sentTr
-      ? `<div style="margin-top:8px;font-size:13.5px;color:var(--mut)"><b>Cümle Çevirisi:</b> ${esc(sentTr)}</div>`
-      : '';
-
-    return `
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px">
-          <span class="tureng-badge">📚 Bağlam + Tureng Yaygın Karşılıklar</span>
-          <b style="font-size:17px">${esc(cleanW)}</b> —
-          <span style="font-weight:800;color:var(--p)">${esc(trText)}</span>
-          ${addBtnHtml}
-        </div>
-        <div style="font-size:13px;display:flex;gap:10px">
-          <a class="src" href="https://dictionary.cambridge.org/dictionary/english-turkish/${q}" target="_blank" rel="noopener">Cambridge ↗</a>
-          <a class="src" href="https://tureng.com/en/turkish-english/${q}" target="_blank" rel="noopener">Tureng ↗</a>
-        </div>
-      </div>
-      ${synHtml}
-      ${sentTrHtml}
-    `;
-  }
-
-  tapWord = async function(w, el){
-    document.querySelectorAll('.tk.sel').forEach(x=>x.classList.remove('sel'));
-    if(el) el.classList.add('sel');
-    const cleanW = String(w||'').trim();
-    const k = cleanW.toLowerCase();
-    const tip = $('#tip');
-    say(cleanW);
-
-    const sentence = (CUR && CUR.levels && CUR.levels[LEVEL] ? CUR.levels[LEVEL].text : '')
-      .split(/(?<=[.!?])\s+/)
-      .find(s => new RegExp('\\b'+cleanW.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i').test(s)) || '';
-
-    if(WORD_CACHE[k] && WORD_CACHE[k].tr){
-      tip.innerHTML = renderRichTip(cleanW, WORD_CACHE[k], sentence);
-      return;
-    }
-
-    const oldSimple = localStorage.getItem('ka_hw_' + k);
-    tip.innerHTML = `<b>${esc(cleanW)}</b> — <span class="muted">${oldSimple ? esc(oldSimple) + ' · (Tureng & eş anlamlılar yükleniyor…)' : 'Tureng anlamları ve eş anlamlılar aranıyor…'}</span>`;
-
-    try{
-      const prompt = `Sen akademik İngilizce ve Tureng sözlük uzmanısın.
-Hedef kelime: "${cleanW}"
-Geçtiği haber cümlesi: "${sentence}"
-
-Görev:
-1. "tr": Kelimenin bu cümledeki anlamını ve Tureng sözlüğündeki en yaygın 2-3 Türkçe karşılığını virgülle ayırarak yaz (kısa ve net, toplam 2-5 kelime).
-2. "syn": Kelimenin en yaygın 3 İngilizce eş anlamlısı (synonyms) dizisi.
-3. "st": Geçtiği haber cümlesinin doğal Türkçe çevirisi.
-YALNIZCA geçerli JSON döndür: {"tr":"...","syn":["...","...","..."],"st":"..."}`;
-
-      const r = await fetch('/api/claude',{
-        method:'POST',
-        headers:{'content-type':'application/json'},
-        body:JSON.stringify({prompt, tier:'quick'})
-      });
-      const d = await r.json();
-      const m = String(d.text||'').match(/\{[\s\S]*\}/);
-      const parsed = m ? JSON.parse(m[0]) : null;
-      if(parsed && parsed.tr){
-        const entry = {
-          tr: String(parsed.tr).trim(),
-          syn: Array.isArray(parsed.syn) ? parsed.syn.map(s=>String(s||'').trim()).filter(Boolean).slice(0,4) : [],
-          st: String(parsed.st||'').trim()
-        };
-        WORD_CACHE[k] = entry;
-        try{
-          localStorage.setItem('ka_hw_rich_v2', JSON.stringify(WORD_CACHE));
-          localStorage.setItem('ka_hw_' + k, entry.tr);
-        }catch(e){}
-        tip.innerHTML = renderRichTip(cleanW, entry, sentence);
-      } else if(oldSimple){
-        tip.innerHTML = renderRichTip(cleanW, { tr: oldSimple, syn: [], st: '' }, sentence);
-      } else {
-        tip.innerHTML = `<b>${esc(cleanW)}</b> — <span class="muted">anlam bulunamadı</span>`;
-      }
-    }catch(e){
-      if(oldSimple){
-        tip.innerHTML = renderRichTip(cleanW, { tr: oldSimple, syn: [], st: '' }, sentence);
-      } else {
-        tip.innerHTML = `<b>${esc(cleanW)}</b> — <span style="color:var(--bad)">bağlantı hatası</span>`;
-      }
-    }
-  };
-
-  /* 7. QUIZ CEVAPLAMA & PALET UYUMLU ZAFER KUTLAMASI */
-  const origAnswer = answer;
-  answer = function(i, k){
-    origAnswer(i, k);
-    const qs = CUR && CUR.levels && CUR.levels[LEVEL] ? CUR.levels[LEVEL].quiz : null;
-    if(qs && QS && QS.ans && QS.ans.every(v => v !== null)){
-      const total = qs.length, right = QS.ans.filter((v,j)=>v===qs[j].ans).length, pct = Math.round(right/total*100);
-      spawnSparks(window.innerWidth/2, window.innerHeight/2, 28);
-      const ov = document.getElementById('newsConqOv');
-      if(ov){
-        const ttl = document.getElementById('nConqTitle');
-        const sub = document.getElementById('nConqSub');
-        if(ttl) ttl.textContent = `${LV[LEVEL]} · %${pct} Başarı!`;
-        if(sub) sub.textContent = `${total} soruda ${right} doğru yanıtla bu haber seviyesini tamamladın.`;
-        ov.classList.add('show');
-      }
-    }
-  };
-
-  /* 8. TIKLAMA DİNLEYİCİLERİ */
-  document.addEventListener('click', async e => {
-    const t = e.target;
-
-    /* Kelime Listesine Ekle butonu */
-    const addBtn = t.closest('#newsAddWordBtn');
-    if(addBtn && LAST_TAPPED_INFO){
-      e.stopPropagation();
-      addNewsWordToArena(
-        LAST_TAPPED_INFO.en,
-        LAST_TAPPED_INFO.tr,
-        LAST_TAPPED_INFO.syn,
-        LAST_TAPPED_INFO.s,
-        LAST_TAPPED_INFO.st,
-        addBtn
-      );
-      spawnSparks(e.clientX, e.clientY, 20);
-      return;
-    }
-
-    /* Haberin Türkçe Çevirisi (Cümle Cümle) Butonu */
-    const trBtn = t.closest('#toggleNewsTrBtn');
-    if(trBtn && CUR && CUR.levels && CUR.levels[LEVEL]){
-      const wrap = document.getElementById('newsTrPanelWrap');
-      if(!wrap) return;
-      if(!wrap.hidden){
-        wrap.hidden = true;
-        trBtn.textContent = '📖 Haberin Türkçe Çevirisi (Cümle Cümle)';
-        return;
-      }
-      wrap.hidden = false;
-      trBtn.textContent = '🙈 Çeviriyi Gizle';
-      wrap.innerHTML = `<div class="news-sent-panel"><div class="muted">⚡ Haberin cümle cümle Türkçe çevirisi hazırlanıyor…</div></div>`;
-      const pairs = await translateNewsSentences(CUR.id, LEVEL, CUR.levels[LEVEL].text);
-      wrap.innerHTML = `
-        <div class="news-sent-panel">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-            <span class="eyebrow" style="color:var(--p)">🇹🇷 CÜMLE CÜMLE HABER ÇEVİRİSİ (${esc(LV[LEVEL])})</span>
-            <span class="muted" style="font-size:12px">${pairs.length} cümle</span>
-          </div>
-          ${pairs.map((p, idx) => `
-            <div class="news-sent-row">
-              <div class="news-sent-en">${idx+1}. ${esc(p.en)}</div>
-              <div class="news-sent-tr">${p.tr ? esc(p.tr) : '<span class="muted">Çeviri alınamadı.</span>'}</div>
-            </div>
-          `).join('')}
-        </div>`;
-      return;
-    }
-
-    /* Fetih modalı kapatma */
-    if(t.closest('#nConqClose') || t.id === 'newsConqOv'){
-      const ov = document.getElementById('newsConqOv');
-      if(ov) ov.classList.remove('show');
-      return;
-    }
-
-    /* Quiz şıkkı tıklanınca kıvılcım */
-    if(t.closest('[data-q]')){
-      spawnSparks(e.clientX, e.clientY, 14);
-    }
-  });
-
-  if(CUR) reader(); else list();
-})();
-</script>
-<!-- ===== HABER ARENASI YENİ ARAYÜZ & OTOMASYON YAMASI SONU ===== -->
