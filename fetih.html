@@ -4,95 +4,102 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Arena Fethi · Kelime Arenası</title>
-<!-- 1A-SAF KOLEZYUM LOGOSU FAVICONLARI -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2314968c'/%3E%3Cstop offset='100%25' stop-color='%230b5a55'/%3E%3C/linearGradient%3E%3ClinearGradient id='gold' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23fef3c7'/%3E%3Cstop offset='50%25' stop-color='%23fbbf24'/%3E%3Cstop offset='100%25' stop-color='%23d97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='2' y='2' width='60' height='60' rx='18' fill='url(%23g)'/%3E%3Cpath d='M15 47.5V30.5a17 17 0 0 1 34 0v17' stroke='%23ffffff' stroke-width='4.8' stroke-linecap='round' fill='none'/%3E%3Cpath d='M24 47.5V31.5a8 8 0 0 1 16 0v16' stroke='url(%23gold)' stroke-width='4.2' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='50' cy='13' r='3.7' fill='url(%23gold)'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;
   --p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--ok:#059669;
-  --c0:#0f766e;--c1:#d97706;--c2:#be185d;
-  --shadow:0 12px 30px -15px rgba(13,43,42,.25);
+  --c0:#0f766e;--c1:#dc2626;--c2:#2563eb;
 }
 body[data-pal="derin_akdeniz"]{
   --bg:#061514;--card:#0c2423;--line:#194240;--ink:#f3f8f6;--mut:#7ca39e;
   --p:#0f766e;--p2:#14b8a6;--acc:#fbbf24;--bad:#f43f5e;--soft:#11312f;--ok:#34d399;
-  --shadow:0 14px 30px -18px rgba(0,0,0,.7);
 }
 *{box-sizing:border-box}
 body{
   margin:0;min-height:100vh;background-color:var(--bg);color:var(--ink);
-  font-family:'Plus Jakarta Sans',-apple-system,sans-serif;font-size:14px;line-height:1.45;
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:14px;
 }
-button{font:inherit;cursor:pointer;color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
 a{color:inherit;text-decoration:none}
-.nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:12px 18px;flex-wrap:wrap}
-.logo{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-weight:800;font-size:20px}
-.logo svg{width:36px;height:36px}
-.logo-sub{font-size:10px;font-weight:900;letter-spacing:.08em;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--acc);border:1px solid var(--line);margin-left:2px}
+.nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 18px}
+.logo{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-weight:900;font-size:20px}
+.logo-sub{font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--acc);border:1px solid var(--line)}
 .navlinks{display:flex;gap:6px;margin-left:10px}
 .navlinks a{padding:7px 13px;border-radius:12px;font-weight:700;color:var(--mut)}
-.navlinks a:hover{color:var(--ink);background:var(--soft)}
-.navlinks a.cur{color:#fff;background:linear-gradient(135deg,#f59e0b,#d97706)}
-.tools{margin-left:auto;display:flex;gap:8px;align-items:center}
+.navlinks a.cur{color:#fff;background:var(--p)}
+.tools{margin-left:auto;display:flex;gap:8px}
 .dots{display:flex;gap:7px}
-.dots button{width:22px;height:22px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line);padding:0}
-.dots button.on{box-shadow:0 0 0 2px var(--p)}
+.dots button{width:22px;height:22px;border-radius:50%;border:2px solid var(--card);padding:0}
 
-.wrap{max-width:1160px;margin:0 auto;padding:18px}
-.stage{background:var(--card);border:1.5px solid var(--line);border-radius:26px;overflow:hidden;position:relative;min-height:640px;box-shadow:var(--shadow)}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+.stage{background:var(--card);border:1.5px solid var(--line);border-radius:24px;box-shadow:0 14px 34px -18px rgba(13,43,42,.3);overflow:hidden}
 
-/* LOBBY */
-.lobby{padding:32px 24px;text-align:center;background:radial-gradient(800px 400px at 50% 0%,var(--soft),transparent 75%)}
-.lt{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:20px}
-.lt .em{width:68px;height:68px;border-radius:20px;background:linear-gradient(135deg,#f59e0b,#d97706);display:grid;place-items:center;font-size:36px;box-shadow:0 10px 25px -8px #d97706;color:#fff}
-.lt h2{margin:0;font-family:Fraunces,serif;font-size:32px;letter-spacing:-.5px}
-.lt p{margin:4px 0 0;color:var(--mut);font-size:15px}
-.lbl{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:16px 0 8px}
-.seg{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.seg button{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:9px 16px;font-weight:800;transition:all .15s}
-.seg button.on{background:var(--p);border-color:var(--p);color:#fff}
-.go{margin-top:24px;background:linear-gradient(135deg,#f59e0b,#d97706);border:0;border-radius:18px;padding:15px 36px;font-weight:900;font-size:17px;color:#fff;box-shadow:0 6px 0 #b45309;transition:transform .08s}
-.go:active{transform:translateY(3px);box-shadow:0 3px 0 #b45309}
+/* LOBİ (3 OYUN MODU) */
+.lobby{padding:36px 24px;max-width:760px;margin:0 auto}
+.hero{display:flex;gap:16px;align-items:center;margin-bottom:24px}
+.hero h1{font-family:Fraunces,serif;font-size:32px;margin:0;line-height:1.15}
+.hero p{color:var(--mut);margin:6px 0 0;font-size:14.5px}
+.lbl{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--mut);margin:16px 0 8px}
+.lg{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.opt{background:var(--soft);border:1.5px solid var(--line);border-radius:16px;padding:14px;text-align:left;transition:all .18s}
+.opt:hover{border-color:var(--p);transform:translateY(-2px)}
+.opt.on{background:var(--card);border-color:var(--p);box-shadow:0 0 0 2px var(--p)}
+.opt b{display:block;font-size:15px;margin-bottom:4px}
+.opt span{font-size:12px;color:var(--mut);line-height:1.4;display:block}
+.go{width:100%;padding:16px;border-radius:18px;border:0;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-family:Fraunces,serif;font-weight:900;font-size:18px;margin-top:24px;box-shadow:0 12px 24px -10px var(--p)}
+.go:hover{filter:brightness(1.1)}
 
-/* HUD & MAP */
-.hud{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1.5px solid var(--line);flex-wrap:wrap;background:var(--card)}
-.ph{display:flex;gap:5px}
-.ph span{font-size:12px;font-weight:900;padding:5px 11px;border-radius:999px;background:var(--soft);color:var(--mut)}
-.ph span.on{background:var(--p);color:#fff}.ph span.dn{background:#a7f3d0;color:#065f46}
-.rnd{font-weight:900;font-size:14px}
-.evt{margin-left:auto;background:#fff7e6;border:1.5px solid #fcd34d;color:#92400e;border-radius:12px;padding:6px 12px;font-weight:800;font-size:13px}
+/* OYUN İÇİ HUD */
+.hud{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:var(--soft);border-bottom:1.5px solid var(--line);gap:12px;flex-wrap:wrap}
+.ph{display:flex;gap:6px}
+.ph span{padding:5px 12px;border-radius:999px;font-size:11.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+.ph span.on{background:var(--p);color:#fff;border-color:var(--p)}
+.ph span.dn{background:var(--line);color:var(--ink)}
+.rnd{font-family:Fraunces,serif;font-weight:900;font-size:15px}
+.evt{font-size:12.5px;font-weight:700;color:var(--mut)}
 
-.gm{display:grid;grid-template-columns:1fr 310px}
-@media(max-width:920px){.gm{grid-template-columns:1fr}}
-.mapw{position:relative;background:radial-gradient(ellipse at 50% 45%,#bfe9e2,#7cc6bb 70%,#4fa89c);padding:10px;display:flex;align-items:center;justify-content:center}
-.mapw svg{display:block;width:100%;max-width:600px;height:auto}
-.status{position:absolute;left:50%;top:14px;transform:translateX(-50%);background:rgba(13,43,42,.92);color:#fff;border-radius:999px;padding:7px 18px;font-weight:800;font-size:13.5px;white-space:nowrap;box-shadow:0 8px 20px rgba(0,0,0,.25);z-index:5}
-.hx{transition:filter .15s}
-.rg{cursor:pointer}.rg:hover .hx{filter:brightness(1.15)}
+.gm{display:grid;grid-template-columns:1fr 310px;min-height:560px}
+@media(max-width:880px){.gm{grid-template-columns:1fr}}
 
-/* SIDEBAR */
-.side{border-left:1.5px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--card)}
-.pl{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:14px;border:2px solid var(--line);background:var(--bg)}
-.pl.turn{border-color:var(--acc);box-shadow:0 0 0 3px rgba(245,158,11,.25)}
-.pl.dead{opacity:.35;text-decoration:line-through}
-.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;flex-shrink:0}
-.pl .nm{font-weight:800}.pl .sub{font-size:11.5px;color:var(--mut)}
-.pl .sc{margin-left:auto;font-weight:900;font-size:17px}
-.prov{display:grid;gap:5px}
-.pv{display:flex;align-items:center;gap:6px;font-size:12px;padding:5px 8px;border-radius:10px;background:var(--soft)}
+/* HARİTA */
+.mapw{position:relative;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--soft) 70%,transparent),transparent 75%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+.status{position:absolute;top:14px;left:18px;background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:800;font-size:13px;box-shadow:0 6px 14px rgba(0,0,0,.06)}
+svg.map{width:100%;max-width:620px;height:auto;filter:drop-shadow(0 12px 22px rgba(0,0,0,.12))}
+polygon.reg{fill:var(--card);stroke:var(--line);stroke-width:2.5;cursor:pointer;transition:all .2s}
+polygon.reg:hover{stroke:var(--ink);stroke-width:3.5;filter:brightness(1.05)}
+polygon.reg.p0{fill:color-mix(in srgb,var(--c0) 30%,var(--card));stroke:var(--c0)}
+polygon.reg.p1{fill:color-mix(in srgb,var(--c1) 30%,var(--card));stroke:var(--c1)}
+polygon.reg.p2{fill:color-mix(in srgb,var(--c2) 30%,var(--card));stroke:var(--c2)}
+text.lbl{font-size:11px;font-weight:800;pointer-events:none;text-anchor:middle;dominant-baseline:central;fill:var(--ink)}
 
-/* QUESTION MODAL */
-.ov{position:absolute;inset:0;background:rgba(6,21,20,.68);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}
-.ov.on{display:flex}
-.md{background:var(--card);border-radius:24px;max-width:500px;width:100%;padding:22px;box-shadow:0 30px 70px rgba(0,0,0,.5)}
-.mh{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:800;color:var(--mut);margin-bottom:6px}
-.qtype{background:var(--soft);color:var(--p);border-radius:999px;padding:3px 10px;font-size:11.5px}
-.qq{font-size:18px;font-weight:900;margin-bottom:14px;line-height:1.35}
-.an{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.an button{border:2px solid var(--line);background:var(--bg);border-radius:14px;padding:12px;font-weight:800;text-align:left}
+/* SAĞ PANEL */
+.sb{border-left:1.5px solid var(--line);padding:18px;background:var(--card);display:flex;flex-direction:column;gap:14px}
+.plist{display:flex;flex-direction:column;gap:8px}
+.pc{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line);background:var(--soft)}
+.pc.me{border-color:var(--c0);background:color-mix(in srgb,var(--c0) 12%,var(--card))}
+.pc.bot1{border-color:var(--c1);background:color-mix(in srgb,var(--c1) 12%,var(--card))}
+.pc.bot2{border-color:var(--c2);background:color-mix(in srgb,var(--c2) 12%,var(--card))}
+.av{width:32px;height:32px;border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:900;font-size:13px}
+.pinfo b{display:block;font-size:13.5px}
+.pinfo small{font-size:11px;color:var(--mut)}
+.psc{margin-left:auto;font-family:Fraunces,serif;font-weight:900;font-size:16px}
+.tw{font-size:11px;margin-left:4px}
+.prov{display:flex;gap:4px;flex-wrap:wrap}
+.tag{padding:3px 7px;border-radius:6px;font-size:10.5px;font-weight:800;background:var(--soft);border:1px solid var(--line);color:var(--mut)}
+.log{flex:1;background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:12px;font-size:12px;line-height:1.5;max-height:180px;overflow-y:auto;color:var(--mut)}
+
+/* SORU MODALI */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;place-items:center;z-index:90;padding:16px;backdrop-filter:blur(4px)}
+.ov.on{display:grid}
+.md{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:24px;max-width:520px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:12px;font-weight:800;color:var(--mut)}
+.qtype{padding:3px 8px;border-radius:999px;background:var(--soft);color:var(--p);border:1px solid var(--line)}
+.qq{font-size:17px;font-weight:800;margin:10px 0 16px;line-height:1.35}
+.an{display:grid;gap:8px}
+.an button{padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--soft);font-weight:700;text-align:left;font-size:14px;transition:all .15s}
 .an button:hover{border-color:var(--p2)}
 .an button.ok{background:#d1fae5;border-color:var(--ok)}.an button.no{background:#ffe4e6;border-color:var(--bad)}
 
@@ -106,15 +113,15 @@ a{color:inherit;text-decoration:none}
 <body data-pal="akdeniz">
 <nav class="nav">
 <div class="nav-in">
-<a class="logo" href="/">
+<a class="logo" href="/index.html">
   <div style="width:36px;height:36px;display:flex;flex-shrink:0">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="lgC" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#14968c"/><stop offset="100%" stop-color="#0b5a55"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="50%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="18" fill="url(#lgC)"/><path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" stroke="#fff" stroke-width="4.8" stroke-linecap="round" fill="none"/><path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" stroke="url(#gold)" stroke-width="4.2" stroke-linecap="round" fill="none"/><circle cx="50" cy="13" r="3.7" fill="url(#gold)"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="18" fill="#0f766e"/><path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" stroke="#fff" stroke-width="4.8" stroke-linecap="round" fill="none"/><path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" stroke="#fbbf24" stroke-width="4.2" stroke-linecap="round" fill="none"/></svg>
   </div>
   <span>Kelime Arenası</span>
   <span class="logo-sub">FETHİ</span>
 </a>
 <div class="navlinks">
-<a href="/">Ana sayfa</a>
+<a href="/index.html">🏛️ Ana sayfa</a>
 <a href="/haber.html">📰 Haber</a>
 <a class="cur" href="/fetih.html">⚔️ Arena Fethi</a>
 <a href="/sinav.html">📝 Sınav</a>
@@ -134,127 +141,149 @@ a{color:inherit;text-decoration:none}
 
 <script>
 const WORDS=[
-  ['significant','önemli','important'],['mitigate','hafifletmek','reduce'],
-  ['reluctant','isteksiz','unwilling'],['abundant','bol','plentiful'],
-  ['decline','azalmak','decrease'],['evidence','kanıt','proof'],
-  ['consequence','sonuç','result'],['enhance','geliştirmek','improve'],
-  ['obtain','elde etmek','get'],['crucial','çok önemli','vital'],
-  ['diverse','çeşitli','varied'],['emerge','ortaya çıkmak','appear'],
-  ['inevitable','kaçınılmaz','unavoidable'],['precise','kesin','exact'],
-  ['sustain','sürdürmek','maintain'],['assess','değerlendirmek','evaluate'],
-  ['acquire','edinmek','gain'],['fragile','kırılgan','delicate'],
-  ['thrive','gelişip serpilmek','flourish'],['undermine','zayıflatmak','weaken']
-].map(([en,tr,syn])=>({en,tr,syn}));
-
-const PROV=[
-  {id:'ak',n:'Akademi',ic:'🏛',pw:'+1 joker'},
-  {id:'bi',n:'Bilim',ic:'🔬',pw:'+5 sn'},
-  {id:'se',n:'Senato',ic:'⚖️',pw:'+1 kalkan'},
-  {id:'do',n:'Doğa',ic:'🌿',pw:'+100P'},
-  {id:'ti',n:'Ticaret',ic:'💰',pw:'+250P'}
+  {en:"mitigate",tr:"hafifletmek, azaltmak"},
+  {en:"per capita",tr:"kişi başına"},
+  {en:"shrink",tr:"küçülmek, daralmak"},
+  {en:"allocate",tr:"tahsis etmek, ayırmak"},
+  {en:"urgency",tr:"aciliyet, ivedilik"},
+  {en:"phenomenon",tr:"olgu, doğa olayı"},
+  {en:"resilient",tr:"dirençli, güçlü"},
+  {en:"inevitable",tr:"kaçınılmaz"},
+  {en:"ambiguity",tr:"belirsizlik, muğlaklık"},
+  {en:"sustainable",tr:"sürdürülebilir"},
+  {en:"advocate",tr:"savunmak, desteklemek"},
+  {en:"coherent",tr:"tutarlı, ahenkli"}
 ];
 
-const SEEDS=[
-  ['Akademi Tepesi','🎓','ak',150,120],['Kütüphane','📚','ak',245,85],['Felsefe Bahçesi','🦉','ak',105,205],
-  ['Gözlemevi','🔭','bi',365,78],['Laboratuvar','⚗️','bi',460,110],['Mühendis Kulesi','⚙️','bi',525,180],
-  ['Senato','⚖️','se',300,175],['Forum','🗣','se',220,240],['Adalet Sarayı','🏛','se',385,245],
-  ['Zeytinlik','🫒','do',115,295],['Orman','🌲','do',205,335],['Mavi Koy','🐚','do',295,335],
-  ['Çarşı','🏺','ti',385,335],['Darphane','🪙','ti',465,300],['Büyük Liman','⚓','ti',525,250]
+const PROVINCES=[
+  {id:'akademi',name:'Akademi',color:'#6366f1'},
+  {id:'bogaz',name:'Boğaz',color:'#0ea5e9'},
+  {id:'hisar',name:'Hisar',color:'#f59e0b'},
+  {id:'kutup',name:'Kütüphane',color:'#10b981'},
+  {id:'koru',name:'Koru',color:'#ec4899'}
 ];
 
-const PC=['#0f766e','#d97706','#be185d'],FREE='#efe6cf';
-const DIFF={caylak:{acc:.5},gladyator:{acc:.68},imparator:{acc:.85}};
+const DIFF={
+  caylak:{name:'Çaylak',t:14,acc:.55},
+  gladyator:{name:'Gladyatör',t:10,acc:.75},
+  cihan:{name:'Cihan Fatihi',t:7,acc:.90}
+};
+
 const $=s=>document.querySelector(s);
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
 const shuf=a=>[...a].sort(()=>Math.random()-.5);
 
-const HS=19,SQ=Math.sqrt(3);let HEX=[],REG=[];
-const DIRS=[[1,0,0,1],[0,1,1,2],[-1,1,2,3],[-1,0,3,4],[0,-1,4,5],[1,-1,5,0]];
-function corner(x,y,i){const a=Math.PI/180*(60*i-30);return [x+HS*Math.cos(a),y+HS*Math.sin(a)]}
-
+let MAP=[];
 function buildMap(){
-  HEX=[];const idx={};
-  for(let r=-7;r<=7;r++)for(let q=-12;q<=12;q++){
-    const x=HS*SQ*(q+r/2)+300,y=HS*1.5*r+210;
-    const dx=(x-312)/292,dy=(y-210)/192;
-    if(dx*dx+dy*dy>.9)continue;
-    let best=0,bd=1e9;SEEDS.forEach((s,i)=>{const d=(s[3]-x)**2+(s[4]-y)**2;if(d<bd){bd=d;best=i}});
-    const h={q,r,x,y,reg:best};idx[q+','+r]=h;HEX.push(h);
-  }
-  REG=SEEDS.map((s,i)=>({id:i,name:s[0],ic:s[1],prov:s[2],val:[200,300,400][i%3],owner:-1,cap:false,adj:new Set(),hx:[]}));
-  HEX.forEach(h=>{REG[h.reg].hx.push(h);h.nb=DIRS.map(d=>idx[(h.q+d[0])+','+(h.r+d[1])]);
-    h.nb.forEach(n=>{if(n&&n.reg!==h.reg)REG[h.reg].adj.add(n.reg)})});
-  REG.forEach(g=>{g.cx=g.hx.reduce((s,h)=>s+h.x,0)/g.hx.length;g.cy=g.hx.reduce((s,h)=>s+h.y,0)/g.hx.length});
+  MAP=[
+    {id:'r1',name:'Akademi Meydanı',prov:'akademi',val:200,pts:'180,80 260,60 300,120 230,160 160,130',cx:225,cy:110,cap:null,owner:null},
+    {id:'r2',name:'Rektörlük',prov:'akademi',val:300,pts:'260,60 340,50 380,110 300,120',cx:320,cy:85,cap:null,owner:null},
+    {id:'r3',name:'Senato Tepesi',prov:'akademi',val:250,pts:'300,120 380,110 400,180 320,190',cx:350,cy:150,cap:null,owner:null},
+    {id:'r4',name:'Kuzey Limanı',prov:'bogaz',val:200,pts:'380,110 470,90 490,160 400,180',cx:435,cy:135,cap:null,owner:null},
+    {id:'r5',name:'Boğaz Kalesi',prov:'bogaz',val:400,pts:'400,180 490,160 520,240 430,250',cx:460,cy:210,cap:null,owner:null},
+    {id:'r6',name:'Fener Burnu',prov:'bogaz',val:250,pts:'430,250 520,240 500,320 420,310',cx:470,cy:280,cap:null,owner:null},
+    {id:'r7',name:'Kütüphane Vadisi',prov:'kutup',val:200,pts:'160,130 230,160 210,240 130,210',cx:180,cy:185,cap:null,owner:null},
+    {id:'r8',name:'Büyük Arşiv',prov:'kutup',val:300,pts:'230,160 320,190 310,270 210,240',cx:270,cy:215,cap:null,owner:null},
+    {id:'r9',name:'Nadir Eserler',prov:'kutup',val:250,pts:'210,240 310,270 290,340 190,320',cx:250,cy:290,cap:null,owner:null},
+    {id:'r10',name:'Aşağı Hisar',prov:'hisar',val:200,pts:'320,190 430,250 410,330 310,270',cx:370,cy:260,cap:null,owner:null},
+    {id:'r11',name:'Hisar Kulesi',prov:'hisar',val:400,pts:'310,270 410,330 390,400 290,340',cx:350,cy:335,cap:null,owner:null},
+    {id:'r12',name:'Surlariçi',prov:'hisar',val:250,pts:'410,330 420,310 480,380 390,400',cx:425,cy:355,cap:null,owner:null},
+    {id:'r13',name:'Koru Girişi',prov:'koru',val:200,pts:'130,210 210,240 190,320 110,290',cx:160,cy:265,cap:null,owner:null},
+    {id:'r14',name:'Büyük Çınar',prov:'koru',val:250,pts:'190,320 290,340 270,410 170,390',cx:230,cy:365,cap:null,owner:null},
+    {id:'r15',name:'Saklı Bahçe',prov:'koru',val:300,pts:'270,410 390,400 370,460 250,470',cx:320,cy:435,cap:null,owner:null}
+  ];
 }
 
 function drawMap(svg){
-  if(!svg)return;
   let out='';
-  REG.forEach(g=>{
-    const col=g.owner<0?FREE:PC[g.owner];
-    out+=`<g class="rg" data-r="${g.id}">`+g.hx.map(h=>`<polygon class="hx" points="${[0,1,2,3,4,5].map(i=>corner(h.x,h.y,i).map(v=>v.toFixed(1)).join(',')).join(' ')}" fill="${col}" stroke="${col}" stroke-width="1" opacity="${g.owner<0?1:.9}"/>`).join('')+'</g>';
-  });
-  let inner='',coast='';
-  HEX.forEach(h=>DIRS.forEach((d,k)=>{const n=h.nb[k];if(n&&n.reg===h.reg)return;const a=corner(h.x,h.y,d[2]),b=corner(h.x,h.y,d[3]);const seg=`M${a[0].toFixed(1)} ${a[1].toFixed(1)}L${b[0].toFixed(1)} ${b[1].toFixed(1)}`;if(n)inner+=seg;else coast+=seg}));
-  out+=`<path d="${inner}" stroke="#fff" stroke-width="2.6" fill="none" pointer-events="none"/><path d="${coast}" stroke="#0b4d48" stroke-width="3.5" fill="none" pointer-events="none"/>`;
-  REG.forEach(g=>{
-    const dark=g.owner>=0;
-    out+=`<g pointer-events="none" text-anchor="middle">`+
-    (g.cap?`<text x="${g.cx}" y="${g.cy-4}" font-size="22">🏰</text><g transform="translate(${g.cx-14},${g.cy+4})">${[0,1,2].map(i=>`<rect x="${i*10}" width="8" height="10" rx="2" fill="${i<G.pl[g.owner].towers?'#34d399':'#64748b'}" stroke="#fff"/>`).join('')}</g>`
-     :`<text x="${g.cx}" y="${g.cy-3}" font-size="15">${g.ic}</text><text x="${g.cx}" y="${g.cy+12}" font-size="11" font-weight="900" fill="${dark?'#fff':'#5b4a2a'}">${g.val}</text>`)+
-    `<text x="${g.cx}" y="${g.cy+(g.cap?28:25)}" font-size="10.5" font-weight="800" fill="${dark?'#fff':'#5b4a2a'}">${g.name}</text></g>`;
+  MAP.forEach(r=>{
+    const pcls=r.owner!==null?'p'+r.owner:'';
+    out+=`<polygon class="reg ${pcls}" id="${r.id}" data-id="${r.id}" points="${r.pts}"/>`;
+    const prov=PROVINCES.find(p=>p.id===r.prov);
+    const star=r.cap!==null?' ★':'';
+    out+=`<text class="lbl" x="${r.cx}" y="${r.cy-4}">${r.name}${star}</text>`;
+    out+=`<text class="lbl" x="${r.cx}" y="${r.cy+11}" style="font-size:9.5px;fill:var(--mut)">${r.val}P</text>`;
   });
   svg.innerHTML=out;
 }
 
-let G={pl:[],phase:'lobby',round:1,maxRounds:4};
-const CFG={diff:'gladyator'};
+let G={pl:[],phase:'lobby',round:1,maxRounds:4,grabN:2,warN:4};
+const CFG={mode:'klasik',diff:'gladyator'};
 
 function newPlayers(){
   const d=DIFF[CFG.diff];
   return [
     {n:'Sen',ab:'S',bot:false,towers:3,bonus:0,alive:true},
-    {n:'Bot Atlas',ab:'A',bot:true,acc:d.acc,towers:3,bonus:0,alive:true},
-    {n:'Bot Nova',ab:'N',bot:true,acc:d.acc,towers:3,bonus:0,alive:true}
+    {n:'Barlas Han',ab:'B',bot:true,diff:d,towers:3,bonus:0,alive:true},
+    {n:'Ayşe Hatun',ab:'A',bot:true,diff:d,towers:3,bonus:0,alive:true}
   ];
 }
-function score(p){return REG.filter(g=>g.owner===p).reduce((s,g)=>s+(g.cap?1000:g.val),0)+G.pl[p].bonus;}
 
-function lobby(){
-  G.phase='lobby';
+function renderLobby(){
   $('#stage').innerHTML=`
     <div class="lobby">
-      <div class="lt">
-        <div class="em">⚔️</div>
+      <div class="hero">
+        <div style="font-size:48px">🗺️⚔️</div>
         <div>
-          <h2>Arena Fethi: Krallık Kur</h2>
-          <p>15 bölge, 5 vilayet, 3 kuleli kaleler ve canlı kelime savaşları!</p>
+          <h1>Arena Fethi</h1>
+          <p>Kelimelerinle toprak kazan, kaleleri kuşat, arenanın fatihi ol.</p>
         </div>
       </div>
-      <div class="lbl">Zorluk Seviyesi</div>
-      <div class="seg" id="diffSeg">
-        <button data-v="caylak">Çaylak</button>
-        <button data-v="gladyator" class="on">Gladyatör (Standart)</button>
-        <button data-v="imparator">İmparator</button>
+      
+      <div class="lbl">1. Oyun Modunu Seç</div>
+      <div class="lg" id="modeSeg">
+        <button class="opt ${CFG.mode==='klasik'?'on':''}" data-m="klasik">
+          <b>⚔️ Klasik Fetih</b>
+          <span>3 oyuncu · 15 bölge · 2 toprak + 4 savaş turu (~8 dk)</span>
+        </button>
+        <button class="opt ${CFG.mode==='hizli'?'on':''}" data-m="hizli">
+          <b>⚡ Hızlı Maç</b>
+          <span>1 toprak turu + 2 hızlı kuşatma turu (~3 dk)</span>
+        </button>
+        <button class="opt ${CFG.mode==='gunluk'?'on':''}" data-m="gunluk">
+          <b>📅 Günlük Fetih</b>
+          <span>Günün özel haritası & sıralama kelimeleri</span>
+        </button>
       </div>
-      <button class="go" id="startBtn">⚔️ Fethi Başlat (Hızlı Düello)</button>
+
+      <div class="lbl">2. Rakip Zorluk Derecesi</div>
+      <div class="lg" id="diffSeg">
+        <button class="opt ${CFG.diff==='caylak'?'on':''}" data-d="caylak"><b>🟢 Çaylak</b><span>Botlar yavaş cevap verir</span></button>
+        <button class="opt ${CFG.diff==='gladyator'?'on':''}" data-d="gladyator"><b>🟡 Gladyatör</b><span>Dengeli kapışma</span></button>
+        <button class="opt ${CFG.diff==='cihan'?'on':''}" data-d="cihan"><b>🔴 Cihan Fatihi</b><span>Yüksek isabetli botlar</span></button>
+      </div>
+
+      <button class="go" id="startBtn">⚔️ Arenaya Gir & Başlat</button>
     </div>`;
-  
+
+  document.querySelectorAll('#modeSeg button').forEach(b=>{
+    b.onclick=()=>{
+      document.querySelectorAll('#modeSeg button').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');CFG.mode=b.dataset.m;
+    };
+  });
   document.querySelectorAll('#diffSeg button').forEach(b=>{
     b.onclick=()=>{
       document.querySelectorAll('#diffSeg button').forEach(x=>x.classList.remove('on'));
-      b.classList.add('on');CFG.diff=b.dataset.v;
+      b.classList.add('on');CFG.diff=b.dataset.d;
     };
   });
-  document.getElementById('startBtn').onclick=startGame;
+  $('#startBtn').onclick=startGame;
 }
 
 function startGame(){
-  buildMap();G.pl=newPlayers();G.phase='cap';G.round=1;
-  renderGameDOM();speedDuelForCapitals();
+  buildMap();
+  G.pl=newPlayers();
+  G.phase='cap';
+  G.round=1;
+  G.grabN=CFG.mode==='hizli'?1:2;
+  G.warN=CFG.mode==='hizli'?2:(CFG.mode==='gunluk'?3:4);
+  renderGameDOM();
+  speedDuelForCapitals();
 }
 
 function renderGameDOM(){
+  const modeTitle = CFG.mode==='hizli'?'⚡ Hızlı Maç':(CFG.mode==='gunluk'?'📅 Günlük Fetih':'⚔️ Klasik Fetih');
   $('#stage').innerHTML=`
     <div class="hud">
       <div class="ph">
@@ -262,19 +291,19 @@ function renderGameDOM(){
         <span class="${G.phase==='expand'?'on':(G.phase==='battle'||G.phase==='end'?'dn':'')}">2. Toprak Kapma</span>
         <span class="${G.phase==='battle'?'on':(G.phase==='end'?'dn':'')}">3. Kuşatma</span>
       </div>
-      <span class="rnd" id="rndTxt">Raunt ${G.round}/${G.maxRounds}</span>
-      <div class="evt">🏛 Senato: Arenada fetih başladı!</div>
+      <span class="rnd" id="rndTxt">${modeTitle} · Tur ${G.round}/${G.warN}</span>
+      <div class="evt">🏛 Senato: Fetih başladı!</div>
     </div>
     <div class="gm">
       <div class="mapw">
         <div class="status" id="status">Başkentler kuruluyor…</div>
-        <svg id="svgMap" viewBox="0 0 600 420"></svg>
+        <svg class="map" viewBox="90 30 450 460" id="svgMap"></svg>
       </div>
-      <div class="side">
-        <div style="font-size:12px;font-weight:900;color:var(--mut);text-transform:uppercase">Oyuncular</div>
-        <div id="playersList"></div>
+      <div class="sb">
+        <div class="plist" id="playersList"></div>
         <div style="font-size:12px;font-weight:900;color:var(--mut);text-transform:uppercase;margin-top:6px">Vilayetler</div>
         <div class="prov" id="provList"></div>
+        <div class="log" id="logBox">Savaş Günlüğü: Başkent seçimi yapılıyor...</div>
       </div>
     </div>
     <div class="ov" id="modalOv"><div class="md" id="modalBox"></div></div>`;
@@ -283,28 +312,32 @@ function renderGameDOM(){
 
 function updateSidebar(){
   const pList=$('#playersList');
-  if(pList){
-    pList.innerHTML=G.pl.map((p,i)=>`
-      <div class="pl ${!p.alive?'dead':''}">
-        <div class="av" style="background:${PC[i]}">${p.ab}</div>
-        <div><b>${p.n}</b><div class="sub">Kule: ${'🏰'.repeat(p.towers)}</div></div>
-        <div class="sc">${score(i)}P</div>
-      </div>`).join('');
-  }
-  const pvList=$('#provList');
-  if(pvList){
-    pvList.innerHTML=PROV.map(pv=>{
-      const rs=REG.filter(r=>r.prov===pv.id);
-      const owned=rs.filter(r=>r.owner>=0);
-      return `<div class="pv"><span>${pv.ic}</span><span style="flex:1"><b>${pv.n}</b> (${pv.pw})</span><span>${owned.length}/${rs.length}</span></div>`;
-    }).join('');
-  }
+  pList.innerHTML=G.pl.map((p,i)=>`
+    <div class="pc ${i===0?'me':(i===1?'bot1':'bot2')}">
+      <div class="av" style="background:var(--c${i})">${p.ab}</div>
+      <div class="pinfo">
+        <b>${p.n}</b>
+        <small>${p.alive?'🏰 '+p.towers+' Can':'💀 Elendi'}</small>
+      </div>
+      <div class="psc">${score(i)}P</div>
+    </div>`).join('');
+
+  const prList=$('#provList');
+  prList.innerHTML=PROVINCES.map(pr=>{
+    const regs=MAP.filter(r=>r.prov===pr.id);
+    const o0=regs.filter(r=>r.owner===0).length;
+    return `<span class="tag" style="border-left:3px solid ${pr.color}">${pr.name}: ${o0}/${regs.length}</span>`;
+  }).join('');
 }
 
-function attachMapClicks(){
-  document.querySelectorAll('.rg').forEach(el=>{
-    el.onclick=()=>handleRegClick(+el.dataset.r);
-  });
+function score(pid){
+  const regPts=MAP.filter(r=>r.owner===pid).reduce((s,r)=>s+r.val,0);
+  return regPts+G.pl[pid].bonus;
+}
+
+function log(msg){
+  const el=$('#logBox');
+  if(el){el.innerHTML=`• ${msg}<br>`+el.innerHTML;}
 }
 
 function speedDuelForCapitals(){
@@ -323,31 +356,48 @@ function speedDuelForCapitals(){
       b.classList.add(ok?'ok':'no');
       setTimeout(()=>{
         ov.classList.remove('on');
-        REG[0].owner=0;REG[0].cap=true;
-        REG[5].owner=1;REG[5].cap=true;
-        REG[14].owner=2;REG[14].cap=true;
+        if(ok){
+          MAP[0].owner=0;MAP[0].cap=0;
+          MAP[4].owner=1;MAP[4].cap=1;
+          MAP[10].owner=2;MAP[10].cap=2;
+          log('👑 Başkentinizi Akademi Meydanı\'nda kurdunuz (+100P)!');
+          G.pl[0].bonus+=100;
+        } else {
+          MAP[0].owner=1;MAP[0].cap=1;
+          MAP[4].owner=0;MAP[4].cap=0;
+          MAP[10].owner=2;MAP[10].cap=2;
+          log('⚠️ Düelloyu kaybettiniz, Boğaz Kalesi\'ne yerleştiniz.');
+        }
         G.phase='expand';
-        $('#status').textContent='Sınırındaki gri bir bölgeye tıkla ve fethet!';
+        $('#status').textContent='🗺️ Boş bir bölgeye tıkla ve fethet!';
         drawMap($('#svgMap'));updateSidebar();attachMapClicks();
-      },500);
+      },700);
     };
   });
 }
 
-function handleRegClick(rid){
-  const reg=REG.find(r=>r.id===rid);if(!reg)return;
-  const myRegs=REG.filter(r=>r.owner===0).map(r=>r.id);
-  const isNeighbor=myRegs.some(mid=>reg.adj.has(mid));
+function attachMapClicks(){
+  document.querySelectorAll('polygon.reg').forEach(poly=>{
+    poly.onclick=()=>{
+      const id=poly.dataset.id;
+      const reg=MAP.find(r=>r.id===id);
+      if(!reg)return;
 
-  if(G.phase==='expand'){
-    if(reg.owner>=0){alert('Bu bölge zaten fethedildi!');return;}
-    if(!isNeighbor){alert('Yalnızca sınırındaki komşu bölgeleri fethedebilirsin!');return;}
-    askQuestionForRegion(reg,0);
-  } else if(G.phase==='battle'){
-    if(reg.owner===0){alert('Bu bölge zaten senin!');return;}
-    if(!isNeighbor){alert('Kuşatmak için sınırında olmalısın!');return;}
-    askSiegeQuestion(reg,0);
-  }
+      if(G.phase==='expand'){
+        if(reg.owner===null){
+          askQuestionForRegion(reg,0);
+        } else {
+          alert('Bu bölge zaten alınmış! Boş bir bölge seçin.');
+        }
+      } else if(G.phase==='battle'){
+        if(reg.owner!==0&&reg.owner!==null){
+          askSiegeQuestion(reg,0);
+        } else {
+          alert('Düşmana ait bir bölge seçmelisiniz!');
+        }
+      }
+    };
+  });
 }
 
 function askQuestionForRegion(reg,pid){
@@ -367,13 +417,13 @@ function askQuestionForRegion(reg,pid){
       setTimeout(()=>{
         ov.classList.remove('on');
         if(ok){
-          reg.owner=pid;G.pl[pid].bonus+=reg.val;
-          $('#status').textContent=`🎉 ${reg.name} fethedildi!`;
+          reg.owner=0;
+          log(`⚔️ Tebrikler! "${reg.name}" fetholundu (+${reg.val}P).`);
         } else {
-          $('#status').textContent=`❌ Yanlış! ${reg.name} alınamadı.`;
+          log(`❌ Yanlış cevap! "${reg.name}" fethedilemedi.`);
         }
-        checkProgression();
-      },500);
+        botTurns();
+      },600);
     };
   });
 }
@@ -386,7 +436,7 @@ function askSiegeQuestion(reg,atkPid){
   ov.classList.add('on');
   modal.innerHTML=`
     <div class="mh"><span class="qtype">🔥 KUŞATMA: ${reg.name}</span><span>${reg.cap?'🏰 KALE':'Toprak'}</span></div>
-    <div class="qq">"${w.tr}" ne demek?</div>
+    <div class="qq">"${w.tr}" İngilizce karşılığı nedir?</div>
     <div class="an">${opts.map(o=>`<button data-ans="${o}">${o}</button>`).join('')}</div>`;
   modal.querySelectorAll('button').forEach(b=>{
     b.onclick=()=>{
@@ -394,87 +444,91 @@ function askSiegeQuestion(reg,atkPid){
       b.classList.add(ok?'ok':'no');
       setTimeout(()=>{
         ov.classList.remove('on');
+        const defPid=reg.owner;
         if(ok){
-          if(reg.cap){
-            G.pl[reg.owner].towers--;
-            if(G.pl[reg.owner].towers<=0){
-              G.pl[reg.owner].alive=false;
-              REG.filter(r=>r.owner===reg.owner).forEach(r=>r.owner=atkPid);
-              $('#status').textContent=`💥 KALE YIKILDI! ${reg.name} düştü!`;
-            } else {
-              $('#status').textContent=`⚔️ Kuleye hasar verildi! Kalan: ${G.pl[reg.owner].towers}`;
+          if(reg.cap!==null){
+            G.pl[defPid].towers--;
+            log(`💥 Kuşatma Başarılı! ${G.pl[defPid].n} kalesine vurdunuz! Kalan can: ${G.pl[defPid].towers}`);
+            if(G.pl[defPid].towers<=0){
+              G.pl[defPid].alive=false;
+              reg.owner=0;
+              MAP.filter(r=>r.owner===defPid).forEach(r=>r.owner=0);
+              log(`👑 BÜYÜK ZAFER! ${G.pl[defPid].n} tamamen elendi! Toprakları senin oldu!`);
             }
           } else {
-            reg.owner=atkPid;
-            $('#status').textContent=`💥 ${reg.name} ele geçirildi!`;
+            reg.owner=0;
+            log(`⚔️ ${reg.name} düşmandan geri alındı!`);
           }
         } else {
-          $('#status').textContent=`🛡️ Kuşatma püskürtüldü!`;
+          log(`🛡️ Düşman savunması dirençli çıktı, saldırı püskürtüldü.`);
         }
-        checkProgression();
-      },500);
+        botTurns();
+      },600);
     };
   });
 }
 
-function checkProgression(){
-  // Botlar
-  [1,2].forEach(bid=>{
-    if(!G.pl[bid].alive)return;
-    const myRegs=REG.filter(r=>r.owner===bid).map(r=>r.id);
-    if(G.phase==='expand'){
-      const free=REG.filter(r=>r.owner<0&&[...r.adj].some(mid=>myRegs.includes(mid)));
-      if(free.length&&Math.random()<.75){
-        const pick=rnd(free);pick.owner=bid;G.pl[bid].bonus+=pick.val;
+function botTurns(){
+  const freeRegs=MAP.filter(r=>r.owner===null);
+  [1,2].forEach(pid=>{
+    if(!G.pl[pid].alive)return;
+    const bot=G.pl[pid];
+    const ok=Math.random()<bot.diff.acc;
+    if(G.phase==='expand'&&freeRegs.length>0){
+      const target=rnd(freeRegs);
+      if(ok){
+        target.owner=pid;
+        const idx=freeRegs.indexOf(target);if(idx>-1)freeRegs.splice(idx,1);
+        log(`🤖 ${bot.n}, "${target.name}" bölgesini ele geçirdi.`);
       }
     } else if(G.phase==='battle'){
-      const enemies=REG.filter(r=>r.owner>=0&&r.owner!==bid&&[...r.adj].some(mid=>myRegs.includes(mid)));
-      if(enemies.length&&Math.random()<.6){
-        const pick=rnd(enemies);
-        if(pick.cap){G.pl[pick.owner].towers--;}
-        else{pick.owner=bid;}
+      const enemyRegs=MAP.filter(r=>r.owner!==pid&&r.owner!==null);
+      if(enemyRegs.length>0){
+        const target=rnd(enemyRegs);
+        if(ok){
+          if(target.cap!==null){
+            const def=target.owner;
+            G.pl[def].towers--;
+            log(`⚠️ DİKKAT! ${bot.n}, ${G.pl[def].n} kalesini vurdu!`);
+          } else {
+            target.owner=pid;
+            log(`⚔️ ${bot.n}, "${target.name}" bölgesini ele geçirdi.`);
+          }
+        }
       }
     }
   });
 
-  const freeRegs=REG.filter(r=>r.owner<0);
   if(G.phase==='expand'&&freeRegs.length===0){
     G.phase='battle';
     $('#status').textContent='⚔️ KUŞATMA: Düşman bölgelerine saldır!';
   }
   G.round++;
-  $('#rndTxt').textContent=`Raunt ${Math.min(G.round,G.maxRounds)}/${G.maxRounds}`;
-  if(G.round>G.maxRounds){
+  const modeTitle=CFG.mode==='hizli'?'⚡ Hızlı Maç':(CFG.mode==='gunluk'?'📅 Günlük Fetih':'⚔️ Klasik Fetih');
+  $('#rndTxt').textContent=`${modeTitle} · Tur ${Math.min(G.round,G.warN)}/${G.warN}`;
+  if(G.round>G.warN){
     endGame();return;
   }
   drawMap($('#svgMap'));updateSidebar();attachMapClicks();
 }
 
 function endGame(){
-  G.phase='end';
   const sorted=[0,1,2].map(i=>({i,p:G.pl[i],s:score(i)})).sort((a,b)=>b.s-a.s);
   $('#stage').innerHTML=`
     <div class="end">
       <div style="font-size:48px">🏆👑</div>
       <h2 style="font-family:Fraunces,serif;font-size:32px;margin:8px 0">SAVAŞ TAMAMLANDI</h2>
+      <div style="color:var(--mut);margin-bottom:14px">${CFG.mode==='hizli'?'Hızlı Maç':(CFG.mode==='gunluk'?'Günlük Fetih':'Klasik Fetih')} Tamamlandı</div>
       <div class="podium">
         <div class="pod"><div style="font-size:24px">🥈</div><b>${sorted[1].p.n}</b><div class="bar" style="height:110px;background:#94a3b8">${sorted[1].s}P</div></div>
         <div class="pod"><div style="font-size:32px">🥇</div><b>${sorted[0].p.n}</b><div class="bar" style="height:160px;background:#f59e0b">${sorted[0].s}P</div></div>
         <div class="pod"><div style="font-size:24px">🥉</div><b>${sorted[2].p.n}</b><div class="bar" style="height:80px;background:#b45309">${sorted[2].s}P</div></div>
       </div>
-      <button class="go" onclick="location.reload()">🔄 Yeniden Oyna</button>
+      <button class="go" style="max-width:280px;margin:0 auto" onclick="location.reload()">Tekrar Oyna</button>
     </div>`;
 }
 
-function setPal(n){
-  document.body.dataset.pal=n;
-  document.querySelectorAll('.dots button').forEach(b=>b.classList.toggle('on',b.dataset.pal===n));
-}
-document.addEventListener('click',e=>{
-  const pal=e.target.closest('.dots [data-pal]');if(pal)setPal(pal.dataset.pal);
-});
-
-lobby();
+renderLobby();
 </script>
 </body>
 </html>
