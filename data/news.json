@@ -1,6 +1,441 @@
 {
-  "updated": "2026-11-08T06:20:21.844Z",
+  "updated": "2026-11-09T06:20:22.253Z",
   "items": [
+    {
+      "id": "mw8vgp2ijq40",
+      "date": "2026-11-09",
+      "category": "World",
+      "title": "Inside the French Drug Gangs Recruiting Children to Kill",
+      "src": "https://www.bbc.co.uk/news/articles/cq62y01r2313o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "The BBC went inside a dangerous underworld in Marseille, France. In this city, violent drug gangs are working. These gangs recruit very young people to do dangerous work for them. The gangs trap, brutalise, and exploit these children. The young people cannot easily escape the violence. They are forced to work in terrible conditions and even kill for the criminal groups. This report shows how bad life is for the trapped youth in Marseille. The situation is very scary for the young people living there.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Young people in France are leaving the country.",
+                "Marseille is a popular place for tourists.",
+                "The BBC is making a movie in France.",
+                "Drug gangs in Marseille trap and exploit young people."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does 'recruit' mean in the text?",
+              "opts": [
+                "To teach someone to read",
+                "To get someone to join a group",
+                "To help someone leave",
+                "To buy new clothes"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Where are these drug gangs working?",
+              "opts": [
+                "In New York",
+                "In Paris",
+                "In London",
+                "In Marseille"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "True or False: The children can easily leave the gangs.",
+              "opts": [
+                "Only on weekends",
+                "True",
+                "The text does not say",
+                "False"
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "2": {
+          "text": "A report by the BBC gives a look inside the dangerous underworld of Marseille, France. Violent drug gangs are operating in the city, and they are recruiting young people to join them. These criminal groups trap, brutalise, and exploit the children to do their dirty work, which even includes killing. Once the young people are involved, it is extremely difficult for them to escape the gang network. The gangs take advantage of the youth, putting them in very dangerous situations. This report highlights the terrible reality for children who are trapped in Marseille's violent gang system.",
+          "quiz": [
+            {
+              "q": "What is the main focus of the BBC report?",
+              "opts": [
+                "How to stop gang violence in France",
+                "The history of Marseille",
+                "The daily life of BBC journalists",
+                "How drug gangs in Marseille exploit and brutalise children"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "In the text, what does 'exploit' mean?",
+              "opts": [
+                "To give someone a well-paying job",
+                "To travel to a new country",
+                "To protect someone from harm",
+                "To treat someone unfairly for your own benefit"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What is one terrible task the gangs force children to do?",
+              "opts": [
+                "Build houses",
+                "Kill people",
+                "Sell food",
+                "Drive cars"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "It is very easy for young people to leave the gangs.",
+                "The BBC went inside Marseille's dangerous underworld.",
+                "The gangs only recruit adults.",
+                "Marseille has no drug gang problems."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "The BBC has reported from inside Marseille's dangerous criminal underworld, revealing how drug gangs are increasingly recruiting children. According to the investigation, young people in the French city are being trapped, brutalised, and exploited by powerful criminal networks. These violent gangs use youth to carry out dangerous tasks, including murder. Once drawn into the system, these children face severe violence and find it nearly impossible to escape the control of their exploiters. The report exposes the tragic reality for youth caught in the grip of Marseille's relentless drug war, where vulnerable children are used as disposable tools by brutal gang leaders operating within the city.",
+          "quiz": [
+            {
+              "q": "What is the main topic of this level 3 news text?",
+              "opts": [
+                "The exploitation and brutalisation of children by Marseille drug gangs",
+                "The BBC's new studio in France",
+                "The law system in French courts",
+                "The growth of business in Marseille"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does 'underworld' mean in this context?",
+              "opts": [
+                "A dark forest outside the city",
+                "A popular underground shopping mall",
+                "The secret world of crime and illegal activities",
+                "A train system beneath a city"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What are the young people trapped in Marseille forced to do?",
+              "opts": [
+                "Teach other children in schools",
+                "Work for the police department",
+                "Carry out dangerous tasks, including murder",
+                "Write news stories for the BBC"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is FALSE based on the text?",
+              "opts": [
+                "The trapped children can easily leave the criminal networks.",
+                "Drug gangs in Marseille recruit children.",
+                "The BBC reported on this issue.",
+                "Young people are brutalised and exploited by the gangs."
+              ],
+              "ans": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mw8vgpf97eyx",
+      "date": "2026-11-09",
+      "category": "World",
+      "title": "Surgeon having lunch near Krakow shooting undoubtedly saved officer's life, colleague says",
+      "src": "https://www.bbc.co.uk/news/articles/c5x2vw4e1gx1o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Two Polish police officers are heroes. They stopped a gunman in Krakow. The gunman wanted to kill more people. During the shooting, a surgeon was having lunch nearby. The surgeon saw an injured police officer. The doctor went to help the officer right away. A colleague said the surgeon saved the officer's life. Now, more details about the event are clear. People are happy that the surgeon was near the shooting. The police officers and the surgeon did a great job.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "A gunman escaped from police in Krakow.",
+                "Two police officers had lunch at a restaurant.",
+                "A surgeon helped save an injured police officer during a shooting in Krakow.",
+                "A doctor decided to become a police officer."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'colleague' mean in this text?",
+              "opts": [
+                "A person you work with",
+                "A police chief",
+                "A person who is sick",
+                "A dangerous gunman"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Where was the surgeon when the shooting happened?",
+              "opts": [
+                "Having lunch nearby",
+                "At home sleeping",
+                "Driving a police car",
+                "Inside a hospital room"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "The story happened in a city in Germany.",
+                "The gunman killed many doctors.",
+                "The surgeon refused to help the police officer.",
+                "Two police officers stopped the gunman from killing more people."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "2": {
+          "text": "More details have emerged about two Polish police officers who are being praised for their bravery. They successfully prevented a gunman in Krakow from killing more people during a dangerous shooting incident. At the same time, a surgeon happened to be having lunch near the location of the attack. When an officer was injured, the surgeon immediately stepped in to provide medical assistance. A colleague of the surgeon later stated that the doctor undoubtedly saved the police officer's life. The quick actions of both the brave police officers and the attentive surgeon helped prevent a much worse tragedy from happening in the city.",
+          "quiz": [
+            {
+              "q": "What main event is described in the article?",
+              "opts": [
+                "A lunch meeting between Polish doctors and police officers",
+                "A new safety law passed in Poland",
+                "A hospital opening in Krakow",
+                "Details about police officers and a surgeon responding to a gunman in Krakow"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "In the text, what does the word 'emerged' mean?",
+              "opts": [
+                "Disappeared completely",
+                "Become known or clear",
+                "Caused harm",
+                "Ended quickly"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Who stated that the surgeon saved the officer's life?",
+              "opts": [
+                "The gunman",
+                "The surgeon's colleague",
+                "The injured officer's family",
+                "A local news reader"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is FALSE based on the text?",
+              "opts": [
+                "The surgeon was eating lunch near the incident.",
+                "The police officers were criticized for failing to act.",
+                "The shooting took place in Krakow.",
+                "The surgeon provided medical help to an injured officer."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "Further details have emerged regarding an incident in Krakow, where two Polish police officers have been widely hailed for preventing a gunman from committing further killings. As the dangerous situation unfolded, a surgeon who was having lunch nearby noticed the crisis and rushed to assist an injured officer. The doctor's rapid medical intervention proved critical during the event. According to a colleague, the surgeon's timely actions undoubtedly saved the police officer's life. The combined effort of the officers who contained the gunman and the doctor who provided immediate medical care has drawn significant public attention as more information about the event is released.",
+          "quiz": [
+            {
+              "q": "What is the primary focus of this news story?",
+              "opts": [
+                "A debate over medical training for police in Poland",
+                "An investigation into the background of a Polish gunman",
+                "The emerging details of how officers and a surgeon responded to a shooting in Krakow",
+                "A report on restaurant safety in Krakow"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What is the meaning of the word 'hailed' as used in the passage?",
+              "opts": [
+                "Injured severely",
+                "Ignored by the crowd",
+                "Praised publicly",
+                "Arrested by authorities"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What was the surgeon doing just before helping the injured officer?",
+              "opts": [
+                "Patrolling the streets",
+                "Writing a medical report",
+                "Performing surgery at a hospital",
+                "Having lunch nearby"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement accurately reflects the information in the text?",
+              "opts": [
+                "The shooting was prevented before any shots were fired.",
+                "The colleague doubted that the surgeon made any difference.",
+                "Two police officers stopped the gunman from taking more lives.",
+                "The surgeon was injured while fighting the gunman."
+              ],
+              "ans": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mw8vgprh4ks2",
+      "date": "2026-11-09",
+      "category": "World",
+      "title": "Seven Dead After Trains Collide in Egypt",
+      "src": "https://www.bbc.co.uk/news/articles/cwvgr20mmmevo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Two trains crashed in Egypt. The accident happened outside the city of Giza. Both trains were travelling in the same direction. After the crash, several carriages derailed. Sadly, seven people died in the accident. More than 100 people were injured. Help came to the area after the crash. Officials are looking at what happened. People in Egypt are very sad about this news.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "A train crash in Egypt killed seven people and injured over 100.",
+                "Seven trains arrived late in Egypt today.",
+                "A new train station opened in the city of Giza.",
+                "More than 100 people traveled to Giza by train."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'derailed' mean in the text?",
+              "opts": [
+                "Came off the tracks",
+                "Traveled very fast",
+                "Turned back around",
+                "Stopped to get fuel"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Where did the crash happen?",
+              "opts": [
+                "Outside the city of Giza",
+                "Near a mountain river",
+                "Inside a train station",
+                "In the middle of Cairo"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE according to the story?",
+              "opts": [
+                "The trains were travelling in the same direction.",
+                "Exactly 100 people died in the accident.",
+                "Nobody was injured in the train crash.",
+                "The trains were travelling in opposite directions."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "A tragic train accident has occurred in Egypt outside the city of Giza. Two trains travelling in the same direction crashed into each other. The force of the impact caused several carriages to derail. Officials confirmed that seven people died as a result of the collision. In addition, more than 100 people suffered injuries. Emergency services quickly arrived at the scene to help the victims and clear the tracks. Authorities are now investigating how the two trains ended up crashing while moving in the same direction.",
+          "quiz": [
+            {
+              "q": "What is the main topic of this news report?",
+              "opts": [
+                "Safety tips for passengers traveling on trains in Egypt.",
+                "A delay in train services across Egyptian cities.",
+                "Plans to build new railway lines outside of Giza.",
+                "A collision between two trains in Egypt that caused deaths and injuries."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "In the text, what does the word 'collision' mean?",
+              "opts": [
+                "A planned meeting",
+                "A quick repair",
+                "A long travel journey",
+                "A crash between moving vehicles"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "How many people were injured in the crash?",
+              "opts": [
+                "More than 100",
+                "Fewer than seven",
+                "Over seven hundred",
+                "Exactly 100"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is FALSE based on the text?",
+              "opts": [
+                "The accident happened outside Giza.",
+                "Seven people lost their lives in the accident.",
+                "The two trains were moving in opposite directions.",
+                "Several train carriages came off the tracks."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "3": {
+          "text": "A severe railway accident outside the Egyptian city of Giza has left seven people dead and more than 100 others injured. The incident occurred when two trains travelling in the same direction crashed into one another. The violent impact caused several train carriages to derail from the tracks. Emergency response teams rushed to the site to assist the injured passengers and manage the wreckage. Investigators are working to determine how two trains operating on the same route in the same direction came to collide, resulting in significant casualties.",
+          "quiz": [
+            {
+              "q": "What is the main point of the article?",
+              "opts": [
+                "Seven train carriages were stolen outside the city of Giza.",
+                "Two trains collided outside Giza, resulting in seven fatalities and over 100 injuries.",
+                "Egyptian authorities are replacing all old train carriages near Giza.",
+                "Train travel in Egypt has been completely stopped following an investigation."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What is the best definition for 'casualties' as implied in the context?",
+              "opts": [
+                "Emergency response teams",
+                "Train drivers",
+                "Official train schedules",
+                "People hurt or killed in an accident"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What happened to the carriages as a result of the impact?",
+              "opts": [
+                "They detached and safely stopped.",
+                "They caught fire instantly.",
+                "They suffered no physical damage.",
+                "Several of them derailed."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE according to the passage?",
+              "opts": [
+                "Fewer than 100 people were injured in the crash.",
+                "The two trains involved were travelling in the same direction.",
+                "The crash involved trains heading in different directions.",
+                "The incident took place inside the city center of Giza."
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mw7g0ucnzjy0",
       "date": "2026-11-08",
