@@ -1,6 +1,441 @@
 {
-  "updated": "2026-11-09T06:20:22.253Z",
+  "updated": "2026-11-10T06:20:50.615Z",
   "items": [
+    {
+      "id": "mwaax6bbcv40",
+      "date": "2026-11-10",
+      "category": "World",
+      "title": "Trump says FBI investigating Nvidia boss's affair with alleged Chinese spy",
+      "src": "https://www.bbc.co.uk/news/articles/cqg7x7dpvym8o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "The US president said he spoke with Jensen Huang on Monday. Jensen Huang is the boss of Nvidia. The president asked him about an affair. The affair was with an alleged Chinese spy. The president said the FBI is investigating the matter. This is a very serious situation for the company chief. Many people are talking about the news. The government is looking into the relationship closely.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Jensen Huang is leaving his job at Nvidia today.",
+                "The FBI stopped working with the US president.",
+                "The US president spoke to Nvidia's boss about an FBI investigation into an affair with an alleged spy.",
+                "Nvidia is buying a new company in China."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does 'alleged' mean in this text?",
+              "opts": [
+                "Proven true in court",
+                "Said to be true but not proven",
+                "Happening very fast",
+                "Very famous"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "When did the US president speak with Jensen Huang?",
+              "opts": [
+                "On Tuesday",
+                "On Monday",
+                "On Friday",
+                "On Sunday"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "True or False: The president asked Huang about an affair with an alleged spy.",
+              "opts": [
+                "The text says they never talked",
+                "Not mentioned",
+                "False",
+                "True"
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "2": {
+          "text": "The US president stated that he had a conversation with Nvidia boss Jensen Huang on Monday. During their discussion, the president asked Huang about his affair with an alleged Chinese spy. The president revealed that the FBI is currently investigating the situation. This news has raised significant concerns because Huang leads one of the world's top technology companies. The investigation focuses on the relationship between the business leader and the suspected spy. It remains unclear what the FBI has discovered so far, but the government is taking the matter very seriously as they look deeper into the case.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the article?",
+              "opts": [
+                "An FBI investigation into Jensen Huang's affair with an alleged spy",
+                "A trade agreement between the US and China",
+                "A new technology product made by Nvidia",
+                "The history of the FBI and US presidents"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In the text, what does the word 'investigating' mean?",
+              "opts": [
+                "Selling a product to customers",
+                "Ignoring a problem",
+                "Trying to find out the facts about something",
+                "Creating a new law"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Who is Jensen Huang?",
+              "opts": [
+                "An alleged Chinese spy",
+                "The boss of Nvidia",
+                "The US president",
+                "The head of the FBI"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which of the following statements is TRUE according to the text?",
+              "opts": [
+                "The president spoke with Huang on Tuesday.",
+                "The FBI is looking into Huang's affair with an alleged Chinese spy.",
+                "Jensen Huang refused to speak to the president.",
+                "Nvidia is a Chinese government agency."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "The US president announced that he spoke directly with Nvidia boss Jensen Huang on Monday regarding troubling allegations. According to the president, he questioned Huang about an affair involving an alleged Chinese spy. Furthermore, the president stated that the FBI is actively investigating the matter. The revelation has drawn intense interest due to Huang's prominent position at the helm of a major American technology giant. A security investigation involving high-level corporate leaders and foreign espionage threats presents significant concerns for national security and business operations. The official inquiry by the FBI highlights the severity of the situation, though further details about the investigation's current findings have not yet been disclosed by federal authorities.",
+          "quiz": [
+            {
+              "q": "What is the primary focus of this news report?",
+              "opts": [
+                "Nvidia's new microchip technology",
+                " Jensen Huang's resignation from Nvidia",
+                "A conflict between US federal agencies",
+                "An FBI inquiry into the Nvidia chief's relationship with a suspected Chinese spy"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does the word 'allegation' mean in this context?",
+              "opts": [
+                "A successful business partnership",
+                "A official written contract between two companies",
+                "A final judgment made by a legal court",
+                "A statement that someone did something wrong, made without proof"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Who told the public about the FBI investigation?",
+              "opts": [
+                "Jensen Huang",
+                "The FBI director",
+                "The US president",
+                "The alleged Chinese spy"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is FALSE based on the provided text?",
+              "opts": [
+                "Jensen Huang is the boss of Nvidia.",
+                "The president asked Huang about an affair with an alleged Chinese spy.",
+                "The US president spoke with Jensen Huang on Monday.",
+                "The president said the FBI has already finished its investigation."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwaawot1kl5u",
+      "date": "2026-11-10",
+      "category": "World",
+      "title": "Ukraine Peace Talks Resume in the United Arab Emirates",
+      "src": "https://www.bbc.co.uk/news/articles/cqpvgvrpjvv8o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Kyiv, Washington, and Moscow are sending delegations to the United Arab Emirates. They are holding peace talks there. These are the first trilateral talks between the three sides since February. US officials say that the warring sides are showing some flexibility. People hope these meetings can help bring peace. The delegations are meeting in the United Arab Emirates to discuss the situation. All three sides want to talk after a long time without these three-way meetings. Officials from the United States shared the news about the new flexibility.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "The US is ending all peace talks.",
+                "Three sides are meeting in the UAE for peace talks.",
+                "The UAE is starting a new war.",
+                "Kyiv and Moscow refuse to speak with Washington."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'trilateral' mean in this text?",
+              "opts": [
+                "Involving four countries",
+                "Involving two sides",
+                "Involving three groups",
+                "Involving one person"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Where are the peace talks taking place?",
+              "opts": [
+                "In the United Arab Emirates",
+                "In Ukraine",
+                "In Russia",
+                "In the United States"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "True or false: US officials say the warring sides are showing some flexibility.",
+              "opts": [
+                "False",
+                "The text does not say",
+                "True",
+                "Only Moscow is flexible"
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "2": {
+          "text": "Delegations from Kyiv, Washington, and Moscow are traveling to the United Arab Emirates for important discussions. They are participating in peace talks to address the ongoing conflict. This event marks the very first trilateral talks involving all three sides since February. According to US officials, the warring sides are now showing some flexibility during the negotiations. The meeting in the United Arab Emirates brings the three nations together after months without this format. Many hope that this new willingness to compromise can lead to progress. The presence of representatives from Ukraine, the United States, and Russia highlights the significance of these renewed diplomatic efforts in the region.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the news report?",
+              "opts": [
+                "A new trade deal in the Middle East",
+                "The resumption of three-way peace talks involving Kyiv, Washington, and Moscow",
+                "A military exercise in the United Arab Emirates",
+                "A meeting between only two warring nations"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "In the text, what does the word 'delegations' mean?",
+              "opts": [
+                "Travel agencies",
+                "Groups of people chosen to represent others",
+                "Military armies",
+                "Peace treaties"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "When was the last time these three sides held trilateral talks before this meeting?",
+              "opts": [
+                "In February",
+                "Last week",
+                "Three years ago",
+                "They have never met before"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which of the following statements is TRUE based on the text?",
+              "opts": [
+                "The talks are happening in Washington.",
+                "The talks are the first bilateral meetings since February.",
+                "US officials say the warring sides show some flexibility.",
+                "Only Ukraine and Russia sent delegates."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "3": {
+          "text": "Diplomatic efforts are expanding as Kyiv, Washington, and Moscow send delegations to the United Arab Emirates for peace talks. This gathering represents the first trilateral talks among the three parties since February. US officials have reported that the warring sides are demonstrating 'some flexibility' as discussions resume. The choice of the United Arab Emirates as the host location provides a neutral ground for these crucial negotiations. After months without three-way diplomatic engagements, the return to the negotiating table offers a fresh opportunity to address the conflict. Representatives from Ukraine, the United States, and Russia aim to use this diplomatic momentum to explore potential avenues toward peace, with American officials noting the slight shift in the attitudes of the participating nations.",
+          "quiz": [
+            {
+              "q": "What main event is described in the passage?",
+              "opts": [
+                "The signing of a final peace treaty",
+                "The arrival of delegates in the UAE for trilateral peace talks",
+                "The cancellation of diplomatic talks since February",
+                "A conflict between Washington and the UAE"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'flexibility' mean as used in the article?",
+              "opts": [
+                "A demand for more military power",
+                "A strict refusal to change",
+                "A willingness to change or compromise",
+                "Physical stretching abilities"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which country is hosting the trilateral talks?",
+              "opts": [
+                "Ukraine",
+                "Russia",
+                "The United Arab Emirates",
+                "The United States"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is FALSE according to the text?",
+              "opts": [
+                "These are the first trilateral talks between the sides since February.",
+                "The peace talks are taking place in Washington.",
+                "Kyiv, Washington, and Moscow are all sending delegations.",
+                "US officials say the warring sides show some flexibility."
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwaawtufm9hn",
+      "date": "2026-11-10",
+      "category": "World",
+      "title": "Trump Says More US Attacks on Iran Are Highly Unlikely",
+      "src": "https://www.bbc.co.uk/news/articles/cq5yny4nl2d3o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "US President Trump spoke about Iran. He said more US attacks on Iran are highly unlikely right now. The United States is keeping the status quo with Iran. The status quo means keeping things the same as they are now. But the president also said the US remains locked and loaded. This means the US is ready if the situation changes. For now, things between the two countries are staying the same. Trump hopes the situation will not change in the future.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Iran attacked the US today.",
+                "New US attacks on Iran are very unlikely right now.",
+                "The US changed its president.",
+                "The US is planning many new attacks on Iran."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the phrase 'status quo' mean in the text?",
+              "opts": [
+                "Starting a new war",
+                "Keeping things the same as they are now",
+                "Moving to a new place",
+                "Changing everything quickly"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What phrase did President Trump use to show the US is ready if things change?",
+              "opts": [
+                "Up and down",
+                "Locked and loaded",
+                "Wait and see",
+                "Safe and sound"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "True or False: President Trump said the US is currently changing its status quo with Iran.",
+              "opts": [
+                "True",
+                "It is impossible to know",
+                "False",
+                "Not mentioned"
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "2": {
+          "text": "US President Donald Trump has stated that further US military attacks against Iran are currently highly unlikely. According to the president, the United States is choosing to maintain the status quo with the country. The term status quo refers to keeping the existing state of affairs without making major changes. However, Trump warned that the US military remains locked and loaded if the overall situation should change. This statement means that the American forces are fully prepared to take action quickly if necessary. For now, the policy remains focused on keeping the current situation stable, but the government is watching for any changes.",
+          "quiz": [
+            {
+              "q": "What is the main point of President Trump's statement?",
+              "opts": [
+                "The US is ending all military actions forever.",
+                "The US has already started new attacks.",
+                "Further US attacks on Iran are highly unlikely at present.",
+                "Iran has asked for peace with the US."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "In this text, what does 'status quo' mean?",
+              "opts": [
+                "A state of active war",
+                "A new peace agreement",
+                "A complete breakdown of rules",
+                "The existing state of affairs"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What condition could cause the US military readiness to matter?",
+              "opts": [
+                "If the situation changes",
+                "If status quo means peace",
+                "If the US gets a new president",
+                "If Iran changes its name"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "The US has officially declared war on Iran.",
+                "The US military is locked and loaded if things change.",
+                "Trump said new attacks are very likely to happen soon.",
+                "The US is changing its policy every day."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "US President Donald Trump has announced that additional US strikes against Iran are highly unlikely at the present moment. He explained that the United States is currently maintaining the status quo regarding its relation with Iran. In political contexts, maintaining the status quo signifies preserving existing conditions rather than introducing changes or escalating conflict. Despite this calm stance, Trump emphasized that the United States military remains locked and loaded should the overall circumstances shift. By using the phrase locked and loaded, the president indicated that US forces are completely prepared for immediate military action if the situation deteriorates. Therefore, while the current policy favors stability and restraint, American military readiness remains high in case of any unexpected developments with Iran.",
+          "quiz": [
+            {
+              "q": "Which statement best summarizes the news report?",
+              "opts": [
+                "Iran has launched new attacks against the US forces.",
+                "The US is maintaining its current stance with Iran, though military forces remain ready.",
+                "President Trump has signed a new treaty with Iran.",
+                "The US is escalating military actions against Iran immediately."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the term 'status quo' mean in political contexts?",
+              "opts": [
+                "Declaring immediate military defeat",
+                "Creating new international borders",
+                "Preserving existing conditions",
+                "Increasing tax rates on trade"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What phrase did Trump use to indicate that US forces are prepared for immediate action?",
+              "opts": [
+                "Signed and delivered",
+                "Down and out",
+                "Safe and secure",
+                "Locked and loaded"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which of the following is FALSE according to the text?",
+              "opts": [
+                "Trump stated that more US attacks on Iran are highly unlikely.",
+                "Trump said the military is not prepared if circumstances shift.",
+                "US forces are ready to act if the situation deteriorates.",
+                "The US is currently preserving existing conditions with Iran."
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mw8vgp2ijq40",
       "date": "2026-11-09",
