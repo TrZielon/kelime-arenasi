@@ -1,6 +1,296 @@
 {
-  "updated": "2026-11-10T06:20:50.615Z",
+  "updated": "2026-11-11T06:21:07.670Z",
   "items": [
+    {
+      "id": "mwbqcpms7rqh",
+      "date": "2026-11-11",
+      "category": "World",
+      "title": "US Soldier Arrested in UK Over Russia Spying Suspicions",
+      "src": "https://www.bbc.co.uk/news/articles/c6d7q77xgw0vo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "A 41-year-old soldier from the US Army was arrested in the UK. Police suspect he was spying for Russia. The man is a senior soldier. He is accused of national security offences. Right now, police are questioning him in London. The authorities take national security very seriously. They want to find out what happened. This situation is important for both the US and the UK. The soldier remains in London while police ask him questions. More news will come later as the investigation continues.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Russia and the UK started a new program.",
+                "A soldier was arrested in the UK for suspected spying.",
+                "London police hired a new US soldier.",
+                "A soldier moved to London to work."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "In this story, what does 'arrested' mean?",
+              "opts": [
+                "Sent on a business trip",
+                "Given a promotion at work",
+                "Allowed to go home",
+                "Taken away by police for a suspected crime"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "How old is the US Army soldier?",
+              "opts": [
+                "41 years old",
+                "31 years old",
+                "61 years old",
+                "51 years old"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE based on the text?",
+              "opts": [
+                "The soldier is a junior member of the army.",
+                "The soldier was arrested in the United States.",
+                "The soldier is accused of stealing money.",
+                "The soldier is being questioned in London."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "2": {
+          "text": "A 41-year-old senior soldier from the US Army has been arrested in the United Kingdom. He is suspected of spying for Russia and is now accused of national security offences. Following his arrest, he was taken to London, where officials are currently questioning him about his actions. Because he is a senior soldier, this case is very important to national security teams. Investigators are working to learn more details about the situation and what information might be involved. The investigation is still ongoing in London. Authorities have not given more details yet, but the man remains in custody while questioning continues.",
+          "quiz": [
+            {
+              "q": "What is the main topic of this article?",
+              "opts": [
+                "London police are hiring new security guards.",
+                "A senior US soldier was arrested in the UK for suspected Russian espionage.",
+                "A US soldier received an award in London.",
+                "The UK and Russia signed a new national security agreement."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does 'offences' mean in this story?",
+              "opts": [
+                "Military training exercises",
+                "Crimes or illegal acts",
+                "Safety rules",
+                "Official rewards"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Where is the soldier currently being questioned?",
+              "opts": [
+                "In Moscow",
+                "In New York",
+                "In Washington",
+                "In London"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "The investigation in London is completely finished.",
+                "The arrested man is a senior soldier.",
+                "The soldier was arrested in Russia.",
+                "The soldier is 35 years old."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "A 41-year-old senior US Army soldier has been arrested in the United Kingdom under suspicion of spying for Russia. The soldier is facing serious charges related to national security offences. Following his arrest by authorities, he was brought to London, where he is currently undergoing questioning by investigators. Given his senior rank within the military, the allegations have raised significant concern regarding national security. Officials are conducting a thorough investigation to determine the full scope of the alleged activities. As the inquiry proceeds, the suspect remains in police custody in London while law enforcement officers work to gather more details about the case.",
+          "quiz": [
+            {
+              "q": "What is the primary focus of this news report?",
+              "opts": [
+                "The arrest and questioning of a US Army soldier in the UK for spying for Russia",
+                "A change in national security laws in the United Kingdom",
+                "A new military alliance between the US, the UK, and Russia",
+                "The retirement of a 41-year-old senior US Army official in London"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In the text, what does 'allegations' refer to?",
+              "opts": [
+                "Official military promotions",
+                "Public awards for bravery",
+                "Signed peace treaties",
+                "Unproven claims that someone has done something wrong"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What kind of offences is the soldier accused of?",
+              "opts": [
+                "Property damage",
+                "Traffic violations",
+                "Financial crimes",
+                "National security offences"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE based on the summary?",
+              "opts": [
+                "The soldier was detained inside the United States.",
+                "The suspect is a 41-year-old junior soldier.",
+                "The soldier is currently being questioned in London.",
+                "Police have finished questioning the suspect."
+              ],
+              "ans": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwbqde520179",
+      "date": "2026-11-11",
+      "category": "World",
+      "title": "US House Blocks Bid to Impeach Defence Secretary",
+      "src": "https://www.bbc.co.uk/news/articles/cxly4y5jzl0qo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "The US House of Representatives blocked an attempt to impeach Defence Secretary Pete Hegseth. This decision stops the attempt for now. Donald Trump was happy with the result. He praised Hegseth and called him a Great American Patriot. However, this is not the end of the story. Democrats can try to impeach Hegseth again next year. For now, Hegseth keeps his job as the US Defence Secretary.",
+          "quiz": [
+            {
+              "q": "What did the US House do?",
+              "opts": [
+                "They blocked a bid to impeach Pete Hegseth.",
+                "They chose a new Defence Secretary.",
+                "They fired Pete Hegseth.",
+                "They helped Democrats pass a new law."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does 'praised' mean in this text?",
+              "opts": [
+                "Asked someone to leave",
+                "Said good things about someone",
+                "Gave a gift to someone",
+                "Fought with someone"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What did Trump call Pete Hegseth?",
+              "opts": [
+                "A Democrat Leader",
+                "A Great American Patriot",
+                "A US House Leader",
+                "A New President"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "True or False: Democrats can try to impeach Hegseth again next year.",
+              "opts": [
+                "True",
+                "False",
+                "The text says they cannot try again.",
+                "The text says Trump will stop them."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "The United States House of Representatives has blocked an attempt to impeach Defence Secretary Pete Hegseth, ending the effort for the time being. Donald Trump welcomed the outcome of the vote. He publicly praised Hegseth, describing him as a Great American Patriot. Despite this setback for Hegseth's political opponents, the issue is not completely resolved. Democrats still have the opportunity to try to impeach the Defence Secretary again next year. For now, Hegseth remains in his position, but future efforts against him could return in the upcoming year as Democrats retain the option to bring the bid back.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the passage?",
+              "opts": [
+                "Donald Trump was impeached by the US House.",
+                "The US House blocked an effort to impeach Pete Hegseth for now.",
+                "Democrats successfully removed Pete Hegseth from office.",
+                "Pete Hegseth resigned from his position."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "In the text, what does the word 'outcome' mean?",
+              "opts": [
+                "A starting point",
+                "A financial cost",
+                "A secret plan",
+                "A final result"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "How did Donald Trump react to the House's decision?",
+              "opts": [
+                "He asked Hegseth to resign.",
+                "He voted against Hegseth.",
+                "He criticized the House.",
+                "He welcomed the outcome."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which of the following statements is TRUE based on the text?",
+              "opts": [
+                "The House successfully impeached Pete Hegseth.",
+                "Trump called Hegseth a bad leader.",
+                "Democrats can try to impeach Hegseth again next year.",
+                "Democrats can never try to impeach Hegseth again."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "3": {
+          "text": "The US House of Representatives has successfully blocked an attempt to impeach Defence Secretary Pete Hegseth, halting the effort for now. Following the vote, Donald Trump welcomed the outcome and strongly praised Hegseth, calling him a Great American Patriot. Although this vote provides temporary relief for the Defence Secretary, the political battle is far from over. Democrats have not lost the ability to challenge him further, as they can attempt another impeachment effort next year. For the moment, Hegseth retains his leadership post at the Department of Defence, but the possibility of renewed action by House Democrats remains a potential hurdle for him in the coming year.",
+          "quiz": [
+            {
+              "q": "What is the primary focus of the news article?",
+              "opts": [
+                "The US House blocking an impeachment attempt against Pete Hegseth",
+                "Trump's plan to replace Pete Hegseth next year",
+                "The permanent end of all impeachment bids against Hegseth",
+                "A new law passed by Democrats in the US House"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'halting' mean in the context of the text?",
+              "opts": [
+                "Stopping or pausing",
+                "Ignoring completely",
+                "Starting a debate",
+                "Accelerating quickly"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Who described Pete Hegseth as a 'Great American Patriot'?",
+              "opts": [
+                "The US House Speaker",
+                "Donald Trump",
+                "House Democrats",
+                "Pete Hegseth himself"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is FALSE according to the summary?",
+              "opts": [
+                "The bid to impeach Pete Hegseth was blocked for now.",
+                "Trump praised Hegseth after the vote.",
+                "Pete Hegseth is the Defence Secretary.",
+                "Democrats are prevented from trying to impeach Hegseth ever again."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mwaax6bbcv40",
       "date": "2026-11-10",
