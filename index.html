@@ -355,23 +355,78 @@ if(n)n(); else P_LANE[l]--;
 }
 const GRADE2=`Bir İngilizce akademik metnin Türkçe ana düşüncesini öğrenci yazdı. Referans ana düşünceyle karşılaştır ve 0 ile 100 arasında bir benzerlik puanı ver: 100 = aynı ana fikir, 60 = ana fikir doğru ama önemli bir ayrıntı eksik, 0 = alakasız ya da yanlış. Kelime seçimi ve ifade farklılıklarını cezalandırma. YALNIZCA geçerli JSON döndür: {"skor": 0-100 arası tam sayı, "yorum": "Türkçe, 2 cümle. Eksik ya da yanlış noktayı belirt, doğru ana düşünceyi kısaca yaz."}`;
 
-async function askJ(sys,input,ms,tier){
-if(!SMP){LASTERR='yapay zeka bu sayfada açık değil';return null}
-const lane=(sys===GRADE||sys===GRADE2||sys===GLOSS)?'fg':'bg';
-await P_acquire(lane);
-const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),ms||(lane==='fg'?60000:180000));
-try{
-const o={cache:false,signal:ac.signal};if(tier)o.modelTier=tier;
-const r=await SMP(sys+'\n\nGİRDİ:\n'+input,o);
-if(r&&r.truncated){LASTERR='çıktı kesildi';return null}
-const m=String(r&&r.text||'').match(/[\[{][\s\S]*[\]}]/);
-if(m){const v=JSON.parse(m[0]);if(v&&typeof v==='object'){LASTERR='';return v}}
-LASTERR='geçersiz yanıt';return null;
-}catch(e){
-const c=e&&e.code;
-LASTERR=c==='rate_limited'?'çok fazla istek, biraz sonra yeniden dene':(e&&e.name==='AbortError')?'zaman aşımı':((e&&e.message)||'bağlantı hatası');
-return null;
-}finally{clearTimeout(tm);P_release(lane)}
+async function askJ(sys, input, ms, tier, prio) {
+
+  if (!SMP) {
+    LASTERR = 'yapay zeka bu sayfada açık değil';
+    return null;
+  }
+
+  // prio=true: kullanıcının anlık isteği (kelime bakma, değerlendirme) arka plan üretimini beklemez
+  if (!prio) await gateIn();
+
+  try {
+
+    const maxRetries = prio ? 2 : 3;
+    const baseWait = 800;
+
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+
+      const ac = new AbortController();
+      const tm = setTimeout(() => ac.abort(), ms || (tier === 'quick' ? 60000 : 180000));
+
+      try {
+
+        const o = { cache: false, signal: ac.signal };
+
+        if (tier) o.modelTier = tier;
+
+        const r = await SMP(sys + '\n\nGİRDİ:\n' + input, o);
+
+        if (r && r.truncated) {
+          LASTERR = 'çıktı kesildi';
+          return null;
+        }
+
+        const m = String(r && r.text || '').match(/[\[{][\s\S]*[\]}]/);
+
+        if (m) {
+          const v = JSON.parse(m[0]);
+          if (v && typeof v === 'object') {
+            LASTERR = '';
+            return v;
+          }
+        }
+
+        LASTERR = 'geçersiz yanıt';
+
+      } catch (e) {
+
+        const c = e && e.code;
+
+        LASTERR = c === 'not_granted' ? 'izin verilmedi'
+          : c === 'rate_limited' ? 'çok fazla istek, biraz sonra yeniden dene'
+          : c === 'session_expired' ? 'oturumun yeniden açılması gerekiyor'
+          : (e && e.name === 'AbortError') ? 'zaman aşımı'
+          : ((e && e.message) || 'bağlantı hatası');
+
+        if (c === 'not_granted') return null;
+
+      } finally {
+        clearTimeout(tm);
+      }
+
+      if (attempt < maxRetries - 1) {
+        await new Promise(res => setTimeout(res, baseWait * Math.pow(2, attempt)));
+      }
+    }
+
+    return null;
+
+  } finally {
+    if (!prio) gateOut();
+  }
+
 }
 
 async function grade(){
@@ -585,8 +640,9 @@ const PARA_G=`Sen BUEPT sınavına hazırlanan öğrenciler için akademik İngi
 
 const GLOSS=`Verilen İngilizce kelimelerin her birinin en yaygın Türkçe karşılığını yaz (1-3 kelime; çekimli biçimse o biçimin anlamı). YALNIZCA geçerli JSON döndür: {"kelime":"Türkçe karşılık"}. Anahtarlar küçük harfli ve girdideki gibi olsun.`;
 
-const GRADE=`Bir İngilizce akademik metnin Türkçe ana düşüncesini öğrenci yazdı. Referans ana düşünceyle karşılaştır. Yalnızca genel ana fikrin doğru aktarılması yeterlidir; kelime seçimi, ifade ya da ayrıntılardaki eksiklere takılma. Genel yapı ve ana fikir doğruysa onay ver. Ana fikir yanlışsa ya da belirgin biçimde eksikse onaylama. YALNIZCA geçerli JSON döndür: {"onay":true veya false,"yorum":"Türkçe, 2-3 cümle. Onaylanmadıysa eksik ya da yanlış noktayı ve doğru ana düşünceyi açıkla; onaylandıysa kısa bir değerlendirme yap."}`;
+const GRADE=`Sen akademik okuma eğitmenisin. Öğrenci bir İngilizce paragrafın Türkçe ana düşüncesini yazdı. REFERANS ANA DÜŞÜNCE ve PARAGRAF verilecek. Öğrencinin cevabını referansla karşılaştırıp 0-100 arasında bir benzerlik puanı ver. Puan ölçeği: 90-100 ana fikir tam ve doğru; 60-89 ana fikir doğru ama eksik ya da zayıf ifade; 30-59 kısmen ilgili, önemli yanlışlar var; 0-29 yanlış, konu dışı, anlamsız, rastgele ya da kopyalanmış metin. Öğrenci paragraftan rastgele kelimeler sıralamış ya da anlamsız yazmışsa 0-20 ver. Yalnızca cevabın içeriğine bak; yazım ve üslup puanını düşürmesin. YALNIZCA geçerli JSON döndür: {"skor":0-100 arası tam sayı,"yorum":"Türkçe, 2-3 cümle; eksik ya da yanlış noktayı belirt, doğru ana düşünceyi kısaca söyle"}`;
 
+const SYN=`Sen İngilizce sözlük yazarısın. Verilen tek İngilizce kelime veya kalıp için: "tr" en yaygın Türkçe karşılık (1-3 kelime); "syn" en fazla 5 eş anlamlı İngilizce kelime, her biri {"en":"kelime","tr":"Türkçe karşılık"}. Çekimli biçimse temel biçimi kullan. YALNIZCA geçerli JSON döndür: {"tr":"...","syn":[{"en":"...","tr":"..."}]}`;
 const TR_SYS=`Sen İngilizce-Türkçe sözlük yazarısın. Girdide numaralandırılmış İngilizce kelimeler ve kalıplar var. Her biri için en yaygın Türkçe karşılığını yaz (1-3 kelime). Kelimeyi İngilizce bırakma ve aynen tekrarlama. YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"tr":"Türkçe karşılık"}]}. Her numarayı girdideki sırayla ve eksiksiz döndür.`;
 
 const $=s=>document.querySelector(s);
