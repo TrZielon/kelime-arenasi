@@ -7444,3 +7444,517 @@ body{
   setTimeout(injectPwa,350);window.addEventListener('hashchange',()=>setTimeout(injectPwa,300));
 })();
 </script>
+<!-- ========================================================================
+     KELİME ARENASI · SONUNA EKLENECEK TAM ONARIM YAMASI (v3)
+     ======================================================================== -->
+<style id="arenaMasterPatchCss">
+:root, [data-pal="akdeniz"], body[data-pal="akdeniz"], body[data-pal="kitaplik"]{
+  --bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;
+  --p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--ok:#059669;
+  --shadow:0 22px 44px -26px rgba(13,43,42,.38);
+  --glow:rgba(20,184,166,.22);--acc-glow:rgba(245,158,11,.28);
+}
+[data-pal="derin_akdeniz"], body[data-pal="derin_akdeniz"], body[data-pal="gece"], body[data-pal="sicak_espresso"]{
+  --bg:#061514;--card:#0c2423;--line:#194240;--ink:#f3f8f6;--mut:#7ca39e;
+  --p:#0f766e;--p2:#14b8a6;--acc:#fbbf24;--bad:#f43f5e;--soft:#11312f;--ok:#34d399;
+  --shadow:0 22px 44px -24px rgba(0,0,0,.82);
+  --glow:rgba(20,184,166,.28);--acc-glow:rgba(251,191,36,.30);
+}
+[data-pal="derin_akdeniz"] .tip, [data-pal="derin_akdeniz"] .mbox, [data-pal="derin_akdeniz"] .chipst, [data-pal="derin_akdeniz"] .dots, [data-pal="derin_akdeniz"] .qbox, [data-pal="derin_akdeniz"] .card{
+  background:var(--card)!important;color:var(--ink)!important;border-color:var(--line)!important;
+}
+[data-pal="derin_akdeniz"] input, [data-pal="derin_akdeniz"] textarea, [data-pal="derin_akdeniz"] select{
+  background:#091e1d!important;color:var(--ink)!important;border-color:var(--line)!important;
+}
+[data-pal="derin_akdeniz"] .nav{background:rgba(6,21,20,.88)!important}
+
+/* Gereksiz / Çift Butonları Kesin Gizle */
+#navFetihBtn, #navSinavBtn, .buept-btn, [id*="buept" i], [class*="buept" i], a[href*="buept" i]{
+  display:none!important;visibility:hidden!important;
+}
+nav.nav > button:not(.logo), nav.nav > a{
+  display:none!important;
+}
+
+/* Eş Anlamlılar & Listeye Ekle Stilleri */
+.syn-box{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+.syn-lbl{font-size:11.5px;font-weight:900;color:var(--mut);text-transform:uppercase;letter-spacing:.04em;margin-right:2px}
+.syn-chip{display:inline-flex;align-items:center;gap:4px;background:var(--soft);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:800;cursor:pointer;transition:all .15s}
+.syn-chip:hover,.syn-chip.sel{border-color:var(--acc);color:var(--acc);background:var(--card)}
+.syn-chip.in-pack{border-color:var(--p);color:var(--p2)}
+.add-word-btn{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff!important;border:0;border-radius:10px;padding:4px 12px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(15,118,110,.28);display:inline-flex;align-items:center;gap:4px;transition:transform .12s,filter .12s}
+.add-word-btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.added-word-badge{background:var(--soft);color:var(--p);padding:3px 10px;border-radius:10px;font-size:12px;font-weight:800;border:1.5px solid var(--line);display:inline-flex;align-items:center;gap:4px}
+</style>
+
+<script id="arenaMasterPatchJs">
+(function(){
+  'use strict';
+  if(window.__arenaMasterPatchV3) return;
+  window.__arenaMasterPatchV3 = true;
+
+  var qS = function(s){ return document.querySelector(s); };
+  var escH = function(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
+
+  /* 1. NAVBAR TEMİZLİĞİ */
+  function cleanNavbarNow(){
+    try{
+      document.querySelectorAll('nav.nav > button:not(.logo), nav.nav > a').forEach(function(el){ el.remove(); });
+      document.querySelectorAll('#navFetihBtn, #navSinavBtn').forEach(function(el){ el.remove(); });
+      document.querySelectorAll('.nav a, .nav button').forEach(function(el){
+        if(/buept/i.test(el.textContent||'')) el.remove();
+      });
+      var nav = qS('.navlinks');
+      if(nav){
+        var fl = nav.querySelectorAll('#fetihlink, a[href*="fetih.html"]');
+        for(var i=1;i<fl.length;i++) fl[i].remove();
+        var sl = nav.querySelectorAll('#sinavlink, a[href*="sinav.html"]');
+        for(var j=1;j<sl.length;j++) sl[j].remove();
+        if(!document.getElementById('fetihlink') && !nav.querySelector('a[href*="fetih.html"]')){
+          var a1 = document.createElement('a');
+          a1.id='fetihlink'; a1.className='haberlink'; a1.href='/fetih.html'; a1.innerHTML='⚔️ Arena Fethi';
+          nav.insertBefore(a1, document.getElementById('addb')||null);
+        }
+        if(!document.getElementById('sinavlink') && !nav.querySelector('a[href*="sinav.html"]')){
+          var a2 = document.createElement('a');
+          a2.id='sinavlink'; a2.className='haberlink'; a2.href='/sinav.html'; a2.innerHTML='📝 Sınav';
+          nav.insertBefore(a2, document.getElementById('addb')||null);
+        }
+      }
+      var stTop = qS('.stats-top');
+      if(stTop && !document.getElementById('themeToggleBtn')){
+        var tb = document.createElement('button');
+        tb.id='themeToggleBtn'; tb.className='chipst'; tb.title='Tema Değiştir (Açık / Koyu)';
+        tb.setAttribute('aria-label','Tema Değiştir');
+        tb.style.cssText='cursor:pointer;padding:6px 11px';
+        tb.textContent = (document.body.dataset.pal==='derin_akdeniz') ? '☀️' : '🌓';
+        stTop.insertBefore(tb, document.getElementById('snd')||null);
+      }
+    }catch(e){}
+  }
+
+  /* 2. KOYU MOD / AÇIK MOD */
+  function applyPalPatch(n){
+    var target = (n==='derin_akdeniz'||n==='gece'||n==='sicak_espresso') ? 'derin_akdeniz' : 'akdeniz';
+    document.documentElement.setAttribute('data-pal', target);
+    if(document.body){
+      document.body.setAttribute('data-pal', target);
+      document.body.dataset.pal = target;
+    }
+    document.querySelectorAll('.dots button').forEach(function(b){
+      b.classList.toggle('on', b.dataset.pal === target);
+    });
+    var tb = document.getElementById('themeToggleBtn');
+    if(tb) tb.textContent = (target==='derin_akdeniz') ? '☀️' : '🌓';
+    try{ localStorage.setItem('ka_pal', target); localStorage.setItem('ka_pal_v3', target); }catch(e){}
+  }
+  if(typeof setPal !== 'undefined') setPal = applyPalPatch;
+  else window.setPal = applyPalPatch;
+  try{ applyPalPatch(localStorage.getItem('ka_pal')||localStorage.getItem('ka_pal_v3')||'akdeniz'); }catch(e){}
+
+  /* 3. SYNONYMS & ANLAMADIĞIN KELİMEYİ EKLE */
+  var PATCH_SYNS = {
+    'rule':['govern','reign','direct','regulate'], 'ruler':['sovereign','monarch','leader','governor'],
+    'ally':['partner','confederate','associate','supporter'], 'alliance':['coalition','pact','treaty','union'],
+    'boundary':['border','frontier','limit','perimeter'], 'rationale':['justification','reasoning','logic','basis'],
+    'hinder':['impede','obstruct','hamper','deter'], 'hesitate':['waver','falter','pause','vacillate'],
+    'prevail':['triumph','predominate','persist'], 'prevalent':['widespread','dominant','ubiquitous','common'],
+    'concerning':['regarding','about','pertaining to','as to'], 'fallacy':['misconception','delusion','error','myth'],
+    'misconception':['fallacy','illusion','misunderstanding'], 'suppose':['assume','presume','hypothesize','surmise'],
+    'assume':['suppose','presume','postulate','infer'], 'assumption':['supposition','premise','presumption','hypothesis'],
+    'rival':['competitor','adversary','opponent','contender'], 'rivalry':['competition','contention','conflict'],
+    'treaty':['accord','pact','agreement','covenant'], 'legitimacy':['validity','authority','lawfulness'],
+    'legitimate':['lawful','valid','authentic','sanctioned'], 'dynasty':['lineage','regime','empire','house'],
+    'succeed':['prosper','flourish','follow','inherit'], 'succession':['sequence','inheritance','continuity'],
+    'successor':['heir','inheritor','follower'], 'expand':['broaden','enlarge','extend','amplify'],
+    'expansion':['growth','enlargement','proliferation','spread'], 'overt':['explicit','open','manifest','blatant'],
+    'covert':['clandestine','concealed','hidden','secret'], 'means':['method','mechanism','instrument','vehicle'],
+    'retain':['preserve','maintain','keep','withhold'], 'trace':['vestige','remnant','detect','track'],
+    'susceptible':['vulnerable','prone','sensitive','exposed'], 'vulnerable':['susceptible','exposed','defenseless'],
+    'remark':['comment','statement','observation'], 'instant':['immediate','prompt','instantaneous'],
+    'extract':['derive','obtain','draw out','isolate'], 'fraction':['portion','segment','fragment'],
+    'forge':['fabricate','falsify','counterfeit'], 'fabricate':['forge','invent','manufacture','concoct'],
+    'worrisome':['worrying','concerning','alarming'], 'deceive':['mislead','fool','trick','delude'],
+    'mislead':['deceive','misinform','trick','delude'], 'concrete':['tangible','solid','definite','substantial'],
+    'tangible':['concrete','palpable','real','measurable'], 'invasion':['incursion','intrusion','occupation'],
+    'reveal':['disclose','uncover','expose','unveil'], 'consent':['permission','approval','assent','agreement'],
+    'surveillance':['monitoring','observation','scrutiny'], 'harvest':['crop','yield','reap','gather'],
+    'following':['after','subsequent to','ensuing'], 'leftover':['remnant','surplus','remainder','residue'],
+    'toss':['discard','throw','cast','fling'], 'expire':['lapse','terminate','run out','cease'],
+    'quantity':['amount','volume','abundance','measure'], 'trivial':['insignificant','minor','negligible','petty'],
+    'annual':['yearly','perennial','year-long'], 'volume':['capacity','quantity','bulk','magnitude'],
+    'discard':['dispose of','toss','abandon','scrap'], 'equivalent':['equal','comparable','counterpart'],
+    'finite':['limited','restricted','bounded','exhaustible'], 'extravagancy':['excess','lavishness','wastefulness'],
+    'impeccable':['flawless','perfect','faultless'], 'flawless':['impeccable','perfect','unblemished'],
+    'evaluate':['assess','appraise','estimate','gauge'], 'dispute':['controversy','conflict','debate'],
+    'excuse':['pretext','justification','apology'], 'compensate':['reimburse','offset','make up for'],
+    'trim':['prune','cut','curtail','reduce'], 'yield':['produce','generate','output','harvest'],
+    'unprecedented':['unparalleled','unmatched','extraordinary','novel'], 'account for':['constitute','explain','comprise'],
+    'urgency':['acuteness','exigency','pressing need'], 'allot':['allocate','assign','apportion','distribute'],
+    'allocate':['allot','earmark','assign','designate'], 'shrink':['contract','diminish','dwindle','decrease']
+  };
+  var SYN_REQ = {};
+
+  function patchFindWord(p, wStr){
+    if(!p || !Array.isArray(p.items)) return null;
+    var k = String(wStr||'').toLowerCase().trim();
+    if(!k) return null;
+    for(var i=0;i<p.items.length;i++){
+      var x = p.items[i];
+      if(!x || !x.en) continue;
+      var parts = x.en.toLowerCase().split(/\s*[\/~]\s*/).map(function(s){return s.trim();});
+      if(x.en.toLowerCase().trim()===k || parts.indexOf(k)>=0) return x;
+    }
+    return null;
+  }
+
+  function patchGetSyns(p, wOrItem){
+    var enStr = typeof wOrItem==='string' ? wOrItem : (wOrItem && wOrItem.en);
+    if(!enStr) return [];
+    var k = enStr.toLowerCase().trim(), list = [], seen = {}; seen[k] = true;
+    function add(w, inP){
+      var c = String(w||'').trim(), low = c.toLowerCase();
+      if(!c || seen[low]) return;
+      seen[low] = true;
+      list.push({ en:c, inPack:!!inP });
+    }
+    var it = (typeof wOrItem==='object' && wOrItem) ? wOrItem : patchFindWord(p, k);
+    if(it && Array.isArray(it.syn)) it.syn.forEach(function(s){ add(s, !!(p && patchFindWord(p, s))); });
+    if(p && p.synDict && Array.isArray(p.synDict[k])) p.synDict[k].forEach(function(s){ add(s, !!(p && patchFindWord(p, s))); });
+    if(PATCH_SYNS[k]) PATCH_SYNS[k].forEach(function(s){ add(s, !!(p && patchFindWord(p, s))); });
+    return list.slice(0, 5);
+  }
+
+  async function aiQuickJson(promptTxt){
+    if(typeof askJ === 'function' && typeof SMP !== 'undefined' && SMP){
+      var res = await askJ('', promptTxt, 35000, 'quick');
+      if(res) return res;
+    }
+    try{
+      var r = await fetch('/api/claude', {
+        method:'POST', headers:{'content-type':'application/json'},
+        body:JSON.stringify({ prompt: promptTxt, tier:'quick' })
+      });
+      if(!r.ok) return null;
+      var d = await r.json();
+      var m = String(d && d.text || '').match(/[\[{][\s\S]*[\]}]/);
+      return m ? JSON.parse(m[0]) : null;
+    }catch(e){ return null; }
+  }
+
+  function renderAddWordBtnHtml(wStr, trStr){
+    var k = String(wStr||'').toLowerCase().trim();
+    if(!k || typeof cur === 'undefined' || !cur) return '';
+    var ex = patchFindWord(cur, k);
+    if(ex){
+      var bNum = (cur.prog && cur.prog.box && cur.prog.box[ex.en]) || 1;
+      return '<span class="added-word-badge">✓ Listede (Kutu ' + bNum + ')</span>';
+    }
+    return '<button type="button" class="add-word-btn" data-add-word="' + escH(k) + '" data-add-tr="' + escH(trStr||'') + '">➕ Anlamadığın Kelimeyi Ekle</button>';
+  }
+
+  function patchAddWordToPack(wordEn, initialTr, btnEl){
+    var cleanEn = String(wordEn||'').trim().toLowerCase();
+    if(!cleanEn || typeof cur === 'undefined' || !cur) return;
+    var ex = patchFindWord(cur, cleanEn);
+    if(ex){
+      if(btnEl) btnEl.outerHTML = '<span class="added-word-badge">✓ Zaten Listede (Kutu ' + ((cur.prog&&cur.prog.box&&cur.prog.box[ex.en])||1) + ')</span>';
+      return;
+    }
+    var mFallback = typeof meaningOf === 'function' ? meaningOf(cleanEn) : '';
+    var cleanTr = String(initialTr || mFallback || '').trim() || 'anlam aranıyor…';
+    var syns = patchGetSyns(cur, cleanEn).map(function(s){return s.en;});
+    var item = { en: cleanEn, tr: cleanTr, baseTr: cleanTr, syn: syns, s:'', st:'', d:[], gl:{}, mo:{} };
+    cur.items = cur.items || [];
+    cur.items.push(item);
+    if(Array.isArray(cur.words)) cur.words.push({ en: cleanEn, tr: cleanTr });
+    cur.prog = cur.prog || { box:{}, steps:[0,0,0,0,0,0,0], xp:0 };
+    cur.prog.box = cur.prog.box || {};
+    cur.prog.box[cleanEn] = 1;
+    if(typeof save === 'function') save(cur);
+    try{
+      var sh = JSON.parse(localStorage.getItem('ka_shared_added_words')||'[]');
+      if(!sh.some(function(x){return x.en===cleanEn;})){
+        sh.push({ en:cleanEn, tr:cleanTr, date:Date.now() });
+        localStorage.setItem('ka_shared_added_words', JSON.stringify(sh));
+      }
+    }catch(e){}
+    if(window.SFX && SFX.ok) SFX.ok();
+    if(typeof renderTop === 'function') renderTop();
+    if(typeof renderFoot === 'function') renderFoot();
+    if(btnEl) btnEl.outerHTML = '<span class="added-word-badge" style="background:#10b981;color:#fff;border-color:#059669">✅ "' + escH(cleanEn) + '" Eklendi! (Kutu 1)</span>';
+  }
+  if(typeof addUnknownWordToPack !== 'undefined') addUnknownWordToPack = patchAddWordToPack;
+  else window.addUnknownWordToPack = patchAddWordToPack;
+
+  var patchTapSeq = 0;
+  async function patchTap(w, el){
+    document.querySelectorAll('.tk.sel').forEach(function(x){ x.classList.remove('sel'); });
+    if(el) el.classList.add('sel');
+    var cleanW = String(w||'').trim();
+    if(!cleanW) return;
+    var k = cleanW.toLowerCase(), my = ++patchTapSeq, q = encodeURIComponent(k);
+    var mo = (typeof SRC!=='undefined' && SRC && SRC.mo && typeof aMo==='function') ? aMo(SRC.mo[k]) : [];
+    if(typeof say === 'function') say(cleanW);
+
+    if(!qS('#tip') && el && el.closest){
+      var box = el.closest('.ex,.para');
+      if(box) box.insertAdjacentHTML('afterend', '<div class="tip" id="tip"></div>');
+    }
+
+    function writeTipHtml(html){
+      if(typeof setTip === 'function') setTip(html);
+      else { var tp = qS('#tip'); if(tp) tp.innerHTML = html; }
+    }
+
+    function showTipBox(g, note, synLoading){
+      var addBtn = renderAddWordBtnHtml(cleanW, g);
+      var syns = patchGetSyns(typeof cur!=='undefined'?cur:null, k);
+      var synHtml = '';
+      if(syns.length){
+        synHtml = '<div class="syn-box"><span class="syn-lbl">🔗 Synonyms:</span>' +
+          syns.map(function(s){
+            return '<span class="syn-chip tk ' + (s.inPack?'in-pack':'') + '" data-w="' + escH(s.en) + '" title="Tıkla: Dinle ve anlamını gör">🔊 ' + escH(s.en) + (s.inPack?' ✓':'') + '</span>';
+          }).join('') + '</div>';
+      } else if(synLoading){
+        synHtml = '<div class="syn-box"><span class="syn-lbl">🔗 Synonyms:</span><span class="m" style="font-size:12px">Eş anlamlılar aranıyor…</span></div>';
+      }
+      var moHtml = mo.length ? '<div style="margin-top:6px">' + mo.map(function(arr){ return '<span class="chip">' + escH(arr[0]) + ' · ' + escH(arr[1]) + ': ' + escH(arr[2]) + '</span>'; }).join('') + '</div>' : '';
+      writeTipHtml(
+        '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">' +
+          '<div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px"><b>' + escH(cleanW) + '</b> — ' +
+            (g ? '<span class="good" style="font-weight:800">' + escH(g) + '</span>' : '<span class="m">' + escH(note||'') + '</span>') +
+            ' ' + addBtn +
+          '</div>' +
+          '<div><a href="https://dictionary.cambridge.org/dictionary/english-turkish/' + q + '" target="_blank" rel="noopener">Cambridge ↗</a> <a href="https://tureng.com/en/turkish-english/' + q + '" target="_blank" rel="noopener">Tureng ↗</a></div>' +
+        '</div>' + synHtml + moHtml
+      );
+    }
+
+    var knownTr = (typeof meaningOf==='function') ? meaningOf(k) : '';
+    var knownSyns = patchGetSyns(typeof cur!=='undefined'?cur:null, k);
+    if(knownTr && knownSyns.length >= 1){
+      showTipBox(knownTr, '', false);
+      return;
+    }
+    showTipBox(knownTr, knownTr ? '' : 'anlam ve eş anlamlılar aranıyor…', !knownSyns.length);
+
+    if(!SYN_REQ[k]){
+      SYN_REQ[k] = 1;
+      var pTxt = 'Verilen İngilizce kelimenin en yaygın 1-2 Türkçe karşılığını ve en yakın 3-4 akademik İngilizce eş anlamlısını (synonyms) yaz. YALNIZCA geçerli JSON döndür: {"tr":"Türkçe anlam","syn":["syn1","syn2","syn3"]}\nKelime: ' + cleanW;
+      var aiRes = await aiQuickJson(pTxt);
+      delete SYN_REQ[k];
+      var trOut = knownTr || (aiRes && typeof aiRes.tr==='string' ? aiRes.tr.trim() : '');
+      var synOut = (aiRes && Array.isArray(aiRes.syn)) ? aiRes.syn.map(function(x){return String(x||'').trim();}).filter(Boolean) : [];
+      if(typeof cur!=='undefined' && cur){
+        if(trOut){ cur.dict = cur.dict || {}; cur.dict[k] = trOut; }
+        if(synOut.length){
+          cur.synDict = cur.synDict || {};
+          cur.synDict[k] = synOut;
+          var itm = patchFindWord(cur, k);
+          if(itm && (!Array.isArray(itm.syn)||!itm.syn.length)) itm.syn = synOut;
+        }
+        if((trOut || synOut.length) && typeof save==='function') save(cur);
+      }
+      if(my === patchTapSeq) showTipBox(trOut, 'anlam bulunamadı (yine de ekleyebilirsin)', false);
+    }
+  }
+  if(typeof tap !== 'undefined') tap = patchTap;
+  else window.tap = patchTap;
+
+  /* 4. PARAGRAF BOTU: SAÇMA YANIT FİLTRESİ & SIKI DEĞERLENDİRME */
+  function isNonsenseText(text){
+    var clean = String(text||'').trim();
+    if(clean.length < 8) return 'Cevap çok kısa. Lütfen paragrafın ne anlattığını Türkçe 1-2 anlamlı cümleyle yaz.';
+    var words = clean.toLowerCase().match(/[a-zçğıöşü]+/gi) || [];
+    if(words.length < 2) return 'Lütfen tek kelime yerine anlamlı birkaç kelimelik özet cümlesi yaz.';
+    var letters = words.join('');
+    if(letters.length < 6) return 'Lütfen anlamlı kelimelerden oluşan bir özet yaz.';
+    var vowels = (letters.match(/[aeıioöuü]/gi) || []).length;
+    var vRatio = vowels / letters.length;
+    if(vRatio < 0.22 || vRatio > 0.78) return 'Anlamsız veya rastgele harf dizisi algılandı (%0). Gerçek bir Türkçe özet yazmalısın.';
+    if(/(.)\1{3,}/i.test(letters)) return 'Tekrarlayan anlamsız karakterler algılandı (%0).';
+    if(/[bcçdfgğhjklmnprsştvyzxwq]{5,}/i.test(letters)) return 'Rastgele klavye tuşlaması algılandı (%0).';
+    var uniq = {}; words.forEach(function(w){ uniq[w]=1; });
+    if(words.length >= 3 && Object.keys(uniq).length === 1) return 'Aynı kelimeyi tekrarlamak yerine paragrafın ana fikrini yaz.';
+    return '';
+  }
+
+  async function patchGrade(){
+    if(typeof cur==='undefined' || !cur) return;
+    var p = cur, gi = (typeof GI==='number'?GI:0), g = p.groups && p.groups[gi];
+    var ap = qS('#ap'), t = ap ? ap.value.trim() : '';
+    if(!t || !g || !g.text) return;
+    var showFb = function(h){ var fb = qS('#gfb'); if(fb && cur===p && (typeof GI==='number'?GI:0)===gi && step===6) fb.innerHTML = h; };
+
+    var badMsg = isNonsenseText(t);
+    if(badMsg){
+      if(window.SFX && SFX.bad) SFX.bad();
+      showFb('<div class="bar"><i style="width:0%"></i></div><div class="big">%0 benzerlik</div><div class="m">Geçiş puanı: %60</div><div class="bad2 big">❌ Onaylanmadı</div><div>' + escH(badMsg) + '</div>');
+      return;
+    }
+
+    showFb('<span class="m">⚖️ Arena Hakemi değerlendiriyor…</span>');
+    var strictPrompt =
+      'Sen akademik İngilizce okuma-anlama değerlendirme uzmanısın. Öğrencinin Türkçe yanıtını İNGİLİZCE PARAGRAF ve REFERANS ANA DÜŞÜNCE ile karşılaştır.\n' +
+      'KESİN KURALLAR:\n' +
+      '1) Öğrenci anlamsız/rastgele harfler ("asdasd", "kgıug"), konu dışı metin veya alakasız bir cevap yazdıysa KESİNLİKLE 0-15 arası puan ver! ASLA 50 üstü verme.\n' +
+      '2) Konuya yüzeysel değinip ana fikri kaçırdıysa 25-50 puan ver.\n' +
+      '3) Paragrafın genel konusunu/ana fikrini doğru anladıysa 65-100 puan ver.\n' +
+      'YALNIZCA geçerli JSON döndür: {"skor":0-100,"yorum":"Türkçe 1-2 cümle"}\n\n' +
+      'İNGİLİZCE PARAGRAF:\n' + g.text + '\n\nHEDEF KELİMELER:\n' + (g.w||[]).join(', ') +
+      '\n\nREFERANS ANA DÜŞÜNCE:\n' + (g.ana||'(Paragraf metnini esas al)') + '\n\nÖĞRENCİ CEVABI:\n' + t;
+
+    var r = await aiQuickJson(strictPrompt);
+    if(!r){
+      showFb('<span class="bad2">Bot şu an yanıt veremedi. Lütfen tekrar dene.</span>');
+      return;
+    }
+    var skor = Math.max(0, Math.min(100, Math.round(Number(r.skor)||0)));
+    var bar = '<div class="bar"><i style="width:' + skor + '%"></i></div><div class="big">%' + skor + ' benzerlik</div><div class="m">Geçiş puanı: %60</div>';
+    if(skor >= 60){
+      var wasAll = p.groups.every(function(x){return x.ok;});
+      if(!g.ok){
+        g.ok = true; p.prog.xp = (p.prog.xp||0)+15;
+        if(typeof markDay==='function') markDay();
+        if(typeof saveMeta==='function') saveMeta();
+      }
+      var nowAll = p.groups.every(function(x){return x.ok;});
+      if(nowAll) p.prog.steps[6] = 1;
+      if(typeof save==='function') save(p);
+      if(typeof renderHead==='function') renderHead();
+      if(typeof pview==='function' && cur===p && step===6 && GI===gi){
+        pview();
+        var ap2 = qS('#ap'); if(ap2) ap2.value = t;
+      }
+      if(window.SFX && SFX.win) SFX.win();
+      showFb(bar + '<div class="good big">✅ Onaylandı</div><div>' + escH(r.yorum||'') + '</div>');
+      if(nowAll && !wasAll && typeof showConquestCeremony==='function'){
+        showConquestCeremony(6, 'Tüm akademik paragraf gruplarının ana düşüncesini başarıyla onaylattın!');
+      }
+    } else {
+      if(window.SFX && SFX.bad) SFX.bad();
+      showFb(bar + '<div class="bad2 big">❌ Onaylanmadı</div><div>' + escH(r.yorum||'') + '</div>');
+    }
+  }
+  if(typeof grade !== 'undefined') grade = patchGrade;
+  else window.grade = patchGrade;
+
+  /* 5. BOSS MODU KATI 3 CAN KURALI */
+  var origQstart = typeof qstart==='function' ? qstart : null;
+  var origQAns = typeof qAns==='function' ? qAns : null;
+  var origQNext = typeof qNext==='function' ? qNext : null;
+  var getLives = function(){ return (typeof lives!=='undefined') ? Number(lives) : Number(window.lives); };
+  var setLivesVal = function(v){
+    var clamped = Math.max(0, Math.min(3, Number(v)||0));
+    if(typeof lives!=='undefined') lives = clamped;
+    window.lives = clamped;
+    return clamped;
+  };
+
+  function enforceBossHearts(){
+    var hs = qS('#hearts'), bw = qS('#bossBarWrap');
+    if(!hs) return;
+    if(typeof qmode!=='undefined' && qmode === 'boss'){
+      var lv = setLivesVal(getLives());
+      hs.hidden = false;
+      var hStr = '❤️'.repeat(lv) + '🖤'.repeat(3 - lv);
+      hs.textContent = hStr;
+      var qCur = typeof qi==='number' ? qi : 0;
+      var bossHp = Math.max(0, Math.round((10 - qCur) / 10 * 100));
+      if(bw) bw.innerHTML =
+        '<div class="boss-vs-bar">' +
+          '<div class="vs-side"><span class="vs-name">🛡️ SEN (' + hStr + ' · ' + lv + '/3 Can)</span><div class="vs-hp"><i style="width:' + Math.round(lv/3*100) + '%;background:linear-gradient(90deg,#10b981,#34d399)"></i></div></div>' +
+          '<div class="vs-badge">VS</div>' +
+          '<div class="vs-side right"><span class="vs-name">🐉 ARENA BOSS (%' + bossHp + ')</span><div class="vs-hp"><i style="width:' + bossHp + '%"></i></div></div>' +
+        '</div>';
+    } else {
+      hs.hidden = true;
+      if(bw) bw.innerHTML = '';
+    }
+  }
+  if(typeof setHearts !== 'undefined') setHearts = enforceBossHearts;
+  else window.setHearts = enforceBossHearts;
+
+  if(origQstart){
+    qstart = function(m){
+      origQstart(m);
+      if(m === 'boss'){ setLivesVal(3); enforceBossHearts(); }
+    };
+    window.qstart = qstart;
+  }
+  if(origQNext){
+    qNext = function(){
+      if(typeof qmode!=='undefined' && qmode==='boss' && getLives() <= 0 && typeof qEnd==='function'){
+        return qEnd(false);
+      }
+      origQNext();
+      if(typeof qmode!=='undefined' && qmode==='boss') enforceBossHearts();
+    };
+    window.qNext = qNext;
+  }
+  if(origQAns){
+    qAns = function(i, ev){
+      if(typeof Q==='undefined' || !Q || Q.done) return;
+      var isBoss = (typeof qmode!=='undefined' && qmode==='boss');
+      var prevLives = isBoss ? getLives() : 0;
+      origQAns(i, ev);
+      if(isBoss){
+        var isRight = Q.opts[i] === Q.ans;
+        var lv = setLivesVal(isRight ? prevLives : prevLives - 1);
+        enforceBossHearts();
+        if(lv <= 0){
+          var fb = qS('#fb'), nx = qS('#nx');
+          if(fb && !/3 canın da tükendi/.test(fb.innerHTML)){
+            fb.insertAdjacentHTML('beforeend', '<div class="bad2" style="margin-top:6px;font-weight:900">💀 3 canın da tükendi! Boss bu düelloyu kazandı.</div>');
+          }
+          if(nx){ nx.textContent = '💀 Canların Tükendi · Sonucu Gör →'; nx.hidden = false; }
+        }
+      }
+    };
+    window.qAns = qAns;
+  }
+
+  /* CAPTURE PHASE DİNLEYİCİLERİ */
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    var addW = t.closest('[data-add-word]');
+    if(addW){
+      e.preventDefault(); e.stopImmediatePropagation();
+      patchAddWordToPack(addW.dataset.addWord, addW.dataset.addTr, addW);
+      return;
+    }
+    var palBtn = t.closest('.dots [data-pal]');
+    if(palBtn){
+      e.preventDefault(); e.stopImmediatePropagation();
+      applyPalPatch(palBtn.dataset.pal);
+      return;
+    }
+    if(t.closest('#themeToggleBtn')){
+      e.preventDefault(); e.stopImmediatePropagation();
+      var curP = (document.body && document.body.dataset.pal) || 'akdeniz';
+      applyPalPatch((curP==='derin_akdeniz'||curP==='gece') ? 'akdeniz' : 'derin_akdeniz');
+      return;
+    }
+    var tk = t.closest('.tk');
+    if(tk){
+      e.preventDefault(); e.stopImmediatePropagation();
+      patchTap(tk.dataset.w, tk);
+      return;
+    }
+    if(t.closest('#gr')){
+      e.preventDefault(); e.stopImmediatePropagation();
+      patchGrade();
+      return;
+    }
+  }, true);
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', cleanNavbarNow);
+  else cleanNavbarNow();
+  try{
+    var obs = new MutationObserver(function(){ cleanNavbarNow(); });
+    var navEl = qS('.nav');
+    if(navEl) obs.observe(navEl, { childList:true, subtree:false });
+  }catch(e){}
+})();
+</script>
