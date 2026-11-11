@@ -1051,31 +1051,71 @@ const it=cur.items.find(x=>x.en.toLowerCase().split(/\s*[\/~]\s*/).map(v=>v.trim
 
 return it?it.tr:'';
 
+const SYNC={};
+
+const clampScore=v=>Math.max(0,Math.min(100,Math.round(Number(v)||0)));
+
+function junkCheck(t){
+  const words=t.toLowerCase().match(/[a-zçğıöşü]+/gi)||[];
+  if(t.trim().length<12||words.length<3)return true;
+  if(words.length>=4&&new Set(words).size/words.length<.5)return true;
+  const noVowel=words.filter(w=>w.length>2&&!/[aeıioöuü]/i.test(w)).length;
+  if(noVowel/words.length>.3)return true;
+  if(/(.)\1{3,}/.test(t))return true;
+  return false;
+}
+
+function addWord(en,tr){
+  const k=String(en||'').toLowerCase();
+  if(!k)return;
+  if(cur.items.some(x=>x.en.toLowerCase()===k)){setTip('<span class="good">Bu kelime zaten listede.</span>');return}
+  cur.items.push({en:String(en),tr:tr||'',d:[],gl:{},mo:{}});
+  cur.prog.box[String(en)]=1;
+  save(cur);
+  renderHead();
+  setTip(`<b>${esc(en)}</b> listeye eklendi ✓ <span class="m">— ${tr?'anlamı kaydedildi.':'anlamı eksik, “Yeniden dene” ile tamamlayabilirsin.'}</span>`);
+  if(SMP&&!RUN[cur.id])enrich(cur);
 }
 
 async function tap(w,el){
 
-document.querySelectorAll('.tk.sel').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');
+  document.querySelectorAll('.tk.sel').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
 
-const k=w.toLowerCase(),mo=SRC&&SRC.mo?aMo(SRC.mo[k]):[],my=++TAPN,q=encodeURIComponent(k),ctx=tipCtx();
+  const k=w.toLowerCase(),my=++TAPN,ctx=tipCtx(),q=encodeURIComponent(k);
 
-say(w);
+  say(w);
 
-const show=(g,note)=>setTip(`<b>${esc(w)}</b> — ${g?`<span class="good">${esc(g)}</span>`:`<span class="m">${note}</span>`} <a class="m" href="https://dictionary.cambridge.org/dictionary/english-turkish/${q}" target="_blank" rel="noopener">Cambridge ↗</a> <a class="m" href="https://tureng.com/en/turkish-english/${q}" target="_blank" rel="noopener">Tureng ↗</a><div>${mo.map(([p,t,d])=>`<span class="chip">${esc(p)} · ${esc(t)}: ${esc(d)}</span>`).join('')}</div>`);
+  const links=`<a class="m" href="https://dictionary.cambridge.org/dictionary/english-turkish/${q}" target="_blank" rel="noopener">Cambridge ↗</a> <a class="m" href="https://tureng.com/en/turkish-english/${q}" target="_blank" rel="noopener">Tureng ↗</a>`;
 
-const g=meaningOf(k);
+  const mo=(SRC&&SRC.mo?aMo(SRC.mo[k]):[]).map(([p,t,d])=>`<span class="chip">${esc(p)} · ${esc(t)}: ${esc(d)}</span>`).join('');
 
-if(g)return show(g);
+  const known=meaningOf(k);
 
-show('','anlam aranıyor…');
+  const inList=cur.items.some(x=>x.en.toLowerCase()===k);
 
-const r=await askJ(GLOSS,k,60000,'quick');
+  const render=(tr,syn,busy)=>{
+    if(my!==TAPN||tipCtx()!==ctx)return;
+    const status=tr?`<span class="good">${esc(tr)}</span>`:(busy?'<span class="m">anlam aranıyor…</span>':'<span class="bad2">anlamı kayıtlı değil</span>');
+    const add=(!inList&&tr)?`<button class="pill" id="addw" data-w="${esc(w)}" data-tr="${esc(tr)}">＋ Listeye ekle</button>`:(!inList&&!busy?`<button class="pill" id="addw" data-w="${esc(w)}" data-tr="">＋ Listeye ekle</button>`:'');
+    const sy=(syn&&syn.length)?`<div class="m" style="margin-top:8px">Eş anlamlılar</div><div>${syn.map(s=>`<span class="chip tk" data-w="${esc(s.en)}" title="${esc(s.tr)}">${esc(s.en)} · ${esc(s.tr)}</span>`).join('')}</div>`:'';
+    setTip(`<b>${esc(w)}</b> — ${status} ${links}${mo?`<div style="margin-top:6px">${mo}</div>`:''}${sy}<div style="margin-top:8px">${add}</div>`);
+  };
 
-const v=r?(typeof r[k]==='string'?r[k].trim():String(Object.values(r).find(x=>typeof x==='string')||'').trim()):'';
+  if(SYNC[k]){render(known||SYNC[k].tr,SYNC[k].syn,false);return}
 
-if(v){cur.dict=cur.dict||{};cur.dict[k]=v;save(cur)}
+  render(known||'',[],!known);
 
-if(my===TAPN&&tipCtx()===ctx)show(v,'anlam bulunamadı');
+  const r=await askJ(SYN,k,30000,'quick',true);
+
+  const tr=(r&&typeof r.tr==='string'&&r.tr.trim()&&r.tr.trim().toLowerCase()!==k)?r.tr.trim():'';
+  const syn=(r&&Array.isArray(r.syn))?r.syn.filter(s=>s&&s.en&&String(s.en).toLowerCase()!==k).slice(0,5).map(s=>({en:String(s.en),tr:String(s.tr||'')})):[];
+
+  if(r)SYNC[k]={tr,syn};
+
+  if(!known&&tr){cur.dict=cur.dict||{};cur.dict[k]=tr;save(cur)}
+
+  render(known||tr,syn,false);
 
 }
 
@@ -1516,19 +1556,29 @@ $('#st').innerHTML=`<div class="coach">${mascot('',66)}<div class="bubble">${esc
    <div class="fb" id="fb"></div>
    <div class="row"><button class="btn3" id="nx" hidden>Sonraki →</button></div>
  </div>`;
-}
-
 function qAns(i){
-if(!Q||Q.done)return;Q.done=1;
-const ok=Q.opts[i]===Q.ans;
-document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(Q.opts[k]===Q.ans)b.classList.add('ok');else if(k===i)b.classList.add('no')});
-META.tot=(META.tot||0)+1;
-if(ok){META.ok=(META.ok||0)+1;qok++;xp(10);SFX.ok()}
-else{lives--;SFX.bad()}
-saveMeta();
-setHearts();
-$('#fb').innerHTML=(ok?'<span class="good">✅ Doğru</span>':'<span class="bad2">❌ Doğru cevap: '+esc(Q.ans)+'</span>')+`<div class="m">${esc(Q.x.en)} = ${esc(Q.x.tr)}</div>`;
-$('#nx').hidden=false;
+
+  if(!Q||Q.done)return;
+
+  if(qmode==='boss'&&lives<=0)return;
+
+  Q.done=1;
+
+  const ok=Q.opts[i]===Q.ans;
+
+  document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(Q.opts[k]===Q.ans)b.classList.add('ok');else if(k===i)b.classList.add('no')});
+
+  if(ok){qok++;xp(10);SFX.ok()}
+  else{lives=qmode==='boss'?Math.max(0,lives-1):lives-1;SFX.bad()}
+
+  setHearts();
+
+  $('#fb').innerHTML=(ok?'<span class="good">✅ Doğru</span>':'<span class="bad2">❌ Doğru cevap: '+esc(Q.ans)+'</span>')+`<div class="m">${esc(Q.x.en)} = ${esc(Q.x.tr)}</div>`;
+
+  $('#nx').hidden=false;
+
+  if(qmode==='boss'&&lives<=0)$('#nx').textContent='Sonucu gör';
+
 }
 
 function qEnd(won){
@@ -1650,7 +1700,7 @@ document.addEventListener('click',e=>{
 
 const t=e.target;
 
-const tk=t.closest('.tk');if(tk){tap(tk.dataset.w,tk);return}
+if(t.closest('#addw')){const b=t.closest('#addw');addWord(b.dataset.w,b.dataset.tr);return}
 
 const sy=t.closest('[data-say]');if(sy){say(sy.dataset.say);return}
 
@@ -1863,28 +1913,52 @@ async function genGroup(p,g){
   if(!best)return false;
   if(!g.text||best.m.length<(g.miss||[]).length)Object.assign(g,{text:best.par,ana:best.ana,gl:best.gl,miss:best.m});
   return true;
-}
-
 async function grade(){
-  const p=cur,gi=GI,g=p.groups&&p.groups[gi],t=$('#ap').value.trim();
-  if(!t||!g||!g.text)return;
-  const show=h=>{if(cur===p&&GI===gi&&step===6&&$('#gfb'))$('#gfb').innerHTML=h};
-  show('<span class="m">Bot değerlendiriyor…</span>');
-  const r=await askJ(GRADE2,`REFERANS ANA DÜŞÜNCE: ${g.ana||''}\nÖĞRENCİ CEVABI: ${t}`,45000,'quick');
-  if(!r){show(`<span class="bad2">Bot yanıt veremedi${LASTERR?' ('+esc(LASTERR)+')':''}. Tekrar dene.</span>`);return}
-  const skor=Math.max(0,Math.min(100,Math.round(Number(r.skor)||0)));
-  const bar=`<div class="bar"><i style="width:${skor}%"></i></div><div class="big">%${skor} benzerlik</div><div class="m">Geçiş puanı: %60</div>`;
-  if(skor>=60){
-    if(!g.ok){g.ok=true;p.prog.xp=(p.prog.xp||0)+15;markDay();saveMeta()}
-    if(p.groups.every(x=>x.ok))p.prog.steps[6]=1;
-    save(p);
-    renderHead();
-    if(cur===p&&step===6&&GI===gi)pview();
-    SFX.win();
-    show(`${bar}<div class="good big">✅ Onaylandı</div><div>${esc(r.yorum||'')}</div>`);
+
+  const p=cur,gi=GI,g=p.groups&&p.groups[gi],inp=$('#ap');
+
+  if(!inp||!g||!g.text)return;
+
+  const t=inp.value.trim();
+
+  if(!t)return;
+
+  const out=h=>{if(cur===p&&GI===gi&&step===6&&$('#gfb'))$('#gfb').innerHTML=h};
+
+  let skor=0,yorum='';
+
+  if(junkCheck(t)){
+    skor=0;
+    yorum='Cevap anlamlı bir ana düşünce içermiyor. Paragrafı yeniden oku ve ana fikri kendi cümlelerinle yaz.';
   }else{
-    show(`${bar}<div class="bad2 big">❌ Onaylanmadı</div><div>${esc(r.yorum||'')}</div>`);
+    out('<span class="m">Bot değerlendiriyor…</span>');
+    const r=await askJ(GRADE,`REFERANS ANA DÜŞÜNCE: ${g.ana||''}\nPARAGRAF: ${g.text}\nÖĞRENCİ CEVABI: ${t}`,90000,'default',true);
+    if(!r){out('<span class="bad2">Bot yanıt veremedi'+(LASTERR?' ('+esc(LASTERR)+')':'')+'. Tekrar dene.</span>');return}
+    skor=clampScore(r.skor!==undefined?r.skor:(r.onay===true?70:0));
+    yorum=String(r.yorum||'');
   }
+
+  const pass=skor>=60;
+
+  g.last=skor;
+
+  if(pass){
+    if(!g.ok){g.ok=true;p.prog.xp=(p.prog.xp||0)+15}
+    if(p.groups.every(x=>x.ok))p.prog.steps[6]=1;
+  }
+
+  save(p);
+
+  if(pass){
+    if(cur===p){renderHead();if(step===6&&GI===gi)pview()}
+    SFX.win();
+  }
+
+  const bar=`<div class="bar" style="margin:10px 0"><i style="width:${skor}%"></i></div>`;
+  const head=pass?`<div class="good big">✅ Geçti · %${skor}</div>`:`<div class="bad2 big">❌ Geçemedi · %${skor}</div>`;
+  out(`${head}${bar}<div class="m">Geçme eşiği %60. ${yorum?esc(yorum):''}</div>`);
+
+}
 }
 /* ===== HIZ VE DÜZELTME SONU ===== */
 /* ===== İKİNCİ DÜZELTME BLOĞU ===== */
