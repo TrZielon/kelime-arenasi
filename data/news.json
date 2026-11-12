@@ -1,6 +1,441 @@
 {
-  "updated": "2026-11-11T06:21:07.670Z",
+  "updated": "2026-11-12T06:20:27.140Z",
   "items": [
+    {
+      "id": "mwd5sancsfkc",
+      "date": "2026-11-12",
+      "category": "World",
+      "title": "Ukraine's Power Supply Close to Critical as Russian Strikes Bring Darkness and Cold",
+      "src": "https://www.bbc.co.uk/news/articles/cr1ewpd95d21o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Life is very hard for many families in parts of Ukraine. Russian strikes damage the power supply. Because of this, the power supply is close to critical. Parents try to lead a normal family life, but they face dark and cold days. They only have a few hours of power each day. This big problem is taking its toll on the parents. They must care for their children with very little electricity every day. It is difficult to live without regular heat and light.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Parents in Ukraine face hard times with very little daily power.",
+                "Children in Ukraine spend all day in warm schools.",
+                "Ukraine built new power stations for families.",
+                "Russian families are moving to Ukraine for work."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'critical' mean in the text?",
+              "opts": [
+                "In a dangerous or serious state",
+                "Easy to fix",
+                "Safe and happy",
+                "Very bright and warm"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "How many hours of power do parents have each day?",
+              "opts": [
+                "No hours at all",
+                "12 hours",
+                "Just a few hours",
+                "24 hours"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "True or False: The text says Ukrainian families have regular heat every day.",
+              "opts": [
+                "True",
+                "The text says it is summer",
+                "False",
+                "The text says heat is not needed"
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "2": {
+          "text": "Russian strikes have caused severe damage to the power supply in Ukraine. As a result, the nation's energy system is now close to a critical state. This situation brings intense darkness and cold to many regions. For parents living in parts of Ukraine, managing a normal family life has become a major challenge. They must navigate daily routines while receiving only a few hours of electricity each day. Trying to take care of a household under these dark and freezing conditions is taking a heavy toll on parents. Families are forced to adapt to living with very little power while facing the harsh winter weather.",
+          "quiz": [
+            {
+              "q": "What is the main topic of this passage?",
+              "opts": [
+                "The weather forecast for winter in Europe",
+                "New energy technology used by parents in Ukraine",
+                "How Russian strikes on power supplies impact Ukrainian families",
+                "The cost of electricity in Ukrainian cities"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the phrase 'taking its toll' mean in this context?",
+              "opts": [
+                "Repairing broken lights",
+                "Making things much faster",
+                "Earning a lot of money",
+                "Causing suffering or a negative effect"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Why is the energy system in Ukraine close to critical?",
+              "opts": [
+                "Because parents use too much power",
+                "Because of high electricity bills",
+                "Because of severe summer heat",
+                "Because of Russian strikes"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Parents get power for most of the day.",
+                "The strikes bring darkness and cold.",
+                "Families are moving to other countries.",
+                "The energy system is completely fixed."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "Russian strikes against energy infrastructure have pushed Ukraine's power supply close to a critical level, leaving many regions facing extreme darkness and cold. The persistent lack of electricity creates severe daily hardships across affected areas. For parents residing in parts of Ukraine, the struggle to maintain a normal family life under these conditions is taking its toll. Household routines must be managed within the strict constraints of receiving just a few hours of power each day. Parents face the daunting task of keeping their children warm, fed, and comforted while navigating long periods without light or heat. As winter conditions persist, the continuous shortages of electricity severely disrupt normal domestic life, placing immense pressure on families who are forced to cope with the ongoing dark and freezing environment caused by the damaged energy grid.",
+          "quiz": [
+            {
+              "q": "What is the main focus of the news article?",
+              "opts": [
+                "Government plans to reduce family electricity bills",
+                "The heavy strain on Ukrainian families due to critical power shortages from Russian strikes",
+                "A report on cold weather patterns in Eastern Europe",
+                "Efforts to build new power lines across Europe"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "In the text, what does the word 'constraints' mean?",
+              "opts": [
+                "Useful tools",
+                "Limitations or restrictions",
+                "Clear instructions",
+                "Extra gifts"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What causes the extreme darkness and cold mentioned in the text?",
+              "opts": [
+                "A sudden change in the wind direction",
+                "A natural solar eclipse",
+                "Parents turning off their lights",
+                "Russian strikes on energy infrastructure"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which of the following statements is FALSE based on the text?",
+              "opts": [
+                "Ukraine's power supply is near a critical level.",
+                "Russian strikes have affected the energy grid.",
+                "Parents receive only a few hours of power daily.",
+                "Parents find it very easy to keep a normal family life."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwd5sactco1z",
+      "date": "2026-11-12",
+      "category": "World",
+      "title": "Democrat Scott Colom Wins Mississippi Senate Race",
+      "src": "https://www.bbc.co.uk/news/articles/cw7vppyr80eeo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Scott Colom won a big election in Mississippi. He is a Democrat. He won a seat in the US Senate. This win is very important. Scott Colom is the first black person from Mississippi to be elected to the US Senate in over 140 years. People call this a historic win for the southern state. Many people watched this Mississippi Senate race closely.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Scott Colom won a historic US Senate race in Mississippi.",
+                "A Senate election happens every year.",
+                "Mississippi is a southern state in the US.",
+                " Scott Colom lost his race in Mississippi."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'historic' mean in this text?",
+              "opts": [
+                "Very boring",
+                "Very recent",
+                "Fast and easy",
+                "Important in history"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which state did Scott Colom win his Senate seat in?",
+              "opts": [
+                "Texas",
+                "California",
+                "New York",
+                "Mississippi"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Is the following statement true or false? Scott Colom is a Republican.",
+              "opts": [
+                "True",
+                "He is from another country",
+                "False",
+                "The text does not say"
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "2": {
+          "text": "Democrat Scott Colom has achieved a historic victory in Mississippi. He won a seat to represent the southern state in the US Senate. This election is very special because of its history. Scott Colom is the first black person elected to the US Senate from Mississippi in more than 140 years. Because of this, his victory is seen as a major historic moment for both the state and the country. People across the United States followed the Mississippi Senate race to see the outcome of this important vote.",
+          "quiz": [
+            {
+              "q": "What is the main subject of the news article?",
+              "opts": [
+                "A new law in Mississippi",
+                "A political debate between two candidates",
+                "The history of elections in the US",
+                "Scott Colom's historic Senate win in Mississippi"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does the word 'victory' mean in the text?",
+              "opts": [
+                "A loss in an election",
+                "A success or win",
+                "A long discussion",
+                "A new candidate"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "How long has it been since a black person from Mississippi was elected to the US Senate?",
+              "opts": [
+                "Exactly 50 years",
+                "Less than 10 years",
+                "100 years",
+                "Over 140 years"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Is the following statement true or false? Scott Colom belongs to the Democratic party.",
+              "opts": [
+                "False",
+                "The text does not mention his party",
+                "He is an independent candidate",
+                "True"
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "3": {
+          "text": "Democrat Scott Colom has sealed a historic victory in the Mississippi Senate race, marking a major political milestone for the southern state. With this election result, Colom becomes the first black person from Mississippi to be elected to the US Senate in over 140 years. The race attracted significant national attention due to the long period of time since a black senator last represented the state. Colom's achievement breaks a historic streak that had lasted for more than a century, securing his place in both Mississippi and US political history as he prepares to take his seat in the Senate.",
+          "quiz": [
+            {
+              "q": "What is the main focus of this news report?",
+              "opts": [
+                "The retirement of a long-serving politician in Mississippi",
+                "Scott Colom's historic election as the first black US senator from Mississippi in over 140 years",
+                "A detailed breakdown of voter turnout in the US Senate race",
+                "The changing political views of voters in southern US states"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "In this context, what does the word 'sealed' mean?",
+              "opts": [
+                "Secured or finalized a win",
+                "Closed an envelope tightly",
+                "Delayed an announcement",
+                "Cancelled an event"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which political party does Scott Colom belong to?",
+              "opts": [
+                "Libertarian Party",
+                "Republican Party",
+                "Democratic Party",
+                "Green Party"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Is the following statement true or false? Another black person was elected to the US Senate from Mississippi 50 years ago.",
+              "opts": [
+                "The text says it was 100 years ago",
+                "True",
+                "The text says it was 14 years ago",
+                "False"
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwd5sdj8ncv4",
+      "date": "2026-11-12",
+      "category": "World",
+      "title": "Israeli Strike Hits Gaza Hospital Surgery Department",
+      "src": "https://www.bbc.co.uk/news/articles/ckzd9p7e4eqeo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "A strike hit a hospital in Gaza. The hit happened in Khan Younis. It struck the surgery department of the hospital. The Gaza civil defence agency spoke about the event. A spokesperson said the strike killed at least five Palestinians. At least 20 people were injured in the strike. The attack also caused extensive damage to the hospital. People were hurt and the building was badly damaged. The civil defence agency shared these details about the strike.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "A new hospital opened in Khan Younis.",
+                "A strike on a hospital in Khan Younis killed and injured people.",
+                "Twenty doctors moved to a hospital in Gaza.",
+                "The Gaza civil defence agency rebuilt a damaged building."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does 'injured' mean in the text?",
+              "opts": [
+                "Hurt",
+                "Happy",
+                "Cleaned",
+                "Rescued"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "How many people were killed at least, according to the spokesperson?",
+              "opts": [
+                "20",
+                "10",
+                "15",
+                "5"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "True or False: The strike caused extensive damage to the surgery department.",
+              "opts": [
+                "True",
+                "False",
+                "The text does not say",
+                "Only the windows were damaged"
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "An Israeli strike hit a hospital located in Khan Younis, Gaza. According to a spokesperson for the Gaza civil defence agency, the strike hit the surgery department of the facility. The attack killed at least five Palestinians and injured at least 20 others. The spokesperson also reported that the strike caused extensive damage to the building. The civil defence agency provided these details following the hit on the medical center. This event caused harm to many people inside the department and left the facility severely damaged.",
+          "quiz": [
+            {
+              "q": "What main event is described in the article?",
+              "opts": [
+                "A hospital surgery department in Khan Younis was struck, causing casualties and damage.",
+                "A civil defence agency opened a new facility in Gaza.",
+                "Five patients were moved to another surgical department.",
+                "At least 20 doctors arrived in Khan Younis to help patients."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In this text, what does 'extensive' mean?",
+              "opts": [
+                "Temporary",
+                "Large in amount or scale",
+                "Very small",
+                "Slow and careful"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which part of the hospital was hit by the strike?",
+              "opts": [
+                "The roof garden",
+                "The parking area",
+                "The surgery department",
+                "The main entrance"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "At least 20 people were injured in the strike.",
+                "The strike happened outside the hospital grounds.",
+                "The civil defence agency did not comment on the damage.",
+                "No one died in the strike."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "An Israeli strike targeted a hospital in Khan Younis, resulting in casualties and heavy destruction. A spokesperson for the Gaza civil defence agency stated that the strike directly hit the surgery department of the facility. The attack killed at least five Palestinians and left at least 20 people injured. In addition to the casualties, the strike caused extensive damage to the surgical area. The official report from the civil defence spokesperson confirmed the loss of life, the number of injured individuals, and the severe physical harm done to the medical facility.",
+          "quiz": [
+            {
+              "q": "What is the main topic of this news report?",
+              "opts": [
+                "An Israeli strike on a hospital surgery department in Khan Younis caused deaths, injuries, and major damage.",
+                "Five doctors made a statement about hospital safety in Gaza.",
+                "Twenty injured people were safely evacuated from Khan Younis.",
+                "A new medical department was constructed by the Gaza civil defence agency."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What is the meaning of 'casualties' as used in the context of the story?",
+              "opts": [
+                "Official statements",
+                "Surgical equipment",
+                "Building repairs",
+                "People killed or injured"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Who provided the details regarding the strike and the damage?",
+              "opts": [
+                "A local news reporter",
+                "The international Red Cross",
+                "A spokesperson for the Gaza civil defence agency",
+                "The hospital's chief surgeon"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which of the following statements is FALSE based on the text?",
+              "opts": [
+                "At least 20 people were injured.",
+                "The hit occurred in Khan Younis.",
+                "The surgery department suffered extensive damage.",
+                "The strike resulted in zero deaths."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mwbqcpms7rqh",
       "date": "2026-11-11",
