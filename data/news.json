@@ -1,6 +1,441 @@
 {
-  "updated": "2026-11-12T06:20:27.140Z",
+  "updated": "2026-11-13T06:20:23.036Z",
   "items": [
+    {
+      "id": "mwel8518uzwk",
+      "date": "2026-11-13",
+      "category": "World",
+      "title": "Ex-Nvidia CEO Jensen Huang Summoned to Testify Before Congress",
+      "src": "https://www.bbc.co.uk/news/articles/cmq5vd1wdgz6o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "Jensen Huang was the head of Nvidia. Nvidia is one of the most valuable companies in the world. On Thursday, Huang abruptly quit his job. He left after revelations of alleged extramarital affairs. Now, Huang is summoned to testify before Congress. People want to hear his statements about an affair with an alleged Chinese spy. This news surprised many people around the world because Nvidia is a very famous company. Congress wants to get clear answers about what happened. The situation is very serious for the former company leader.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Nvidia bought a new company in China.",
+                "Congress started a new computer company.",
+                "Jensen Huang wrote a book about his job.",
+                "Jensen Huang quit Nvidia and must talk to Congress."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does the word \"abruptly\" mean in the text?",
+              "opts": [
+                "With great happiness",
+                "Suddenly and unexpectedly",
+                "Very slowly",
+                "After many years"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "When did Jensen Huang quit his job at Nvidia?",
+              "opts": [
+                "On Monday",
+                "On Wednesday",
+                "On Thursday",
+                "On Tuesday"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Huang was asked to testify before Congress.",
+                "Congress praised Huang for his hard work.",
+                "Huang is still the current head of Nvidia.",
+                "Nvidia is a small, unknown company."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "Jensen Huang, the former head of Nvidia, has been summoned to testify before Congress. Nvidia is recognized as one of the world's most valuable companies. However, Huang abruptly quit his position on Thursday. His sudden resignation happened after revelations of alleged extramarital affairs became public. Now, Congress wants him to answer questions regarding an affair with an alleged Chinese spy. This sudden event has shocked the business world due to Nvidia's major global importance. Members of Congress want to investigate the situation fully to understand the potential risks and facts surrounding the allegations. Huang must now prepare to speak to lawmakers about these serious claims.",
+          "quiz": [
+            {
+              "q": "What is the main topic of this news report?",
+              "opts": [
+                "A trip by American leaders to visit China",
+                "A new business law passed by Congress",
+                "The resignation of Nvidia's former head and his summons by Congress",
+                "Nvidia's plan to make cheap computers"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "In the text, what does \"revelations\" mean?",
+              "opts": [
+                "Future business plans",
+                "Rules made by a government",
+                "New products sold in stores",
+                "Secrets that are made known"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What kind of company is Nvidia described as?",
+              "opts": [
+                "One of the world's most valuable companies",
+                "A government agency in Washington",
+                "A small local business",
+                "A new company with no money"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is FALSE based on the text?",
+              "opts": [
+                "Huang is currently still leading Nvidia.",
+                "Huang quit his job on Thursday.",
+                "Huang is accused of having an affair with an alleged Chinese spy.",
+                "Huang was asked to testify before Congress."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "Jensen Huang, the former chief executive officer of Nvidia, has been summoned to testify before Congress following his sudden departure from the company. Nvidia ranks among the most valuable companies in the world, making Huang's abrupt resignation on Thursday a major global story. The executive stepped down after revelations emerged regarding alleged extramarital affairs. The congressional summons specifically relates to allegations concerning an affair with an alleged Chinese spy. Lawmakers intend to question the former chief executive to examine the details and potential implications of these personal relationships. The sudden downfall of such a prominent corporate leader has sent shockwaves through the tech industry and international business community. As Congress prepares for the upcoming hearing, Huang faces intense public scrutiny over his actions and his alleged connections.",
+          "quiz": [
+            {
+              "q": "What is the main focus of the article?",
+              "opts": [
+                "Congressional inquiries into Jensen Huang after his sudden resignation",
+                "Trade agreements between the United States and China",
+                "Nvidia's financial success in the global market",
+                "New government regulations for technology companies"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word \"prominent\" mean as used in the context of the story?",
+              "opts": [
+                "Young and inexperienced",
+                "Quiet and secret",
+                "Inexpensive and basic",
+                "Important and well-known"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Why was Huang summoned by Congress?",
+              "opts": [
+                "To explain why Nvidia's stock price dropped",
+                "To testify about an affair with an alleged Chinese spy",
+                "To discuss Nvidia's new microchips",
+                "To accept a special award from lawmakers"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which of the following statements is TRUE according to the passage?",
+              "opts": [
+                "Nvidia is considered a low-value company.",
+                "Congress refused to talk to the former Nvidia chief executive.",
+                "Huang quit abruptly on Thursday following revelations of affairs.",
+                "Huang resigned months before the public found out."
+              ],
+              "ans": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwel84digxnk",
+      "date": "2026-11-13",
+      "category": "World",
+      "title": "Zelensky welcomes US bringing Europe into Russia-Ukraine peace talks",
+      "src": "https://www.bbc.co.uk/news/articles/ckn80j9jv3jxo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "President Zelensky is the leader of Ukraine. He is happy about a new decision by the US. The US wants European leaders to join peace talks about Russia and Ukraine. Zelensky says this is a good idea. He believes it makes sense because Ukraine wants to join the European Union in the future. Ukraine hopes to become a part of the EU later. Zelensky thinks European leaders should help in these important discussions. He welcomes the US choice to bring Europe to the peace talks.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Russia joined the European Union.",
+                "Ukraine is leaving the EU.",
+                "Zelensky supports European leaders joining peace talks.",
+                "The US wants to end all talks with Europe."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does 'welcomes' mean in the text?",
+              "opts": [
+                "Feels afraid of",
+                "Is happy to accept",
+                "Says goodbye to",
+                "Stops immediately"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Why does Zelensky think European leaders should be in the talks?",
+              "opts": [
+                "Because Europe is far away",
+                "Because Ukraine wants to join the EU",
+                "Because the US asked for money",
+                "Because Ukraine is already an EU member"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "True or False: Zelensky thinks it makes sense for European leaders to join the talks.",
+              "opts": [
+                "Only Russia thinks so",
+                "True",
+                "Not mentioned",
+                "False"
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "2": {
+          "text": "Ukrainian President Volodymyr Zelensky has welcomed a move by the United States to include European leaders in Russia-Ukraine peace talks. Zelensky stated that it makes complete sense for leaders from Europe to participate in these discussions. He explained that Ukraine hopes to eventually become a member of the European Union. Because of this goal, he believes European involvement in the peace process is very important. The Ukrainian leader agrees with the US decision to bring Europe into the negotiations. He wants European nations to help shape the discussions about peace, as Ukraine looks toward a future inside the European Union.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the news article?",
+              "opts": [
+                "The EU rejecting Ukraine's application",
+                "Ukraine's refusal to talk with the US",
+                "Zelensky's approval of Europe joining peace negotiations",
+                "A new war between the US and Europe"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'eventually' mean in the text?",
+              "opts": [
+                "Never in the future",
+                "Right now",
+                "In the past",
+                "At an unspecified later time"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which organization does Ukraine hope to join in the future?",
+              "opts": [
+                "The European Union",
+                "The United States",
+                "An Asian alliance",
+                "A Russian council"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Zelensky believes European involvement in the peace process makes sense.",
+                "Zelensky opposes the US decision.",
+                "Ukraine has already joined the European Union.",
+                "The US wants to exclude Europe from peace talks."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "Ukrainian President Volodymyr Zelensky has expressed support for a decision by the United States to bring European leaders into peace talks aimed at resolving the conflict between Russia and Ukraine. Zelensky welcomed the US initiative, asserting that it makes logical sense for European leaders to be directly involved in the diplomatic discussions. He highlighted Ukraine's long-term goal of eventually gaining membership in the European Union as a key reason for their inclusion. According to Zelensky, since Ukraine hopes to integrate into the EU in the future, European nations have a clear interest in the peace process. By bringing Europe to the negotiating table alongside the US, Ukraine believes the peace talks will better reflect its future aspirations within the European community.",
+          "quiz": [
+            {
+              "q": "What is the main focus of this article?",
+              "opts": [
+                "The US taking total control of the EU",
+                "European leaders refusing to meet with Zelensky",
+                "Russia ending all peace talks with Ukraine",
+                "Zelensky backing the inclusion of European leaders in peace talks"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does the word 'initiative' mean as used in the text?",
+              "opts": [
+                "A new plan or action",
+                "A final peace treaty",
+                "A strong disagreement",
+                "A financial payment"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What strategic goal does Ukraine hope to achieve in the future?",
+              "opts": [
+                "Leaving all European groups",
+                "Joining the United States",
+                "Joining the European Union",
+                "Stopping all diplomatic discussions"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which of the following is FALSE based on the text?",
+              "opts": [
+                "Ukraine has no interest in joining the European Union.",
+                "The US decided to bring European leaders into the peace talks.",
+                "Zelensky believes European inclusion in the talks makes logical sense.",
+                "Zelensky welcomed the US move."
+              ],
+              "ans": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwel83v4rrhd",
+      "date": "2026-11-13",
+      "category": "World",
+      "title": "North Korean Hackers Use Fake Video Calls in Crypto Hack",
+      "src": "https://www.bbc.co.uk/news/articles/cqdj1ellpd70o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "levels": {
+        "1": {
+          "text": "North Korean hackers stole 400 million dollars in crypto money. They used fake video calls to trick people. The FBI said this happened over the last 18 months. The scheme is called FaceStealer. More than 900 victims lost their money to these hackers. They thought the video calls were real, but they were fake. The FBI warns people about these dangerous tricks. Hackers use new ideas to steal money online. People must be very careful when they talk on video calls. Crypto money is hard to get back after it is stolen.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "The FBI made a new video call tool for everyone.",
+                "Crypto money is becoming cheap around the world.",
+                "More than 900 hackers went to prison recently.",
+                "North Korean hackers stole money using fake video calls."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does 'victims' mean in this text?",
+              "opts": [
+                "People who are hurt or tricked",
+                "FBI workers",
+                "People who steal money",
+                "Video call tools"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "How much money did the hackers steal?",
+              "opts": [
+                "400 million dollars",
+                "18 million dollars",
+                "400 dollars",
+                "900 dollars"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "The scheme happened over the last 18 months.",
+                "Less than 100 people lost money.",
+                "Hackers used real video calls to help people.",
+                "The FBI created the FaceStealer scheme."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "North Korean hackers have stolen $400 million in cryptocurrency using a sneaky trick, according to the FBI. The cybercriminals used fake video calls to target unsuspecting individuals. This malicious operation is known as the FaceStealer scheme. Over the last 18 months, more than 900 victims are believed to have fallen prey to this fraud. The hackers created realistic video calls to deceive people and gain access to their valuable digital funds. The FBI revealed details of the crime to warn the public about the evolving threats in the crypto world. Experts advise everyone to verify the identity of people on video calls, especially when dealing with financial matters, to avoid losing their digital assets.",
+          "quiz": [
+            {
+              "q": "What is the main focus of this news article?",
+              "opts": [
+                "How to invest safely in cryptocurrency",
+                "A $400 million crypto hack using fake video calls",
+                "A new video calling app created by the FBI",
+                "A conflict between North Korea and the FBI"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does 'deceive' mean in the text?",
+              "opts": [
+                "To trick someone",
+                "To pay someone",
+                "To help someone",
+                "To call someone"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "How many victims are thought to have been tricked by the scheme?",
+              "opts": [
+                "Over 1,800",
+                "Exactly 400",
+                "More than 900",
+                "Fewer than 18"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE based on the story?",
+              "opts": [
+                "No money was actually lost in the hack.",
+                "The victims were all FBI agents.",
+                "The FBI says North Korean hackers used fake video calls.",
+                "The FaceStealer scheme lasted for five years."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "3": {
+          "text": "According to the FBI, North Korean hackers successfully orchestrated a massive $400 million cryptocurrency theft by deploying deceptive fake video calls. Investigators report that this sophisticated operation, dubbed the FaceStealer scheme, has been active over the last 18 months. During this period, more than 900 victims are thought to have fallen prey to the cybercriminals' tactics. The perpetrators used convincing video call impersonations to trick targets into compromising their security and surrendering access to their digital assets. The revelation highlights the increasing ingenuity of state-sponsored hackers who exploit modern communication technology for financial gain. As virtual interactions become standard in the financial sector, authorities emphasize the urgent need for heightened vigilance and stronger authentication measures to combat such fraudulent practices.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the news report?",
+              "opts": [
+                "A global ban on virtual interactions in the financial sector",
+                "A $400M crypto theft involving fake video calls by North Korean hackers",
+                "A breakdown of cryptocurrency market values",
+                "The release of new authentication software by the FBI"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does 'orchestrated' mean as used in the text?",
+              "opts": [
+                "Planned and directed a complex event",
+                "Discovered by accident",
+                "Prevented from happening",
+                "Sung in a large group"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Over what timeframe did the FaceStealer scheme take place?",
+              "opts": [
+                "The last 18 months",
+                "The last 18 days",
+                "The last 400 days",
+                "The last 900 days"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "The scheme relied entirely on fake text messages.",
+                "The FBI calls the operation the FaceStealer scheme.",
+                "The hackers were unable to steal any crypto money.",
+                "Fewer than 500 people fell prey to the scheme."
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mwd5sancsfkc",
       "date": "2026-11-12",
