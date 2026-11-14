@@ -778,7 +778,7 @@ async function importFile(f,el){
   try{
     const ext=f.name.split('.').pop().toLowerCase();let txt='';
     if(ext==='pdf'){
-      const lib=await import('./lib/pdfjs/pdf.min.mjs');lib.GlobalWorkerOptions.workerSrc=new URL('lib/pdfjs/pdf.worker.min.mjs',location.href).href;
+      const lib=await import('./lib/pdfjs/pdf-v3.min.mjs');lib.GlobalWorkerOptions.workerSrc=new URL('lib/pdfjs/pdf.worker-v3.min.mjs',location.href).href;
       const doc=await lib.getDocument({data:new Uint8Array(await f.arrayBuffer())}).promise;
       for(let n=1;n<=doc.numPages;n++){const c=await (await doc.getPage(n)).getTextContent();let line='',lastY=null,lx=null;for(const it of c.items){if(!('str' in it))continue;const y=Math.round(it.transform[5]);if(lastY!==null&&Math.abs(y-lastY)>3){txt+=line+'\n';line='';lx=null}if(lx!==null&&it.transform[4]-lx>18)line+='\t';line+=it.str;lx=it.transform[4]+(it.width||0);lastY=y;if(it.hasEOL){txt+=line+'\n';line='';lx=null;lastY=null}}txt+=line+'\n'}
     }else if(ext==='docx'){

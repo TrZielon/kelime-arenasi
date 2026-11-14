@@ -190,7 +190,7 @@ const idb=(()=>{let dbp;const open=()=>dbp||(dbp=new Promise((ok,no)=>{const r=i
 
 /* ---------- pdf.js (sitenin kendi kopyası) ---------- */
 let pdfjs=null;
-async function lib(){if(!pdfjs){pdfjs=await import('./lib/pdfjs/pdf.min.mjs');pdfjs.GlobalWorkerOptions.workerSrc=new URL('lib/pdfjs/pdf.worker.min.mjs',location.href).href}return pdfjs}
+async function lib(){if(!pdfjs){pdfjs=await import('./lib/pdfjs/pdf-v3.min.mjs');pdfjs.GlobalWorkerOptions.workerSrc=new URL('lib/pdfjs/pdf.worker-v3.min.mjs',location.href).href}return pdfjs}
 
 /* ---------- Sınavı oku: soruları, şıkları, boşlukları ve yazı alanlarını bul ---------- */
 const r1=n=>Math.round(n*10)/10;
