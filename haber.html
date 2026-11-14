@@ -1,411 +1,183 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-mode="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Günlük haberler: üç seviye, zengin editoryal fotoğraflar, sesli dinleme ve quiz.">
 <title>Haber · Kelime Arenası</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<meta name="description" content="Güncel dünya haberlerini üç seviyede İngilizce oku, bilmediğin kelimelere dokun, dinle ve quiz çöz.">
+<meta name="theme-color" content="#0f766e">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="ortak.css">
 <style>
-body[data-pal="akdeniz"],body[data-pal="gece"],body[data-pal="kitaplik"]{
-  --bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;
-  --p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--ok:#059669;
-  --shadow:0 12px 28px -18px rgba(13,43,42,.28);
-}
-body[data-pal="derin_akdeniz"]{
-  --bg:#061514;--card:#0c2423;--line:#194240;--ink:#f3f8f6;--mut:#7ca39e;
-  --p:#0f766e;--p2:#14b8a6;--acc:#fbbf24;--bad:#f43f5e;--soft:#11312f;--ok:#34d399;
-  --shadow:0 14px 30px -18px rgba(0,0,0,.7);
-}
-*{box-sizing:border-box}
-body{
-  margin:0;min-height:100vh;background-color:var(--bg);color:var(--ink);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Plus Jakarta Sans",sans-serif;
-  font-size:16px;line-height:1.5;padding-bottom:env(safe-area-inset-bottom,0px);
-}
-button{font:inherit;color:inherit;cursor:pointer}
-a{color:inherit;text-decoration:none}
-.nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
-.nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:12px 18px;flex-wrap:wrap}
-.logo{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-weight:800;font-size:20px}
-.logo svg{width:38px;height:38px}
-.logo-sub{font-size:10px;font-weight:800;letter-spacing:.08em;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--acc);border:1px solid var(--line);margin-left:2px}
-.navlinks{display:flex;gap:6px;margin-left:10px;flex-wrap:wrap;align-items:center}
-.navlinks a{padding:8px 14px;border-radius:12px;font-weight:700;color:var(--mut);transition:all .15s}
-.navlinks a:hover{color:var(--ink);background:var(--soft)}
-.navlinks a.cur{color:#fff;background:var(--p)}
-.tools{margin-left:auto;display:flex;gap:8px;align-items:center}
-.dots{display:flex;gap:7px}
-.dots button{width:22px;height:22px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line);padding:0}
-.dots button.on{box-shadow:0 0 0 2px var(--p)}
-.sndbtn{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;min-height:34px}
-.page{max-width:1100px;margin:0 auto;padding:24px 18px 90px}
-.eyebrow{font-size:11px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--mut)}
-.hero{position:relative;overflow:hidden;border-radius:26px;padding:28px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;box-shadow:0 20px 40px -25px var(--p);margin-bottom:24px}
-.hero h1{font-family:Fraunces,serif;font-weight:800;font-size:clamp(24px,3.8vw,36px);margin:6px 0 8px;line-height:1.15}
-.hero p{margin:0;opacity:.94;max-width:620px;font-size:15px}
-h2.sec{font-family:Fraunces,serif;font-size:22px;margin:14px 0 14px}
-
-.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
-.ncard{
-  background:var(--card);border:1.5px solid var(--line);border-radius:20px;overflow:hidden;
-  display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;
-}
-.ncard:hover{transform:translateY(-4px);box-shadow:0 18px 36px -15px var(--p)}
-.nthumb{position:relative;width:100%;height:190px;overflow:hidden;background:var(--soft)}
-.nthumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
-.ncard:hover .nthumb img{transform:scale(1.05)}
-.nbadge{position:absolute;top:12px;left:12px;background:rgba(15,23,42,.85);color:#fff;backdrop-filter:blur(6px);padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;text-transform:uppercase}
-.ndate{position:absolute;bottom:10px;right:12px;background:rgba(0,0,0,.65);color:#fff;backdrop-filter:blur(6px);padding:3px 8px;border-radius:6px;font-size:11px}
-.nbody{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1}
-.nttl{font-family:Fraunces,serif;font-size:18px;line-height:1.35;margin:0 0 10px;font-weight:800;color:var(--ink)}
-.nfoot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--mut);border-top:1px solid var(--line);padding-top:12px}
-.nlv{display:flex;gap:6px;font-weight:700}
-.ncta{color:var(--p);font-weight:800}
-
-.ncard.featured{grid-column:1/-1;display:grid;grid-template-columns:1.2fr 1fr}
-.ncard.featured .nthumb{height:100%;min-height:260px}
-@media(max-width:768px){
-  .ncard.featured{grid-template-columns:1fr}
-  .ncard.featured .nthumb{height:200px}
-}
-
-.reader-box{background:var(--card);border:1.5px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}
-.reader-hero{position:relative;width:100%;height:320px;background:var(--soft);overflow:hidden}
-.reader-hero img{width:100%;height:100%;object-fit:cover;display:block}
-.reader-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(13,43,42,.92) 0%,rgba(13,43,42,.4) 60%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px 28px;color:#fff}
-.reader-hero-overlay h1{font-family:Fraunces,serif;font-size:clamp(22px,3.2vw,34px);margin:4px 0 0;line-height:1.2}
-.reader-body{padding:24px 28px}
-.pill{background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
-.pill.on{background:var(--p);color:#fff;border-color:var(--p)}
-.pill.back{color:#fff;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(6px);align-self:flex-start}
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0}
-.story{font-size:18px;line-height:1.8;color:var(--ink);margin:18px 0}
-.tk{cursor:pointer;border-radius:4px;padding:1px 2px}
-.tk:hover{background:var(--soft);color:var(--p)}
-.tk.sel{background:var(--acc);color:#fff}
-.box{background:var(--soft);border-radius:18px;padding:18px;margin:16px 0;border:1px solid var(--line)}
-.btn3{background:var(--p);color:#fff;border:0;border-radius:12px;padding:10px 18px;font-weight:800;font-size:14px}
-.tip{margin-top:12px;padding:10px 14px;border-radius:10px;background:var(--card);border:1px solid var(--line);font-size:13px}
-.qn{font-weight:800;font-size:16px;margin-bottom:12px}
-.opt{display:block;width:100%;text-align:left;padding:12px 14px;margin-bottom:8px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);font-weight:600}
-.opt:hover{border-color:var(--p);background:var(--soft)}
-.opt.ok{border-color:var(--ok)!important;background:#d1fae5!important;color:var(--ok)!important}
-.opt.bad{border-color:var(--bad)!important;background:#ffe4e6!important;color:var(--bad)!important}
-.bar{height:10px;background:var(--line);border-radius:999px;overflow:hidden;margin:14px 0}
-.bar i{display:block;height:100%;background:var(--ok);border-radius:999px;transition:width .4s}
+.head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.head h1{font-size:clamp(28px,4vw,38px);margin:6px 0 4px}
+.head p{margin:0;color:var(--ink2);max-width:600px}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.ph{position:relative;overflow:hidden;background:var(--soft);aspect-ratio:16/9}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.ph .cat{position:absolute;left:12px;top:12px;z-index:2;background:rgba(6,19,18,.78);color:#fff;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:999px}
+.ph .done{position:absolute;right:12px;top:12px;z-index:2;background:var(--ok);color:#fff;font-size:11.5px;font-weight:800;padding:4px 9px;border-radius:999px;display:flex;gap:4px;align-items:center}
+.ph .done svg{width:13px;height:13px}
+.lead{display:grid;grid-template-columns:1.35fr 1fr;overflow:hidden;text-decoration:none;color:inherit;margin-bottom:18px}
+.lead .ph{aspect-ratio:auto;min-height:340px}
+.lead .tx{padding:28px;display:flex;flex-direction:column}
+.lead h2{font-size:clamp(24px,3vw,32px);margin:8px 0 12px}
+.lead p{color:var(--ink2);margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.ncard{overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.ncard:hover,.lead:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.ncard:hover img,.lead:hover img{transform:scale(1.03)}
+.ncard .tx{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1}
+.ncard h3{font-size:19px;margin:6px 0 10px}
+.ncard p{margin:0;color:var(--mut);font-size:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.meta{margin-top:auto;padding-top:14px;display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700;color:var(--mut)}
+.lv{display:flex;gap:4px}
+.lv i{width:22px;height:6px;border-radius:9px;background:var(--line)}
+.lv i.on{background:var(--ok)}
+.reader{max-width:780px;margin:0 auto}
+.rhead{margin:14px 0 18px}
+.rhead h1{font-size:clamp(28px,4.2vw,40px);margin:10px 0}
+.rph{border-radius:22px;overflow:hidden;aspect-ratio:16/8;margin-bottom:6px}
+.credit{font-size:12px;color:var(--mut);margin-bottom:18px}
+.tabs{display:flex;gap:6px;padding:4px;border-radius:14px;background:var(--soft);border:1px solid var(--line);width:max-content;max-width:100%}
+.tabs button{border:0;background:transparent;padding:8px 14px;border-radius:10px;font-weight:800;font-size:13.5px;color:var(--mut)}
+.tabs button small{font-weight:700;opacity:.75;margin-left:4px}
+.tabs button.on{background:var(--card);color:var(--ink);box-shadow:var(--sh1)}
+.body{font-family:Fraunces,Georgia,serif;font-size:20px;line-height:1.85;margin:20px 0;color:var(--ink)}
+.body p{margin:0 0 16px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.quiz{padding:22px;margin-top:26px}
+.quiz h2{font-size:24px;margin:0 0 4px}
+.qq{padding:16px 0;border-top:1px solid var(--line)}
+.qq:first-of-type{border-top:0}
+.qq b{display:block;margin-bottom:10px}
+.qo{display:grid;gap:8px}
+.qo button{display:flex;gap:10px;align-items:center;text-align:left;padding:11px 14px;border-radius:13px;border:1.5px solid var(--line);background:var(--card);font-weight:600}
+.qo button:hover:not(:disabled){border-color:var(--p)}
+.qo button kbd{flex:0 0 24px;height:24px;border-radius:8px;display:grid;place-items:center;background:var(--soft);font:800 12px "Plus Jakarta Sans",sans-serif;color:var(--mut)}
+.qo button.ok{border-color:var(--ok);background:var(--ok-soft)}
+.qo button.no{border-color:var(--bad);background:var(--bad-soft)}
+.qo button:disabled{cursor:default}
+.qres{margin-top:16px;padding:16px 18px;border-radius:16px;background:var(--soft);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.qres b{font-family:Fraunces,serif;font-size:26px}
+.skel{border-radius:20px;background:var(--soft);min-height:260px;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+@media (max-width:860px){.lead{grid-template-columns:1fr}.lead .ph{min-height:0;aspect-ratio:16/9}.lead .tx{padding:20px}.body{font-size:18.5px}}
 </style>
 </head>
-<body data-pal="akdeniz">
-
-<nav class="nav">
-  <div class="nav-in">
-    <a href="/index.html" class="logo">
-      <svg viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="18" fill="#0f766e"/><path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" stroke="#fff" stroke-width="4.8" stroke-linecap="round" fill="none"/><path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" stroke="#fbbf24" stroke-width="4.2" stroke-linecap="round" fill="none"/></svg>
-      <span>Kelime Arenası</span>
-      <span class="logo-sub">HABER</span>
-    </a>
-    <div class="navlinks">
-      <a href="/index.html">🏛️ Ana sayfa</a>
-      <a href="/haber.html" class="cur">📰 Haber</a>
-      <a href="/fetih.html">⚔️ Arena Fethi</a>
-      <a href="/sinav.html">📝 Sınav</a>
-    </div>
-    <div class="tools">
-      <div class="dots" role="group" aria-label="Renk paleti">
-        <button data-pal="akdeniz" title="🌿 Açık Akdeniz" style="background:#0f766e" class="on"></button>
-        <button data-pal="derin_akdeniz" title="🌌 Koyu Akdeniz" style="background:#061514;border-color:#14b8a6"></button>
-      </div>
-      <button class="sndbtn" id="snd" aria-label="Sesi aç/kapat">🔊</button>
-    </div>
-  </div>
-</nav>
-
-<main class="page" id="main"></main>
-
+<body>
+<main class="ka-wrap" id="main"><div class="skel"></div></main>
+<script src="ortak.js"></script>
 <script>
-const $=s=>document.querySelector(s);
-const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const LV={1:'Seviye 1',2:'Seviye 2',3:'Seviye 3'};
-let DATA=[],CUR=null,LEVEL='1',QS=null,LAST=null,MUTED=localStorage.getItem('ka_mute')==='1';
-const DONE=()=>{try{return JSON.parse(localStorage.getItem('ka_hn_done')||'{}')}catch(e){return {}}};
-const saveDone=d=>localStorage.setItem('ka_hn_done',JSON.stringify(d));
+(function(){
+'use strict';
+const {$,esc}=KA;const ic=KA.ic;
+const LV={1:['Seviye 1','A2'],2:['Seviye 2','B1'],3:['Seviye 3','B2']};
+const TR_CAT={world:'Dünya',politics:'Siyaset',business:'Ekonomi',technology:'Teknoloji',science:'Bilim',health:'Sağlık',sport:'Spor',culture:'Kültür',environment:'Çevre'};
+let DATA=[],LEVEL='1',FILTER='all';
+const DONE=()=>KA.store.get('ka_hn_done',{})||{};
+const saveDone=d=>KA.store.set('ka_hn_done',d);
 
-const PHOTO_POOLS = {
-  ai_tech: [
-    "https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80"
-  ],
-  space: [
-    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1517976487584-8840be6d2c49?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80"
-  ],
-  ocean: [
-    "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80"
-  ],
-  climate: [
-    "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80"
-  ],
-  health: [
-    "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&w=1200&q=80"
-  ],
-  economy: [
-    "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
-  ],
-  culture: [
-    "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=1200&q=80"
-  ],
-  sport: [
-    "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1200&q=80"
-  ],
-  diplomacy: [
-    "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80"
-  ],
-  education: [
-    "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=80"
-  ],
-  world: [
-    "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1477959858617-67f30bc75b82?auto=format&fit=crop&w=1200&q=80"
-  ]
-};
+/* ---------- Her habere özel fotoğraf ---------- */
+function hash(s){let h=2166136261;for(const c of String(s)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
+function cover(item){
+  const h=hash(item.id||item.title),hu=(h%36)*10,P=[`hsl(${hu} 45% 22%)`,`hsl(${(hu+25)%360} 50% 38%)`,`hsl(${(hu+180)%360} 85% 70%)`];
+  let shapes='';
+  for(let i=0;i<7;i++){const r=(h>>>(i*3))&63,x=(r*37+i*91)%640,y=(r*53+i*47)%360,s=40+((h>>>(i+5))&127);shapes+=i%2?`<circle cx="${x}" cy="${y}" r="${s}" fill="#fff" opacity=".07"/>`:`<rect x="${x-s/2}" y="${y-s/2}" width="${s*1.6}" height="${s*1.6}" rx="${s/3}" transform="rotate(${(r*7)%90} ${x} ${y})" fill="${P[2]}" opacity=".12"/>`}
+  const words=String(item.title||'').split(/\s+/).slice(0,3).join(' ');
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${P[0]}"/><stop offset="1" stop-color="${P[1]}"/></linearGradient></defs><rect width="640" height="360" fill="url(#g)"/>${shapes}<text x="36" y="318" font-family="Georgia,serif" font-size="40" font-weight="700" fill="#fff" opacity=".92">${esc(words)}</text></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+}
+function photoSrc(item){if(item.img)return item.img;if(item.src&&/bbc\./.test(item.src)&&location.protocol!=='file:')return 'api/og-image?u='+encodeURIComponent(item.src.split('?')[0]);return cover(item)}
+function photo(item,eager){return `<img src="${esc(photoSrc(item))}" alt="" ${eager?'fetchpriority="high"':'loading="lazy"'} decoding="async" data-cover="${esc(cover(item))}" onerror="if(this.src!==this.dataset.cover)this.src=this.dataset.cover">`}
+const catName=c=>TR_CAT[String(c||'').toLowerCase()]||c||'Dünya';
+const dateTr=d=>{try{return new Date(d+'T12:00:00').toLocaleDateString('tr-TR',{day:'numeric',month:'long'})}catch(e){return d}};
+const firstText=x=>{const l=x.levels||{};const t=(l['2']||l['1']||l['3']||{}).text||'';return t};
 
-const CATEGORY_RULES = [
-  { cat: 'ocean', pattern: /\b(?:coral|ocean|sea|marine|reef|whale|shark|fish|okyanus|deniz|mercan|balık|balina|kıyı|sahil)\b/i },
-  { cat: 'space', pattern: /\b(?:space|astronomy|telescope|webb|nasa|spacex|rocket|satellite|galaxy|star|planet|mars|moon|uzay|astronomi|teleskop|roket|uydu|galaksi|yıldız|gezegen)\b/i },
-  { cat: 'ai_tech', pattern: /\b(?:ai|artificial intelligence|robot|chip|semiconductor|software|algorithm|cyber|chatgpt|openai|google|apple|nvidia|tech|technology|yapay zeka|çip|yazılım|algoritma|siber|teknoloji)\b/i },
-  { cat: 'climate', pattern: /\b(?:climate|global warming|emission|carbon|renewable|solar|wind turbine|glacier|forest|wildfire|temperature|environment|iklim|küresel ısınma|emisyon|karbon|yenilenebilir|güneş|buzul|orman|yangın|çevre)\b/i },
-  { cat: 'health', pattern: /\b(?:health|medical|medicine|doctor|hospital|patient|virus|vaccine|cancer|disease|dna|gene|brain|therapy|sağlık|tıp|doktor|hastane|hasta|virüs|aşı|kanser|hastalık|ilaç)\b/i },
-  { cat: 'economy', pattern: /\b(?:economy|market|stock|inflation|dollar|euro|bank|finance|trade|export|import|plunge|rally|earnings|investor|ekonomi|piyasa|borsa|hisse|enflasyon|banka|finans|ticaret|yatırım)\b/i },
-  { cat: 'culture', pattern: /\b(?:art|artist|museum|history|ancient|archaeology|theatre|music|opera|novel|books|colosseum|sanat|müze|tarih|antik|arkeoloji|tiyatro|müzik|kitap|kültür)\b/i },
-  { cat: 'sport', pattern: /\b(?:sport|football|soccer|champions|cup|tournament|match|olympic|tennis|basketball|stadium|spor|futbol|şampiyon|kupa|turnuva|maç|lig|olimpiyat|stadyum)\b/i },
-  { cat: 'diplomacy', pattern: /\b(?:diplomacy|summit|treaty|president|minister|parliament|election|midterm|government|nato|diplomasi|zirve|anlaşma|başkan|meclis|seçim|hükümet)\b/i },
-  { cat: 'education', pattern: /\b(?:education|university|college|school|student|teacher|academic|exam|eğitim|üniversite|okul|öğrenci|öğretmen|akademik|sınav)\b/i }
-];
-
-function resolveNewsImage(item) {
-  if (item && item.image && typeof item.image === 'string' && item.image.startsWith("http")) return item.image;
-  const text = (String(item?.title || '') + ' ' + String(item?.category || '')).toLowerCase();
-  let matchedCat = 'world';
-  for (const rule of CATEGORY_RULES) {
-    if (rule.pattern.test(text)) { matchedCat = rule.cat; break; }
-  }
-  const pool = PHOTO_POOLS[matchedCat] || PHOTO_POOLS.world;
-  let hash = 0;
-  for (let i = 0; i < text.length; i++) hash = (hash * 31 + text.charCodeAt(i)) & 0xffffffff;
-  return pool[Math.abs(hash) % pool.length];
+/* ---------- Liste ---------- */
+function list(){
+  document.title='Haber · Kelime Arenası';
+  const done=DONE();
+  const items=DATA.filter(x=>FILTER==='all'||(FILTER==='new'?!done[x.id]:!!done[x.id]));
+  const lvBar=x=>`<span class="lv">${[1,2,3].map(n=>`<i class="${done[x.id]&&done[x.id][n]!=null?'on':''}"></i>`).join('')}</span>`;
+  const badge=x=>done[x.id]?`<span class="done">${ic('check')}Okundu</span>`:'';
+  const [L,...R]=items;
+  $('#main').innerHTML=`<div class="head"><div><span class="eyebrow">Günlük haber · üç seviye</span><h1>Dünyadan haberler, gerçek İngilizce</h1><p>Her gün güncellenen haberleri seviyene göre oku. Bilmediğin kelimeye dokun, anlamını gör ve listene ekle, sonra kısa quizle pekiştir.</p></div>
+  <div class="filters">${[['all','Tümü'],['new','Okunmadı'],['done','Okundu']].map(([k,t])=>`<button class="pill ${FILTER===k?'on':''}" data-f="${k}">${t}</button>`).join('')}</div></div>
+  ${!items.length?'<div class="card" style="padding:40px;text-align:center"><p class="mut">Bu filtrede haber yok.</p></div>':''}
+  ${L?`<a class="card lead" href="#${esc(L.id)}"><div class="ph">${photo(L,true)}<span class="cat">${esc(catName(L.category))}</span>${badge(L)}</div><div class="tx"><span class="eyebrow">${dateTr(L.date)} · ${esc(L.source||'BBC News')}</span><h2>${esc(L.title)}</h2><p>${esc(firstText(L).split(/(?<=\.)\s/).slice(0,2).join(' '))}</p><div class="meta"><span>Seviye 1 · 2 · 3</span>${lvBar(L)}</div><div style="margin-top:16px"><span class="btn btn-p">Haberi oku${ic('arrow')}</span></div></div></a>`:''}
+  <div class="grid">${R.map(x=>`<a class="card ncard" href="#${esc(x.id)}"><div class="ph">${photo(x)}<span class="cat">${esc(catName(x.category))}</span>${badge(x)}</div><div class="tx"><span class="eyebrow">${dateTr(x.date)}</span><h3>${esc(x.title)}</h3><p>${esc(firstText(x))}</p><div class="meta"><span>Oku ve quiz çöz</span>${lvBar(x)}</div></div></a>`).join('')}</div>`;
 }
 
-function getNewsArt(item, idx, isHero){
-  const imgSrc = resolveNewsImage(item);
-  const fallbackUrl = "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80";
-  return `<img src="${esc(imgSrc)}" alt="${esc(item?.title||'Haber')}" loading="${isHero?'eager':'lazy'}" onerror="this.onerror=null;this.src='${fallbackUrl}'">`;
+/* ---------- Okuyucu ---------- */
+let QS=null;
+function reader(x){
+  document.title=x.title+' · Haber';
+  const lv=x.levels||{};if(!lv[LEVEL])LEVEL=Object.keys(lv)[0]||'1';
+  const L=lv[LEVEL]||{text:'',quiz:[]};
+  const paras=String(L.text).split(/\n+/).filter(Boolean);
+  const host=(()=>{try{return new URL(x.src).hostname.replace(/^www\./,'')}catch(e){return ''}})();
+  $('#main').innerHTML=`<article class="reader">
+  <a href="#" class="btn btn-ghost btn-sm">${ic('back')}Bütün haberler</a>
+  <div class="rhead"><span class="eyebrow">${esc(catName(x.category))} · ${dateTr(x.date)}</span><h1>${esc(x.title)}</h1></div>
+  <div class="rph ph">${photo(x,true)}</div>
+  <div class="credit">Fotoğraf ve kaynak: ${x.src?`<a href="${esc(x.src)}" target="_blank" rel="noopener">${esc(x.source||host)}</a>`:esc(x.source||'')}</div>
+  <div class="row" style="justify-content:space-between">
+    <div class="tabs" role="tablist">${['1','2','3'].filter(n=>lv[n]).map(n=>`<button role="tab" class="${n===LEVEL?'on':''}" data-lv="${n}">${LV[n][0]}<small>${LV[n][1]}</small></button>`).join('')}</div>
+    <div class="tools"><button class="btn btn-ghost btn-sm" data-read="1">${ic('sound')}Haberi dinle</button><button class="btn btn-ghost btn-sm" data-read=".8">Yavaş dinle</button></div>
+  </div>
+  <div class="body" id="body">${paras.map(p=>`<p>${KA.tokens(p)}</p>`).join('')}</div>
+  <p class="mut" style="font-size:13.5px;margin-top:-6px">${ic('spark')} Bilmediğin bir kelimeye dokun: anlamı, eş anlamlıları ve “Bilmediklerime ekle” düğmesi açılır. Eklediğin kelimeler ana sayfada <b>Bilmediklerim</b> listesine düşer.</p>
+  <section class="card quiz" id="quiz"></section>
+  </article>`;
+  QS={x,lv:LEVEL,ans:{},quiz:(L.quiz||[]).filter(q=>q&&Array.isArray(q.opts))};
+  drawQuiz();
+  scrollTo(0,0);
+}
+function drawQuiz(){
+  const {quiz,ans}=QS,n=Object.keys(ans).length,ok=Object.entries(ans).filter(([i,v])=>quiz[i].ans===v).length;
+  if(!quiz.length){$('#quiz').innerHTML='<p class="mut">Bu seviye için quiz yok.</p>';return}
+  $('#quiz').innerHTML=`<span class="eyebrow">${LV[QS.lv][0]} quiz</span><h2>Ne kadar anladın?</h2><p class="mut" style="margin:0 0 6px">${quiz.length} soru · her doğru +5 XP</p>
+  ${quiz.map((q,i)=>`<div class="qq"><b>${i+1}. ${esc(q.q)}</b><div class="qo">${q.opts.map((o,k)=>{const a=ans[i];const cls=a==null?'':(k===q.ans?'ok':(k===a?'no':''));return `<button class="${cls}" data-q="${i}" data-o="${k}" ${a!=null?'disabled':''}><kbd>${'ABCD'[k]}</kbd><span>${esc(o)}</span></button>`}).join('')}</div></div>`).join('')}
+  ${n===quiz.length?`<div class="qres"><b>${ok}/${quiz.length}</b><div class="grow">${ok===quiz.length?'Kusursuz! Bir üst seviyeyi dene.':ok>=quiz.length/2?'Güzel. Yanlışlarını metinde tekrar bul.':'Metni bir kez daha oku, sonra tekrar dene.'}</div>${QS.lv<'3'&&QS.x.levels[String(+QS.lv+1)]?`<button class="btn btn-p" data-lv="${+QS.lv+1}">Seviye ${+QS.lv+1}'e geç${ic('arrow')}</button>`:''}<button class="btn btn-ghost" data-retry>${ic('reset')}Tekrar çöz</button></div>`:''}`;
+}
+function answer(i,k){
+  if(QS.ans[i]!=null)return;QS.ans[i]=k;const ok=QS.quiz[i].ans===k;ok?KA.sfx.ok():KA.sfx.bad();
+  if(ok)KA.addXp(5);
+  if(Object.keys(QS.ans).length===QS.quiz.length){const d=DONE();d[QS.x.id]=d[QS.x.id]||{};d[QS.x.id][QS.lv]=Object.entries(QS.ans).filter(([a,v])=>QS.quiz[a].ans===v).length;saveDone(d)}
+  drawQuiz();
 }
 
-let VOICE=null;
-function pickVoice(){
-  try{
-    const vs=speechSynthesis.getVoices()||[];
-    VOICE=vs.find(v=>/^en[-_]US/i.test(v.lang)&&/Google|Samantha|Zira|David/i.test(v.name))||vs.find(v=>/^en[-_]US/i.test(v.lang))||null;
-  }catch(e){VOICE=null}
+/* ---------- Yükleme ve yönlendirme ---------- */
+function route(){
+  KA.closeLookup();KA.stopSpeak();
+  const id=decodeURIComponent(location.hash.slice(1));
+  const x=DATA.find(i=>i.id===id);
+  if(x)reader(x);else list();
 }
-try{speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
-pickVoice();
-function say(t,rate){
-  if(MUTED)return;
-  try{
-    pickVoice();speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(t);u.lang='en-US';if(VOICE)u.voice=VOICE;u.rate=rate||1;speechSynthesis.speak(u);
-  }catch(e){}
-}
-
-function setPal(n){
-  const t = (n==='derin_akdeniz')?'derin_akdeniz':'akdeniz';
-  document.body.dataset.pal=t;
-  document.querySelectorAll('.dots button').forEach(b=>b.classList.toggle('on',b.dataset.pal===t));
-  try{localStorage.setItem('ka_pal',t)}catch(e){}
-}
-function setMute(){
-  const s=$('#snd');if(s)s.textContent=MUTED?'🔇':'🔊';
-  if(MUTED){try{speechSynthesis.cancel()}catch(e){}}
-}
-setPal(localStorage.getItem('ka_pal')||'akdeniz');
-setMute();
-
-const DEFAULT_NEWS = [
-  {
-    id: "jwst-ancient-galaxy",
-    title: "James Webb Telescope Discovers One of the Most Distant Spiral Galaxies",
-    category: "Space",
-    date: "Bugün",
-    source: "NASA / Space Science",
-    levels: {
-      "1": {
-        text: "Astronomers have found a very old spiral galaxy using the James Webb Space Telescope. It existed when the universe was only 600 million years old. Spiral galaxies like our Milky Way have swirling arms full of bright stars.",
-        quiz: [{ q: "Which telescope found the galaxy?", opts: ["Hubble", "James Webb Space Telescope", "Kepler"], ans: 1 }]
-      }
-    }
-  }
-];
-
 async function load(){
-  try{
-    const r=await fetch('/data/news.json',{cache:'no-store'});
-    if(!r.ok)throw new Error('Dosya yok');
-    const json=await r.json();
-    DATA=json.items||(Array.isArray(json)?json:[]);
-    if(!DATA.length) DATA=DEFAULT_NEWS;
-  }catch(e){DATA=DEFAULT_NEWS;}
+  try{const r=await fetch('data/news.json',{cache:'no-cache'});if(!r.ok)throw 0;const j=await r.json();DATA=(j.items||[]).filter(x=>x&&x.id&&x.levels)}catch(e){DATA=[]}
+  if(!DATA.length){$('#main').innerHTML='<div class="card" style="padding:40px;text-align:center"><h2>Haberler yüklenemedi</h2><p class="mut">Biraz sonra tekrar dene.</p></div>';return}
   route();
 }
-
-function route(){
-  const id=location.hash.slice(1);
-  CUR=DATA.find(x=>x.id===id)||null;
-  if(!CUR){LAST=null;return list()}
-  if(id!==LAST){LEVEL='1';LAST=id}
-  reader();
-}
-
-function list(){
-  const done=DONE();
-  const hero=`<section class="hero"><div class="eyebrow">Günlük haber · Zengin Görsel & Üç seviye</div><h1>Dünyadan Haberler, Gerçek İngilizce.</h1><p>Editoryal fotoğraflı güncel haberleri oku, bilmediğin kelimelere tıkla, dinle ve quiz çözerek dil becerini pekiştir.</p></section>`;
-  const body=DATA.length
-    ? `<h2 class="sec">📰 Günün Haberleri</h2><div class="news-grid">`+DATA.map((x,i)=>`
-      <a class="ncard ${i===0?'featured':''}" href="#${esc(x.id)}">
-        <div class="nthumb">
-          ${getNewsArt(x,i)}
-          <span class="nbadge">${esc(x.category||'Dünya')}</span>
-          <span class="ndate">${esc(x.date||'Güncel')}</span>
-        </div>
-        <div class="nbody">
-          <h3 class="nttl">${esc(x.title)}</h3>
-          <div class="nfoot">
-            <span class="nlv">${[1,2,3].map(l=>LV[l]+(done[x.id+'-'+l]!=null?' ✓ %'+done[x.id+'-'+l]:'')).join(' · ')}</span>
-            <span class="ncta">Haberi Oku →</span>
-          </div>
-        </div>
-      </a>`).join('')+`</div>`
-    : `<div class="box"><p style="color:var(--mut);margin:0">Haberler yükleniyor...</p></div>`;
-  $('#main').innerHTML=hero+body;
-}
-
-function reader(){
-  const lv=(CUR.levels&&CUR.levels[LEVEL])||(CUR.levels&&CUR.levels['1'])||{text:'',quiz:[]};
-  const done=DONE();
-  const tabs=[1,2,3].map(l=>`<button class="pill ${String(l)===LEVEL?'on':''}" data-lv="${l}">${LV[l]}${done[CUR.id+'-'+l]!=null?' ✓ %'+done[CUR.id+'-'+l]:''}</button>`).join('');
-  const story=String(lv.text).split(/([A-Za-z][A-Za-z'-]*)/).map((t,i)=>i%2?`<span class="tk" data-w="${esc(t)}">${esc(t)}</span>`:esc(t)).join('');
-  
-  $('#main').innerHTML=`
-  <div class="reader-box">
-    <div class="reader-hero">
-      ${getNewsArt(CUR,'hero',true)}
-      <div class="reader-hero-overlay">
-        <a class="pill back" href="#">← Haberlere Dön</a>
-        <div class="row" style="margin:10px 0 2px">
-          <span class="tag" style="background:rgba(255,255,255,.9);color:#0d2b2a;padding:3px 8px;border-radius:6px;font-size:12px;font-weight:700">${esc(CUR.category||'Dünya')}</span>
-          <span style="font-size:13px;opacity:.9">${esc(CUR.date||'')}</span>
-        </div>
-        <h1>${esc(CUR.title)}</h1>
-      </div>
-    </div>
-    <div class="reader-body">
-      <div class="row">${tabs}</div>
-      <div class="box">
-        <div class="row" style="margin-top:0">
-          <button class="btn3" id="play" style="padding:10px 18px">🔊 Dinle</button>
-          <select id="spd" style="padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card)"><option value="0.8">Yavaş</option><option value="1" selected>Normal</option><option value="1.15">Hızlı</option></select>
-          <button class="pill" id="stop">■ Durdur</button>
-        </div>
-        <div class="story">${story}</div>
-        <div class="tip" id="tip"><span style="color:var(--mut)">💡 Bir kelimeye dokunun, telaffuzunu dinleyin ve Türkçe karşılığını görün.</span></div>
-      </div>
-      <div class="row"><button class="btn3" id="quiz">Quiz'e geç →</button></div>
-    </div>
-  </div>`;
-}
-
-function quiz(){
-  const lv=(CUR.levels&&CUR.levels[LEVEL])||{quiz:[]};
-  const qs=lv.quiz||[];
-  if(!qs.length){
-    $('#main').innerHTML=`<div class="box"><button class="pill" data-back="1" style="margin-bottom:14px">← Metne dön</button><p>Bu seviye için henüz quiz hazırlanmamış.</p></div>`;
-    return;
-  }
-  QS={ans:Array(qs.length).fill(null)};
-  $('#main').innerHTML=`
-  <div class="box">
-    <button class="pill" data-back="1" style="margin-bottom:14px">← Metne dön</button>
-    <h2 class="sec" style="margin-top:0">${LV[LEVEL]} · Quiz</h2>
-    ${qs.map((q,i)=>`<div class="box" style="background:var(--card)"><div class="qn">${i+1}. ${esc(q.q)}</div>${q.opts.map((o,k)=>`<button class="opt" data-q="${i}" data-k="${k}">${esc(o)}</button>`).join('')}</div>`).join('')}
-    <div id="res"></div>
-  </div>`;
-}
-
-function answer(i,k){
-  const qs=CUR.levels[LEVEL].quiz;
-  if(!qs||QS.ans[i]!==null)return;
-  QS.ans[i]=k;
-  document.querySelectorAll(`[data-q="${i}"]`).forEach(b=>{
-    b.disabled=true;
-    const kk=+b.dataset.k;
-    if(kk===qs[i].ans)b.classList.add('ok');
-    else if(kk===k)b.classList.add('bad');
-  });
-  if(QS.ans.every(v=>v!==null)){
-    const total=qs.length,right=QS.ans.filter((v,j)=>v===qs[j].ans).length,pct=Math.round(right/total*100);
-    const d=DONE();d[CUR.id+'-'+LEVEL]=pct;saveDone(d);
-    $('#res').innerHTML=`<div class="box" style="text-align:center"><div style="font-family:Fraunces,serif;font-size:32px;font-weight:900">%${pct}</div><div class="bar"><i style="width:${pct}%"></i></div><p style="color:var(--mut);margin:8px 0 16px">${right} / ${total} doğru</p><button class="btn3" data-back="1">Metne dön</button></div>`;
-  }
-}
-
-async function tapWord(w,el){
-  document.querySelectorAll('.tk.sel').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');
-  const tip=$('#tip'),key='ka_hw_'+w.toLowerCase();
-  say(w);
-  const cached=localStorage.getItem(key);
-  if(cached){tip.innerHTML=`<b>${esc(w)}</b> — ${esc(cached)}`;return}
-  tip.innerHTML=`<b>${esc(w)}</b> — <span style="color:var(--mut)">anlam aranıyor…</span>`;
-  const sentence=(CUR.levels[LEVEL]?.text||'').split(/(?<=[.!?])\s+/).find(s=>new RegExp('\\b'+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i').test(s))||'';
-  try{
-    const r=await fetch('/api/claude',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prompt:`Translate the English word "${w}" into Turkish. It appears in this sentence: "${sentence}". Give the most fitting meaning in 1-3 Turkish words. Return ONLY JSON: {"tr":"..."}`,tier:'quick'})});
-    const d=await r.json();
-    const m=String(d.text||'').match(/\{[\s\S]*\}/);
-    const v=m?String(JSON.parse(m[0]).tr||'').trim():'';
-    if(v){localStorage.setItem(key,v);tip.innerHTML=`<b>${esc(w)}</b> — ${esc(v)}`}
-    else tip.innerHTML=`<b>${esc(w)}</b> — <span style="color:var(--mut)">anlam bulunamadı</span>`;
-  }catch(e){tip.innerHTML=`<b>${esc(w)}</b> — <span style="color:var(--bad)">bağlantı hatası</span>`}
-}
-
 document.addEventListener('click',e=>{
   const t=e.target;
-  const pal=t.closest('.dots [data-pal]');if(pal){setPal(pal.dataset.pal);return}
-  if(t.closest('#snd')){MUTED=!MUTED;localStorage.setItem('ka_mute',MUTED?'1':'0');setMute();return}
-  const lv=t.closest('[data-lv]');if(lv){LEVEL=lv.dataset.lv;reader();return}
-  if(t.closest('#quiz')){quiz();return}
-  if(t.closest('[data-back]')){reader();return}
-  const o=t.closest('[data-q]');if(o){answer(+o.dataset.q,+o.dataset.k);return}
-  if(t.closest('#play')){say(CUR.levels[LEVEL].text,+$('#spd').value);return}
-  if(t.closest('#stop')){speechSynthesis.cancel();return}
-  const w=t.closest('.tk');if(w){tapWord(w.dataset.w,w);return}
+  const tk=t.closest('.tk');if(tk){const p=tk.closest('p');const s=(p?p.textContent:'').split(/(?<=[.!?])\s+/).find(z=>z.includes(tk.dataset.w))||'';KA.lookup(tk.dataset.w,{anchor:tk,context:s});return}
+  const f=t.closest('[data-f]');if(f){FILTER=f.dataset.f;list();return}
+  const lv=t.closest('[data-lv]');if(lv){LEVEL=lv.dataset.lv;const x=DATA.find(i=>i.id===decodeURIComponent(location.hash.slice(1)));if(x)reader(x);return}
+  const o=t.closest('[data-o]');if(o){answer(+o.dataset.q,+o.dataset.o);return}
+  if(t.closest('[data-retry]')){QS.ans={};drawQuiz();return}
+  const rd=t.closest('[data-read]');if(rd){const b=$('#body');if(b)KA.speak(b.textContent,+rd.dataset.read);return}
 });
-window.addEventListener('hashchange',route);
+addEventListener('hashchange',route);
+KA.nav('haber.html',{stats:true});
 load();
+})();
 </script>
 </body>
 </html>

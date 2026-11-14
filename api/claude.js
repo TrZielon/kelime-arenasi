@@ -53,13 +53,6 @@ async function gemini(model, key, prompt, maxTokens) {
 }
 
 export default async function handler(req, res) {
-    if (req.method === 'GET') {
-    return res.status(200).json({
-      hasGeminiKey: !!process.env.GEMINI_API_KEY,
-      envNamesContainingGemini: Object.keys(process.env).filter(k => /GEMINI/i.test(k)),
-      vercelEnvironment: process.env.VERCEL_ENV || null,
-    });
-  }
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') return send(res, 405, { error: 'method' });
   if (!originOk(req)) return send(res, 403, { error: 'origin' });

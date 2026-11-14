@@ -1,0 +1,137 @@
+/* Kelime Arenası · ortak tasarım dosyası (bütün sayfalar kullanır) */
+:root,[data-mode="light"]{
+  --bg:#f3f7f6;--bg2:#e8f1ef;--card:#ffffff;--card2:#f8fbfa;--ink:#0f2e2b;--ink2:#33524e;--mut:#5f7a76;
+  --line:#d8e6e3;--line2:#c3d8d4;--soft:#ebf4f2;--p:#0f766e;--p2:#14b8a6;--p-ink:#ffffff;--p-soft:#d7efeb;
+  --acc:#f59e0b;--acc2:#d97706;--acc-ink:#2a1700;--acc-soft:#fdf1d9;
+  --ok:#15803d;--ok-soft:#dcf3e4;--bad:#dc2626;--bad-soft:#fde4e4;--warn:#b45309;
+  --sh1:0 1px 2px rgba(15,46,43,.06),0 2px 8px rgba(15,46,43,.05);
+  --sh2:0 2px 4px rgba(15,46,43,.05),0 14px 34px -14px rgba(15,46,43,.25);
+  --nav:rgba(243,247,246,.86);color-scheme:light
+}
+[data-mode="dark"]{
+  --bg:#061312;--bg2:#0a1d1b;--card:#0d2421;--card2:#102b28;--ink:#e6f4f1;--ink2:#bcd5d0;--mut:#86a8a2;
+  --line:#1d3b37;--line2:#28504a;--soft:#11302c;--p:#2dd4bf;--p2:#5eead4;--p-ink:#03201c;--p-soft:#0f3a35;
+  --acc:#fbbf24;--acc2:#f59e0b;--acc-ink:#2a1700;--acc-soft:#33280e;
+  --ok:#34d399;--ok-soft:#0e3326;--bad:#f87171;--bad-soft:#3a1616;--warn:#fbbf24;
+  --sh1:0 1px 2px rgba(0,0,0,.4);
+  --sh2:0 2px 6px rgba(0,0,0,.35),0 18px 40px -18px rgba(0,0,0,.7);
+  --nav:rgba(6,19,18,.86);color-scheme:dark
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.55 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--p)}
+h1,h2,h3,.serif{font-family:Fraunces,Georgia,"Times New Roman",serif;letter-spacing:-.015em;line-height:1.15}
+img{max-width:100%}
+:focus-visible{outline:2.5px solid var(--p);outline-offset:2px;border-radius:8px}
+::selection{background:color-mix(in srgb,var(--p) 28%,transparent)}
+
+/* ---------- Gezinme çubuğu ---------- */
+.ka-nav{position:sticky;top:0;z-index:50;background:var(--nav);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
+.ka-nav-in{max-width:1180px;margin:0 auto;height:62px;padding:0 20px;display:flex;align-items:center;gap:18px}
+.ka-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:Fraunces,Georgia,serif;font-weight:800;font-size:19px;letter-spacing:-.02em;white-space:nowrap}
+.ka-brand img{width:34px;height:34px;display:block;border-radius:10px}
+.ka-links{display:flex;gap:4px;margin-left:8px}
+.ka-links a{display:flex;align-items:center;gap:7px;padding:8px 13px;border-radius:11px;text-decoration:none;color:var(--ink2);font-weight:700;font-size:14px;transition:background .15s,color .15s}
+.ka-links a:hover{background:var(--soft);color:var(--ink)}
+.ka-links a.on{background:var(--p-soft);color:var(--p)}
+.ka-links svg{width:18px;height:18px;flex:0 0 18px}
+.ka-tools{margin-left:auto;display:flex;align-items:center;gap:8px}
+.ka-chip{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-weight:800;font-size:13.5px;color:var(--ink);white-space:nowrap}
+.ka-chip small{font-weight:600;color:var(--mut)}
+.ka-icon-btn{width:38px;height:38px;border-radius:12px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;color:var(--ink2);transition:background .15s}
+.ka-icon-btn:hover{background:var(--soft)}
+.ka-icon-btn svg{width:19px;height:19px}
+.ka-mode{display:flex;padding:3px;border-radius:12px;background:var(--soft);border:1px solid var(--line)}
+.ka-mode button{border:0;background:transparent;height:30px;padding:0 11px;border-radius:9px;font-size:12.5px;font-weight:800;color:var(--mut);display:flex;align-items:center;gap:6px}
+.ka-mode button svg{width:15px;height:15px}
+.ka-mode button.on{background:var(--card);color:var(--ink);box-shadow:var(--sh1)}
+.ka-tabbar{display:none}
+@media (max-width:820px){
+  .ka-nav-in{height:56px;padding:0 14px;gap:10px}
+  .ka-links{display:none}
+  .ka-brand{font-size:17px}
+  .ka-brand img{width:30px;height:30px}
+  .ka-mode button span{display:none}
+  .ka-mode button{padding:0 9px}
+  .ka-hide-sm{display:none!important}
+  .ka-tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+  .ka-tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:12px;text-decoration:none;color:var(--mut);font-size:11px;font-weight:800}
+  .ka-tabbar a svg{width:22px;height:22px}
+  .ka-tabbar a.on{color:var(--p);background:var(--p-soft)}
+  body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+}
+
+/* ---------- Genel yapı taşları ---------- */
+.ka-wrap{max-width:1180px;margin:0 auto;padding:24px 20px 60px}
+@media (max-width:820px){.ka-wrap{padding:16px 14px 40px}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--sh1)}
+.eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+.mut{color:var(--mut)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:13px;border:1px solid transparent;font-weight:800;font-size:14.5px;text-decoration:none;transition:transform .08s,filter .15s,background .15s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn svg{width:18px;height:18px}
+.btn-p{background:var(--p);color:var(--p-ink)}
+.btn-p:hover{filter:brightness(1.06)}
+.btn-acc{background:var(--acc);color:var(--acc-ink)}
+.btn-acc:hover{filter:brightness(1.05)}
+.btn-ghost{background:var(--card);border-color:var(--line);color:var(--ink)}
+.btn-ghost:hover{background:var(--soft)}
+.btn-ok{background:var(--ok);color:#fff}
+.btn-bad{background:var(--card);border-color:color-mix(in srgb,var(--bad) 45%,var(--line));color:var(--bad)}
+.btn-sm{min-height:36px;padding:0 13px;font-size:13px;border-radius:11px}
+.btn-lg{min-height:52px;padding:0 24px;font-size:16px;border-radius:15px}
+.btn:disabled{opacity:.5;cursor:default;transform:none}
+.pill{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-weight:700;font-size:13px;color:var(--ink2)}
+.pill:hover{background:var(--soft)}
+.pill.on{border-color:var(--p);color:var(--p);background:var(--p-soft)}
+.pill:disabled{opacity:.45;cursor:default}
+.tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:800;background:var(--soft);color:var(--ink2)}
+.input,.textarea,.select{width:100%;border:1.5px solid var(--line);background:var(--card);border-radius:13px;padding:12px 14px;outline:none;transition:border-color .15s}
+.input:focus,.textarea:focus,.select:focus{border-color:var(--p)}
+.textarea{min-height:120px;resize:vertical;line-height:1.55}
+.good{color:var(--ok)}.bad{color:var(--bad)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.center{text-align:center}
+.grow{flex:1}
+
+/* ---------- Pencere (modal) ---------- */
+.ka-modal{position:fixed;inset:0;z-index:90;background:rgba(4,18,16,.55);display:flex;align-items:center;justify-content:center;padding:18px;animation:kaFade .15s}
+.ka-modal-box{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--sh2);width:min(640px,100%);max-height:min(88vh,860px);overflow:auto;position:relative;padding:24px}
+.ka-modal-box.wide{width:min(920px,100%)}
+.ka-modal-x{position:absolute;top:14px;right:14px}
+@media (max-width:640px){.ka-modal{align-items:flex-end;padding:0}.ka-modal-box{border-radius:22px 22px 0 0;max-height:92vh;padding:20px 16px calc(20px + env(safe-area-inset-bottom))}}
+@keyframes kaFade{from{opacity:0}to{opacity:1}}
+
+/* ---------- Bildirim ---------- */
+.ka-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:120;background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:14px;font-weight:700;font-size:14px;box-shadow:var(--sh2);max-width:calc(100% - 32px);animation:kaUp .2s}
+@media (max-width:820px){.ka-toast{bottom:calc(84px + env(safe-area-inset-bottom))}}
+@keyframes kaUp{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+
+/* ---------- Kelime paneli (dokununca açılan sözlük) ---------- */
+.tk{cursor:pointer;border-radius:4px;box-shadow:inset 0 -1.5px 0 color-mix(in srgb,var(--p) 35%,transparent);transition:background .12s}
+.tk:hover{background:var(--p-soft)}
+.tk.sel{background:var(--acc-soft);box-shadow:inset 0 -2px 0 var(--acc)}
+.ka-lex{position:fixed;z-index:95;width:min(360px,calc(100vw - 24px));background:var(--card);border:1px solid var(--line2);border-radius:18px;box-shadow:var(--sh2);padding:16px 16px 14px;animation:kaFade .12s}
+.ka-lex-w{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding-right:30px}
+.ka-lex-w b{font-family:Fraunces,Georgia,serif;font-size:22px;letter-spacing:-.01em}
+.ka-lex-tr{margin-top:6px;font-weight:800;font-size:16px;color:var(--p)}
+.ka-lex-syn{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ka-lex-syn .lbl{font-size:12px;font-weight:800;color:var(--mut);margin-right:2px}
+.ka-lex-syn button{border:1px solid var(--line);background:var(--card2);border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:700;color:var(--ink2)}
+.ka-lex-mo{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.ka-lex-mo span{font-size:12px;background:var(--soft);border-radius:8px;padding:3px 8px;color:var(--ink2)}
+.ka-lex-act{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
+.ka-lex-act .btn{min-height:34px;padding:0 11px;font-size:12.5px;border-radius:10px}
+.ka-lex-links{margin-top:10px;display:flex;gap:12px;font-size:12.5px;font-weight:700}
+.ka-lex-links a{color:var(--mut);text-decoration:none}
+.ka-lex-links a:hover{color:var(--p)}
+.ka-lex .ka-icon-btn{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:10px}
+@media (max-width:640px){.ka-lex{left:0!important;right:0;top:auto!important;bottom:0;width:100%;border-radius:20px 20px 0 0;padding-bottom:calc(16px + env(safe-area-inset-bottom))}}
+
+.ka-spin{width:18px;height:18px;border-radius:50%;border:2.5px solid var(--line2);border-top-color:var(--p);animation:kaSpin .8s linear infinite;display:inline-block;vertical-align:middle}
+@keyframes kaSpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}

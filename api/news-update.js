@@ -16,6 +16,28 @@ function field(xml, tag) {
   return m ? decode(m[1]) : "";
 }
 
+// Haberin kendi fotoğrafı: RSS'teki küçük resmi büyük boyuta çevirir.
+function thumb(xml) {
+  const m = xml.match(/<media:(?:thumbnail|content)[^>]*url="([^"]+)"/i);
+  if (!m) return "";
+  return m[1].replace(/&amp;/g, "&").replace(/\/(standard|news)\/\d+\//, "/$1/800/");
+}
+
+// Fotoğrafı olmayan eski haberler için sayfadaki kapak fotoğrafını bulur.
+async function ogImage(src) {
+  try {
+    const u = new URL(src);
+    const r = await fetch(u.origin + u.pathname, { headers: { "User-Agent": "Mozilla/5.0 (compatible; KelimeArenasi/1.0)" } });
+    if (!r.ok) return "";
+    const html = (await r.text()).slice(0, 200000);
+    const tag = (html.match(/<meta[^>]+>/gi) || []).find((t) => /(property|name)=["'](og:image|twitter:image)["']/i.test(t));
+    const m = tag && tag.match(/content=["']([^"']+)["']/i);
+    return m && /^https:\/\//.test(m[1]) ? m[1].replace(/&amp;/g, "&") : "";
+  } catch (e) {
+    return "";
+  }
+}
+
 function shuffleQ(q) {
   if (!q || typeof q !== "object" || !Array.isArray(q.opts) || q.opts.length < 2) return null;
   const opts = q.opts.map(String);
@@ -126,6 +148,7 @@ async function makeItem(apiKey, c, reasons) {
       title: String(j.title || c.title),
       src: c.link,
       source: "BBC News",
+      img: c.img || (await ogImage(c.link)),
       levels,
     };
   }
@@ -166,21 +189,23 @@ export default async function handler(req, res) {
     }
     const used = new Set((current.items || []).map((i) => i.src));
 
-    const feed = await (await fetch(FEED)).text();
+    // Fotoğrafı eksik olan eski haberleri tamamla (her çalışmada en fazla 12 tane)
+    let filled = 0;
+    const missing = (current.items || []).filter((i) => !i.img && i.src).slice(0, 12);
+    await Promise.all(missing.map(async (i) => { const img = await ogImage(i.src); if (img) { i.img = img; filled++; } }));
+
+    const onlyPhotos = req.query && req.query.photos === "1";
+    const feed = onlyPhotos ? "" : await (await fetch(FEED)).text();
     const cands = (feed.match(/<item>[\s\S]*?<\/item>/g) || [])
-      .map((x) => ({ title: field(x, "title"), summary: field(x, "description"), link: field(x, "link") }))
+      .map((x) => ({ title: field(x, "title"), summary: field(x, "description"), link: field(x, "link"), img: thumb(x) }))
       .filter((x) => x.link && x.title && x.summary && !used.has(x.link))
       .slice(0, PER_RUN);
-
-    if (!cands.length) {
-      return res.status(200).json({ ok: true, added: 0, skipped: 0, note: "yeni haber bulunamadı" });
-    }
 
     const reasons = [];
     const made = (await Promise.all(cands.map((c) => makeItem(apiKey, c, reasons)))).filter(Boolean);
 
-    if (made.length === 0 && sha) {
-      return res.status(200).json({ ok: true, added: 0, skipped: cands.length, reasons });
+    if (made.length === 0 && filled === 0) {
+      return res.status(200).json({ ok: true, added: 0, photos: 0, skipped: cands.length, reasons, note: cands.length ? "" : "yeni haber bulunamadı" });
     }
 
     const body = {
@@ -191,7 +216,7 @@ export default async function handler(req, res) {
       method: "PUT",
       headers: { ...gh, "Content-Type": "application/json" },
       body: JSON.stringify({
-        message: `haber güncellemesi: ${made.length} yeni`,
+        message: `haber güncellemesi: ${made.length} yeni, ${filled} fotoğraf`,
         content: Buffer.from(JSON.stringify(body, null, 2)).toString("base64"),
         ...(sha ? { sha } : {}),
       }),
@@ -201,6 +226,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       added: made.length,
+      photos: filled,
       skipped: cands.length - made.length,
       reasons,
     });

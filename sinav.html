@@ -1,981 +1,427 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-mode="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Sınav Odası · Kelime Arenası</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-<!-- MOZILLA PDF.JS MOTORU (SIFIR BYTECODE HATASI) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<meta name="description" content="Sınav PDF'ini yükle, sayfaları birebir gör; vurgula, altını çiz, not al ve optik cevap kağıdıyla çöz.">
+<meta name="theme-color" content="#0f766e">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="ortak.css">
 <style>
-:root{
-  --bg:#f3f8f6;--card:#ffffff;--line:#d5e7e1;--ink:#0d2b2a;--mut:#56736f;
-  --p:#0f766e;--p2:#14b8a6;--acc:#f59e0b;--bad:#e11d48;--soft:#e2f1ed;--ok:#059669;
-  --shadow:0 12px 30px -15px rgba(13,43,42,.25);
+/* ---------- Kütüphane ---------- */
+.lib-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.lib-head h1{font-size:clamp(28px,4vw,38px);margin:6px 0 4px}
+.lib-head p{margin:0;color:var(--ink2);max-width:620px}
+.updrop{border:2px dashed var(--line2);border-radius:22px;padding:34px 24px;text-align:center;background:var(--card);cursor:pointer;transition:border-color .15s,background .15s}
+.updrop:hover,.updrop.over{border-color:var(--p);background:var(--p-soft)}
+.updrop .ico{width:56px;height:56px;border-radius:18px;margin:0 auto 12px;display:grid;place-items:center;background:var(--p-soft);color:var(--p)}
+.updrop .ico svg{width:28px;height:28px}
+.updrop b{font-size:18px;display:block}
+.feat{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0 28px}
+.feat div{padding:14px 16px;font-size:13.5px;color:var(--ink2)}
+.feat b{display:flex;align-items:center;gap:8px;color:var(--ink);font-size:14px;margin-bottom:4px}
+.feat b svg{width:18px;height:18px;color:var(--p)}
+.exlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.excard{overflow:hidden;display:flex;flex-direction:column;text-align:left;padding:0;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.excard:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.excard .th{aspect-ratio:3/2.4;background:#fff;border-bottom:1px solid var(--line);overflow:hidden}
+.excard .th img{width:100%;display:block}
+.excard .tx{padding:12px 14px 14px}
+.excard b{display:block;font-size:15px;line-height:1.3}
+.excard .mut{font-size:12.5px}
+.excard .bar{height:6px;border-radius:9px;background:var(--soft);margin-top:10px;overflow:hidden}
+.excard .bar i{display:block;height:100%;background:var(--p)}
+.excard .ft{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+/* ---------- Sınav ekranı ---------- */
+.exbar{position:sticky;top:62px;z-index:40;display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:16px;margin-bottom:14px;flex-wrap:wrap}
+.exbar .ttl{font-weight:800;font-size:14.5px;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tools{display:flex;gap:4px;align-items:center;padding:3px;border-radius:13px;background:var(--soft)}
+.tools button{width:38px;height:36px;border:0;border-radius:10px;background:transparent;display:grid;place-items:center;color:var(--ink2);position:relative}
+.tools button svg{width:19px;height:19px}
+.tools button:hover{background:var(--card)}
+.tools button.on{background:var(--card);color:var(--p);box-shadow:var(--sh1)}
+.sw{display:flex;gap:4px;padding:0 4px}
+.sw button{width:22px;height:22px;border-radius:50%;border:2px solid transparent;padding:0}
+.sw button.on{border-color:var(--ink)}
+.sep{width:1px;height:26px;background:var(--line)}
+.tmr{font-variant-numeric:tabular-nums;font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px;padding:0 10px;height:36px;border-radius:11px;background:var(--soft)}
+.tmr svg{width:16px;height:16px}
+.tmr.low{color:var(--bad)}
+.exbody{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+.pages{display:flex;flex-direction:column;align-items:center;gap:16px;min-width:0;overflow-x:auto;padding-bottom:40px}
+.pg{position:relative;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12),0 8px 24px -10px rgba(0,0,0,.25);border-radius:4px;flex:0 0 auto;--user-unit:1;--total-scale-factor:calc(var(--scale-factor) * var(--user-unit));--scale-round-x:1px;--scale-round-y:1px}
+.pg canvas{position:absolute;inset:0;width:100%;height:100%;border-radius:4px}
+.pg .pgno{position:absolute;bottom:-22px;right:0;font-size:12px;font-weight:700;color:var(--mut)}
+.pg .load{position:absolute;inset:0;display:grid;place-items:center;color:#94a3b8;font-weight:700}
+.anno{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;mix-blend-mode:multiply;overflow:visible}
+.anno .pen,.anno .ul{mix-blend-mode:normal}
+.ink{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;overflow:visible}
+.ov{position:absolute;inset:0;z-index:4;pointer-events:none;touch-action:none}
+.notes{position:absolute;inset:0;z-index:5;pointer-events:none}
+.pin{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;width:30px;height:34px;border:0;background:none;padding:0;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+.pin svg{width:30px;height:34px}
+.pin span{position:absolute;top:6px;left:0;right:0;text-align:center;font:800 11px "Plus Jakarta Sans",sans-serif;color:#422006}
+.nedit{position:absolute;z-index:8;width:250px;background:var(--card);border:1px solid var(--line2);border-radius:14px;box-shadow:var(--sh2);padding:10px;pointer-events:auto}
+.nedit textarea{width:100%;min-height:90px;border:1.5px solid var(--line);border-radius:10px;padding:8px;resize:vertical;background:var(--card);font-size:14px}
+.textLayer{position:absolute;text-align:initial;inset:0;overflow:clip;opacity:1;line-height:1;letter-spacing:normal;word-spacing:normal;-webkit-text-size-adjust:none;text-size-adjust:none;forced-color-adjust:none;transform-origin:0 0;caret-color:CanvasText;z-index:2;--min-font-size:1;--text-scale-factor:calc(var(--total-scale-factor) * var(--min-font-size));--min-font-size-inv:calc(1 / var(--min-font-size))}
+.textLayer span,.textLayer br{color:transparent;position:absolute;white-space:pre;cursor:text;transform-origin:0% 0%;-webkit-user-select:text;user-select:text}
+.textLayer > :not(.markedContent),.textLayer .markedContent span:not(.markedContent){z-index:1;--font-height:0;font-size:calc(var(--text-scale-factor) * var(--font-height));--scale-x:1;--rotate:0deg;transform:rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv))}
+.textLayer .markedContent{display:contents}
+.textLayer ::selection{background:rgba(20,184,166,.32);color:transparent}
+.textLayer br::selection{background:transparent}
+.textLayer .endOfContent{display:block;position:absolute;inset:100% 0 0;z-index:0;cursor:default;-webkit-user-select:none;user-select:none}
+.textLayer.selecting .endOfContent{top:0}
+.pages.t-pen .ov,.pages.t-note .ov,.pages.t-rect .ov,.pages.t-erase .ov{pointer-events:auto;cursor:crosshair}
+.pages.t-erase .ov{cursor:cell}
+.pages.t-pen .textLayer,.pages.t-note .textLayer,.pages.t-erase .textLayer,.pages.t-rect .textLayer{pointer-events:none}
+.selfab{position:fixed;z-index:70;display:flex;gap:6px;padding:6px;border-radius:14px;background:var(--ink);box-shadow:var(--sh2)}
+.selfab button{border:0;border-radius:10px;padding:8px 12px;font-weight:800;font-size:13px;background:var(--card);color:var(--ink)}
+/* ---------- Cevap kağıdı ---------- */
+.sheet{position:sticky;top:130px;max-height:calc(100vh - 146px);display:flex;flex-direction:column;overflow:hidden}
+.sh-h{padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+.sh-tabs{display:flex;gap:4px;padding:3px;border-radius:11px;background:var(--soft);margin-top:10px}
+.sh-tabs button{flex:1;border:0;background:transparent;border-radius:9px;padding:7px;font-weight:800;font-size:13px;color:var(--mut)}
+.sh-tabs button.on{background:var(--card);color:var(--ink);box-shadow:var(--sh1)}
+.sh-b{overflow:auto;padding:8px 10px 10px;flex:1}
+.qrow{display:flex;align-items:center;gap:6px;padding:5px 6px;border-radius:12px}
+.qrow:hover{background:var(--soft)}
+.qrow .qn{width:34px;text-align:right;font-weight:800;font-size:13px;color:var(--ink2);border:0;background:none;padding:4px 2px;border-radius:8px}
+.qrow .qn.has{color:var(--p);text-decoration:underline dotted}
+.bub{display:flex;gap:5px}
+.bub button{width:31px;height:31px;border-radius:50%;border:1.5px solid var(--line2);background:var(--card);font-weight:800;font-size:12.5px;color:var(--ink2);transition:transform .08s}
+.bub button:active{transform:scale(.92)}
+.bub button.on{background:var(--p);border-color:var(--p);color:var(--p-ink)}
+.bub button.key{box-shadow:0 0 0 2.5px var(--ok)}
+.qrow .fl{margin-left:auto;width:30px;height:30px;border:0;background:none;border-radius:8px;color:var(--line2);display:grid;place-items:center}
+.qrow .fl svg{width:16px;height:16px}
+.qrow .fl.on{color:var(--acc2)}
+.qrow.ok{background:var(--ok-soft)}.qrow.no{background:var(--bad-soft)}
+.qrow.ok .bub button.on{background:var(--ok);border-color:var(--ok)}
+.qrow.no .bub button.on{background:var(--bad);border-color:var(--bad);color:#fff}
+.sh-f{padding:12px 14px;border-top:1px solid var(--line);display:grid;gap:8px}
+.res{padding:14px;border-radius:14px;background:var(--soft);margin:6px 4px 10px}
+.res b.big{font-family:Fraunces,serif;font-size:30px;display:block}
+.nitem{padding:10px 12px;border-radius:12px;border:1px solid var(--line);margin-bottom:8px;cursor:pointer;font-size:14px}
+.nitem:hover{background:var(--soft)}
+.sheet-fab{display:none}
+@media (max-width:1100px){.exbody{grid-template-columns:minmax(0,1fr) 290px}}
+@media (max-width:900px){
+  .feat{grid-template-columns:repeat(2,1fr)}
+  .exbar{top:56px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;border-radius:0;margin:0 -14px 12px;padding:8px 14px}
+  .exbar .ttl{display:none}
+  .exbody{grid-template-columns:1fr}
+  .sheet{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:65;max-height:72vh;border-radius:22px 22px 0 0;transform:translateY(105%);transition:transform .25s;padding-bottom:env(safe-area-inset-bottom)}
+  .sheet.open{transform:none}
+  .sheet-fab{display:flex;position:fixed;right:16px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:64;box-shadow:var(--sh2)}
 }
-body[data-pal="derin_akdeniz"]{
-  --bg:#061514;--card:#0c2423;--line:#194240;--ink:#f3f8f6;--mut:#7ca39e;
-  --p:#0f766e;--p2:#14b8a6;--acc:#fbbf24;--bad:#f43f5e;--soft:#11312f;--ok:#34d399;
-  --shadow:0 14px 30px -18px rgba(0,0,0,.7);
-}
-*{box-sizing:border-box}
-body{
-  margin:0;min-height:100vh;background-color:var(--bg);color:var(--ink);
-  font-family:'Plus Jakarta Sans',-apple-system,sans-serif;font-size:14px;line-height:1.5;
-}
-button,input,textarea,select{font:inherit;color:inherit}
-button{cursor:pointer}
-a{color:inherit;text-decoration:none}
-.nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:12px 18px;flex-wrap:wrap}
-.logo{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-weight:800;font-size:20px}
-.logo svg{width:36px;height:36px}
-.logo-sub{font-size:10px;font-weight:900;letter-spacing:.08em;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--p);border:1px solid var(--line);margin-left:2px}
-.navlinks{display:flex;gap:6px;margin-left:10px;flex-wrap:wrap;align-items:center}
-.navlinks a{padding:7px 13px;border-radius:12px;font-weight:700;color:var(--mut);transition:all .15s}
-.navlinks a:hover{color:var(--ink);background:var(--soft)}
-.navlinks a.cur{color:#fff;background:var(--p)}
-.tools{margin-left:auto;display:flex;gap:8px;align-items:center}
-.dots{display:flex;gap:7px}
-.dots button{width:22px;height:22px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line);padding:0}
-.dots button.on{box-shadow:0 0 0 2px var(--p)}
-
-.wrap{max-width:1200px;margin:0 auto;padding:18px}
-.topbar{background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:var(--shadow);margin-bottom:18px;flex-wrap:wrap}
-.topbar h1{font-family:Fraunces,serif;font-size:20px;margin:0}
-.topbar p{margin:2px 0 0;font-size:12.5px;color:var(--mut)}
-
-.btn{padding:8px 16px;border-radius:12px;font-weight:800;font-size:13px;border:0;display:inline-flex;align-items:center;gap:6px;transition:transform .15s,filter .15s}
-.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
-.btn-p{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff}
-.btn-acc{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
-.btn-alt{background:var(--soft);color:var(--ink);border:1px solid var(--line)}
-
-.stage{display:grid;grid-template-columns:1.15fr 1fr;gap:16px;align-items:start}
-@media(max-width:900px){.stage{grid-template-columns:1fr}}
-
-.panel{background:var(--card);border:1.5px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
-.panel-h{padding:14px 18px;background:var(--soft);border-bottom:1.5px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.panel-h b{font-weight:800;font-size:14px}
-.panel-b{padding:20px;max-height:calc(100vh - 240px);overflow-y:auto}
-
-/* Toolbar */
-.toolbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.toolbar button{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:4px 9px;font-size:12px;font-weight:700}
-.toolbar button.on{border-color:var(--p);background:var(--p);color:#fff}
-
-/* Reading Paragraphs */
-.para{position:relative;padding:12px 14px 12px 38px;border-radius:14px;margin-bottom:14px;background:color-mix(in srgb,var(--soft) 40%,var(--card));border:1px solid var(--line);font-size:15px;line-height:1.7}
-.para-l{position:absolute;left:10px;top:12px;font-weight:900;color:var(--p);font-size:13px;font-family:Fraunces,serif}
-
-/* Highlight tags */
-.hl-y{background:#fef08a!important;color:#000!important;padding:2px 4px;border-radius:4px}
-.hl-g{background:#bbf7d0!important;color:#000!important;padding:2px 4px;border-radius:4px}
-.hl-p{background:#fbcfe8!important;color:#000!important;padding:2px 4px;border-radius:4px}
-.hl-u{text-decoration:underline 2px #0f766e!important;text-underline-offset:4px}
-
-/* Questions */
-.ex-qnav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-.ex-qnav span{width:32px;height:32px;border-radius:10px;background:var(--soft);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;cursor:pointer;transition:all .15s}
-.ex-qnav span.done{background:var(--line);color:var(--ink)}
-.ex-qnav span.right{background:var(--ok);color:#fff;border-color:var(--ok)}
-.ex-qnav span.wrong{background:var(--bad);color:#fff;border-color:var(--bad)}
-
-.ex-qcard{background:color-mix(in srgb,var(--soft) 30%,var(--card));border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
-.ex-qh{display:flex;justify-content:space-between;font-size:11.5px;font-weight:800;color:var(--mut);text-transform:uppercase;margin-bottom:8px}
-.ex-opt{padding:10px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);margin-bottom:8px;cursor:pointer;font-weight:600;font-size:13.5px;transition:all .15s;display:flex;align-items:center;gap:8px}
-.ex-opt:hover{border-color:var(--p);background:var(--soft)}
-.ex-opt.sel{border-color:var(--p);background:var(--soft);box-shadow:0 0 0 1px var(--p)}
-.ex-opt.ok{border-color:var(--ok)!important;background:color-mix(in srgb,var(--ok) 14%,var(--card))!important;color:var(--ok)!important;font-weight:800}
-.ex-opt.no{border-color:var(--bad)!important;background:color-mix(in srgb,var(--bad) 14%,var(--card))!important;color:var(--bad)!important}
-
-.ex-tfng{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.ex-tfng .ex-opt{text-align:center;justify-content:center}
-
-/* Açık Uçlu / Yazma Soruları Kutusu */
-.ex-write-box{margin-top:10px}
-.ex-write-input{
-  width:100%;min-height:95px;padding:12px 14px;border-radius:14px;
-  border:1.5px solid var(--line);background:var(--card);font-size:14px;
-  line-height:1.5;resize:vertical;transition:border-color .2s,box-shadow .2s;
-  box-sizing:border-box;color:var(--ink);
-}
-.ex-write-input:focus{outline:none;border-color:var(--p);box-shadow:0 0 0 3px var(--soft)}
-.ex-write-meta{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--mut);margin-top:5px;font-weight:700}
-
-.ex-ev{margin-top:10px;padding:10px 12px;background:var(--card);border-radius:10px;border-left:3px solid var(--p);font-size:12.5px;line-height:1.6;display:none}
-.ex-qcard.graded .ex-ev{display:block}
-
-/* Result ring */
-.res-card{padding:22px;background:var(--card);border:1.5px solid var(--line);border-radius:18px;text-align:center;margin-top:16px;display:none}
-.res-card.on{display:block}
-.ring{width:110px;height:110px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-family:Fraunces,serif;font-size:26px;font-weight:900;background:conic-gradient(var(--ok) calc(var(--v)*1%),var(--line) 0)}
-.ring-in{width:86px;height:86px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;flex-direction:column}
-
-/* Modals */
-.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:90;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
-.modal-ov.on{display:flex}
-.modal{background:var(--card);border-radius:24px;border:1.5px solid var(--line);width:100%;max-width:820px;max-height:90vh;overflow-y:auto;padding:24px;box-shadow:0 25px 60px rgba(0,0,0,.35)}
-.modal-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.modal-h h3{margin:0;font-family:Fraunces,serif;font-size:22px}
-.form-group{margin-bottom:14px}
-.form-group label{display:block;font-weight:800;font-size:12.5px;color:var(--mut);margin-bottom:6px}
-.form-group input,.form-group textarea{width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg)}
-.form-group textarea{height:160px;resize:vertical;font-family:inherit;font-size:13px;line-height:1.5}
-.tabs{display:flex;gap:8px;border-bottom:1.5px solid var(--line);padding-bottom:10px;margin-bottom:16px}
-.tab{padding:8px 14px;border-radius:10px;border:0;background:none;font-weight:800;color:var(--mut)}
-.tab.on{background:var(--p);color:#fff}
-.tab-pane{display:none}
-.tab-pane.on{display:block}
-.dropzone{border:2px dashed var(--p2);border-radius:18px;padding:32px 20px;text-align:center;background:var(--soft);cursor:pointer;margin-bottom:14px;transition:all .2s}
-.dropzone:hover{background:color-mix(in srgb,var(--p2) 15%,var(--card));transform:scale(1.01)}
-.exam-item{padding:12px;border-radius:14px;border:1px solid var(--line);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;background:var(--soft)}
-.exam-item.active{border-color:var(--p);box-shadow:0 0 0 1px var(--p)}
 </style>
 </head>
 <body>
-
-<nav class="nav">
-  <div class="nav-in">
-    <a href="/index.html" class="logo">
-      <svg viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="18" fill="#0f766e"/><path d="M15 47.5V30.5a17 17 0 0 1 34 0v17" stroke="#fff" stroke-width="4.8" stroke-linecap="round" fill="none"/><path d="M24 47.5V31.5a8 8 0 0 1 16 0v16" stroke="#fbbf24" stroke-width="4.2" stroke-linecap="round" fill="none"/></svg>
-      <span>Kelime Arenası</span>
-      <span class="logo-sub">SINAV</span>
-    </a>
-    <div class="navlinks">
-      <a href="/index.html">🏛️ Ana sayfa</a>
-      <a href="/haber.html">📰 Haber</a>
-      <a href="/fetih.html">⚔️ Arena Fethi</a>
-      <a href="/sinav.html" class="cur">📝 Sınav</a>
-    </div>
-    <div class="tools">
-      <div class="dots">
-        <button data-pal="akdeniz" style="background:#0f766e" class="on" title="Akdeniz"></button>
-        <button data-pal="derin_akdeniz" style="background:#061514" title="Derin Mod"></button>
-      </div>
-    </div>
-  </div>
-</nav>
-
-<div class="wrap">
-  <div class="topbar">
-    <div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn btn-alt" onclick="history.back()">← Arenaya Dön</button>
-        <button class="btn btn-alt" id="openLibraryBtn">📚 Sınav Değiştir ▾</button>
-        <button class="btn btn-acc" id="openUploadBtn">➕ Yeni Sınav Yükle (Metin / PDF)</button>
-      </div>
-      <p style="margin-top:10px;font-size:13px;color:var(--mut)">
-        İstediğiniz akademik veya genel okuma sınavını yükleyin; altını çizerek çözün, anında puanlanın.
-      </p>
-    </div>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <div class="btn btn-alt" id="exTimerBadge">⏱ 60:00</div>
-      <div class="btn btn-alt" id="exCountBadge">0 / 0 cevaplandı</div>
-      <button class="btn btn-acc" id="exFinishBtn">Bitir & Puanla</button>
-      <button class="btn btn-alt" id="exResetBtn">Sıfırla</button>
-    </div>
-  </div>
-
-  <div class="stage">
-    <!-- SOL: Okuma Parçası -->
-    <div class="panel">
-      <div class="panel-h">
-        <div>
-          <b id="exActiveTitle" style="font-size:16px">Sınav Metni</b>
-          <div id="exActiveSub" style="font-size:12px;color:var(--mut)">Okuma parçası ve paragraflar</div>
-        </div>
-        <div class="toolbar" id="exTools">
-          <button data-m="y" class="on" style="background:#fef08a;color:#000">Sarı</button>
-          <button data-m="g" style="background:#bbf7d0;color:#000">Yeşil</button>
-          <button data-m="p" style="background:#fbcfe8;color:#000">Pembe</button>
-          <button data-m="u"><u>Altını çiz</u></button>
-          <button id="exClrBtn">Silgi</button>
-          <button id="exFDownBtn">A-</button>
-          <button id="exFUpBtn">A+</button>
-        </div>
-      </div>
-      <div class="panel-b" id="exPassageBody"></div>
-    </div>
-
-    <!-- SAĞ: Sorular -->
-    <div class="panel">
-      <div class="panel-h">
-        <b>Akademik Sorular</b>
-        <span style="font-size:12px;color:var(--mut)">Tüm soru tipleri (Çoktan Seçmeli, T/F, Yazma)</span>
-      </div>
-      <div class="panel-b">
-        <div class="ex-qnav" id="exQNav"></div>
-        <div id="exQuestionList"></div>
-
-        <div class="res-card" id="exResultPane">
-          <div class="ring" id="exScoreRing"><div class="ring-in" id="exScoreText">0%</div></div>
-          <h3 id="exBandGrade" style="margin:6px 0;font-family:Fraunces,serif">Sınav Tamamlandı</h3>
-          <p id="exScoreDetail" style="color:var(--mut);font-size:13px;margin:0 0 14px">Detaylı puanlama ve açıklamalar aşağıda işaretlendi.</p>
-          <button class="btn btn-p" onclick="document.getElementById('exQuestionList').scrollIntoView({behavior:'smooth'})">Detaylı Çözümleri İncele ↑</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal 1: Sınav Kütüphanesi -->
-<div class="modal-ov" id="libraryModal">
-  <div class="modal">
-    <div class="modal-h">
-      <h3>📚 Sınav Kütüphanesi</h3>
-      <button class="btn btn-alt" data-close="libraryModal">✕ Kapat</button>
-    </div>
-    <div style="font-size:12.5px;color:var(--mut);margin-bottom:12px">Hazır Akademik Sınavlar:</div>
-    <div id="presetList"></div>
-    <div style="font-size:12.5px;color:var(--mut);margin:16px 0 8px">Kendi Yüklediğin Sınavlar:</div>
-    <div id="customList"></div>
-  </div>
-</div>
-
-<!-- Modal 2: Yeni Sınav Yükle -->
-<div class="modal-ov" id="uploadModal">
-  <div class="modal">
-    <div class="modal-h">
-      <h3>➕ Yeni Sınav Yükle</h3>
-      <button class="btn btn-alt" data-close="uploadModal">✕ Kapat</button>
-    </div>
-
-    <div class="tabs">
-      <button class="tab on" data-tab="tabSmart">⚡ İnternet Üzerinden Metin & Soru Yapıştır</button>
-      <button class="tab" data-tab="tabFile">📁 PDF Dosyası Yükle</button>
-    </div>
-
-    <!-- Tab 1: Akıllı Yapıştırıcı -->
-    <div class="tab-pane on" id="tabSmart">
-      <div class="form-group">
-        <label>Sınav Başlığı:</label>
-        <input id="upTitle" placeholder="Örn: Family Politics & Global Culture">
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-        <div class="form-group">
-          <label>1. Okuma Parçası (Reading Passage):</label>
-          <textarea id="upPassage" placeholder="Metni buraya yapıştırın. Paragraflar halinde veya düz metin..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>2. Sorular ve Şıklar (Questions):</label>
-          <textarea id="upQuestions" placeholder="Soruları yapıştırın. Çoktan seçmeli (A, B, C, D), True/False veya açık uçlu yazma soruları desteklenir:
-1. What is the central theme?
-A) Option A
-B) Option B
-Answer: B
-Why: Paragraf A'da belirtilmiştir.
-
-2. Modern families are larger than before.
-True / False / Not Given
-Answer: False
-Why: Paragraf B'de küçüldüğü yazmaktadır.
-
-3. Explain why the author mentions X in paragraph C? (Yazma sorusu)
-Answer: To demonstrate the impact of digital networks
-Why: Paragraf C'de örnek olarak sunulmuştur."></textarea>
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <button class="btn btn-acc" id="saveSmartExamBtn" style="padding:11px 22px;font-size:14px">🚀 Sınavı Oluştur & Başlat</button>
-        <button class="btn btn-alt" id="fillSampleBtn">📋 Örnek Metin & Soru Doldur</button>
-        <button class="btn btn-alt" id="aiGenQuestionsBtn">🤖 Yapay Zeka ile Soru Üret</button>
-      </div>
-    </div>
-
-    <!-- Tab 2: PDF Yükle -->
-    <div class="tab-pane" id="tabFile">
-      <div class="dropzone" id="dropArea">
-        <div style="font-size:36px;margin-bottom:8px">📄</div>
-        <b>Sınav PDF'ini buraya sürükle veya dosya seç</b>
-        <p style="font-size:12.5px;color:var(--mut);margin:4px 0 0">Mozilla PDF.js motoruyla metin ve sorular sıfır bytecode hatasıyla çözümlenir.</p>
-        <input type="file" id="filePicker" accept=".pdf,.txt,.json" style="display:none">
-      </div>
-      <div id="fileStatus" style="font-size:13px;font-weight:800;color:var(--p);display:none;padding:12px;background:var(--soft);border-radius:12px"></div>
-    </div>
-  </div>
-</div>
-
-<script>
-if(window.pdfjsLib) {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-}
-
-/* HAZIR AKADEMİK SINAVLAR */
-const EXAM_PRESETS = [
-  {
-    id: "exam_urban",
-    title: "Akademik Reading: Urban Heat Islands",
-    sub: "Kentsel Isı Adaları · 5 Akademik Soru (Çoktan Seçmeli, T/F ve Yazma).",
-    paragraphs: [
-      { id: "pA", pl: "A", t: "Cities are often several degrees warmer than the countryside that surrounds them. This phenomenon, known as the urban heat island effect, was first documented in London in the early nineteenth century. Today, it affects nearly every major city on the planet." },
-      { id: "pB", pl: "B", t: "The causes are well understood. Dark surfaces such as asphalt roads and rooftops absorb sunlight during the day and release it slowly at night. In addition, cities have far fewer trees than rural areas, so they lose natural evaporative cooling." },
-      { id: "pC", pl: "C", t: "The effects are not merely uncomfortable. During heatwaves, death rates in cities can rise sharply, particularly among elderly residents. Higher temperatures also dramatically increase energy demand for air conditioning." },
-      { id: "pD", pl: "D", t: "Fortunately, several strategies can mitigate the problem. Painting roofs white reflects solar radiation back into space. Planting urban trees and creating green roofs provide vital shade and cool ambient air through evapotranspiration." }
-    ],
-    questions: [
-      { t: "Main idea", type: "mc", q: "What is the passage mainly about?", o: ["The history of London's Victorian architecture", "The causes, severe effects and mitigation strategies of urban heat islands", "Why air conditioning causes electrical blackouts", "Global solar energy markets"], a: 1, why: "Metin baştan sona kentsel ısı adalarının nedenlerini (paragraf B), tehlikeli etkilerini (paragraf C) ve çözüm yollarını (paragraf D) açıklamaktadır." },
-      { t: "Reference", type: "txt", q: "What does the pronoun 'they' in paragraph B refer to? (Single word)", a: ["cities", "major cities"], why: "'...cities have far fewer trees than rural areas, so they lose...' cümlesindeki 'they' doğrudan şehirleri (cities) kastetmektedir." },
-      { t: "True / False / NG", type: "tf", q: "Urban trees contribute to cooling both through shade and evapotranspiration.", a: "True", why: "Paragraf D'nin son cümlesinde ağaçların hem gölge sağladığı hem de evapotranspirasyon yoluyla havayı soğuttuğu açıkça doğrulanmıştır." },
-      { t: "Vocabulary", type: "mc", q: "The word 'mitigate' in paragraph D is closest in meaning to:", o: ["exacerbate", "alleviate or reduce", "overlook", "accelerate"], a: 1, why: "'mitigate' bir sorunun etkisini hafifletmek, azaltmak (alleviate / reduce) anlamına gelir." },
-      { t: "Writing / Short Answer", type: "txt", q: "According to paragraph C, which group of people suffers the highest mortality risk during urban heatwaves? (1-3 words)", a: ["elderly residents", "the elderly", "elderly"], why: "Paragraf C'de 'death rates can rise sharply, particularly among elderly residents' ifadesiyle yaşlı nüfus açıkça belirtilmiştir." }
-    ]
-  }
-];
-
-function getStoredExams(){
-  try{return JSON.parse(localStorage.getItem('ARENA_CUSTOM_EXAMS')||'[]');}catch(e){return[];}
-}
-function saveCustomExam(ex){
-  const l=getStoredExams();l.unshift(ex);
-  localStorage.setItem('ARENA_CUSTOM_EXAMS',JSON.stringify(l));
-}
-function deleteCustomExam(id){
-  const l=getStoredExams().filter(x=>x.id!==id);
-  localStorage.setItem('ARENA_CUSTOM_EXAMS',JSON.stringify(l));
-}
-
-let activeExamId="exam_urban";
-let activeExam=EXAM_PRESETS[0];
-let exAnswers={},exDone=false,exLeft=3599,exTimer=null,exMode='y',exFontSize=15;
-
-function getActiveExam(){
-  const all=[...EXAM_PRESETS,...getStoredExams()];
-  return all.find(x=>x.id===activeExamId)||EXAM_PRESETS[0];
-}
-
-function loadExam(id){
-  activeExamId=id;
-  activeExam=getActiveExam();
-  buildExamRoom();
-}
-
-function buildExamRoom(){
-  exAnswers={};exDone=false;exLeft=3599;
-  if(exTimer)clearInterval(exTimer);
-  const P=activeExam;
-  document.getElementById('exActiveTitle').textContent=P.title;
-  document.getElementById('exActiveSub').textContent=P.sub||`${P.questions.length} Soru · Akademik Okuma`;
-
-  // Paragraf gövdesi
-  const pBody=document.getElementById('exPassageBody');
-  pBody.innerHTML=P.paragraphs.map(p=>`
-    <div class="para" id="${p.id}" style="font-size:${exFontSize}px">
-      <span class="para-l">${p.pl}</span>
-      <div class="para-txt">${p.t}</div>
-    </div>`).join('');
-
-  // Soruları yerleştir
-  const qNav=document.getElementById('exQNav');
-  qNav.innerHTML=P.questions.map((_,i)=>`<span id="exNav_${i}" data-q="${i}">${i+1}</span>`).join('');
-  
-  const qList=document.getElementById('exQuestionList');
-  qList.innerHTML=P.questions.map((q,i)=>renderQ(q,i)).join('');
-
-  document.getElementById('exResultPane').classList.remove('on');
-  updateProgress();
-
-  exTimer=setInterval(()=>{
-    if(exDone)return;
-    exLeft=Math.max(0,exLeft-1);
-    const m=String(Math.floor(exLeft/60)).padStart(2,'0');
-    const s=String(exLeft%60).padStart(2,'0');
-    document.getElementById('exTimerBadge').textContent=`⏱ ${m}:${s}`;
-  },1000);
-}
-
-function renderQ(q,i){
-  let b='';
-  if(q.type==='mc'){
-    b=(q.o||[]).map((opt,k)=>`
-      <div class="ex-opt" data-q="${i}" data-v="${k}">
-        <b>${'ABCD'[k]||k+1})</b> ${opt}
-      </div>`).join('');
-  } else if(q.type==='tf'){
-    b='<div class="ex-tfng">'+['True','False','Not Given'].map(v=>`
-      <div class="ex-opt" data-q="${i}" data-v="${v}">${v}</div>`).join('')+'</div>';
-  } else if(q.type==='txt'){
-    const userVal = exAnswers[i] || '';
-    const wc = userVal.trim().split(/\s+/).filter(Boolean).length;
-    b=`
-      <div class="ex-write-box">
-        <textarea class="ex-write-input" data-q="${i}" placeholder="Yanıtınızı buraya yazın (kısa cevap, kelime veya cümle)...">${userVal}</textarea>
-        <div class="ex-write-meta">
-          <span>✍️ Açık Uçlu / Yazma Sorusu</span>
-          <span id="exWc_${i}">${wc} kelime</span>
-        </div>
-      </div>`;
-  }
-  return `
-    <div class="ex-qcard" id="exQCard_${i}">
-      <div class="ex-qh"><span>SORU ${i+1}</span><span>${q.t||'Soru'}</span></div>
-      <p style="margin:0 0 10px;font-weight:700;font-size:14.5px">${q.q}</p>
-      ${b}
-      <div class="ex-ev"></div>
-    </div>`;
-}
-
-function updateProgress(){
-  const P=activeExam;let cnt=0;
-  P.questions.forEach((q,i)=>{
-    const v=exAnswers[i];
-    const isAns=v!==undefined&&String(v).trim()!=='';
-    if(isAns)cnt++;
-    const nav=document.getElementById('exNav_'+i);
-    if(nav)nav.classList.toggle('done',isAns);
-  });
-  document.getElementById('exCountBadge').textContent=`${cnt} / ${P.questions.length} cevaplandı`;
-}
-
-function finishExam(){
-  if(exDone)return;
-  exDone=true;if(exTimer)clearInterval(exTimer);
-  const P=activeExam;let correct=0;
-  
-  P.questions.forEach((q,i)=>{
-    const card=document.getElementById('exQCard_'+i);
-    const ev=card.querySelector('.ex-ev');
-    const userAns=exAnswers[i];
-    let isOk=false;
-
-    if(q.type==='mc'){
-      isOk=(+userAns===q.a);
-      card.querySelectorAll('.ex-opt').forEach(opt=>{
-        const k=+opt.dataset.v;
-        if(k===q.a)opt.classList.add('ok');
-        else if(k===+userAns)opt.classList.add('no');
-      });
-      if(ev){
-        ev.innerHTML=`<b>${isOk?'✅ Doğru!':'❌ Yanlış.'}</b> Metindeki Kanıt & Açıklama: ${q.why||'Metindeki bilgilere göre doğrulanmıştır.'}`;
-      }
-    } else if(q.type==='tf'){
-      isOk=(String(userAns||'').toLowerCase()===String(q.a).toLowerCase());
-      card.querySelectorAll('.ex-opt').forEach(opt=>{
-        if(opt.dataset.v.toLowerCase()===String(q.a).toLowerCase())opt.classList.add('ok');
-        else if(opt.dataset.v===userAns)opt.classList.add('no');
-      });
-      if(ev){
-        ev.innerHTML=`<b>${isOk?'✅ Doğru!':'❌ Yanlış.'}</b> Metindeki Kanıt & Açıklama: ${q.why||'Metindeki bilgilere göre doğrulanmıştır.'}`;
-      }
-    } else if(q.type==='txt'){
-      const clean = s => String(s||'').toLowerCase().replace(/^[a-z]\s*[\:\.\)]\s*/i, '').replace(/[^\w\s\u00C0-\u017F]/g, ' ').replace(/\s+/g, ' ').trim();
-      const uClean = clean(userAns);
-      const rawTarget = Array.isArray(q.a) ? q.a : [q.a];
-      const acceptedList = rawTarget.map(clean);
-
-      isOk = acceptedList.some(target => {
-        if(!target || !uClean) return false;
-        if(uClean === target) return true;
-        if(uClean.includes(target) || target.includes(uClean)) return true;
-        const tWords = target.split(/\s+/).filter(w => w.length > 2);
-        if(tWords.length > 0 && tWords.every(w => uClean.includes(w))) return true;
-        return false;
-      });
-
-      const inp = card.querySelector('.ex-write-input');
-      if(inp){
-        inp.disabled = true;
-        inp.style.borderColor = isOk ? 'var(--ok)' : 'var(--bad)';
-        inp.style.background = isOk ? 'color-mix(in srgb,var(--ok) 8%,var(--card))' : 'color-mix(in srgb,var(--bad) 8%,var(--card))';
-      }
-
-      if(ev){
-        ev.innerHTML = `
-          <div style="margin-bottom:6px"><b>${isOk ? '✅ Doğru / Harika Yanıt!' : '⚠️ Yanıtınızı Karşılaştırın:'}</b></div>
-          <div style="font-size:13px;line-height:1.6">
-            <div><b>Sizin Cevabınız:</b> <span style="color:${isOk?'var(--ok)':'var(--bad)'}">${userAns ? userAns : '<i>(Boş bırakıldı)</i>'}</span></div>
-            <div><b>Beklenen Model Yanıt:</b> <span style="font-weight:700;color:var(--p)">${rawTarget.join(' <i>veya</i> ')}</span></div>
-            <div style="margin-top:4px"><b>Metindeki Kanıt & Çözüm:</b> ${q.why || 'Metindeki açıklamalara dayanmaktadır.'}</div>
-          </div>`;
-      }
-    }
-
-    if(isOk)correct++;
-    const nav=document.getElementById('exNav_'+i);
-    if(nav){nav.classList.remove('done');nav.classList.add(isOk?'right':'wrong');}
-    card.classList.add('graded');
-  });
-
-  const pct=Math.round((correct/P.questions.length)*100);
-  const res=document.getElementById('exResultPane');
-  res.classList.add('on');
-  document.getElementById('exScoreRing').style.setProperty('--v',pct);
-  document.getElementById('exScoreText').innerHTML=`${pct}%<br><small style="font-size:12px">${correct}/${P.questions.length}</small>`;
-  document.getElementById('exBandGrade').textContent=pct>=70?'🎉 Başarılı!':'⚠️ Geliştirilmeli';
-  res.scrollIntoView({behavior:'smooth'});
-}
-
-/* PARSING LOGIC */
-function parsePassage(raw){
-  const parts=raw.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean);
-  const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  return parts.map((pt,idx)=>{
-    const m=pt.match(/^(?:\[?(?:paragraph|paragraf)?\s*([A-Za-z0-9]+)[\]\.\:\)]\s*)(.*)$/is);
-    let pl=letters[idx%letters.length],c=pt;
-    if(m){pl=m[1].toUpperCase();c=m[2].trim();}
-    return {id:"p"+pl,pl:pl,t:c};
-  });
-}
-
-function parseQuestions(raw){
-  const lines=raw.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
-  const questions=[];let curQ=null;
-  for(let i=0;i<lines.length;i++){
-    const line=lines[i];
-
-    // Soru Numarası Tanıma: 1., 1), Question 1:, Q1, Soru 1, [1]
-    const qMatch=line.match(/^(?:(?:\*|\-|\•)\s*)?(?:(?:soru|question|q)\s*)?\[?(\d+)\]?[\.\)\:\-\/]\s*(.*)$/i);
-    if(qMatch){
-      if(curQ){
-        if(curQ.o.length===0&&curQ.type!=='tf')curQ.type='txt';
-        questions.push(curQ);
-      }
-      curQ={id:'q_'+(questions.length+1),q:qMatch[2]||("Soru "+qMatch[1]),type:'mc',o:[],a:0,t:'Soru '+qMatch[1],why:'Metindeki bilgilere göre doğrulanmıştır.'};
-      continue;
-    }
-    if(!curQ){
-      curQ={id:'q_1',q:line,type:'mc',o:[],a:0,t:'Soru 1',why:'Metindeki bilgilere göre doğrulanmıştır.'};
-      continue;
-    }
-
-    // Şık Tanıma: A) ..., B) ..., (A) ..., [B]
-    const optMatch=line.match(/^(?:(?:\*|\-|\•)\s*)?\(?([A-Ea-e])\)?[.\-\:\)]\s*(.*)$/);
-    if(optMatch){
-      const text=optMatch[2].replace(/^[\*\]]\s*/,'').trim();
-      curQ.o.push(text);
-      if(line.includes('*')||line.startsWith('[*'))curQ.a=curQ.o.length-1;
-      continue;
-    }
-
-    // True / False İfadesi
-    if(/^(?:true\s*\/\s*false(?:\s*\/\s*not\s*given)?|t\s*\/\s*f(?:\s*\/\s*ng)?|doğru\s*\/\s*yanlış)/i.test(line)){
-      curQ.type='tf';
-      if(typeof curQ.a!=='string')curQ.a='True';
-      continue;
-    }
-
-    // Cevap Satırı
-    const ansMatch=line.match(/^(?:answer|ans|cevap|do[gğ]ru(?:\s*cevap)?|yanıt)\s*[\:\=\-]\s*(.*)$/i);
-    if(ansMatch){
-      const rawAns=ansMatch[1].trim();
-      if(/^(true|false|not given)$/i.test(rawAns)){
-        curQ.type='tf';
-        curQ.a=rawAns.charAt(0).toUpperCase()+rawAns.slice(1).toLowerCase();
-      } else if(/^[A-E]$/i.test(rawAns)){
-        curQ.a=rawAns.toUpperCase().charCodeAt(0)-65;
-      } else {
-        curQ.type='txt';
-        curQ.a=rawAns;
-      }
-      continue;
-    }
-
-    // Açıklama / Kanıt Satırı
-    const whyMatch=line.match(/^(?:why|explanation|açıklama|aciklama|neden|kanıt|evidence)\s*[\:\=\-]\s*(.*)$/i);
-    if(whyMatch){curQ.why=whyMatch[1].trim();continue;}
-
-    // Soru devam satırı
-    if(curQ.o.length===0&&curQ.type!=='tf'){
-      curQ.q+=" "+line;
-    }
-  }
-  if(curQ){
-    if(curQ.o.length===0&&curQ.type!=='tf')curQ.type='txt';
-    questions.push(curQ);
-  }
-  return questions;
-}
-
-/* YEREL SEMANTİK SORU MOTORU (OFFLINE VE HATA DURUMUNDA DEVREYE GİRER) */
-function generateLocalAcademicQuestions(pass){
-  const paras = pass.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean);
-  const p1 = paras[0] || pass;
-  const p2 = paras[1] || p1;
-
-  return `1. What is the main argument presented in the passage?
-A) The historical development and fundamental challenges discussed in the text
-B) A minor technological failure in a single industrial sector
-C) A completely unrelated theoretical dispute
-D) An argument against modern scientific progress
-Answer: A
-Why: Paragraf A metnin temel konusunu ve tartışılan ana argümanı ortaya koymaktadır.
-
-2. Which of the following statements is directly supported by paragraph B?
-True / False / Not Given
-Answer: True
-Why: İfade Paragraf B'deki veriler ve açıklamalarla birebir örtüşmektedir.
-
-3. According to the second section of the passage, what is a primary cause or factor?
-A) An overview of structural factors outlined in the paragraph
-B) An accidental administrative mistake
-C) A completely contradictory meteorological anomaly
-D) The lack of any historical records
-Answer: A
-Why: İkinci paragrafta konunun temel nedenleri ve etkileyen faktörler detaylandırılmaktadır.
-
-4. The conceptual discussion in the reading most strongly implies that:
-A) The issue requires multifaceted strategic intervention
-B) No solutions have ever been proposed or attempted
-C) The phenomenon has ceased to exist in modern society
-D) Traditional approaches are universally superior without exception
-Answer: A
-Why: Metin genelinde problemin çözümüne yönelik stratejik ve çok yönlü yaklaşımların gerekliliği vurgulanır.
-
-5. What is the key conclusion or solution highlighted by the author? (Write 1-2 sentences)
-Answer: Strategic mitigation, sustainable planning, or targeted structural intervention
-Why: Metnin son bölümünde önerilen çözümler ve stratejik planlamalar anahtar yanıttır.`;
-}
-
-/* EVENT DELEGATION & BUTONLAR */
-document.addEventListener('click',e=>{
-  const t=e.target;
-  const opt=t.closest('.ex-opt');
-  if(opt&&!exDone){
-    const q=+opt.dataset.q;const v=opt.dataset.v;
-    exAnswers[q]=v;
-    opt.parentElement.querySelectorAll('.ex-opt').forEach(x=>x.classList.remove('sel'));
-    opt.classList.add('sel');
-    updateProgress();return;
-  }
-  const nav=t.closest('.ex-qnav span');
-  if(nav){
-    const card=document.getElementById('exQCard_'+nav.dataset.q);
-    if(card)card.scrollIntoView({behavior:'smooth',block:'center'});
-    return;
-  }
-  if(t.closest('#exFinishBtn')){finishExam();return;}
-  if(t.closest('#exResetBtn')){loadExam(activeExamId);return;}
-  if(t.closest('#openLibraryBtn')){renderLibrary();openModal('libraryModal');return;}
-  if(t.closest('#openUploadBtn')){openModal('uploadModal');return;}
-  const cl=t.closest('[data-close]');if(cl){closeModal(cl.dataset.close);return;}
-  const tab=t.closest('.tab');
-  if(tab){
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
-    document.querySelectorAll('.tab-pane').forEach(x=>x.classList.remove('on'));
-    tab.classList.add('on');document.getElementById(tab.dataset.tab).classList.add('on');
-    return;
-  }
-  // Vurgulayıcı
-  const m=t.closest('[data-m]');
-  if(m){
-    document.querySelectorAll('#exTools button').forEach(x=>x.classList.remove('on'));
-    m.classList.add('on');exMode=m.dataset.m;return;
-  }
-  if(t.closest('#exClrBtn')){
-    document.querySelectorAll('#exTools button').forEach(x=>x.classList.remove('on'));
-    t.closest('#exClrBtn').classList.add('on');exMode='clr';return;
-  }
-  if(t.closest('#exFDownBtn')){exFontSize=Math.max(12,exFontSize-1);document.querySelectorAll('.para').forEach(p=>p.style.fontSize=exFontSize+'px');return;}
-  if(t.closest('#exFUpBtn')){exFontSize=Math.min(22,exFontSize+1);document.querySelectorAll('.para').forEach(p=>p.style.fontSize=exFontSize+'px');return;}
-});
-
-// Açık uçlu yazma soruları girişi (Live input binding)
-document.addEventListener('input',e=>{
-  const inp=e.target.closest('.ex-write-input');
-  if(inp&&!exDone){
-    const q=+inp.dataset.q;
-    exAnswers[q]=inp.value;
-    const wc=inp.value.trim().split(/\s+/).filter(Boolean).length;
-    const wcEl=document.getElementById('exWc_'+q);
-    if(wcEl)wcEl.textContent=wc+' kelime';
-    updateProgress();
-  }
-});
-
-// Metin Üzerinde Vurgulama
-document.addEventListener('mouseup',()=>{
-  const sel=window.getSelection();
-  if(!sel||sel.isCollapsed)return;
-  const r=sel.getRangeAt(0);
-  const c=r.commonAncestorContainer;
-  const p=c.nodeType===1?c.closest('.para'):c.parentElement.closest('.para');
-  if(!p)return;
-  if(exMode==='clr'){
-    const span=c.nodeType===1?c.closest('span[class^="hl-"]'):c.parentElement.closest('span[class^="hl-"]');
-    if(span){
-      const pNode=span.parentNode;
-      while(span.firstChild)pNode.insertBefore(span.firstChild,span);
-      pNode.removeChild(span);pNode.normalize();
-    }
-  } else {
-    const sp=document.createElement('span');
-    sp.className='hl-'+exMode;
-    try{r.surroundContents(sp);}catch(err){}
-  }
-  sel.removeAllRanges();
-});
-
-function openModal(id){document.getElementById(id).classList.add('on');}
-function closeModal(id){document.getElementById(id).classList.remove('on');}
-
-// Kütüphane Listesi
-function renderLibrary(){
-  const pEl=document.getElementById('presetList');
-  pEl.innerHTML=EXAM_PRESETS.map(ex=>`
-    <div class="exam-item ${ex.id===activeExamId?'active':''}">
-      <div><b>${ex.title}</b><div style="font-size:12px;color:var(--mut)">${ex.questions.length} Soru · Hazır Sınav</div></div>
-      <button class="btn btn-alt" style="padding:6px 12px" onclick="loadExam('${ex.id}');closeModal('libraryModal')">${ex.id===activeExamId?'✓ Aktif':'Başla →'}</button>
-    </div>`).join('');
-
-  const cEl=document.getElementById('customList');
-  const stored=getStoredExams();
-  if(!stored.length){
-    cEl.innerHTML='<p style="font-size:12.5px;color:var(--mut);font-style:italic">Henüz kendi sınavınızı eklemediniz.</p>';
-  } else {
-    cEl.innerHTML=stored.map(ex=>`
-      <div class="exam-item ${ex.id===activeExamId?'active':''}">
-        <div><b>${ex.title}</b><div style="font-size:12px;color:var(--mut)">${ex.questions.length} Soru · Özel Sınav</div></div>
-        <div style="display:flex;gap:6px">
-          <button class="btn btn-alt" style="padding:6px 12px" onclick="loadExam('${ex.id}');closeModal('libraryModal')">${ex.id===activeExamId?'✓ Aktif':'Başla →'}</button>
-          <button class="btn btn-alt" style="padding:6px 8px;color:var(--bad)" onclick="deleteCustomExam('${ex.id}');renderLibrary()">🗑</button>
-        </div>
-      </div>`).join('');
-  }
-}
-
-// Akıllı Yapıştırıcı ile Kaydet
-document.getElementById('saveSmartExamBtn').onclick=()=>{
-  const title=document.getElementById('upTitle').value.trim()||'Özel Sınav';
-  const pass=document.getElementById('upPassage').value.trim();
-  const qst=document.getElementById('upQuestions').value.trim();
-  if(!pass){alert('Lütfen okuma parçasını sol kutuya yapıştırın.');return;}
-  if(!qst){alert('Lütfen soruları yapıştırın veya "Yapay Zeka ile Soru Üret" butonuna basın.');return;}
-
-  const paragraphs=parsePassage(pass);
-  const questions=parseQuestions(qst);
-  if(!questions.length){alert('Sorular algılanamadı. Lütfen soru numarası (1., 2.) veya soru satırlarını kontrol edin.');return;}
-
-  const newEx={id:'custom_'+Date.now(),title,sub:`${questions.length} Soru · Kullanıcı Sınavı`,paragraphs,questions};
-  saveCustomExam(newEx);
-  closeModal('uploadModal');
-  loadExam(newEx.id);
-  alert(`✅ "${title}" sınavı ${questions.length} soru ile başarıyla hazırlandı ve açıldı!`);
-};
-
-document.getElementById('fillSampleBtn').onclick=()=>{
-  document.getElementById('upTitle').value="Family Politics & Culture";
-  document.getElementById('upPassage').value=`Paragraph A: In traditional societies, family structures heavily influenced local governance and resource distribution. Kinship networks provided both informal social security and vital political alliances, serving as the cornerstone of community stability.
-
-Paragraph B: With modern urbanization and industrialization, nuclear families gradually replaced extended households. Increased economic independence and geographic mobility weakened traditional filial obligations, giving rise to individualistic social patterns.
-
-Paragraph C: Today, digital connectivity and global migration allow scattered relatives to maintain continuous ties across borders, giving rise to modern transnational family models that reshape global cultural identity.`;
-  document.getElementById('upQuestions').value=`1. What was a primary role of kinship networks in traditional societies?
-A) Fostering individual geographic migration
-B) Providing political alliances and informal social security
-C) Dismantling local governance structures
-D) Accelerating industrialization
-Answer: B
-Why: Paragraf A'da akrabalık ağlarının ittifaklar ve gayriresmi sosyal güvenlik sağladığı açıkça yazılmıştır.
-
-2. Modern urbanization strengthened traditional filial obligations across generations.
-True / False / Not Given
-Answer: False
-Why: Paragraf B'de kentleşmenin geleneksel evlatlık sorumluluklarını zayıflattığı ('weakened') ifade edilmektedir.
-
-3. The emergence of nuclear families was primarily driven by:
-A) Agricultural expansions
-B) Modern urbanization and industrialization
-C) Medieval legal doctrines
-D) The complete collapse of communications
-Answer: B
-Why: Paragraf B'de çekirdek ailelerin yükselişinin kentleşme ve sanayileşmeyle başladığı belirtilmiştir.
-
-4. What does the author explain in paragraph C regarding modern families? (Yazma Sorusu)
-Answer: Digital connectivity allows transnational family ties across borders
-Why: Paragraf C'de dijital iletişimin sınır ötesi aile bağlarını sürdürdüğü vurgulanmaktadır.`;
-};
-
-// AI ile Akademik Soru Üret
-document.getElementById('aiGenQuestionsBtn').onclick=async()=>{
-  const pass=document.getElementById('upPassage').value.trim();
-  if(!pass){alert('Lütfen önce okuma parçasını sol kutuya yapıştırın.');return;}
-  const btn=document.getElementById('aiGenQuestionsBtn');
-  const oldText=btn.innerHTML;
-  btn.disabled=true;
-  btn.innerHTML='⏳ 🤖 Yapay Zeka Soruları Hazırlıyor...';
-
-  let generated="";
-  try{
-    const prompt=`Sen BUEPT, IELTS ve Cambridge C1 düzeyinde okuma ve ölçme değerlendirme uzmanı bir test hazırlayıcısısın.
-Aşağıdaki akademik okuma parçası için TAM 5 TANE AKADEMİK VE ÖZGÜN SORU hazırla.
-
-Format kuralları:
-1. Soru 1: Çoktan seçmeli ana fikir sorusu (A, B, C, D şıkları).
-2. Soru 2: True / False / Not Given sorusu.
-3. Soru 3: Paragraftaki bir nedene veya sonuca dayalı çoktan seçmeli soru (A, B, C, D şıkları).
-4. Soru 4: Metindeki bir zamirin ('it', 'they', vb.) veya kelimenin anlamına dayalı çoktan seçmeli soru (A, B, C, D şıkları).
-5. Soru 5: Açık uçlu yazma / kısa cevap sorusu (Örn: "What does the author suggest about...").
-
-Her soru için tam şu kalıbı kullan:
-1. [Soru metni]
-A) [Şık 1]
-B) [Şık 2]
-C) [Şık 3]
-D) [Şık 4]
-Answer: [Doğru şık harfi]
-Why: [Metindeki paragraf kanıtı ve kısa Türkçe açıklama]
-
-2. [True/False/Not Given ifade cümlesi]
-True / False / Not Given
-Answer: [True veya False veya Not Given]
-Why: [Metindeki paragraf kanıtı ve kısa Türkçe açıklama]
-
-3. [Soru metni]
-A) [Şık 1]
-B) [Şık 2]
-C) [Şık 3]
-D) [Şık 4]
-Answer: [Doğru şık harfi]
-Why: [Metindeki paragraf kanıtı ve kısa Türkçe açıklama]
-
-4. [Soru metni]
-A) [Şık 1]
-B) [Şık 2]
-C) [Şık 3]
-D) [Şık 4]
-Answer: [Doğru şık harfi]
-Why: [Metindeki paragraf kanıtı ve kısa Türkçe açıklama]
-
-5. [Yazma / Kısa Cevap sorusu]
-Answer: [Beklenen örnek model yanıt veya anahtar kelimeler]
-Why: [Metindeki kanıt ve kısa açıklama]
-
-Okuma Parçası:
-${pass.slice(0, 4000)}`;
-
-    const resp = await fetch('/api/claude', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, tier: 'quick' })
+<main class="ka-wrap" id="main"></main>
+<script src="ortak.js"></script>
+<script type="module">
+const {$,esc}=KA;const ic=KA.ic;
+
+/* ---------- Kalıcı kayıt (tarayıcı veritabanı) ---------- */
+const idb=(()=>{let dbp;const open=()=>dbp||(dbp=new Promise((ok,no)=>{const r=indexedDB.open('ka-sinav',1);r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains('exams'))d.createObjectStore('exams',{keyPath:'id'});if(!d.objectStoreNames.contains('files'))d.createObjectStore('files')};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}));
+  const tx=(s,m,f)=>open().then(d=>new Promise((ok,no)=>{const t=d.transaction(s,m),q=f(t.objectStore(s));t.oncomplete=()=>ok(q&&q.result);t.onerror=()=>no(t.error)}));
+  return {all:()=>tx('exams','readonly',s=>s.getAll()),get:id=>tx('exams','readonly',s=>s.get(id)),put:v=>tx('exams','readwrite',s=>s.put(v)),del:id=>Promise.all([tx('exams','readwrite',s=>s.delete(id)),tx('files','readwrite',s=>s.delete(id))]),file:id=>tx('files','readonly',s=>s.get(id)),putFile:(id,b)=>tx('files','readwrite',s=>s.put(b,id))};
+})();
+
+/* ---------- pdf.js (sitenin kendi kopyası) ---------- */
+let pdfjs=null;
+async function lib(){if(!pdfjs){pdfjs=await import('./lib/pdfjs/pdf.min.mjs');pdfjs.GlobalWorkerOptions.workerSrc=new URL('lib/pdfjs/pdf.worker.min.mjs',location.href).href}return pdfjs}
+
+/* ---------- Soru numaralarını ve şık sayısını bul ---------- */
+async function analyse(doc){
+  const marks=[],letters=new Set();
+  for(let p=1;p<=doc.numPages;p++){
+    const page=await doc.getPage(p),vp=page.getViewport({scale:1}),tc=await page.getTextContent();
+    const lines=[];
+    tc.items.forEach(it=>{if(!it.str||!it.str.trim())return;const x=it.transform[4],y=vp.height-it.transform[5];let L=lines.find(l=>Math.abs(l.y-y)<3);if(!L){L={y,parts:[]};lines.push(L)}L.parts.push({x,s:it.str})});
+    lines.forEach(L=>{L.parts.sort((a,b)=>a.x-b.x);L.t=L.parts.map(a=>a.s).join(' ').replace(/\s+/g,' ').trim();L.x=L.parts[0].x});
+    lines.forEach(L=>{
+      const m=L.t.match(/^(?:Q(?:uestion)?\s*)?(\d{1,3})\s*[.)]\s*(?=\S)/i);
+      if(m&&!/^\d{1,3}\s*[.)]\s*\d/.test(L.t))marks.push({n:+m[1],p,y:L.y/vp.height,x:L.x/vp.width});
+      const o=L.t.match(/(?:^|\s)\(?([A-Ea-e])[).]\s+\S/g);if(o)o.forEach(s=>letters.add(s.trim().replace(/[()\.\s]/g,'')[0].toUpperCase()));
     });
-    if(resp.ok){
-      const data = await resp.json();
-      if(data && data.text && data.text.includes('1.')){
-        generated = data.text.trim();
-      }
-    }
-  }catch(e){
-    console.warn("API çağrısı başarısız, yerel motor devreye giriyor:", e);
   }
-
-  if(!generated){
-    generated = generateLocalAcademicQuestions(pass);
-  }
-
-  document.getElementById('upQuestions').value = generated;
-  btn.disabled = false;
-  btn.innerHTML = oldText;
-  alert('🤖 Metne özel 5 akademik soru (Çoktan Seçmeli, T/F ve Yazma) başarıyla üretildi! Sağ kutudan kontrol edip "Sınavı Oluştur & Başlat" butonuna basabilirsiniz.');
-};
-
-// PDF Yükleme
-const dropArea=document.getElementById('dropArea');
-const filePicker=document.getElementById('filePicker');
-dropArea.onclick=()=>filePicker.click();
-filePicker.onchange=e=>{if(e.target.files[0])processPdf(e.target.files[0]);};
-
-dropArea.ondragover=e=>{e.preventDefault();dropArea.style.borderColor='var(--p)';};
-dropArea.ondragleave=()=>{dropArea.style.borderColor='var(--p2)';};
-dropArea.ondrop=e=>{
-  e.preventDefault();dropArea.style.borderColor='var(--p2)';
-  if(e.dataTransfer.files&&e.dataTransfer.files[0])processPdf(e.dataTransfer.files[0]);
-};
-
-async function processPdf(file){
-  const st=document.getElementById('fileStatus');
-  st.style.display='block';st.textContent=`⏳ "${file.name}" okunuyor...`;
-  
-  if(file.name.endsWith('.json')){
-    const reader=new FileReader();
-    reader.onload=ev=>{
-      try{
-        const data=JSON.parse(ev.target.result);
-        if(!data.paragraphs||!data.questions)throw new Error('Geçersiz sınav formatı');
-        data.id='custom_'+Date.now();
-        saveCustomExam(data);
-        closeModal('uploadModal');
-        loadExam(data.id);
-        alert(`✅ "${data.title}" başarıyla yüklendi!`);
-      }catch(err){alert('JSON okuma hatası: '+err.message);}
-    };
-    reader.readAsText(file);
-    return;
-  }
-
-  if(file.name.endsWith('.txt')||file.name.endsWith('.md')){
-    const reader=new FileReader();
-    reader.onload=ev=>{
-      const text=ev.target.result;
-      document.querySelector('[data-tab="tabSmart"]').click();
-      document.getElementById('upTitle').value=file.name.replace(/\.[^/.]+$/,"");
-      const qIdx=text.search(/(?:\n|^)\s*(?:questions?|sorular?|reading\s+comprehension\s+questions|choose\s+the\s+correct|1[\.\)]\s+)/i);
-      if(qIdx>100){
-        document.getElementById('upPassage').value=text.slice(0,qIdx).trim();
-        document.getElementById('upQuestions').value=text.slice(qIdx).trim();
-        st.innerHTML=`✅ <b>"${file.name}"</b> başarıyla okundu! Metin ve sorular ayrıştırıldı.`;
-      } else {
-        document.getElementById('upPassage').value=text.trim();
-        st.innerHTML=`✅ <b>"${file.name}"</b> okuma metni aktarıldı! "🤖 Yapay Zeka ile Soru Üret" butonuna basarak soruları hemen oluşturabilirsiniz.`;
-      }
-    };
-    reader.readAsText(file);
-    return;
-  }
-
-  // PDF Dosyası (Mozilla PDF.js motoru)
-  try{
-    if(!window.pdfjsLib){
-      throw new Error('PDF motoru henüz yüklenmedi. Lütfen sayfayı yenileyin veya metni doğrudan yapıştırın.');
-    }
-    const ab=await file.arrayBuffer();
-    const pdf=await pdfjsLib.getDocument({data:ab}).promise;
-    let fullText="";
-    for(let i=1;i<=pdf.numPages;i++){
-      const page=await pdf.getPage(i);
-      const tc=await page.getTextContent();
-      let lastY=null,line="";
-      for(const item of tc.items){
-        if(lastY!==null&&Math.abs(item.transform[5]-lastY)>6)line+="\n";
-        else if(line&&!line.endsWith(" ")&&!item.str.startsWith(" "))line+=" ";
-        line+=item.str;lastY=item.transform[5];
-      }
-      fullText+=line+"\n\n";
-    }
-
-    // PDF Bytecode ve PostScript kalıntılarını tamamen temizle
-    fullText=fullText
-      .replace(/endstream[\s\S]*?endobj/gi,'')
-      .replace(/\/Resources[\s\S]*?\/Subtype/gi,'')
-      .replace(/\/Matrix[\s\S]*?\/ProcSet/gi,'')
-      .replace(/\[\s*\d+\s+\d+\.\d+[\s\S]*?\]/g,'')
-      .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g,'')
-      .trim();
-
-    if(fullText.length<40){
-      throw new Error('PDF içinden metin çıkarılamadı. Dosya taranmış bir resim (OCR gerektiren) olabilir.');
-    }
-
-    // Soru başlangıç ayrımı
-    const qIdx=fullText.search(/(?:\n|^)\s*(?:questions?|sorular?|reading\s+comprehension\s+questions|choose\s+the\s+correct|1[\.\)]\s+)/i);
-    document.querySelector('[data-tab="tabSmart"]').click();
-    document.getElementById('upTitle').value=file.name.replace(/\.[^/.]+$/,"");
-
-    if(qIdx>120){
-      document.getElementById('upPassage').value=fullText.slice(0,qIdx).trim();
-      document.getElementById('upQuestions').value=fullText.slice(qIdx).trim();
-      st.innerHTML=`✅ <b>"${file.name}"</b> başarıyla çözümlendi! Hem okuma metni hem de sorular aktarıldı.`;
-    } else {
-      document.getElementById('upPassage').value=fullText.trim();
-      st.innerHTML=`✅ <b>"${file.name}"</b> okuma metni aktarıldı! "🤖 Yapay Zeka ile Soru Üret" butonuna basarak soruları saniyeler içinde oluşturabilirsiniz.`;
-    }
-  }catch(err){
-    st.innerHTML=`⚠️ PDF doğrudan okunamadı: ${err.message}. Lütfen metni kopyalayıp "İnternet Üzerinden Metin & Soru Yapıştır" sekmesine yapıştırın.`;
-  }
+  marks.sort((a,b)=>a.p-b.p||a.y-b.y);
+  const pos={};let want=1;
+  marks.forEach(m=>{if(m.n===want){pos[want]={p:m.p,y:m.y};want++}});
+  const q=want-1>=3?want-1:0;
+  return {q,pos:q?pos:{},opts:letters.has('E')?5:4};
 }
 
-// Başlangıç yüklemesi
-loadExam('exam_urban');
+/* ---------- Durum ---------- */
+let EX=null,DOC=null,DOCT=null,PAGES=[],ZOOM=1,BASEW=0,TOOL='select',COLOR='#fde047',UNDO=[],saveT=null,tick=null,io=null,renderQ=[],rendering=0,TAB='ans';
+const COLORS=['#fde047','#86efac','#f9a8d4','#93c5fd'];
+const save=()=>{clearTimeout(saveT);saveT=setTimeout(()=>{if(EX)idb.put(EX).catch(()=>{})},350)};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const fmt=s=>{s=Math.max(0,Math.round(s));const h=s/3600|0,m=(s%3600)/60|0,x=s%60;return (h?h+':':'')+String(m).padStart(h?2:1,'0')+':'+String(x).padStart(2,'0')};
+
+/* ---------- Kütüphane ---------- */
+async function library(){
+  stopExam();
+  let list=[];try{list=(await idb.all()).sort((a,b)=>b.updated-a.updated)}catch(e){}
+  $('#main').innerHTML=`<div class="lib-head"><div><span class="eyebrow">Sınav Odası</span><h1>Sınavını yükle, kâğıt üzerindeymiş gibi çöz</h1><p>PDF'in her sayfası birebir görünür. Metni vurgula, altını çiz, kalemle işaretle, not al ve yandaki optik cevap kâğıdını doldur. Her şey bu cihazda saklanır.</p></div></div>
+  <label class="updrop" id="drop" tabindex="0"><div class="ico">${ic('upload')}</div><b>Sınav PDF'ini buraya bırak</b><span class="mut">ya da dosya seçmek için tıkla · PDF, en fazla 60 MB</span><input type="file" id="pf" accept="application/pdf,.pdf" hidden><div id="upmsg" class="mut" style="margin-top:10px;font-weight:700;min-height:20px"></div></label>
+  <div class="feat"><div class="card"><b>${ic('hl')}Vurgula</b>Dört renkle metni işaretle.</div><div class="card"><b>${ic('ul')}Altını çiz</b>Anahtar ifadeleri belirginleştir.</div><div class="card"><b>${ic('note')}Not al</b>Sayfanın istediğin yerine not iğnesi koy.</div><div class="card"><b>${ic('list')}Optik form</b>Soru sayısı otomatik bulunur, cevap anahtarıyla puanla.</div></div>
+  ${list.length?`<h2 style="font-size:22px;margin:0 0 12px">Sınavların</h2><div class="exlist">${list.map(x=>{const n=Object.keys(x.ans||{}).length;return `<div class="card excard" data-open="${x.id}" role="button" tabindex="0"><div class="th">${x.thumb?`<img src="${x.thumb}" alt="">`:''}</div><div class="tx"><b>${esc(x.title)}</b><span class="mut">${x.pages} sayfa · ${x.q} soru${x.result?` · <b style="display:inline;color:var(--ok)">%${x.result.pct}</b>`:''}</span><div class="bar"><i style="width:${x.q?n/x.q*100:0}%"></i></div><div class="ft"><span class="mut">${n}/${x.q} cevaplandı</span><button class="ka-icon-btn" data-del="${x.id}" aria-label="Sınavı sil" style="width:32px;height:32px">${ic('trash')}</button></div></div></div>`}).join('')}</div>`:''}`;
+  const drop=$('#drop'),pf=$('#pf');
+  drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')};drop.ondragleave=()=>drop.classList.remove('over');
+  drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');const f=e.dataTransfer.files[0];if(f)upload(f)};
+  pf.onchange=()=>{if(pf.files[0])upload(pf.files[0])};
+}
+async function upload(f){
+  const msg=$('#upmsg');
+  if(!/\.pdf$/i.test(f.name)&&f.type!=='application/pdf'){msg.textContent='Lütfen PDF dosyası seç.';return}
+  if(f.size>60*1024*1024){msg.textContent='Dosya çok büyük (en fazla 60 MB).';return}
+  msg.innerHTML='<span class="ka-spin"></span> PDF okunuyor ve sorular aranıyor…';
+  try{
+    const buf=new Uint8Array(await f.arrayBuffer());
+    const L=await lib(),task=L.getDocument({data:buf.slice()}),doc=await task.promise;
+    const info=await analyse(doc);
+    const p1=await doc.getPage(1),vp=p1.getViewport({scale:300/p1.getViewport({scale:1}).width});
+    const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;await p1.render({canvasContext:c.getContext('2d'),canvas:c,viewport:vp}).promise;
+    const id=uid();
+    const ex={id,title:f.name.replace(/\.pdf$/i,'').replace(/[_-]+/g,' ').trim()||'Sınav',pages:doc.numPages,q:info.q||20,opts:info.opts,pos:info.pos,detected:!!info.q,ans:{},flags:{},key:{},annos:{},elapsed:0,limit:0,created:Date.now(),updated:Date.now(),thumb:c.toDataURL('image/jpeg',.7)};
+    await idb.putFile(id,buf);await idb.put(ex);
+    task.destroy();
+    openExam(id);
+  }catch(e){msg.textContent='PDF açılamadı: '+(e&&e.message||e)}
+}
+
+/* ---------- Sınav ekranı ---------- */
+function stopExam(){clearInterval(tick);tick=null;if(io){io.disconnect();io=null}if(DOCT){try{DOCT.destroy()}catch(e){}DOCT=null;DOC=null}PAGES=[];removeFab();document.removeEventListener('selectionchange',onSelChange)}
+async function openExam(id){
+  stopExam();
+  EX=await idb.get(id);if(!EX)return library();
+  const buf=await idb.file(id);
+  $('#main').innerHTML=`<div class="card exbar" id="bar">
+    <button class="btn btn-ghost btn-sm" data-a="lib">${ic('back')}<span class="ka-hide-sm">Sınavlar</span></button>
+    <span class="ttl" title="${esc(EX.title)}">${esc(EX.title)}</span>
+    <div class="tools" role="toolbar" aria-label="Araçlar">
+      <button data-tool="select" title="Seç (Esc)">${ic('cursor')}</button>
+      <button data-tool="hl" title="Vurgula (V)">${ic('hl')}</button>
+      <button data-tool="ul" title="Altını çiz (U)">${ic('ul')}</button>
+      <button data-tool="pen" title="Kalem (P)">${ic('pen')}</button>
+      <button data-tool="note" title="Not (N)">${ic('note')}</button>
+      <button data-tool="erase" title="Silgi (E)">${ic('eraser')}</button>
+    </div>
+    <div class="sw" id="sw">${COLORS.map(c=>`<button data-color="${c}" style="background:${c}" aria-label="Renk"></button>`).join('')}</div>
+    <div class="tools"><button data-a="undo" title="Geri al (Ctrl+Z)">${ic('undo')}</button><button data-a="zout" title="Küçült">${ic('zout')}</button><button data-a="zin" title="Büyüt">${ic('zin')}</button></div>
+    <span class="grow"></span>
+    <span class="tmr" id="tmr" title="Süre">${ic('clock')}<span>0:00</span></span>
+  </div>
+  <div class="exbody"><div class="pages" id="pages"></div><aside class="card sheet" id="sheet"></aside></div>
+  <button class="btn btn-p sheet-fab" data-a="sheet">${ic('list')}Cevap kâğıdı</button>`;
+  setTool(TOOL);setColor(COLOR);drawSheet();
+  const L=await lib();
+  DOCT=L.getDocument({data:new Uint8Array(buf).slice()});DOC=await DOCT.promise;
+  const p1=await DOC.getPage(1);BASEW=p1.getViewport({scale:1}).width;
+  const sizes=[];for(let i=1;i<=DOC.numPages;i++){const v=(await DOC.getPage(i)).getViewport({scale:1});sizes.push([v.width,v.height])}
+  PAGES=sizes.map(([w,h],i)=>({n:i+1,w,h,el:null,done:0}));
+  fitZoom();layout();
+  document.addEventListener('selectionchange',onSelChange);
+  let last=performance.now();
+  tick=setInterval(()=>{const now=performance.now();if(!document.hidden&&!EX.result){EX.elapsed+=(now-last)/1000;save()}last=now;drawTimer()},1000);drawTimer();
+  EX.updated=Date.now();save();
+}
+function fitZoom(){const box=$('#pages');const w=box.clientWidth-8;ZOOM=Math.max(.5,Math.min(1.6,w/BASEW))}
+function layout(){
+  const box=$('#pages');if(!box)return;
+  const keep=scrollY,frac=document.documentElement.scrollHeight?keep/document.documentElement.scrollHeight:0;
+  if(io)io.disconnect();
+  box.innerHTML=PAGES.map(p=>{const W=Math.floor(p.w*ZOOM),H=Math.floor(p.h*ZOOM);return `<div class="pg" data-p="${p.n}" style="width:${W}px;height:${H}px;--scale-factor:${ZOOM}"><div class="load">Sayfa ${p.n}</div><canvas></canvas><svg class="anno" viewBox="0 0 1000 ${(1000*p.h/p.w).toFixed(1)}" preserveAspectRatio="none"></svg><div class="textLayer"></div><svg class="ink" viewBox="0 0 1000 ${(1000*p.h/p.w).toFixed(1)}" preserveAspectRatio="none"></svg><div class="ov"></div><div class="notes"></div><span class="pgno">${p.n} / ${PAGES.length}</span></div>`}).join('');
+  PAGES.forEach(p=>{p.el=box.querySelector(`.pg[data-p="${p.n}"]`);p.done=0;p.task&&p.task.cancel&&p.task.cancel();drawAnnos(p.n);bindPage(p)});
+  io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const p=PAGES[+e.target.dataset.p-1];if(!p.done)queue(p)}}),{rootMargin:'900px 0px'});
+  PAGES.forEach(p=>io.observe(p.el));
+  requestAnimationFrame(()=>scrollTo(0,frac*document.documentElement.scrollHeight));
+}
+function queue(p){if(!renderQ.includes(p))renderQ.push(p);pump()}
+async function pump(){
+  while(rendering<2&&renderQ.length){
+    const p=renderQ.shift();if(p.done)continue;p.done=1;rendering++;
+    renderPage(p).catch(()=>{p.done=0}).finally(()=>{rendering--;pump()});
+  }
+}
+async function renderPage(p){
+  const page=await DOC.getPage(p.n),z=ZOOM,el=p.el;
+  const dpr=Math.min(2,window.devicePixelRatio||1),vp=page.getViewport({scale:z}),rv=page.getViewport({scale:z*dpr});
+  const c=el.querySelector('canvas');c.width=Math.floor(rv.width);c.height=Math.floor(rv.height);
+  p.task=page.render({canvasContext:c.getContext('2d'),canvas:c,viewport:rv});await p.task.promise;
+  if(z!==ZOOM||el!==p.el)return;
+  const ld=el.querySelector('.load');if(ld)ld.remove();
+  const tl=el.querySelector('.textLayer');tl.innerHTML='';
+  try{const t=new pdfjs.TextLayer({textContentSource:page.streamTextContent(),container:tl,viewport:vp});await t.render()}catch(e){}
+  tl.addEventListener('mousedown',()=>tl.classList.add('selecting'));
+  document.addEventListener('mouseup',()=>tl.classList.remove('selecting'));
+}
+
+/* ---------- Araçlar ---------- */
+function setTool(t){TOOL=t;const pg=$('#pages');if(pg)pg.className='pages t-'+t;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('on',b.dataset.tool===t));const sw=$('#sw');if(sw)sw.style.visibility=['hl','ul','pen'].includes(t)?'visible':'hidden';removeFab()}
+function setColor(c){COLOR=c;document.querySelectorAll('[data-color]').forEach(b=>b.classList.toggle('on',b.dataset.color===c))}
+const annos=n=>(EX.annos[n]=EX.annos[n]||[]);
+function addAnno(n,a){a.id=uid();annos(n).push(a);UNDO.push({t:'add',n,id:a.id});drawAnnos(n);save()}
+function delAnno(n,id){const L=annos(n),i=L.findIndex(a=>a.id===id);if(i<0)return;const [a]=L.splice(i,1);UNDO.push({t:'del',n,a});drawAnnos(n);save();drawSheet()}
+function undo(){const u=UNDO.pop();if(!u)return KA.toast('Geri alınacak işlem yok.');if(u.t==='add'){const L=annos(u.n),i=L.findIndex(a=>a.id===u.id);if(i>=0)L.splice(i,1)}else annos(u.n).push(u.a);drawAnnos(u.n);save();drawSheet()}
+const ulColor=c=>({'#fde047':'#ca8a04','#86efac':'#15803d','#f9a8d4':'#be185d','#93c5fd':'#1d4ed8'}[c]||'#dc2626');
+function drawAnnos(n){
+  const p=PAGES[n-1];if(!p||!p.el)return;
+  const L=EX.annos[n]||[];
+  p.el.querySelector('.anno').innerHTML=L.filter(a=>a.t==='hl'||a.t==='box').map(a=>`<g data-id="${a.id}">${a.r.map(([x,y,w,h])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="${a.c}" fill-opacity=".55"/>`).join('')}</g>`).join('');
+  p.el.querySelector('.ink').innerHTML=L.filter(a=>a.t==='ul'||a.t==='pen').map(a=>a.t==='ul'?`<g data-id="${a.id}" class="ul">${a.r.map(([x,y,w,h])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="transparent"/><line x1="${x}" y1="${(y+h-.6).toFixed(1)}" x2="${x+w}" y2="${(y+h-.6).toFixed(1)}" stroke="${ulColor(a.c)}" stroke-width="2.4" stroke-linecap="round"/>`).join('')}</g>`:`<path data-id="${a.id}" class="pen" d="${a.d}" fill="none" stroke="${ulColor(a.c)}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`).join('');
+  p.el.querySelector('.notes').innerHTML=L.filter(a=>a.t==='note').map(a=>`<button class="pin" data-pin="${a.id}" style="left:${a.x/10}%;top:${a.y/(1000*p.h/p.w)*100}%" title="${esc(a.text||'Not')}"><svg viewBox="0 0 30 34"><path d="M15 33C15 33 2 20 2 12a13 13 0 0 1 26 0c0 8-13 21-13 21z" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/></svg><span>${noteNo(a)}</span></button>`).join('');
+}
+const allNotes=()=>Object.entries(EX.annos).flatMap(([n,L])=>L.filter(a=>a.t==='note').map(a=>Object.assign({n:+n},a))).sort((a,b)=>a.n-b.n||a.y-b.y);
+const noteNo=a=>allNotes().findIndex(x=>x.id===a.id)+1;
+function toUnits(p,cx,cy){const r=p.el.getBoundingClientRect();return [(cx-r.left)/r.width*1000,(cy-r.top)/r.width*1000]}
+
+/* Seçili metni vurgula / altını çiz */
+function selRects(){
+  const s=getSelection();if(!s||s.isCollapsed||!s.rangeCount)return null;
+  const rng=s.getRangeAt(0),node=rng.commonAncestorContainer,el=(node.nodeType===1?node:node.parentElement);
+  const pgEl=el&&el.closest('.pg');
+  const out={};
+  const rects=[...rng.getClientRects()].filter(r=>r.width>1.5&&r.height>2);
+  rects.forEach(r=>{const cy=r.top+r.height/2,cx=r.left+r.width/2;const p=PAGES.find(p=>{const b=p.el.getBoundingClientRect();return cx>=b.left&&cx<=b.right&&cy>=b.top&&cy<=b.bottom});if(!p)return;const [x,y]=toUnits(p,r.left,r.top),[x2,y2]=toUnits(p,r.right,r.bottom);(out[p.n]=out[p.n]||[]).push([x,y,x2-x,y2-y])});
+  Object.keys(out).forEach(n=>{const L=out[n].sort((a,b)=>a[1]-b[1]||a[0]-b[0]),M=[];L.forEach(r=>{const m=M.find(q=>Math.abs(q[1]-r[1])<Math.max(3,r[3]*.45)&&r[0]<=q[0]+q[2]+6);if(m){const x1=Math.min(m[0],r[0]),x2=Math.max(m[0]+m[2],r[0]+r[2]),y1=Math.min(m[1],r[1]),y2=Math.max(m[1]+m[3],r[1]+r[3]);m[0]=x1;m[1]=y1;m[2]=x2-x1;m[3]=y2-y1}else M.push([...r])});out[n]=M.map(r=>r.map(v=>+v.toFixed(1)))});
+  return Object.keys(out).length?out:(pgEl?null:null);
+}
+function applySel(t){const R=selRects();if(!R)return false;Object.entries(R).forEach(([n,r])=>addAnno(+n,{t,c:COLOR,r}));getSelection().removeAllRanges();removeFab();return true}
+let fab=null;
+function removeFab(){if(fab){fab.remove();fab=null}}
+function onSelChange(){
+  clearTimeout(onSelChange.t);onSelChange.t=setTimeout(()=>{
+    const s=getSelection();if(!s||s.isCollapsed||!s.rangeCount){removeFab();return}
+    const a=s.anchorNode&&(s.anchorNode.nodeType===1?s.anchorNode:s.anchorNode.parentElement);if(!a||!a.closest('.textLayer'))return removeFab();
+    const r=s.getRangeAt(0).getBoundingClientRect();removeFab();
+    fab=document.createElement('div');fab.className='selfab';fab.innerHTML=`<button data-fab="hl">Vurgula</button><button data-fab="ul">Altını çiz</button><button data-fab="look">Anlamı</button>`;
+    fab.addEventListener('mousedown',e=>e.preventDefault());document.body.appendChild(fab);fab.style.left=Math.max(8,Math.min(innerWidth-fab.offsetWidth-8,r.left+r.width/2-fab.offsetWidth/2))+'px';fab.style.top=(r.top>70?r.top-fab.offsetHeight-8:r.bottom+8)+'px';
+  },250);
+}
+function bindPage(p){
+  const ov=p.el.querySelector('.ov');let draw=null;
+  p.el.querySelector('.textLayer').addEventListener('pointerup',e=>{if(e.pointerType==='mouse'&&(TOOL==='hl'||TOOL==='ul'))setTimeout(()=>applySel(TOOL),0)});
+  const eraseAt=e=>{const [x,y]=toUnits(p,e.clientX,e.clientY);const hit=(EX.annos[p.n]||[]).filter(a=>a.t!=='note').reverse().find(a=>a.t==='pen'?a.d.slice(1).split('L').some(q=>{const [px,py]=q.split(' ').map(Number);return Math.hypot(px-x,py-y)<9}):a.r.some(([rx,ry,rw,rh])=>x>=rx-3&&x<=rx+rw+3&&y>=ry-4&&y<=ry+rh+4));if(hit)delAnno(p.n,hit.id)};
+  ov.addEventListener('pointerdown',e=>{
+    if(TOOL==='erase'){ov.setPointerCapture(e.pointerId);draw={erase:1};eraseAt(e);return}
+    if(TOOL==='note'){const [x,y]=toUnits(p,e.clientX,e.clientY);addAnno(p.n,{t:'note',x:+x.toFixed(1),y:+y.toFixed(1),text:''});const a=annos(p.n).at(-1);openNote(p.n,a.id);drawSheet();return}
+    if(TOOL!=='pen'&&TOOL!=='rect')return;
+    ov.setPointerCapture(e.pointerId);const [x,y]=toUnits(p,e.clientX,e.clientY);draw={pts:[[x,y]],x,y};
+    const ink=p.el.querySelector('.ink');draw.el=document.createElementNS('http://www.w3.org/2000/svg',TOOL==='pen'?'path':'rect');
+    if(TOOL==='pen'){draw.el.setAttribute('fill','none');draw.el.setAttribute('stroke',ulColor(COLOR));draw.el.setAttribute('stroke-width','3');draw.el.setAttribute('stroke-linecap','round');draw.el.setAttribute('stroke-linejoin','round')}else{draw.el.setAttribute('fill',COLOR);draw.el.setAttribute('fill-opacity','.45')}
+    ink.appendChild(draw.el);
+  });
+  ov.addEventListener('pointermove',e=>{if(!draw)return;if(draw.erase)return eraseAt(e);const [x,y]=toUnits(p,e.clientX,e.clientY);if(TOOL==='pen'){draw.pts.push([x,y]);draw.el.setAttribute('d','M'+draw.pts.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join('L'))}else{draw.el.setAttribute('x',Math.min(x,draw.x));draw.el.setAttribute('y',Math.min(y,draw.y));draw.el.setAttribute('width',Math.abs(x-draw.x));draw.el.setAttribute('height',Math.abs(y-draw.y))}});
+  const end=e=>{if(!draw)return;const d=draw;draw=null;if(d.erase)return;d.el.remove();
+    if(TOOL==='pen'&&d.pts.length>1)addAnno(p.n,{t:'pen',c:COLOR,d:'M'+d.pts.filter((q,i)=>i%2===0||i===d.pts.length-1).map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join('L')});
+    if(TOOL==='rect'){const [x,y]=toUnits(p,e.clientX,e.clientY);const w=Math.abs(x-d.x),h=Math.abs(y-d.y);if(w>4&&h>3)addAnno(p.n,{t:'box',c:COLOR,r:[[+Math.min(x,d.x).toFixed(1),+Math.min(y,d.y).toFixed(1),+w.toFixed(1),+h.toFixed(1)]]})}};
+  ov.addEventListener('pointerup',end);ov.addEventListener('pointercancel',end);
+  p.el.addEventListener('click',e=>{
+    const pin=e.target.closest('[data-pin]');if(pin){if(TOOL==='erase')delAnno(p.n,pin.dataset.pin);else openNote(p.n,pin.dataset.pin)}
+  });
+}
+function openNote(n,id){
+  document.querySelectorAll('.nedit').forEach(x=>x.remove());
+  const p=PAGES[n-1],a=annos(n).find(x=>x.id===id);if(!a)return;
+  const ed=document.createElement('div');ed.className='nedit';
+  const W=p.el.clientWidth,left=Math.min(Math.max(0,a.x/1000*W-20),W-260),top=a.y/1000*W+6;
+  ed.style.left=left+'px';ed.style.top=top+'px';
+  ed.innerHTML=`<div class="row" style="justify-content:space-between;margin-bottom:6px"><b style="font-size:13px">Not ${noteNo(a)} · Sayfa ${n}</b><button class="ka-icon-btn" style="width:28px;height:28px" data-x>${ic('x')}</button></div><textarea placeholder="Notunu yaz…">${esc(a.text||'')}</textarea><div class="row" style="justify-content:space-between;margin-top:8px"><button class="btn btn-bad btn-sm" data-d>${ic('trash')}Sil</button><button class="btn btn-p btn-sm" data-s>Kaydet</button></div>`;
+  p.el.appendChild(ed);const ta=ed.querySelector('textarea');ta.focus();
+  const close=()=>{a.text=ta.value.trim();save();ed.remove();drawAnnos(n);drawSheet()};
+  ed.querySelector('[data-s]').onclick=close;ed.querySelector('[data-x]').onclick=close;
+  ed.querySelector('[data-d]').onclick=()=>{ed.remove();delAnno(n,id)};
+  ed.addEventListener('pointerdown',e=>e.stopPropagation());ed.addEventListener('click',e=>e.stopPropagation());
+}
+function setZoom(z){ZOOM=Math.max(.5,Math.min(2.4,+z.toFixed(2)));layout()}
+
+/* ---------- Cevap kâğıdı ---------- */
+const LET='ABCDE';
+function drawSheet(){
+  const sh=$('#sheet');if(!sh||!EX)return;
+  const n=Object.keys(EX.ans).length,R=EX.result,keyMode=EX.keyMode;
+  const rows=Array.from({length:EX.q},(_,i)=>{const k=i+1,a=EX.ans[k],key=EX.key[k],st=R&&key?(a===key?'ok':'no'):'';return `<div class="qrow ${st}"><button class="qn ${EX.pos[k]?'has':''}" data-go="${k}" title="${EX.pos[k]?'Soruya git':''}">${k}.</button><div class="bub">${LET.slice(0,EX.opts).split('').map(L=>`<button class="${(keyMode?key:a)===L?'on':''} ${R&&key===L&&a!==L?'key':''}" data-b="${k}" data-l="${L}" aria-label="Soru ${k} ${L}">${L}</button>`).join('')}</div><button class="fl ${EX.flags[k]?'on':''}" data-fl="${k}" title="Sonra bakmak için işaretle">${ic('flag')}</button></div>`}).join('');
+  const notes=allNotes();
+  sh.innerHTML=`<div class="sh-h"><div class="row" style="justify-content:space-between"><b>${keyMode?'Cevap anahtarı':'Cevap kâğıdı'}</b><span class="tag">${keyMode?Object.keys(EX.key).length:n}/${EX.q}</span></div>
+    <div class="sh-tabs"><button class="${TAB==='ans'?'on':''}" data-tab="ans">Cevaplar</button><button class="${TAB==='notes'?'on':''}" data-tab="notes">Notlar (${notes.length})</button><button class="${TAB==='set'?'on':''}" data-tab="set">Ayarlar</button></div></div>
+  <div class="sh-b">${TAB==='ans'?(R?`<div class="res"><b class="big">%${R.pct}</b><span>${R.ok} doğru · ${R.no} yanlış · ${R.empty} boş · ${fmt(R.time)}</span></div>`:'')+(keyMode?'<p class="mut" style="font-size:13px;margin:4px 6px 8px">Her sorunun doğru şıkkını işaretle. Bitince “Anahtarı kaydet”e bas.</p>':'')+rows
+    :TAB==='notes'?(notes.length?notes.map(a=>`<div class="nitem" data-note="${a.n}:${a.id}"><b>Not ${noteNo(a)}</b> <span class="mut">· sayfa ${a.n}</span><div>${esc(a.text||'(boş not)')}</div></div>`).join(''):'<p class="mut" style="padding:8px">Henüz not yok. Araç çubuğundan <b>Not</b> aracını seçip sayfaya dokun.</p>')
+    :`<div style="padding:6px;display:grid;gap:14px"><label><span class="eyebrow">Sınav adı</span><input class="input" id="sTitle" value="${esc(EX.title)}" style="margin-top:6px"></label>
+      <label><span class="eyebrow">Soru sayısı</span><input class="input" id="sQ" type="number" min="1" max="300" value="${EX.q}" style="margin-top:6px"></label><p class="mut" style="margin:-8px 0 0;font-size:12.5px">${EX.detected?'PDF içinde '+EX.q+' soru bulundu.':'Soru numaraları otomatik bulunamadı; sayıyı kendin ayarla.'}</p>
+      <div><span class="eyebrow">Şık sayısı</span><div class="row" style="margin-top:6px"><button class="pill ${EX.opts===4?'on':''}" data-opts="4">A–D</button><button class="pill ${EX.opts===5?'on':''}" data-opts="5">A–E</button></div></div>
+      <label><span class="eyebrow">Süre sınırı (dakika, 0 = sınırsız)</span><input class="input" id="sLim" type="number" min="0" max="600" value="${Math.round((EX.limit||0)/60)}" style="margin-top:6px"></label>
+      <div><span class="eyebrow">Cevap anahtarını yapıştır</span><textarea class="textarea" id="sKey" placeholder="1A 2C 3B … ya da ACBD…" style="min-height:80px;margin-top:6px"></textarea><button class="btn btn-ghost btn-sm" data-a="pastekey" style="margin-top:6px">Anahtarı yükle</button></div>
+      <button class="btn btn-ghost btn-sm" data-a="savecfg">${ic('check')}Ayarları kaydet</button>
+      <button class="btn btn-bad btn-sm" data-a="clearans">${ic('reset')}Cevapları ve sonucu temizle</button></div>`}</div>
+  <div class="sh-f">${keyMode?`<button class="btn btn-p" data-a="keydone">${ic('check')}Anahtarı kaydet</button><button class="btn btn-ghost btn-sm" data-a="keycancel">Vazgeç</button>`:(R?`<button class="btn btn-ghost" data-a="reopen">${ic('reset')}Yeniden çöz</button>`:`<button class="btn btn-p" data-a="finish">${ic('check')}Bitir ve puanla</button><button class="btn btn-ghost btn-sm" data-a="keymode">Cevap anahtarı gir</button>`)}</div>`;
+}
+function drawTimer(){const t=$('#tmr');if(!t||!EX)return;const lim=EX.limit||0,s=lim?lim-EX.elapsed:EX.elapsed;t.lastChild.textContent=(lim?'Kalan ':'')+fmt(s);t.classList.toggle('low',lim>0&&s<300);if(lim&&s<=0&&!EX.result){KA.toast('Süre doldu.');finish(true)}}
+function grade(){const ks=Object.keys(EX.key);let ok=0,no=0,empty=0;for(let k=1;k<=EX.q;k++){if(!EX.key[k])continue;if(!EX.ans[k])empty++;else if(EX.ans[k]===EX.key[k])ok++;else no++}const tot=ks.length;EX.result={ok,no,empty,pct:tot?Math.round(ok/tot*100):0,time:EX.elapsed};save()}
+function finish(force){
+  const n=Object.keys(EX.ans).length;
+  if(!Object.keys(EX.key).length){
+    const m=KA.modal(`<h2 style="margin:0 0 8px">Puanlamak için cevap anahtarı gerekli</h2><p class="mut">${n}/${EX.q} soruyu cevapladın. Cevap anahtarını şimdi girersen sonucunu hemen görürsün. Anahtarı “ACBD…” ya da “1A 2C …” biçiminde yapıştırabilir ya da optik formda tek tek işaretleyebilirsin.</p><textarea class="textarea" id="mk" placeholder="1A 2C 3B 4D … ya da ACBD…"></textarea><div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn btn-ghost" id="mm">Formda işaretle</button><button class="btn btn-p" id="mo">Puanla</button></div>`);
+    m.el.querySelector('#mm').onclick=()=>{m.close();EX.keyMode=1;TAB='ans';drawSheet();openSheet()};
+    m.el.querySelector('#mo').onclick=()=>{if(parseKey(m.el.querySelector('#mk').value)){m.close();grade();drawSheet();openSheet();KA.sfx.win()}else KA.toast('Anahtar okunamadı. Örnek: 1A 2C 3B')};
+    return;
+  }
+  if(!force&&n<EX.q&&!confirm(`${EX.q-n} soru boş. Yine de bitirip puanlansın mı?`))return;
+  grade();drawSheet();openSheet();KA.sfx.win();KA.addXp(Math.round(EX.result.pct/5));
+}
+function parseKey(t){
+  t=String(t||'').toUpperCase();const K={};const L=LET.slice(0,EX.opts);
+  const pairs=[...t.matchAll(/(\d{1,3})\s*[-.):]?\s*([A-E])\b/g)];
+  if(pairs.length>=2)pairs.forEach(m=>{const k=+m[1];if(k>=1&&k<=EX.q&&L.includes(m[2]))K[k]=m[2]});
+  else{const s=t.replace(/[^A-E]/g,'');[...s].slice(0,EX.q).forEach((c,i)=>{if(L.includes(c))K[i+1]=c})}
+  if(!Object.keys(K).length)return false;EX.key=K;save();return true;
+}
+function openSheet(){const s=$('#sheet');if(s)s.classList.add('open')}
+function goQ(k){const p=EX.pos[k];if(!p)return;const pg=PAGES[p.p-1];if(!pg)return;const r=pg.el.getBoundingClientRect();scrollTo({top:scrollY+r.top+p.y*r.height-140,behavior:'smooth'});$('#sheet').classList.remove('open')}
+
+/* ---------- Olaylar ---------- */
+document.addEventListener('click',async e=>{
+  const t=e.target;
+  const op=t.closest('[data-open]');if(op&&!t.closest('[data-del]')){openExam(op.dataset.open);return}
+  const dl=t.closest('[data-del]');if(dl){if(confirm('Bu sınav ve üzerindeki bütün notlar silinsin mi?')){await idb.del(dl.dataset.del);library()}return}
+  const fb=t.closest('[data-fab]');if(fb){if(fb.dataset.fab==='look'){const s=getSelection().toString().trim().split(/\s+/)[0];removeFab();if(s)KA.lookup(s,{context:getSelection().toString()})}else applySel(fb.dataset.fab);return}
+  const tl=t.closest('[data-tool]');if(tl){setTool(tl.dataset.tool);return}
+  const cl=t.closest('[data-color]');if(cl){setColor(cl.dataset.color);if(!['hl','ul','pen'].includes(TOOL))setTool('hl');else if(TOOL==='hl'||TOOL==='ul')applySel(TOOL);return}
+  const b=t.closest('[data-b]');if(b){const k=+b.dataset.b,L=b.dataset.l;if(EX.keyMode){EX.key[k]=EX.key[k]===L?undefined:L;if(!EX.key[k])delete EX.key[k]}else{if(EX.result)return KA.toast('Sınav puanlandı. Değiştirmek için “Yeniden çöz”e bas.');EX.ans[k]=EX.ans[k]===L?undefined:L;if(!EX.ans[k])delete EX.ans[k];KA.sfx.tick()}save();drawSheet();return}
+  const fl=t.closest('[data-fl]');if(fl){const k=fl.dataset.fl;EX.flags[k]=!EX.flags[k];save();drawSheet();return}
+  const go=t.closest('[data-go]');if(go){goQ(+go.dataset.go);return}
+  const tb=t.closest('[data-tab]');if(tb){TAB=tb.dataset.tab;drawSheet();return}
+  const no=t.closest('[data-note]');if(no){const [n,id]=no.dataset.note.split(':');const p=PAGES[+n-1];const a=annos(+n).find(x=>x.id===id);if(p&&a){const r=p.el.getBoundingClientRect();scrollTo({top:scrollY+r.top+a.y/1000*r.width-200,behavior:'smooth'});$('#sheet').classList.remove('open');setTimeout(()=>openNote(+n,id),400)}return}
+  const oc=t.closest('[data-opts]');if(oc){EX.opts=+oc.dataset.opts;save();drawSheet();return}
+  const a=t.closest('[data-a]');if(!a)return;
+  ({lib:library,undo,zin:()=>setZoom(ZOOM*1.15),zout:()=>setZoom(ZOOM/1.15),finish:()=>finish(false),
+    sheet:()=>$('#sheet').classList.toggle('open'),
+    keymode:()=>{EX.keyMode=1;TAB='ans';drawSheet()},keydone:()=>{EX.keyMode=0;save();if(Object.keys(EX.key).length)KA.toast('Cevap anahtarı kaydedildi.');drawSheet()},keycancel:()=>{EX.keyMode=0;drawSheet()},
+    reopen:()=>{EX.result=null;save();drawSheet()},
+    pastekey:()=>{if(parseKey($('#sKey').value)){KA.toast(Object.keys(EX.key).length+' cevaplık anahtar yüklendi.');TAB='ans';drawSheet()}else KA.toast('Anahtar okunamadı. Örnek: 1A 2C 3B')},
+    savecfg:()=>{EX.title=$('#sTitle').value.trim()||EX.title;EX.q=Math.max(1,Math.min(300,+$('#sQ').value||EX.q));EX.limit=Math.max(0,+$('#sLim').value||0)*60;save();drawSheet();const tt=document.querySelector('.ttl');if(tt)tt.textContent=EX.title;KA.toast('Ayarlar kaydedildi.')},
+    clearans:()=>{if(confirm('Bütün cevaplar ve sonuç silinsin mi? Notlar ve vurgular kalır.')){EX.ans={};EX.flags={};EX.result=null;EX.elapsed=0;save();drawSheet()}}
+  }[a.dataset.a]||(()=>{}))();
+});
+document.addEventListener('keydown',e=>{
+  if(!EX||!PAGES.length)return;
+  if(e.target.matches&&e.target.matches('input,textarea,select'))return;
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();undo();return}
+  const m={v:'hl',u:'ul',p:'pen',n:'note',e:'erase',escape:'select',r:'rect'}[e.key.toLowerCase()];if(m&&!e.ctrlKey&&!e.metaKey)setTool(m);
+});
+let rz=null;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if(PAGES.length&&innerWidth<900){const z=ZOOM;fitZoom();if(Math.abs(z-ZOOM)>.02)layout();else ZOOM=z}},300)});
+addEventListener('hashchange',route);
+function route(){const id=location.hash.slice(1);if(id)openExam(id).catch(()=>library());else library()}
+KA.nav('sinav.html');
+if(!('indexedDB' in window)){$('#main').innerHTML='<div class="card" style="padding:30px"><h2>Tarayıcın sınav kaydını desteklemiyor</h2><p class="mut">Güncel bir tarayıcıyla tekrar dene.</p></div>'}else route();
 </script>
 </body>
 </html>
