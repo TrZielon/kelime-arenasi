@@ -33,7 +33,7 @@ img{max-width:100%}
 .ka-nav{position:sticky;top:0;z-index:50;background:var(--nav);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
 .ka-nav-in{max-width:1180px;margin:0 auto;height:62px;padding:0 20px;display:flex;align-items:center;gap:18px}
 .ka-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:Fraunces,Georgia,serif;font-weight:800;font-size:19px;letter-spacing:-.02em;white-space:nowrap}
-.ka-brand img{width:34px;height:34px;display:block;border-radius:10px}
+.ka-brand img{width:38px;height:38px;display:block;border-radius:11px;box-shadow:0 4px 12px -4px rgba(11,90,85,.55)}
 .ka-links{display:flex;gap:4px;margin-left:8px}
 .ka-links a{display:flex;align-items:center;gap:7px;padding:8px 13px;border-radius:11px;text-decoration:none;color:var(--ink2);font-weight:700;font-size:14px;transition:background .15s,color .15s}
 .ka-links a:hover{background:var(--soft);color:var(--ink)}

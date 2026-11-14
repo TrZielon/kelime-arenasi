@@ -9,7 +9,7 @@
   ],
   "headers": [
     { "source": "/lib/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] },
-    { "source": "/(.*)\\.(svg|png|webmanifest)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }] },
+    { "source": "/(.*)\\.(svg|png|ico|webmanifest)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }] },
     { "source": "/(ortak\\.css|ortak\\.js)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400" }] }
   ]
 }

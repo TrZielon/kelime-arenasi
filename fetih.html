@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Arena Fethi · Kelime Arenası</title>
-<meta name="description" content="Kelimelerinle toprak kazan, rakip başkentleri kuşat: Kelime Arenası'nın strateji ve bilgi oyunu.">
+<meta name="description" content="Kelimelerinle Akdeniz'i fethet: her maçta yeni harita, jokerler, düellolar ve başkent kuşatmaları.">
 <meta name="theme-color" content="#0f766e">
+<link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-96.png" type="image/png" sizes="96x96">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
@@ -14,102 +16,223 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="ortak.css">
 <style>
-:root{--c0:#0f766e;--c1:#b42318;--c2:#c27a0e}
-[data-mode="dark"]{--c0:#2dd4bf;--c1:#f2675a;--c2:#fbbf24}
+:root{--c0:#0f766e;--c1:#c0392b;--c2:#c98a0b;--sand:#efe2c0;--sand-ink:#5b4a22;--sea1:#cdebe7;--sea2:#94cfc8;--coast:#8a7442;--bord:rgba(70,52,18,.38);--gold:#f59e0b}
+[data-mode="dark"]{--c0:#1fb8a4;--c1:#e5574a;--c2:#e9a92c;--sand:#4a5541;--sand-ink:#d6dccf;--sea1:#0d302e;--sea2:#071d1c;--coast:#0b1716;--bord:rgba(0,0,0,.5)}
+.wrapx{max-width:1240px}
 /* ---------- Kurulum ---------- */
-.setup{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;align-items:stretch}
-.intro{padding:32px;display:flex;flex-direction:column;background:linear-gradient(160deg,var(--card),var(--card2))}
-.intro h1{font-size:clamp(32px,4.4vw,46px);margin:8px 0 12px}
-.intro p{color:var(--ink2);margin:0 0 18px;font-size:15.5px}
-.how{display:grid;gap:12px;margin:6px 0 0;padding:0;list-style:none}
-.how li{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start}
-.how b{display:block}
-.how span{color:var(--mut);font-size:14px}
-.how i{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:var(--p-soft);color:var(--p);font-style:normal;font-weight:800;font-family:Fraunces,serif}
-.cfg{padding:26px;display:flex;flex-direction:column;gap:18px}
-.cfg h3{margin:0 0 8px;font-size:15px;font-family:"Plus Jakarta Sans",sans-serif;font-weight:800}
+.setup{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.9fr);gap:18px;align-items:stretch}
+.hero{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.hero-map{position:relative;background:var(--sea2);aspect-ratio:608/335;overflow:hidden}
+.hero-map svg{display:block;width:100%;height:100%}
+.hero-map:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,color-mix(in srgb,var(--card) 92%,transparent) 100%);pointer-events:none}
+.hero-txt{padding:0 28px;margin-top:-64px;position:relative;z-index:2}
+.hero-txt h1{font-size:clamp(34px,5vw,52px);margin:4px 0 8px}
+.hero-txt p{margin:0;color:var(--ink2);max-width:560px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:20px 28px 0}
+.steps div{background:var(--soft);border-radius:14px;padding:12px;font-size:13px;color:var(--ink2);line-height:1.4}
+.steps b{display:flex;align-items:center;gap:6px;color:var(--ink);font-size:13.5px;margin-bottom:3px}
+.steps b svg{width:16px;height:16px;color:var(--p)}
+.rankcard{display:flex;align-items:center;gap:14px;margin:20px 28px 26px;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--card2)}
+.rankcard .emb{width:46px;height:52px;flex:0 0 46px}
+.rankcard .rk{flex:1;min-width:0}
+.rankcard .rk b{font-size:17px;display:block}
+.rankcard .rk .eyebrow{display:block}
+.xpbar{height:8px;border-radius:9px;background:var(--soft);overflow:hidden;margin:6px 0 4px}
+.xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#fbbf24);border-radius:9px}
+.recs{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--mut)}
+.recs b{color:var(--ink);font-size:15px}
+.cfg{padding:24px;display:flex;flex-direction:column;gap:18px}
+.cfg h3{font-family:inherit;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:0 0 8px}
 .opts3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.choice{text-align:left;padding:12px 13px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);display:flex;flex-direction:column;gap:2px;min-height:76px}
-.choice b{font-size:14px}
-.choice span{font-size:12px;color:var(--mut);line-height:1.35}
+.choice{text-align:left;padding:12px 13px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);display:flex;flex-direction:column;gap:3px;transition:border-color .15s,background .15s,transform .1s}
+.choice:hover{border-color:var(--line2)}
+.choice:active{transform:scale(.98)}
+.choice b{font-size:14.5px;display:flex;align-items:center;gap:6px}
+.choice b svg{width:16px;height:16px}
+.choice span{font-size:12.5px;color:var(--mut);line-height:1.35}
 .choice.on{border-color:var(--p);background:var(--p-soft)}
-.rivals{display:flex;gap:10px;flex-wrap:wrap}
-.rv{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px}
-.rv i{width:14px;height:14px;border-radius:5px;display:block}
-.recs{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--mut);font-weight:700}
-.recs b{color:var(--ink);font-size:16px}
+.startbtn{margin-top:auto;min-height:60px;font-size:18px;border-radius:18px;background:linear-gradient(135deg,var(--p),color-mix(in srgb,var(--p) 70%,#000));box-shadow:0 10px 24px -10px color-mix(in srgb,var(--p) 80%,transparent)}
 /* ---------- Oyun ---------- */
-.game{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(330px,.9fr);gap:18px;align-items:start}
-.players{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
-.pl{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:var(--card);border:1.5px solid var(--line);position:relative;transition:border-color .2s,transform .2s}
-.pl.turn{border-color:var(--pc);box-shadow:0 0 0 3px color-mix(in srgb,var(--pc) 22%,transparent)}
-.pl.out{opacity:.45}
-.pl .av{width:36px;height:36px;border-radius:12px;background:var(--pc);display:grid;place-items:center;color:#fff;flex:0 0 36px}
-[data-mode="dark"] .pl .av{color:#061312}
-.pl .av svg{width:20px;height:20px}
-.pl .nm{font-weight:800;font-size:13.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pl .sc{font-family:Fraunces,serif;font-weight:800;font-size:20px;line-height:1}
-.pl .tw{display:flex;gap:2px;margin-top:3px}
-.pl .tw b{width:9px;height:9px;border-radius:2px;background:var(--pc)}
-.pl .tw b.off{background:var(--line2)}
-.pl .ans{position:absolute;right:8px;top:8px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800}
-.pl .ans.ok{background:var(--ok);color:#fff}.pl .ans.no{background:var(--bad);color:#fff}.pl .ans.wait{background:var(--soft);color:var(--mut)}
-.mapbox{position:relative;padding:14px;background:radial-gradient(120% 90% at 50% 0%,var(--card2),var(--card))}
-.phase{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
-.phase b{font-size:15px}
-.map{width:100%;height:auto;display:block;touch-action:manipulation}
-.hex polygon{stroke:var(--bg);stroke-width:3;transition:fill .35s}
-.hex .base{fill:var(--card2);stroke:var(--line2);stroke-width:1.5}
-.hex text{font:800 11px "Plus Jakarta Sans",sans-serif;fill:var(--mut);pointer-events:none;text-anchor:middle}
-.hex.own text{fill:#fff}
-[data-mode="dark"] .hex.own text{fill:#04201d}
-.hex .cast{pointer-events:none}
-.hex.sel{cursor:pointer}
-.hex.sel polygon.f{stroke:var(--acc);stroke-width:4;stroke-dasharray:7 5;animation:march .9s linear infinite}
-.hex.sel:hover polygon.f{filter:brightness(1.08)}
-.hex.hit polygon.f{animation:hitp .6s ease 2}
-.hex.cap polygon.f{animation:capp .7s ease}
-@keyframes march{to{stroke-dashoffset:-24}}
-@keyframes hitp{50%{stroke:var(--bad);stroke-width:7}}
-@keyframes capp{0%{transform:scale(.85)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
-.hex polygon.f{transform-box:fill-box;transform-origin:center}
-.log{margin-top:8px;font-size:13px;color:var(--ink2);min-height:22px;font-weight:600;text-align:center}
-.panel{padding:20px;position:sticky;top:78px}
-.timer{height:8px;border-radius:99px;background:var(--soft);overflow:hidden;margin:10px 0 14px}
-.timer i{display:block;height:100%;background:var(--p);border-radius:99px;transform-origin:left;transition:transform .1s linear}
-.timer.low i{background:var(--bad)}
-.qtype{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
-.qtext{font-family:Fraunces,serif;font-size:clamp(24px,3vw,32px);font-weight:800;margin:6px 0 2px;word-break:break-word;line-height:1.2}
-.qtext.s{font-size:19px;font-weight:600;line-height:1.55}
-.ops{display:grid;gap:8px;margin-top:12px}
-.ops button{display:flex;align-items:center;gap:10px;text-align:left;padding:12px 14px;min-height:52px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);font-weight:700;box-shadow:0 2px 0 var(--line)}
-.ops button:hover:not(:disabled){border-color:var(--p)}
-.ops kbd{flex:0 0 26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--soft);font:800 12px "Plus Jakarta Sans",sans-serif;color:var(--mut)}
-.ops button.ok{border-color:var(--ok);background:var(--ok-soft)}
-.ops button.no{border-color:var(--bad);background:var(--bad-soft)}
-.ops button:disabled{cursor:default}
-.res{margin-top:14px;display:grid;gap:6px}
-.res div{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;background:var(--soft);font-size:13.5px;font-weight:700}
-.res i{width:10px;height:10px;border-radius:3px;display:block}
-.res .r{margin-left:auto;color:var(--mut);font-weight:700}
-.banner{padding:14px 16px;border-radius:14px;background:var(--p-soft);font-weight:700;font-size:14.5px;margin-top:4px}
-.banner.acc{background:var(--acc-soft)}
-.vs{display:flex;align-items:center;justify-content:center;gap:12px;margin:6px 0 12px;font-weight:800}
-.vs span{display:flex;align-items:center;gap:6px}
-.vs i{width:12px;height:12px;border-radius:4px;display:block}
-.end{text-align:center;padding:34px 24px}
-.end h1{font-size:clamp(30px,4vw,42px);margin:10px 0 6px}
-.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:520px;margin:22px auto;align-items:end}
-.podium div{border-radius:16px 16px 6px 6px;padding:14px 8px;color:#fff;font-weight:800;min-height:fit-content;display:flex;flex-direction:column;justify-content:flex-start;box-sizing:border-box}
-[data-mode="dark"] .podium div{color:#061312}
-.podium b{display:block;font-family:Fraunces,serif;font-size:24px}
-.missed{max-width:560px;margin:10px auto 0;text-align:left}
-.missed div{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
-.conf{position:fixed;inset:0;pointer-events:none;z-index:80;overflow:hidden}
-.conf i{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;animation:fall 2.6s linear forwards}
+body.ingame .ka-tabbar{display:none}
+.game{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:16px;align-items:start}
+.pls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.pl{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:16px;background:var(--card);border:1.5px solid var(--line);position:relative;transition:border-color .2s,box-shadow .2s,opacity .3s;min-width:0}
+.pl .emb{width:34px;height:39px;flex:0 0 34px}
+.pl .pi{min-width:0;flex:1;display:flex;flex-direction:column;line-height:1.15}
+.pl .nm{font-size:12.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl .sc{font-family:Fraunces,serif;font-size:21px;font-variant-numeric:tabular-nums}
+.pl .st{font-size:11.5px;color:var(--mut);display:flex;gap:6px;align-items:center;white-space:nowrap}
+.pl .tw{display:inline-flex;gap:2px}.pl .tw i{width:6px;height:8px;border-radius:1.5px;background:currentColor}.pl .tw i.off{opacity:.2}
+.pl.turn{border-color:currentColor;box-shadow:0 0 0 3px color-mix(in srgb,currentColor 18%,transparent)}
+.pl.dead{opacity:.45;filter:grayscale(.8)}
+.pl .ans{position:absolute;top:-7px;right:-7px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:900;color:#fff;transform:scale(0);transition:transform .2s}
+.pl .ans.wait{transform:scale(1);background:var(--line2);animation:pulse 1s infinite}
+.pl .ans.lock{transform:scale(1);background:var(--ink2)}
+.pl .ans.ok{transform:scale(1);background:var(--ok)}
+.pl .ans.no{transform:scale(1);background:var(--bad)}
+.pl .fl{color:var(--gold);font-weight:800;font-size:11.5px;display:none}
+.pl .fl.on{display:inline-flex;align-items:center}
+@keyframes pulse{50%{opacity:.45}}
+.board{padding:0;overflow:hidden;position:relative}
+.bhead{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px 10px 16px;border-bottom:1px solid var(--line)}
+.bhead .eyebrow{display:block;margin:0}
+.bhead b{font-size:15px}
+.joks{display:flex;gap:6px}
+.jk{display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);font-weight:800;font-size:12.5px;color:var(--ink2)}
+.jk svg{width:15px;height:15px}
+.jk i{font-style:normal;min-width:16px;height:16px;border-radius:8px;background:var(--soft);display:grid;place-items:center;font-size:11px}
+.jk.use{border-color:var(--gold);color:var(--acc2);background:var(--acc-soft)}
+.jk:disabled{opacity:.4;cursor:default}
+.mapw{position:relative;background:var(--sea2)}
+.mapw svg{display:block;width:100%;height:auto;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.rg{color:var(--sand);transition:color .45s}
+.rg polygon{fill:currentColor;stroke:currentColor;stroke-width:.7}
+.rg.o0{color:var(--c0)}.rg.o1{color:var(--c1)}.rg.o2{color:var(--c2)}
+.rg.sel{cursor:pointer}
+.rg.sel:hover{filter:brightness(1.15) saturate(1.1)}
+.rg.dim{filter:saturate(.55) brightness(.92)}
+.bd{fill:none;stroke:var(--bord);stroke-width:1.1;stroke-linecap:round}
+.cs{fill:none;stroke:var(--coast);stroke-width:2.2;stroke-linecap:round}
+.shal{fill:none;stroke:#fff;stroke-opacity:.35;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+[data-mode="dark"] .shal{stroke-opacity:.07}
+.wvp{stroke-opacity:.22}[data-mode="dark"] .wvp{stroke-opacity:.05}
+.hlp{fill:none;stroke:#fff;stroke-width:2.6;stroke-dasharray:5 4;animation:dash 1s linear infinite;pointer-events:none;stroke-linecap:round}
+.hlp.tg{stroke:#fde047}
+@keyframes dash{to{stroke-dashoffset:-18}}
+.lb{pointer-events:none;font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;text-anchor:middle;paint-order:stroke;stroke-linejoin:round}
+.lbn{font-size:8.6px;fill:var(--sand-ink);stroke:var(--sand);stroke-width:2.6;letter-spacing:.02em}
+.lbn.own{fill:#fff;stroke:rgba(0,0,0,.35)}
+.lbv{font-size:11px;fill:#fff;stroke:rgba(0,0,0,.45);stroke-width:3}
+.cap{pointer-events:none}
+.float{font:900 15px "Plus Jakarta Sans",sans-serif;text-anchor:middle;paint-order:stroke;stroke:rgba(0,0,0,.55);stroke-width:3.5;fill:#fff;animation:fup 1.5s ease-out forwards;pointer-events:none}
+.float.g{fill:#fde047}.float.r{fill:#fecaca}
+@keyframes fup{0%{opacity:0;transform:translateY(6px)}15%{opacity:1}100%{opacity:0;transform:translateY(-30px)}}
+.ring{fill:none;stroke-width:3;animation:ring .9s ease-out forwards;pointer-events:none}
+@keyframes ring{from{opacity:.9;r:4}to{opacity:0;r:46}}
+.arrow{fill:none;stroke-width:4.5;stroke-linecap:round;stroke-dasharray:10 7;animation:dash .6s linear infinite;pointer-events:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+.shake{animation:shake .45s}
+@keyframes shake{20%{transform:translate(-5px,2px)}40%{transform:translate(5px,-2px)}60%{transform:translate(-3px,1px)}80%{transform:translate(3px,0)}}
+.banner{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);opacity:0;pointer-events:none;text-align:center;padding:16px 30px;border-radius:20px;background:color-mix(in srgb,var(--ink) 86%,transparent);color:#fff;box-shadow:0 20px 50px -10px rgba(0,0,0,.5);transition:opacity .25s,transform .25s;z-index:5;min-width:240px}
+[data-mode="dark"] .banner{background:rgba(2,12,11,.88)}
+.banner.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.banner b{display:block;font-family:Fraunces,serif;font-size:clamp(24px,3.4vw,34px);letter-spacing:.01em}
+.banner span{font-size:14px;opacity:.85}
+.logline{padding:9px 16px;font-size:13.5px;color:var(--ink2);border-top:1px solid var(--line);min-height:40px;display:flex;align-items:center;gap:8px}
+.logline svg{width:16px;height:16px;color:var(--p);flex:0 0 16px}
+/* ---------- Panel ---------- */
+.panel{position:sticky;top:76px;padding:16px;min-height:300px}
+.qh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.qtag{font-size:12.5px;font-weight:800;padding:6px 10px;border-radius:10px;background:var(--p-soft);color:var(--p);line-height:1.3}
+.qtag.duel{background:var(--bad-soft);color:var(--bad)}
+.qtag.spec{background:var(--acc-soft);color:var(--acc2)}
+.tmr{position:relative;width:44px;height:44px;flex:0 0 44px}
+.tmr svg{width:44px;height:44px;transform:rotate(-90deg)}
+.tmr circle{fill:none;stroke-width:3.5}
+.tmr .tb{stroke:var(--soft)}.tmr .tf{stroke:var(--p);stroke-linecap:round;stroke-dasharray:100.5}
+.tmr.low .tf{stroke:var(--bad)}
+.tmr b{position:absolute;inset:0;display:grid;place-items:center;font-size:14px;font-variant-numeric:tabular-nums}
+.vs{display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:10px;border-radius:14px;background:var(--soft)}
+.vs .side{flex:1;display:flex;align-items:center;gap:8px;min-width:0;font-weight:800;font-size:13px}
+.vs .side:last-child{justify-content:flex-end;text-align:right}
+.vs .side span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vs .emb{width:26px;height:30px;flex:0 0 26px}
+.vs .x{font-family:Fraunces,serif;font-weight:800;color:var(--bad);font-size:15px}
+.qt{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.qw{font-family:Fraunces,serif;font-size:clamp(26px,3vw,34px);font-weight:800;margin:2px 0 6px;line-height:1.15;word-break:break-word}
+.qs{font-size:16.5px;line-height:1.5;margin:6px 0 8px;font-weight:600}
+.qs .blank{display:inline-block;min-width:64px;border-bottom:2.5px solid var(--p);margin:0 2px}
+.lis{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:74px;border-radius:16px;border:2px dashed var(--line2);background:var(--card2);font-weight:800;font-size:16px;margin:8px 0}
+.lis svg{width:26px;height:26px;color:var(--p)}
+.qo{display:grid;gap:8px;margin-top:10px}
+.qo button{display:flex;align-items:center;gap:10px;text-align:left;padding:11px 12px;min-height:50px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);font-weight:700;box-shadow:0 2px 0 var(--line);transition:transform .08s,border-color .15s,background .15s}
+.qo button:hover:not(:disabled){border-color:var(--p)}
+.qo button:active:not(:disabled){transform:translateY(2px);box-shadow:none}
+.qo kbd{flex:0 0 24px;height:24px;border-radius:7px;background:var(--soft);display:grid;place-items:center;font:800 12px "Plus Jakarta Sans",sans-serif;color:var(--mut)}
+.qo button.pick{border-color:var(--p);background:var(--p-soft)}
+.qo button.ok{border-color:var(--ok);background:var(--ok-soft)}
+.qo button.ok kbd{background:var(--ok);color:#fff}
+.qo button.no{border-color:var(--bad);background:var(--bad-soft)}
+.qo button.no kbd{background:var(--bad);color:#fff}
+.qo button.gone{opacity:.25;pointer-events:none}
+.qo button:disabled{cursor:default}
+.qtype{display:flex;gap:8px;margin-top:12px}
+.qtype input{flex:1;min-width:0;font-size:18px;font-weight:700}
+.qtype input.ok{border-color:var(--ok);background:var(--ok-soft)}.qtype input.no{border-color:var(--bad);background:var(--bad-soft)}
+.qj{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.qps{display:grid;gap:6px;margin-top:12px}
+.qp{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;padding:7px 10px;border-radius:11px;background:var(--soft)}
+.qp i{width:10px;height:10px;border-radius:3px;flex:0 0 10px}
+.qp .r{margin-left:auto;color:var(--mut);font-weight:700;font-variant-numeric:tabular-nums}
+.qp .g{color:var(--ok)}.qp .b{color:var(--bad)}
+.learn{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--acc-soft);font-size:14px;line-height:1.45}
+.learn b{font-size:15px}
+.learn .ex{margin-top:6px;color:var(--ink2);font-style:italic}
+.learn .row{gap:6px;margin-top:8px}
+.nextb{width:100%;margin-top:12px;position:relative;overflow:hidden}
+.nextb i{position:absolute;left:0;bottom:0;height:3px;background:currentColor;opacity:.5;animation:fill linear forwards}
+@keyframes fill{from{width:0}to{width:100%}}
+.idle h3{margin:0 0 6px;font-size:20px}
+.idle p{margin:0 0 12px;color:var(--ink2)}
+.feed{display:grid;gap:6px;margin-top:10px}
+.feed div{font-size:13px;color:var(--ink2);padding:7px 10px;border-radius:10px;background:var(--soft);display:flex;gap:8px;align-items:flex-start}
+.feed i{width:8px;height:8px;border-radius:2px;flex:0 0 8px;margin-top:5px}
+.dblbtn{width:100%;margin-top:4px}
+/* ---------- Bitiş ---------- */
+.end{padding:32px 24px;text-align:center;max-width:820px;margin:0 auto}
+.end h1{font-size:clamp(30px,4.5vw,44px);margin:8px 0 6px}
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:520px;margin:22px auto 18px;align-items:end}
+.podium div{border-radius:16px 16px 6px 6px;padding:12px 8px;color:#fff;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:4px}
+.podium .emb{width:34px;height:39px}
+.podium b{font-family:Fraunces,serif;font-size:24px}
+.podium small{font-size:12px;opacity:.9}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:8px 0 18px}
+.tiles div{padding:12px;border-radius:14px;background:var(--soft)}
+.tiles b{display:block;font-family:Fraunces,serif;font-size:24px}
+.tiles span{font-size:12.5px;color:var(--mut)}
+.medals{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:6px 0 18px}
+.medal{display:flex;align-items:center;gap:8px;padding:8px 12px 8px 8px;border-radius:999px;background:var(--acc-soft);font-weight:800;font-size:13px;animation:pop .4s backwards}
+.medal i{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#fde68a,#f59e0b);display:grid;place-items:center;color:#5a3500}
+.medal i svg{width:16px;height:16px}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+.missed{text-align:left;max-width:560px;margin:18px auto 0}
+.missed>div{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.missed .grow{flex:1}
+.conf{position:fixed;inset:0;pointer-events:none;z-index:90;overflow:hidden}
+.conf i{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;animation:fall 3s ease-in forwards}
 @keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
-@media (max-width:980px){.game{grid-template-columns:1fr}.panel{position:static}.setup{grid-template-columns:1fr}}
-@media (max-width:560px){#map svg{max-height:38vh}.mapbox .log{font-size:12.5px}.pl .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62px}.players{gap:6px}.pl{padding:8px;gap:7px}.pl .av{width:28px;height:28px;flex-basis:28px;border-radius:9px}.pl .nm{font-size:12px}.pl .sc{font-size:16px}.opts3{grid-template-columns:1fr}.choice{min-height:0}.intro,.cfg{padding:20px}}
+@media (max-width:1060px){.game{grid-template-columns:minmax(0,1fr) 320px}.steps{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:900px){
+  .setup{grid-template-columns:1fr}
+  .game{grid-template-columns:1fr}
+  .panel{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:65;border-radius:22px 22px 0 0;max-height:64vh;overflow:auto;min-height:0;padding:14px 16px calc(14px + env(safe-area-inset-bottom));box-shadow:0 -12px 34px -12px rgba(0,0,0,.35)}
+  .panel .idle p,.panel .feed{display:none}
+  .panel .idle h3{font-size:16px;margin:0}
+  body.ingame .ka-wrap{padding-bottom:140px}
+  .qo{grid-template-columns:1fr 1fr}
+  .qo button{min-height:54px;padding:9px 10px;font-size:14px}
+  .qo kbd{display:none}
+  .lbn{display:none}
+  .lbv{font-size:15px}
+  .tiles{grid-template-columns:repeat(2,1fr)}
+  .panel{max-height:58vh;padding-top:12px}
+  .qps{display:none}
+  .qh{margin-bottom:4px}.vs{padding:6px 8px;margin-bottom:8px}
+  .qw{font-size:26px;margin:0 0 2px}.qs{font-size:15px;margin:4px 0}
+  .lis{min-height:50px;margin:6px 0}
+  .qo{margin-top:6px;gap:6px}.qj{margin-top:8px}
+  .learn{margin-top:8px;padding:9px 12px;font-size:13.5px}
+  .nextb{margin-top:8px}
+  .pls{margin-bottom:8px}
+  .bhead>div:first-child{min-width:0}
+  #rd{display:block;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+@media (max-width:560px){
+  .pls{gap:6px}.pl{padding:7px 8px;gap:6px}.pl .emb{width:24px;height:28px;flex-basis:24px}.pl .sc{font-size:17px}.pl .st{font-size:10.5px}.pl .nm{font-size:11.5px}
+  .opts3{grid-template-columns:1fr}.choice{flex-direction:row;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .steps{display:none}.hero-txt{padding:0 18px;margin-top:-44px}.hero-txt p{font-size:14.5px}.rankcard{margin:16px 18px 20px}.cfg{padding:18px}
+  .bhead{padding:8px 10px}.jk span{display:none}#jk{display:none}
+  .vs .side span{font-size:12px}
+}
 </style>
 </head>
 <body>
@@ -120,245 +243,395 @@
 'use strict';
 const {$,esc,forms}=KA;const ic=KA.ic;
 const SAMPLE=`rule - Yönetmek, hükmetmek|ally - Müttefik|alliance - İttifak|boundary - Sınır|rationale - Gerekçe|hinder - Engellemek|hesitate - Tereddüt etmek|prevail - Galip gelmek, yaygın olmak|prevalent - Yaygın|fallacy - Yanlış inanç|assume - Varsaymak|assumption - Varsayım|rival - Rakip|treaty - Antlaşma|legitimacy - Meşruluk|dynasty - Hanedan|successor - Varis|expand - Genişlemek|overt - Açık, aleni|covert - Gizli, örtülü|retain - Elinde tutmak|trace - İz|vulnerable - Savunmasız|remark - Söz, yorum|instant - Anında|extract - Çıkarmak|fraction - Küçük parça|fabricate - Uydurmak, sahtesini yapmak|worrisome - Endişe verici|deceive - Kandırmak|tangible - Somut|invasion - İşgal|reveal - Ortaya çıkarmak|consent - Rıza, izin|surveillance - Gözetim|harvest - Hasat|retail - Perakende|leftover - Artık|expire - Süresi dolmak|fertilizer - Gübre|quantity - Miktar|trivial - Önemsiz|annual - Yıllık|discard - Atmak|equivalent - Eşdeğer|finite - Sınırlı|impeccable - Kusursuz|evaluate - Değerlendirmek|dispute - Anlaşmazlık|compensate - Telafi etmek|yield - Verim|unprecedented - Eşi benzeri görülmemiş|urgency - Aciliyet|allocate - Tahsis etmek|shrink - Küçülmek`;
-const NAMES=['Anlam Vadisi','Kök Ormanı','Sözlük Tepesi','Eşanlam Burnu','Hece Ovası','Ek Limanı','Bağlam Gölü','Cümle Köprüsü','Akademi Sırtı','Deyim Çarşısı','Telaffuz Geçidi','Okuma Burcu','Paragraf Kıyısı','Lügat Kalesi','Yazım Adası'];
-const DIFF={easy:{n:'Çaylak',d:'Rakipler yavaş ve sık yanılır',acc:.55,t:[4.5,11],lim:15},mid:{n:'Gladyatör',d:'Dengeli bir meydan okuma',acc:.72,t:[3,8.5],lim:12},hard:{n:'Cihan Fatihi',d:'Hızlı ve isabetli rakipler',acc:.87,t:[2,6.5],lim:11}};
-const MODES={classic:{n:'Klasik Fetih',d:'Haritayı paylaş, sonra 3 tur kuşatma · ~7 dk',war:3},quick:{n:'Hızlı Maç',d:'Haritayı paylaş, 1 tur kuşatma · ~3 dk',war:1},daily:{n:'Günün Fethi',d:'Herkes için aynı kelimeler, en iyi skorun kaydedilir',war:2}};
+const PLACES=['Truva','Efes','Rodos','Girit','Kıbrıs','Atina','Sparta','Korint','Delfi','Milet','Bergama','Halikarnas','Knidos','Sardes','Side','Kartaca','Sicilya','Napoli','Midilli','Sakız','Likya','Patara','Olimpos','Perge','Myra','Teos','Smyrna','Pamfilya','Kapadokya','Fokaia'];
+const DIFF={easy:{n:'Çaylak',d:'Rakipler yavaş ve sık yanılır',acc:.55,t:[4.5,10.5],lim:15},mid:{n:'Gladyatör',d:'Dengeli bir meydan okuma',acc:.72,t:[3,8.5],lim:12},hard:{n:'Cihan Fatihi',d:'Hızlı ve isabetli rakipler',acc:.86,t:[2,6.5],lim:11}};
+const MODES={classic:{n:'Klasik Fetih',d:'Yayılma + 3 savaş turu · ~7 dk',war:3,ic:'sword'},quick:{n:'Hızlı Maç',d:'Yayılma + 1 savaş turu · ~3 dk',war:1,ic:'flame'},daily:{n:'Günün Fethi',d:'Herkese aynı harita ve kelimeler',war:2,ic:'star'}};
+const RANKS=[[0,'Er'],[120,'Onbaşı'],[320,'Çavuş'],[650,'Yüzbaşı'],[1100,'Binbaşı'],[1700,'Albay'],[2500,'Komutan'],[3600,'Paşa'],[5000,'Fatih']];
+const JOK={yari:{n:'Yarı yarıya',ic:'half'},kalkan:{n:'Kalkan',ic:'shield'},cift:{n:'Çift saldırı',ic:'sword'}};
 const CFG=Object.assign({mode:'classic',diff:'mid',pack:''},KA.store.get('ka_fetih_cfg',{}));if(!MODES[CFG.mode])CFG.mode='classic';if(!DIFF[CFG.diff])CFG.diff='mid';
-const REC=Object.assign({games:0,wins:0,best:0,daily:{}},KA.store.get('ka_fetih',{}));
+const REC=Object.assign({games:0,wins:0,best:0,xp:0,streak:0,daily:{}},KA.store.get('ka_fetih',{}));
+const PL=[{n:'Sen',ic:'star'},{n:'Kızıl Lejyon',ic:'sword',agg:.7},{n:'Altın Muhafız',ic:'crown',agg:.45}];
+const ICP={star:'M12 4.5l2.3 4.8 5.2.6-3.9 3.5 1.1 5.1L12 16l-4.7 2.5 1.1-5.1L4.5 9.9l5.2-.6z',sword:'M6 18l9-9m0 0l2-5 1 1-5 2m-7 9l-2 2m3-1l-3-3',crown:'M5 16h14l1-8-4 3-4-6-4 6-4-3z',half:'M12 4a8 8 0 1 0 0 16z',shield:'M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'};
+const svgI=(n,c)=>`<svg viewBox="0 0 24 24" fill="${n==='half'?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${c?` class="${c}"`:''}><path d="${ICP[n]}"/>${n==='half'?'<circle cx="12" cy="12" r="8" fill="none"/>':''}</svg>`;
+const col=i=>`var(--c${i})`;
+const emblem=(i,w)=>`<svg class="emb" viewBox="0 0 40 46" aria-hidden="true"><path d="M20 2l17 6v13c0 11-7.5 19-17 23C10.5 40 3 32 3 21V8z" fill="${w?'rgba(255,255,255,.22)':col(i)}" ${w?'stroke="#fff" stroke-width="2"':''}/><path d="M20 2l17 6v13c0 11-7.5 19-17 23z" fill="#000" opacity=".12"/><g transform="translate(8 9)" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="${ICP[PL[i].ic]}" ${PL[i].ic==='star'||PL[i].ic==='crown'?'fill="#fff"':''}/></g></svg>`;
 
-/* ---------- Rastgelelik (Günün Fethi'nde herkes için aynı) ---------- */
+/* ---------- Rastgelelik ---------- */
 let rnd=Math.random;
 const seeded=s=>{let a=s>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}};
-const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=rnd()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const shuf=(a,R)=>{R=R||rnd;a=[...a];for(let i=a.length-1;i>0;i--){const j=R()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const daySeed=()=>[...today()].reduce((a,c)=>a*31+c.charCodeAt(0)|0,7);
+const rankOf=xp=>{let i=0;RANKS.forEach((r,k)=>{if(xp>=r[0])i=k});return {i,n:RANKS[i][1],lo:RANKS[i][0],hi:(RANKS[i+1]||[RANKS[i][0]+2000])[0],next:(RANKS[i+1]||[0,'—'])[1]}};
 
-/* ---------- Harita: 15 altıgen ---------- */
-const R=46,W=Math.sqrt(3)*R;
-const CELLS=[[1,0],[2,0],[3,0],[0,1],[1,1],[2,1],[3,1],[0,2],[1,2],[2,2],[3,2],[4,2],[1,3],[2,3],[3,3]];
-const HEX=CELLS.map(([c,r],i)=>({i,c,r,x:W*(c+.5*(r&1))+W/2+8,y:R*1.5*r+R+8,name:NAMES[i]}));
-HEX.forEach(h=>{const odd=h.r&1,D=odd?[[1,0],[-1,0],[1,-1],[0,-1],[1,1],[0,1]]:[[1,0],[-1,0],[0,-1],[-1,-1],[0,1],[-1,1]];h.nb=D.map(([dc,dr])=>HEX.findIndex(o=>o.c===h.c+dc&&o.r===h.r+dr)).filter(i=>i>=0)});
-const VW=Math.max(...HEX.map(h=>h.x))+W/2+8,VH=Math.max(...HEX.map(h=>h.y))+R+8;
-const CAPS=[12,1,11];
-const poly=(x,y,s)=>Array.from({length:6},(_,k)=>{const a=Math.PI/180*(60*k-30);return (x+s*Math.cos(a)).toFixed(1)+','+(y+s*Math.sin(a)).toFixed(1)}).join(' ');
+/* ---------- Harita üretici: her maçta yeni Akdeniz ---------- */
+const S=13,SQ=Math.sqrt(3),COLS=25,ROWS=15,PAD=17,NREG=18;
+const MW=PAD*2+SQ*S*(COLS+.5),MH=PAD*2+2*S+1.5*S*(ROWS-1);
+const DIRS=[[[1,0],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1]],[[1,0],[1,1],[0,1],[-1,0],[0,-1],[1,-1]]];
+const corner=(t,k)=>{const a=Math.PI/180*(60*k-30);return [t.x+S*Math.cos(a),t.y+S*Math.sin(a)]};
+const f1=n=>Math.round(n*10)/10;
+function genMap(R){
+  for(let tries=0;tries<60;tries++){
+    const NG=5,g1=Array.from({length:(NG+1)**2},R),g2=Array.from({length:(2*NG+1)**2},R);
+    const sm=t=>t*t*(3-2*t);
+    const nz=(g,N,u,v)=>{u*=N;v*=N;const i=Math.min(N-1,u|0),j=Math.min(N-1,v|0),fu=sm(u-i),fv=sm(v-j),G=(a,b)=>g[b*(N+1)+a];const a=G(i,j)+(G(i+1,j)-G(i,j))*fu,b=G(i,j+1)+(G(i+1,j+1)-G(i,j+1))*fu;return a+(b-a)*fv};
+    const T=[],grid=[];
+    for(let r=0;r<ROWS;r++){grid[r]=[];for(let c=0;c<COLS;c++){
+      const x=PAD+SQ*S*(c+.5+.5*(r&1)),y=PAD+S+1.5*S*r,u=x/MW,v=y/MH;
+      const d=Math.hypot((u-.5)/.5,(v-.5)/.47),n=nz(g1,NG,u,v)*.7+nz(g2,2*NG,u,v)*.3;
+      const t={i:T.length,c,r,x,y,land:d<.8+(n-.5)*.85&&d<.97,reg:-1};T.push(t);grid[r][c]=t}}
+    const nb=(t,k)=>{const [dc,dr]=DIRS[t.r&1][k],rr=grid[t.r+dr];return rr?rr[t.c+dc]||null:null};
+    T.forEach(t=>t.n=[0,1,2,3,4,5].map(k=>nb(t,k)));
+    let best=[];const seen=new Set();
+    T.forEach(t=>{if(!t.land||seen.has(t))return;const comp=[],st=[t];seen.add(t);while(st.length){const a=st.pop();comp.push(a);a.n.forEach(b=>{if(b&&b.land&&!seen.has(b)){seen.add(b);st.push(b)}})}if(comp.length>best.length)best=comp});
+    const keep=new Set(best);T.forEach(t=>{if(!keep.has(t))t.land=false});
+    const land=best;if(land.length<T.length*.48||land.length>T.length*.72)continue;
+    const seeds=[land[R()*land.length|0]];
+    while(seeds.length<NREG){let bt=null,bd=-1;land.forEach(t=>{let m=1e9;seeds.forEach(s=>{const d=(t.x-s.x)**2+(t.y-s.y)**2;if(d<m)m=d});m*=.85+R()*.3;if(m>bd){bd=m;bt=t}});seeds.push(bt)}
+    seeds.forEach((s,i)=>s.reg=i);
+    let front=[...seeds];
+    while(front.length){const nx=[];shuf(front,R).forEach(t=>t.n.forEach(b=>{if(b&&b.land&&b.reg<0){b.reg=t.reg;nx.push(b)}}));front=nx}
+    const regs=Array.from({length:NREG},(_,i)=>({i,tiles:land.filter(t=>t.reg===i),nb:new Set()}));
+    if(regs.some(r=>r.tiles.length<6))continue;
+    let coast='',bord='';
+    regs.forEach(r=>{r.out='';let sx=0,sy=0;r.tiles.forEach(t=>{sx+=t.x;sy+=t.y;t.n.forEach((b,k)=>{const a1=corner(t,k),a2=corner(t,k+1),seg=`M${f1(a1[0])} ${f1(a1[1])}L${f1(a2[0])} ${f1(a2[1])}`;
+      if(!b||!b.land){coast+=seg;r.out+=seg}else if(b.reg!==t.reg){r.out+=seg;r.nb.add(b.reg);if(t.i<b.i)bord+=seg}})});
+      r.cx=sx/r.tiles.length;r.cy=sy/r.tiles.length;let lt=r.tiles[0],ld=1e9;r.tiles.forEach(t=>{const inner=t.n.filter(b=>b&&b.reg===r.i).length;const d=(t.x-r.cx)**2+(t.y-r.cy)**2-inner*40;if(d<ld){ld=d;lt=t}});r.lx=lt.x;r.ly=lt.y;r.nb=[...r.nb]});
+    let caps=[0,1,2],cd=-1;
+    for(let a=0;a<NREG;a++)for(let b=a+1;b<NREG;b++)for(let c=b+1;c<NREG;c++){const D=(p,q)=>Math.hypot(regs[p].cx-regs[q].cx,regs[p].cy-regs[q].cy);const m=Math.min(D(a,b),D(a,c),D(b,c));if(m>cd){cd=m;caps=[a,b,c]}}
+    caps=shuf(caps,R);
+    const names=shuf(PLACES,R);regs.forEach((r,i)=>r.name=names[i]);
+    return {T,land,regs,coast,bord,caps};
+  }
+  return null;
+}
+function mapSVG(M,id){
+  const tp=t=>[0,1,2,3,4,5].map(k=>{const a=Math.PI/180*(60*k-30);return f1(t.x+(S+.45)*Math.cos(a))+','+f1(t.y+(S+.45)*Math.sin(a))}).join(' ');
+  const tex=M.land.filter(t=>(t.i*7919)%5<2).map(t=>`<polygon points="${tp(t)}" fill="${(t.i*31)%3?'#000':'#fff'}" opacity="${(t.i*31)%3?.045:.07}"/>`).join('');
+  return `<svg viewBox="0 0 ${f1(MW)} ${f1(MH)}" ${id?`id="${id}"`:''} role="img" aria-label="Arena haritası">
+  <defs><radialGradient id="seaG" cx="50%" cy="45%" r="75%"><stop offset="0" style="stop-color:var(--sea1)"/><stop offset="1" style="stop-color:var(--sea2)"/></radialGradient>
+  <pattern id="wv" width="34" height="16" patternUnits="userSpaceOnUse"><path class="wvp" d="M2 9q6-5 12 0t12 0" fill="none" stroke="#fff" stroke-width="1.1"/></pattern>
+  <filter id="lsh" x="-5%" y="-5%" width="110%" height="115%"><feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#0b2e2a" flood-opacity=".35"/></filter>
+  ${[0,1,2].map(i=>`<marker id="ah${i}" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--c${i})"/></marker>`).join('')}</defs>
+  <rect width="100%" height="100%" fill="url(#seaG)"/><rect width="100%" height="100%" fill="url(#wv)"/>
+  <path class="shal" d="${M.coast}"/>
+  <g filter="url(#lsh)">${M.regs.map(r=>`<g class="rg" data-r="${r.i}">${r.tiles.map(t=>`<polygon points="${tp(t)}"/>`).join('')}</g>`).join('')}</g>
+  <g style="pointer-events:none">${tex}</g>
+  <path class="bd" d="${M.bord}"/><path class="cs" d="${M.coast}"/>
+  <g class="hl"></g><g class="lbs"></g><g class="fx"></g></svg>`;
+}
+const castle=(x,y,c)=>`<g class="cap" transform="translate(${f1(x-12)} ${f1(y-19)})"><path d="M1 22V7h4.5v3.5h3V7h7v3.5h3V7H23v15z" fill="${c||'#fff'}" stroke="rgba(0,0,0,.45)" stroke-width="1.4" stroke-linejoin="round"/><path d="M9.5 22v-6a2.5 2.5 0 0 1 5 0v6" fill="rgba(0,0,0,.45)"/><path d="M12 7V0l6 2.2-6 2.2" fill="${c||'#fff'}" stroke="rgba(0,0,0,.4)" stroke-width="1.1"/></g>`;
 
 /* ---------- Oyun durumu ---------- */
 let G=null;
-const P=()=>G.pl;
-const col=i=>`var(--c${i})`;
 function words(){
   let items=[];
-  if(CFG.mode!=='daily'){const p=KA.listPacks().find(x=>x.id===CFG.pack)||KA.getPack(KA.activeId());if(p)items=(p.items||[]).filter(x=>x.tr)}
+  if(CFG.mode!=='daily'){const p=KA.listPacks().find(x=>x.id===CFG.pack)||KA.getPack(KA.activeId());if(p)items=(p.items||[]).filter(x=>x.tr&&x.en)}
   if(items.length<8)items=SAMPLE.split('|').map(l=>{const [en,tr]=l.split(' - ');return {en,tr}});
   return items;
 }
-function makeQ(){
-  const it=G.items;let x=G.deck.shift();if(!x){G.deck=shuf(it);x=G.deck.shift()}
-  const pool=it.filter(o=>o!==x),r=rnd();
-  if(x.s&&x.st&&r<.2){const d=[...(x.d||[]),...shuf(pool.filter(o=>o.st).map(o=>o.st))].filter((v,i,a)=>v&&v!==x.st&&a.indexOf(v)===i).slice(0,3);if(d.length===3)return {x,type:'Cümlenin anlamı',text:x.s,s:1,ans:x.st,opts:shuf([x.st,...d])}}
-  if(x.syn&&x.syn.length&&r<.32){const s=x.syn[0];const d=shuf(pool.map(o=>forms(o.en)[0]).filter(w=>w&&!x.syn.includes(w))).slice(0,3);if(d.length===3)return {x,type:'Eş anlamlısı hangisi?',text:forms(x.en)[0],ans:s,opts:shuf([s,...d])}}
-  const en=r<.62,key=o=>en?o.tr:o.en,ans=key(x);
-  const d=shuf(pool.filter(o=>key(o)&&key(o).toLowerCase()!==ans.toLowerCase())).slice(0,3).map(key);
-  return {x,type:en?'İngilizce → Türkçe':'Türkçe → İngilizce',text:en?x.en:x.tr,ans,opts:shuf([ans,...d])};
-}
-function newGame(){
-  rnd=CFG.mode==='daily'?seeded([...today()].reduce((a,c)=>a*31+c.charCodeAt(0)|0,7)):Math.random;
-  const items=words(),df=DIFF[CFG.diff];
-  G={items,deck:shuf(items),df,lim:df.lim,round:0,phase:'',log:'',missed:[],stats:{ok:0,tot:0,caps:0,spec:0},
-    owner:Array(15).fill(-1),val:Array(15).fill(0),
-    pl:[{n:'Sen',me:1,sc:0,tw:3,alive:1},{n:'Kızıl Lejyon',sc:0,tw:3,alive:1},{n:'Altın Muhafız',sc:0,tw:3,alive:1}]};
-  CAPS.forEach((h,i)=>{G.owner[h]=i;G.val[h]=1000;G.pl[i].sc=1000;G.pl[i].cap=h});
-  KA.store.set('ka_fetih_cfg',CFG);
-  drawGame();play();
-}
-const terr=p=>G.owner.map((o,i)=>o===p?i:-1).filter(i=>i>=0);
+const own=p=>G.owner.map((o,i)=>o===p?i:-1).filter(i=>i>=0);
 const empty=()=>G.owner.map((o,i)=>o<0?i:-1).filter(i=>i>=0);
 const alive=()=>G.pl.map((p,i)=>p.alive?i:-1).filter(i=>i>=0);
-const nearOwn=(p,list)=>{const own=new Set(terr(p));const adj=list.filter(i=>HEX[i].nb.some(n=>own.has(n)));return adj.length?adj:list};
-const targets=p=>{const own=new Set(terr(p));const t=new Set();own.forEach(i=>HEX[i].nb.forEach(n=>{if(G.owner[n]>=0&&G.owner[n]!==p)t.add(n)}));return [...t]};
+const score=p=>own(p).reduce((s,i)=>s+G.val[i],0)+G.pl[p].bonus;
+const nearOwn=(p,list)=>{const o=new Set(own(p));const adj=list.filter(i=>G.M.regs[i].nb.some(n=>o.has(n)));return adj.length?adj:list};
+const targets=p=>{const t=new Set();own(p).forEach(i=>G.M.regs[i].nb.forEach(n=>{if(G.owner[n]>=0&&G.owner[n]!==p&&G.pl[G.owner[n]].alive)t.add(n)}));return [...t]};
+const sleep=ms=>new Promise(r=>{const g=G;setTimeout(()=>{if(G===g)r()},ms)});
+const stopped=g=>G!==g;
+
+/* ---------- Sorular ---------- */
+const head=x=>forms(x.en)[0];
+function cloze(x){
+  if(!x.s)return null;const h=head(x).split(' ')[0];if(h.length<3)return null;
+  const stem=h.slice(0,Math.max(3,Math.min(h.length-1,6)));
+  const m=x.s.match(new RegExp('\\b'+stem.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'[a-z]*','i'));
+  return m?x.s.replace(m[0],'§'):null;
+}
+function makeQ(kind){
+  const it=G.items;let x=G.deck.shift();if(!x){G.deck=shuf(it);x=G.deck.shift()}
+  const pool=it.filter(o=>o!==x),r=rnd();
+  const mk=(type,o)=>Object.assign({x,type},o);
+  if(kind==='type')return mk('Türkçesini gör, İngilizcesini yaz',{typing:1,text:x.tr,ans:head(x)});
+  const dEN=n=>shuf(pool.map(head).filter(w=>w&&w!==head(x))).filter((v,i,a)=>a.indexOf(v)===i).slice(0,n);
+  const dTR=n=>shuf(pool.map(o=>o.tr).filter(t=>t&&t.toLowerCase()!==x.tr.toLowerCase())).filter((v,i,a)=>a.indexOf(v)===i).slice(0,n);
+  if(r<.14){const c=cloze(x);if(c){const d=dEN(3);if(d.length===3)return mk('Boşluğa hangisi gelir?',{sent:c,ans:head(x),opts:shuf([head(x),...d])})}}
+  if(r<.26&&x.syn&&x.syn.length){const s=x.syn[0],d=dEN(4).filter(w=>!x.syn.includes(w)).slice(0,3);if(d.length===3)return mk('Eş anlamlısı hangisi?',{text:head(x),ans:s,opts:shuf([s,...d])})}
+  if(r<.34&&x.s&&x.st){const d=shuf(pool.filter(o=>o.st&&o.st!==x.st).map(o=>o.st)).slice(0,3);if(d.length===3)return mk('Cümlenin anlamı hangisi?',{sent:x.s,ans:x.st,opts:shuf([x.st,...d])})}
+  if(r<.42&&!G.noAudio)return mk('Dinle, anlamını seç',{listen:1,text:x.en,ans:x.tr,opts:shuf([x.tr,...dTR(3)])});
+  const en=r<.72;
+  return en?mk('İngilizce → Türkçe',{text:x.en,ans:x.tr,opts:shuf([x.tr,...dTR(3)])}):mk('Türkçe → İngilizce',{text:x.tr,ans:head(x),opts:shuf([head(x),...dEN(3)])});
+}
+function lev(a,b){const m=a.length,n=b.length;if(Math.abs(m-n)>1)return 2;const d=Array.from({length:m+1},(_,i)=>[i]);for(let j=1;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n]}
+const typedOk=(v,x)=>{v=v.trim().toLowerCase().replace(/\s+/g,' ');if(!v)return false;return forms(x.en).some(f=>f===v||(f.length>=6&&lev(f,v)<=1))};
+function botAns(i,q){const df=G.df;const acc=df.acc*(q.typing?.82:1)*(q.sent?.95:1);const [a,b]=df.t;const t=+(a+rnd()*(b-a)+(q.typing?2.5:0)+(q.sent?1.5:0)).toFixed(1);return {ok:rnd()<acc,t:Math.min(t,G.lim+(q.typing?5:0)-.3)}}
 
 /* ---------- Çizim ---------- */
-function castle(x,y,p){return `<g class="cast" transform="translate(${x-13} ${y-24})"><path d="M2 26V9h4v4h4V9h6v4h4V9h4v17z" fill="#fff" opacity=".95"/><rect x="11" y="17" width="4" height="9" rx="2" fill="${col(p)}"/></g>`}
-function drawMap(sel){
-  const S=new Set(sel||[]);
-  return `<svg class="map" viewBox="0 0 ${VW.toFixed(0)} ${VH.toFixed(0)}" role="img" aria-label="Fetih haritası">${HEX.map(h=>{
-    const o=G.owner[h.i],cap=CAPS.includes(h.i)&&o>=0&&G.pl[o].cap===h.i;
-    return `<g class="hex ${o>=0?'own':''} ${S.has(h.i)?'sel':''}" data-h="${h.i}" ${S.has(h.i)?'tabindex="0" role="button"':''} aria-label="${esc(h.name)}${o>=0?', '+esc(G.pl[o].n):', boş'}"><title>${esc(h.name)}</title>
-    <polygon class="${o<0?'base':''} f" points="${poly(h.x,h.y,R-2)}" style="${o>=0?`fill:${col(o)}`:''}"/>
-    ${cap?castle(h.x,h.y+4,o):''}<text x="${h.x}" y="${h.y+(cap?22:5)}">${o<0?'':(cap?G.pl[o].tw+'/3':G.val[h.i])}</text></g>`}).join('')}</svg>`;
+function drawPlayers(){
+  const el=$('#pls');if(!el)return;
+  el.innerHTML=G.pl.map((p,i)=>`<div class="pl ${G.turn===i?'turn':''} ${p.alive?'':'dead'}" style="color:${col(i)}">${emblem(i)}<div class="pi"><span class="nm" style="color:var(--ink)">${esc(p.n)}</span><b class="sc" style="color:var(--ink)">${score(i)}</b><span class="st"><span>${own(i).length} bölge</span><span class="tw" title="Başkent kuleleri">${[0,1,2].map(k=>`<i class="${k<p.tw?'':'off'}"></i>`).join('')}</span><span class="fl ${p.streak>=2?'on':''}">🔥${p.streak}</span></span></div><span class="ans" id="an${i}"></span></div>`).join('');
 }
-function drawPlayers(ans){
-  return `<div class="players">${G.pl.map((p,i)=>`<div class="pl ${G.turn===i?'turn':''} ${p.alive?'':'out'}" style="--pc:${col(i)}"><div class="av">${i===0?ic('shield'):ic('sword')}</div><div style="min-width:0"><div class="nm">${esc(p.n)}</div><div class="sc">${p.sc}</div><div class="tw">${[0,1,2].map(k=>`<b class="${k<p.tw?'':'off'}"></b>`).join('')}</div></div>${ans&&ans[i]?`<span class="ans ${ans[i]==='done'?'wait':ans[i]}" title="${ans[i]==='done'?'Cevapladı':ans[i]==='wait'?'Düşünüyor':''}">${ans[i]==='ok'?'✓':ans[i]==='no'?'✗':ans[i]==='done'?'●':'…'}</span>`:''}</div>`).join('')}</div>`;
+function drawJokers(){
+  const el=$('#jk');if(!el)return;const j=G.pl[0].jok;
+  el.innerHTML=Object.keys(JOK).map(k=>`<span class="jk" title="${JOK[k].n}">${svgI(JOK[k].ic)}<span>${JOK[k].n}</span><i>${j[k]}</i></span>`).join('');
 }
-function drawGame(){
-  $('#main').innerHTML=`<div class="game"><div><div id="pls"></div><div class="card mapbox"><div class="phase"><b id="ph"></b><span class="tag" id="rd"></span></div><div id="map"></div><div class="log" id="log" aria-live="polite"></div></div></div><aside class="card panel" id="panel"></aside></div>`;
-  refresh();
+function drawMap(sel,cls){
+  const svg=$('#map');if(!svg)return;
+  svg.querySelectorAll('.rg').forEach(g=>{const r=+g.dataset.r,o=G.owner[r];g.setAttribute('class','rg'+(o>=0?' o'+o:'')+(sel?(sel.includes(r)?' sel':' dim'):''))});
+  svg.querySelector('.hl').innerHTML=sel?sel.map(r=>`<path class="hlp ${cls||''}" d="${G.M.regs[r].out}"/>`).join(''):'';
+  svg.querySelector('.lbs').innerHTML=G.M.regs.map(r=>{const o=G.owner[r.i];const capOf=G.pl.findIndex(p=>p.cap===r.i&&p.alive);
+    if(capOf>=0)return castle(r.lx,r.ly+4,'#fff')+`<text class="lb lbv" x="${f1(r.lx)}" y="${f1(r.ly+18)}">${'♜'.repeat(G.pl[capOf].tw)}</text>`;
+    return `<text class="lb lbn ${o>=0?'own':''}" x="${f1(r.lx)}" y="${f1(r.ly-(o>=0?5:-3))}">${esc(r.name)}</text>${o>=0?`<text class="lb lbv" x="${f1(r.lx)}" y="${f1(r.ly+8)}">${G.val[r.i]}</text>`:''}`}).join('');
 }
-function refresh(sel,ans){$('#pls').innerHTML=drawPlayers(ans);$('#map').innerHTML=drawMap(sel);$('#ph').textContent=G.phase;$('#rd').textContent=G.rdTxt||'';$('#log').textContent=G.log}
-const log=t=>{G.log=t;const l=$('#log');if(l)l.textContent=t};
-const panel=h=>{$('#panel').innerHTML=h};
+function refresh(sel,cls){drawMap(sel,cls);drawPlayers();drawJokers()}
+function fx(html,ms){const g=$('#map .fx');if(!g)return;const w=document.createElementNS('http://www.w3.org/2000/svg','g');w.innerHTML=html;g.appendChild(w);setTimeout(()=>w.remove(),ms||1600)}
+const floatAt=(r,txt,c)=>{const R=G.M.regs[r];fx(`<text class="float ${c||''}" x="${f1(R.lx)}" y="${f1(R.ly-14)}">${esc(txt)}</text>`)};
+const ringAt=(r,p)=>{const R=G.M.regs[r];fx(`<circle class="ring" cx="${f1(R.lx)}" cy="${f1(R.ly)}" r="4" style="stroke:${col(p)}"/>`,1000)};
+function arrow(from,to,p){const a=G.M.regs[from],b=G.M.regs[to],mx=(a.lx+b.lx)/2,my=(a.ly+b.ly)/2,dx=b.lx-a.lx,dy=b.ly-a.ly,L=Math.hypot(dx,dy)||1,k=Math.min(40,L*.35);
+  const cx=mx-dy/L*k,cy=my+dx/L*k,ex=b.lx-dx/L*8,ey=b.ly-dy/L*8;
+  const g=$('#map .fx');if(!g)return ()=>{};const w=document.createElementNS('http://www.w3.org/2000/svg','g');w.innerHTML=`<path class="arrow" d="M${f1(a.lx)} ${f1(a.ly)}Q${f1(cx)} ${f1(cy)} ${f1(ex)} ${f1(ey)}" style="stroke:${col(p)}" marker-end="url(#ah${p})"/>`;g.appendChild(w);return ()=>w.remove()}
+function banner(t,s,ms){const b=$('#bn');if(!b)return Promise.resolve();b.innerHTML=`<b>${esc(t)}</b>${s?`<span>${esc(s)}</span>`:''}`;b.classList.add('on');KA.sfx.cap();return sleep(ms||1500).then(()=>{b.classList.remove('on');return sleep(250)})}
+function log(t,p){G.feed.unshift({t,p});G.feed=G.feed.slice(0,6);const l=$('#log');if(l)l.innerHTML=`${ic('flag')}<span>${esc(t)}</span>`}
+function idle(title,text,extra){
+  $('#panel').innerHTML=`<div class="idle"><h3>${esc(title)}</h3>${text?`<p>${esc(text)}</p>`:''}${extra||''}<div class="feed">${G.feed.map(f=>`<div><i style="background:${f.p>=0?col(f.p):'var(--line2)'}"></i><span>${esc(f.t)}</span></div>`).join('')}</div></div>`;
+}
+function claim(p,r,v){G.owner[r]=p;if(v!=null)G.val[r]=v;refresh();ringAt(r,p);floatAt(r,'+'+G.val[r],p===0?'g':'');KA.sfx.cap()}
 
 /* ---------- Soru: herkes aynı anda cevaplar ---------- */
-function bot(i){const ok=rnd()<G.df.acc;const [a,b]=G.df.t;return {ok,t:+(a+rnd()*(b-a)).toFixed(1)}}
-function focusM(sel){if(innerWidth>980)return;const e=$(sel);if(!e)return;const r=e.getBoundingClientRect();if(r.top<64||r.top>innerHeight*.45)scrollTo({top:scrollY+r.top-66,behavior:'smooth'})}
-function ask(q,who,head){
+function ask(q,who,o={}){
+  const g=G;
   return new Promise(res=>{
-    setTimeout(()=>focusM('#panel'),30);
-    const lim=G.lim,t0=performance.now(),ans={};who.forEach(i=>ans[i]='wait');
-    const bots={};who.filter(i=>i!==0).forEach(i=>bots[i]=bot(i));
-    const canSay=!q.s&&(q.type.startsWith('İngilizce')||q.type.startsWith('Eş'));
-    panel(`${head||''}<div class="qtype">${q.type}</div><div class="qtext ${q.s?'s':''}">${q.s?KA.tokens(q.text):esc(q.text)}</div>${canSay?`<button class="btn btn-ghost btn-sm" data-say="${esc(q.text)}" style="margin-top:6px">${ic('sound')}Dinle</button>`:''}
-      <div class="timer" id="tm"><i></i></div><div class="ops">${q.opts.map((o,k)=>`<button data-op="${k}"><kbd>${k+1}</kbd><span>${esc(o)}</span></button>`).join('')}</div><div id="qres"></div>`);
-    if(!q.s&&q.type.startsWith('İngilizce'))KA.speak(q.text);
-    let done=false,last=-1,sig='';
-    const meIn=who.includes(0),spect=!meIn;
-    const tick=()=>{if(done)return;const e=(performance.now()-t0)/1000,left=Math.max(0,lim-e);const tm=$('#tm');if(tm){tm.firstChild.style.transform=`scaleX(${left/lim})`;tm.classList.toggle('low',left<3.5)}
-      if(Math.ceil(left)!==last&&left<3.5&&left>0){last=Math.ceil(left);KA.sfx.tick()}
-      who.forEach(i=>{if(i&&ans[i]==='wait'&&bots[i].t<=e)ans[i]='done'});
-      const s=JSON.stringify(ans);if(s!==sig){sig=s;$('#pls').innerHTML=drawPlayers(ans)}
-      if(left<=0)finish(-1,lim);else requestAnimationFrame(tick)};
-    const finish=(k,t)=>{
-      if(done)return;done=true;
-      const me={ok:k>=0&&q.opts[k]===q.ans,t:+t.toFixed(1),k};
-      document.querySelectorAll('[data-op]').forEach((b,j)=>{b.disabled=true;if(q.opts[j]===q.ans)b.classList.add('ok');else if(j===k)b.classList.add('no')});
-      G.stats.tot++;if(me.ok)G.stats.ok++;else G.missed.push(q.x);
-      me.ok?KA.sfx.ok():KA.sfx.bad();
-      const out={};who.forEach(i=>{if(i===0)out[0]=me;else{const b=bots[i];out[i]=b.t<=lim?b:{ok:false,t:lim}}});
-      if(spect)out.spect=me;
-      $('#pls').innerHTML=drawPlayers(Object.fromEntries(who.map(i=>[i,out[i].ok?'ok':'no'])));
-      res(out);
-    };
-    $('#panel').onclick=e=>{const b=e.target.closest('[data-op]');if(b&&!done)finish(+b.dataset.op,(performance.now()-t0)/1000);const s=e.target.closest('[data-say]');if(s)KA.speak(s.dataset.say);const t=e.target.closest('.tk');if(t)KA.lookup(t.dataset.w,{anchor:t,context:q.text})};
-    G.key=e=>{if(/^[1-4]$/.test(e.key)&&!done){finish(+e.key-1,(performance.now()-t0)/1000)}};
-    requestAnimationFrame(tick);
+    const meIn=who.includes(0)||(!!o.spectate&&G.pl[0].alive),lim=G.lim+(q.typing?5:0)+(q.sent?3:0);
+    const all=[...new Set([...who,...(meIn?[0]:[])])];
+    const out={};let done=false,picked=-1,used50=false;const t0=performance.now();
+    const tag=o.duel?`<div class="vs"><div class="side">${emblem(o.duel.a)}<span>${esc(G.pl[o.duel.a].n)}</span></div><span class="x">VS</span><div class="side"><span>${esc(G.pl[o.duel.d].n)}${o.duel.cap?' ♜':''}</span>${emblem(o.duel.d)}</div></div>`:'';
+    $('#panel').innerHTML=`${tag}<div class="qh"><span class="qtag ${o.duel&&who.includes(0)?'duel':o.spectate?'spec':''}">${esc(o.label||'')}</span><div class="tmr" id="tm"><svg viewBox="0 0 36 36"><circle class="tb" cx="18" cy="18" r="16"/><circle class="tf" id="tf" cx="18" cy="18" r="16"/></svg><b id="tt">${lim}</b></div></div>
+    <div class="qt">${esc(q.type)}</div>
+    ${q.listen?`<button class="lis" data-say="${esc(q.text)}">${ic('sound')}Kelimeyi dinle</button>`:q.sent?`<div class="qs">${esc(q.sent).replace('§','<span class="blank"></span>')}</div>`:`<div class="qw">${esc(q.text)}</div>`}
+    ${q.typing?`<form class="qtype" id="qf" autocomplete="off"><input class="input" id="qi" placeholder="İngilizcesini yaz" autocapitalize="off" spellcheck="false"><button class="btn btn-p">Gönder</button></form>`:`<div class="qo">${q.opts.map((t,i)=>`<button data-o="${i}"><kbd>${i+1}</kbd><span>${esc(t)}</span></button>`).join('')}</div>`}
+    ${!q.typing?`<div class="qj"><button class="jk" data-j="yari" ${G.pl[0].jok.yari?'':'disabled'}>${svgI('half')}<span>Yarı yarıya</span><i>${G.pl[0].jok.yari}</i></button>${o.defend?`<button class="jk ${G.shield?'use':''}" data-j="kalkan" ${G.pl[0].jok.kalkan||G.shield?'':'disabled'}>${svgI('shield')}<span>Kalkan</span><i>${G.pl[0].jok.kalkan}</i></button>`:''}</div>`:''}
+    <div class="qps">${all.map(i=>`<div class="qp" id="qp${i}"><i style="background:${col(i)}"></i>${esc(G.pl[i].n)}<span class="r">düşünüyor…</span></div>`).join('')}</div><div id="qr"></div>`;
+    all.forEach(i=>{const a=$('#an'+i);if(a){a.className='ans wait';a.textContent=''}});
+    if(q.listen)setTimeout(()=>KA.speak(q.text),250);
+    const set=(i,txt,c)=>{const e=$('#qp'+i+' .r');if(e){e.textContent=txt;e.className='r '+(c||'')}};
+    const timers=[];
+    who.filter(i=>i!==0).forEach(i=>{const b=botAns(i,q);timers.push(setTimeout(()=>{if(done||stopped(g))return;out[i]=b;set(i,'cevapladı');const a=$('#an'+i);if(a){a.className='ans lock';a.textContent='✓'}check()},b.t*1000))});
+    const ring=$('#tf');let raf;
+    const tick=()=>{if(done||stopped(g))return;const el=(performance.now()-t0)/1000,left=Math.max(0,lim-el);ring.style.strokeDashoffset=String(100.5*(1-left/lim));$('#tt').textContent=Math.ceil(left);$('#tm').classList.toggle('low',left<4);if(left<=0)return finish();raf=requestAnimationFrame(tick)};tick();
+    const mine=ok=>{if(out[0]||done)return;const t=+((performance.now()-t0)/1000).toFixed(1);out[0]={ok,t};set(0,t+' sn');const a=$('#an0');if(a){a.className='ans lock';a.textContent='✓'}check()};
+    G.key=e=>{if(done){if(e.key===' '||e.key==='Enter'){e.preventDefault();G.skip&&G.skip()}return}if(!meIn||q.typing)return;const n=+e.key;if(n>=1&&n<=4){const b=document.querySelector(`[data-o="${n-1}"]`);if(b&&!b.classList.contains('gone'))b.click()}};
+    if(meIn&&!q.typing)document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{if(out[0]||done)return;picked=+b.dataset.o;b.classList.add('pick');document.querySelectorAll('[data-o]').forEach(x=>x.disabled=true);mine(q.opts[picked]===q.ans)});
+    if(!meIn)document.querySelectorAll('[data-o]').forEach(b=>b.disabled=true);
+    if(meIn&&q.typing){const f=$('#qf'),inp=$('#qi');setTimeout(()=>inp.focus({preventScroll:true}),60);f.onsubmit=e=>{e.preventDefault();if(out[0])return;inp.disabled=true;mine(typedOk(inp.value,q.x))}}
+    const jy=document.querySelector('[data-j="yari"]');if(jy)jy.onclick=()=>{if(used50||out[0]||!meIn||!G.pl[0].jok.yari)return;used50=true;G.pl[0].jok.yari--;shuf(q.opts.map((t,i)=>i).filter(i=>q.opts[i]!==q.ans)).slice(0,2).forEach(i=>document.querySelector(`[data-o="${i}"]`).classList.add('gone'));jy.disabled=true;jy.querySelector('i').textContent=G.pl[0].jok.yari;drawJokers();KA.sfx.tick()};
+    const jk=document.querySelector('[data-j="kalkan"]');if(jk)jk.onclick=()=>{if(G.shield||!G.pl[0].jok.kalkan)return;G.shield=true;G.pl[0].jok.kalkan--;jk.classList.add('use');jk.querySelector('i').textContent=G.pl[0].jok.kalkan;drawJokers();KA.sfx.tick();KA.toast('Kalkan hazır: bu düelloyu kaybetsen de bölgen gitmez.')};
+    function check(){if(all.every(i=>out[i]))finish()}
+    function finish(){
+      if(done||stopped(g))return;done=true;cancelAnimationFrame(raf);timers.forEach(clearTimeout);
+      all.forEach(i=>{if(!out[i])out[i]={ok:false,t:lim}});
+      if(!q.typing)document.querySelectorAll('[data-o]').forEach(b=>{const i=+b.dataset.o;b.disabled=true;if(q.opts[i]===q.ans)b.classList.add('ok');else if(i===picked)b.classList.add('no')});
+      if(q.typing&&meIn){const inp=$('#qi');inp.disabled=true;inp.classList.add(out[0].ok?'ok':'no')}
+      all.forEach(i=>{const r=out[i],a=$('#an'+i);set(i,r.ok?`Doğru · ${r.t} sn`:'Yanlış',r.ok?'g':'b');if(a){a.className='ans '+(r.ok?'ok':'no');a.textContent=r.ok?'✓':'✕'}});
+      const x=q.x;let showLearn=!meIn&&q.typing;
+      if(meIn){const me=G.pl[0];G.stats.tot++;
+        if(out[0].ok){G.stats.ok++;me.streak++;G.stats.best=Math.max(G.stats.best,me.streak);KA.sfx.ok();
+          if(me.streak%3===0){const k=shuf(Object.keys(JOK))[0];me.jok[k]++;KA.toast(`${me.streak}'li seri! Ödül: ${JOK[k].n}`);drawJokers()}}
+        else{me.streak=0;KA.sfx.bad();G.missed.push(x)}
+        showLearn=!out[0].ok||q.listen||q.typing}
+      if(showLearn)$('#qr').innerHTML=`<div class="learn"><b>${esc(head(x))}</b> — ${esc(x.tr)}${x.s?`<div class="ex">${esc(x.s)}</div>`:''}<div class="row"><button class="btn btn-ghost btn-sm" data-say="${esc(head(x))}">${ic('sound')}Dinle</button>${meIn&&!out[0].ok?`<button class="btn btn-ghost btn-sm" data-add="${esc(x.en)}">${ic('plus')}Listeme ekle</button>`:''}</div></div>`;
+      drawPlayers();
+      const hold=meIn&&!out[0].ok?3800:q.listen||q.typing?2600:1700;
+      $('#qr').insertAdjacentHTML('beforeend',`<button class="btn btn-p nextb" id="nx">Devam ${ic('arrow')}<i style="animation-duration:${hold}ms"></i></button>`);
+      let fin=false;const go=()=>{if(fin||stopped(g))return;fin=true;G.key=null;G.skip=null;all.forEach(i=>{const a=$('#an'+i);if(a)a.className='ans'});res({out})};
+      G.skip=go;$('#nx').onclick=go;setTimeout(go,hold);
+    }
   });
 }
-const rank=(out,who)=>[...who].sort((a,b)=>(out[b].ok-out[a].ok)||(out[a].t-out[b].t));
-function resRows(out,who,extra){return `<div class="res">${rank(out,who).map(i=>`<div><i style="background:${col(i)}"></i>${esc(G.pl[i].n)}<span class="${out[i].ok?'good':'bad'}">${out[i].ok?'Doğru':'Yanlış'}</span><span class="r">${out[i].ok?out[i].t+' sn':''}${extra?extra(i):''}</span></div>`).join('')}</div>`}
-function waitNext(label){return new Promise(r=>{const q=$('#qres');q.insertAdjacentHTML('beforeend',`<button class="btn btn-p" style="width:100%;margin-top:12px" id="go">${label||'Devam'}${ic('arrow')}</button>`);const b=$('#go');b.focus({preventScroll:true});b.onclick=()=>r();G.key=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();r()}}})}
+const rank=(out,ids)=>ids.filter(i=>out[i]&&out[i].ok).sort((a,b)=>out[a].t-out[b].t);
 
-/* ---------- Seçim (bölge tıklama) ---------- */
-function pickHex(list,msg){
+/* ---------- Bölge seçimi ---------- */
+function pickRegion(list,title,text,o={}){
+  const g=G;
   return new Promise(r=>{
-    refresh(list);log(msg);focusM('.mapbox');
-    const on=e=>{const g=e.target.closest('.hex.sel');if(!g)return;$('#map').removeEventListener('click',on);G.key=null;r(+g.dataset.h)};
-    $('#map').addEventListener('click',on);
-    G.key=e=>{if(e.key==='Enter'){const f=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('.hex.sel');if(f){$('#map').removeEventListener('click',on);G.key=null;r(+f.dataset.h)}}};
+    refresh(list,o.attack?'tg':'');
+    const me=G.pl[0];
+    idle(title,text,o.attack&&me.jok.cift?`<button class="btn btn-ghost dblbtn" id="dbl">${svgI('sword')} Çift saldırı kullan (${me.jok.cift})</button>`:'');
+    const d=$('#dbl');if(d)d.onclick=()=>{if(G.dbl||!me.jok.cift)return;G.dbl=true;me.jok.cift--;drawJokers();d.disabled=true;d.textContent='Çift saldırı hazır: bu tur iki kez saldıracaksın';KA.sfx.tick()};
+    const svg=$('#map');
+    const on=e=>{const t=e.target.closest('.rg.sel');if(!t||stopped(g))return;svg.removeEventListener('click',on);r(+t.dataset.r)};
+    svg.addEventListener('click',on);
+    const pan=$('#panel');if(innerWidth<=900&&pan){const m=$('#map').getBoundingClientRect();if(m.top<60||m.bottom>innerHeight-pan.offsetHeight)scrollTo({top:scrollY+m.top-64,behavior:'smooth'})}
   });
 }
 function botPick(p,list){
-  const own=new Set(terr(p));
-  return [...list].sort((a,b)=>score(b)-score(a))[0];
-  function score(i){return HEX[i].nb.filter(n=>own.has(n)).length*2-HEX[i].nb.filter(n=>G.owner[n]>=0&&G.owner[n]!==p).length*.5+rnd()}
+  const sc=r=>G.M.regs[r].nb.filter(n=>G.owner[n]===p).length*2+rnd()*2.5;
+  return list.reduce((b,r)=>sc(r)>sc(b)?r:b,list[0]);
 }
-function claim(p,h,v){const prev=G.owner[h];G.owner[h]=p;G.val[h]=v;G.pl[p].sc+=v;if(prev>=0)G.pl[prev].sc-=Math.min(G.pl[prev].sc,v-100);refresh();const g=document.querySelector(`.hex[data-h="${h}"]`);if(g)g.classList.add('cap');KA.sfx.cap()}
+function botTarget(p,tg){
+  const agg=PL[p].agg;
+  const sc=r=>{const o=G.owner[r],isCap=G.pl[o].cap===r;let s=rnd()*3;if(o===0)s+=agg*3;if(isCap)s+=G.pl[o].tw===1?6:1.2-agg;s+=G.val[r]/400;if(score(o)>score(p))s+=1;return s};
+  return tg.reduce((b,r)=>sc(r)>sc(b)?r:b,tg[0]);
+}
 
 /* ---------- Oyun akışı ---------- */
-async function play(){
-  const totalExp=Math.ceil(empty().length/3);
-  G.phase='Toprak Kapma';
-  while(empty().length){
-    G.round++;G.rdTxt=`Tur ${G.round}/${totalExp}`;G.turn=-1;refresh();
-    log('Herkes aynı soruyu cevaplıyor. En hızlı doğru cevap 2, ikinci 1 bölge alır.');
-    const who=alive(),out=await ask(makeQ(),who,'<div class="banner">Toprak turu · en hızlı doğru cevap kazanır</div><div style="height:12px"></div>');
-    const order=rank(out,who).filter(i=>out[i].ok);const picks=[];order.forEach((p,k)=>picks.push([p,k===0?2:1]));
-    $('#qres').innerHTML=resRows(out,who,i=>{const f=picks.find(x=>x[0]===i);return f?` · ${f[1]} bölge`:''})+(picks.length?'':'<p class="mut" style="margin:10px 0 0">Kimse bilemedi, bu tur bölge dağıtılmadı.</p>');
-    if(!picks.length){await waitNext();continue}
-    await waitNext(picks[0][0]===0?'Bölgelerini seç':'Devam');
-    for(const [p,n] of picks){for(let k=0;k<n&&empty().length;k++){
-      G.turn=p;const list=nearOwn(p,empty());let h;
-      if(p===0){panel(`<div class="banner acc">Haritadan ${n-k} bölge seç</div><p class="mut" style="margin:10px 0 0">Kesik çizgili altıgenler alabileceğin bölgeler. Kendi toprağına komşu olanları seçmek savunmanı güçlendirir.</p>`);h=await pickHex(list,`Bir bölge seç (${n-k} hakkın var)`)}
-      else{await sleep(450);h=botPick(p,list)}
-      claim(p,h,200);log(`${G.pl[p].n} ${HEX[h].name} bölgesini aldı.`);await sleep(p===0?150:350);
-    }}
-    G.turn=-1;refresh();
-  }
-  G.phase='Kuşatma';
-  const W=MODES[CFG.mode].war;
-  for(let w=1;w<=W&&alive().length>1;w++){
-    G.rdTxt=`Tur ${w}/${W}`;
-    const order=[...alive()].sort((a,b)=>G.pl[a].sc-G.pl[b].sc);
-    for(const p of order){
-      if(!G.pl[p].alive||alive().length<2)continue;
-      const tg=targets(p);if(!tg.length)continue;
-      G.turn=p;refresh();
-      let h;
-      if(p===0){panel(`<div class="banner acc">Saldırı sırası sende</div><p class="mut" style="margin:10px 0 0">Kesik çizgili bir rakip bölgeyi seç. Düelloyu kazanırsan bölge ve puanı senin olur. Başkentin üç kulesi var; üçü de düşerse o ordu bütün topraklarını kaybeder.</p>`);h=await pickHex(tg,'Saldıracağın bölgeyi seç')}
-      else{const capT=tg.find(i=>G.pl[G.owner[i]].cap===i&&G.pl[G.owner[i]].tw===1);h=capT!=null&&rnd()<.6?capT:tg.sort((a,b)=>G.val[b]-G.val[a]+(rnd()-.5)*300)[0];await sleep(500)}
-      await duel(p,G.owner[h],h);
+function newGame(){
+  const daily=CFG.mode==='daily';
+  rnd=daily?seeded(daySeed()):Math.random;
+  const M=genMap(daily?seeded(daySeed()+11):Math.random);
+  const items=words(),df=DIFF[CFG.diff];
+  G={M,items,deck:shuf(items),df,lim:df.lim,turn:-1,feed:[],missed:[],shield:false,dbl:false,noAudio:false,
+    stats:{ok:0,tot:0,caps:0,razed:0,def:0,spec:0,lost:0,best:0},
+    owner:Array(NREG).fill(-1),val:Array(NREG).fill(0),
+    pl:PL.map((p,i)=>({n:p.n,alive:1,tw:3,bonus:0,streak:0,cap:M.caps[i],jok:{yari:1,kalkan:1,cift:1}}))};
+  M.caps.forEach((r,i)=>{G.owner[r]=i;G.val[r]=1000});
+  KA.store.set('ka_fetih_cfg',CFG);
+  document.body.classList.add('ingame');
+  $('#main').innerHTML=`<div class="game"><div><div class="pls" id="pls"></div>
+  <section class="card board" id="board"><div class="bhead"><div><span class="eyebrow" id="ph">Hazırlık</span><b id="rd">${esc(MODES[CFG.mode].n)} · ${esc(DIFF[CFG.diff].n)}</b></div><div class="row" style="gap:8px;flex-wrap:nowrap"><div class="joks" id="jk"></div><button class="ka-icon-btn" data-a="quit" title="Oyundan çık" aria-label="Oyundan çık">${ic('x')}</button></div></div>
+  <div class="mapw">${mapSVG(M,'map')}<div class="banner" id="bn"></div></div><div class="logline" id="log">${ic('flag')}<span>Ordular hazır. Kaleli bölge senin başkentin.</span></div></section></div>
+  <aside class="card panel" id="panel"></aside></div>`;
+  refresh();idle('Arenaya hoş geldin','Her doğru cevap topraklarını büyütür. Hızlı ol, rakipler de cevaplıyor.');
+  play(G);
+}
+async function play(g){
+  const setPh=(p,r)=>{$('#ph').textContent=p;$('#rd').textContent=r||''};
+  ringAt(G.pl[0].cap,0);floatAt(G.pl[0].cap,'Başkentin','g');
+  await banner('Yayılma','En hızlı doğru cevap 2, ikinci 1 bölge seçer');if(stopped(g))return;
+  let round=0;
+  while(empty().length&&round<12){
+    round++;setPh('Yayılma',`Tur ${round} · ${empty().length} boş bölge`);
+    const typing=round%4===0;
+    const {out}=await ask(makeQ(typing?'type':'mc'),alive(),{label:typing?'Yazma turu · en hızlı doğru yazan kazanır':'Hız turu · herkes aynı soruyu cevaplıyor'});if(stopped(g))return;
+    const order=rank(out,alive());
+    if(!order.length){log('Kimse bilemedi, bu tur kimse toprak alamadı.',-1);continue}
+    for(const [p,n] of [[order[0],2],[order[1],1]]){
+      if(p==null)continue;
+      for(let k=0;k<n&&empty().length;k++){
+        const list=nearOwn(p,empty());let r;
+        if(p===0)r=await pickRegion(list,`Bölge seç · ${n-k} hakkın var`,'Kesik çizgili bölgelerden birine dokun. Kendi toprağına komşu olanlar seni güçlendirir.');
+        else{refresh(list);idle(`${G.pl[p].n} bölge seçiyor…`,'');await sleep(520);r=botPick(p,list)}
+        if(stopped(g))return;
+        claim(p,r,200);log(`${G.pl[p].n} ${G.M.regs[r].name} bölgesini aldı.`,p);await sleep(280);if(stopped(g))return;
+      }
     }
   }
-  end();
+  empty().forEach(r=>{const n=G.M.regs[r].nb.map(x=>G.owner[x]).filter(x=>x>=0);const p=n.length?n[rnd()*n.length|0]:alive()[0];G.owner[r]=p;G.val[r]=200});
+  refresh();
+  const W=MODES[CFG.mode].war;
+  for(let w=1;w<=W;w++){
+    const order=alive().sort((a,b)=>score(a)-score(b));
+    await banner(W>1?`Savaş · ${w}. tur`:'Savaş',w===1?'Komşu düşman bölgelerine saldır, başkentleri kuşat':'Sıra puanı düşük olandan başlar');if(stopped(g))return;
+    for(const p of order){
+      if(!G.pl[p].alive)continue;if(alive().length<2)break;
+      let attacks=1;
+      while(attacks-->0){
+        const tg=targets(p);if(!tg.length){log(`${G.pl[p].n} saldıracak komşu bulamadı.`,p);break}
+        G.turn=p;setPh('Savaş',`Tur ${w}/${W} · sıra: ${G.pl[p].n}`);
+        let h;
+        if(p===0){h=await pickRegion(tg,'Saldırı sırası sende','Sarı çizgili düşman bölgelerinden birini seç. Başkenti düşürmek için üç kulesini de yıkman gerekir.',{attack:1});if(G.dbl){G.dbl=false;attacks++}}
+        else{refresh(tg,'tg');idle(`${G.pl[p].n} saldırı hazırlıyor…`,'');await sleep(700);h=botTarget(p,tg)}
+        if(stopped(g))return;
+        await duel(p,h,g);if(stopped(g))return;
+        if(alive().length<2)break;
+      }
+      G.turn=-1;
+    }
+    if(alive().length<2)break;
+  }
+  if(!stopped(g))end();
 }
-async function duel(a,d,h){
-  const isCap=G.pl[d].cap===h;
-  log(`${G.pl[a].n}, ${G.pl[d].n} ordusunun ${isCap?'başkentine':HEX[h].name+' bölgesine'} saldırıyor!`);
-  refresh();const g=document.querySelector(`.hex[data-h="${h}"]`);if(g)g.classList.add('hit');
-  const who=[a,d],me=who.includes(0);
-  const head=`<div class="vs"><span><i style="background:${col(a)}"></i>${esc(G.pl[a].n)}</span><span class="mut">saldırıyor</span><span><i style="background:${col(d)}"></i>${esc(G.pl[d].n)}</span></div>${me?'':'<div class="banner">Seyirci bonusu: bu soruyu bilirsen +50 puan</div><div style="height:10px"></div>'}`;
-  const all=me?who:[...who,0];
-  const out=await ask(makeQ(),all,head);
-  if(!me&&out[0]&&out[0].ok){G.pl[0].sc+=50;G.stats.spec++}
-  const A=out[a],D=out[d];
-  const win=A.ok&&(!D.ok||A.t<D.t);
-  let msg;
+async function duel(a,h,g){
+  const d=G.owner[h],isCap=G.pl[d].cap===h,R=G.M.regs;
+  const dist=x=>Math.hypot(R[x].lx-R[h].lx,R[x].ly-R[h].ly);
+  const from=R[h].nb.filter(n=>G.owner[n]===a).sort((x,y)=>dist(x)-dist(y))[0];
+  refresh([h],'tg');const rm=from!=null?arrow(from,h,a):()=>{};KA.sfx.hit();
+  log(`${G.pl[a].n}, ${G.pl[d].n} ordusunun ${isCap?'başkentine':R[h].name+' bölgesine'} saldırıyor!`,a);
+  const spectate=a!==0&&d!==0&&G.pl[0].alive;
+  const lab=a===0?'Saldırı düellosu · rakipten hızlı ve doğru ol':d===0?'Savunma düellosu · bölgeni koru':'Seyirci sorusu · bilirsen +50 puan';
+  const {out}=await ask(makeQ('mc'),[a,d],{duel:{a,d,cap:isCap},spectate,defend:d===0,label:lab});
+  rm();if(stopped(g))return;
+  if(spectate&&out[0]&&out[0].ok){G.pl[0].bonus+=50;G.stats.spec++;floatAt(G.pl[0].cap,'+50 seyirci','g')}
+  const A=out[a],D=out[d],win=A.ok&&(!D.ok||A.t<D.t);
   if(win){
-    if(isCap){G.pl[d].tw--;G.pl[a].sc+=200;G.pl[d].sc=Math.max(0,G.pl[d].sc-200);
-      if(G.pl[d].tw<=0){terr(d).forEach(i=>{G.owner[i]=a;G.pl[a].sc+=G.val[i]});G.val[h]=1000;G.pl[d].sc=0;G.pl[d].alive=0;G.pl[d].cap=-1;msg=`${G.pl[a].n} başkenti düşürdü! ${G.pl[d].n} oyundan çıktı.`;KA.sfx.win();if(a===0)G.stats.caps++}
-      else msg=`${G.pl[a].n} bir kule yıktı. Başkentte ${G.pl[d].tw} kule kaldı.`}
-    else{claim(a,h,G.val[h]+100);msg=`${G.pl[a].n}, ${HEX[h].name} bölgesini fethetti.`;if(a===0)G.stats.caps++}
-  }else{G.pl[d].sc+=100;msg=`${G.pl[d].n} savunmayı tuttu ve +100 puan aldı.`}
-  refresh();log(msg);
-  $('#qres').innerHTML=resRows(out,all,i=>i===0&&!me&&out[0].ok?' · +50':'')+`<div class="banner ${win?'acc':''}" style="margin-top:10px">${esc(msg)}</div>`;
-  await waitNext();
+    if(d===0&&G.shield){G.shield=false;floatAt(h,'Kalkan!','g');log('Kalkanın saldırıyı durdurdu.',0);KA.sfx.ok()}
+    else if(isCap){
+      G.pl[d].tw--;const b=$('#board');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');KA.sfx.hit();floatAt(h,'−1 kule','r');
+      if(G.pl[d].tw<=0){
+        G.pl[d].alive=0;own(d).forEach(r=>{G.owner[r]=a});if(a===0)G.stats.razed++;if(d===0)G.stats.lost++;
+        refresh();await banner(`${G.pl[d].n} düştü!`,`Bütün toprakları ${G.pl[a].n} ordusuna geçti`,1800);
+        log(`${G.pl[a].n} başkenti düşürdü, ${G.pl[d].n} oyundan çıktı.`,a);
+      }else log(`${G.pl[d].n} başkentinin bir kulesi yıkıldı (${G.pl[d].tw} kule kaldı).`,a);
+    }else{if(a===0)G.stats.caps++;if(d===0)G.stats.lost++;claim(a,h);log(`${G.pl[a].n} ${R[h].name} bölgesini fethetti.`,a)}
+  }else{
+    if(D.ok){G.val[h]+=100;if(d===0)G.stats.def++;floatAt(h,'+100 savunma',d===0?'g':'');log(`${G.pl[d].n} ${R[h].name} bölgesini savundu, değeri arttı.`,d)}
+    else log('İki taraf da bilemedi, sınırlar değişmedi.',-1);
+  }
+  G.shield=false;refresh();await sleep(500);
 }
 function end(){
-  G.turn=-1;KA.closeLookup();
-  const order=[0,1,2].sort((a,b)=>G.pl[b].sc-G.pl[a].sc),won=order[0]===0,me=G.pl[0];
-  REC.games++;if(won)REC.wins++;REC.best=Math.max(REC.best,me.sc);if(CFG.mode==='daily')REC.daily[today()]=Math.max(REC.daily[today()]||0,me.sc);KA.store.set('ka_fetih',REC);
-  const xp=Math.max(5,Math.round(me.sc/60));KA.addXp(xp);
+  KA.closeLookup();document.body.classList.remove('ingame');
+  const order=[0,1,2].sort((a,b)=>score(b)-score(a)),won=order[0]===0,my=score(0),st=G.stats;
+  const medals=[];
+  if(won)medals.push(['crown','Arenanın Fatihi']);
+  if(st.tot>=8&&st.ok===st.tot)medals.push(['star','Kusursuz']);
+  if(st.best>=5)medals.push(['flame','Seri Ustası']);
+  if(st.razed)medals.push(['sword','Kale Yıkan']);
+  if(st.def>=2)medals.push(['shield','Demir Duvar']);
+  if(st.spec>=2)medals.push(['spark','Keskin Gözlemci']);
+  const xp=Math.max(8,Math.round(my/60))+(won?30:0)+medals.length*8;
+  const before=rankOf(REC.xp);
+  REC.games++;if(won)REC.wins++;REC.best=Math.max(REC.best,my);REC.xp+=xp;REC.streak=Math.max(REC.streak||0,st.best);if(CFG.mode==='daily')REC.daily[today()]=Math.max(REC.daily[today()]||0,my);KA.store.set('ka_fetih',REC);
+  const after=rankOf(REC.xp);KA.addXp(xp);
   won?KA.sfx.win():KA.sfx.bad();if(won)confetti();
   const missed=[...new Map(G.missed.map(x=>[x.en,x])).values()];
-  const hgt=[124,100,84];
-  $('#main').innerHTML=`<section class="card end"><img src="favicon.svg" width="64" height="64" alt=""><span class="eyebrow" style="display:block;margin-top:10px">${MODES[CFG.mode].n} · ${DIFF[CFG.diff].n}</span><h1>${won?'Arenanın fatihi sensin!':order[1]===0?'İkinci oldun, az kaldı':'Bu sefer olmadı'}</h1><p class="mut">${me.sc} puan · ${G.stats.ok}/${G.stats.tot} doğru · ${G.stats.caps} fetih${G.stats.spec?' · '+G.stats.spec+' seyirci bonusu':''} · +${xp} XP</p>
-  <div class="podium">${[order[1],order[0],order[2]].map((i,k)=>`<div style="background:${col(i)};min-height:${hgt[[1,0,2][k]]}px"><b>${G.pl[i].sc}</b>${esc(G.pl[i].n)}</div>`).join('')}</div>
-  <div class="row" style="justify-content:center"><button class="btn btn-p btn-lg" data-a="again">${ic('reset')}Tekrar oyna</button><button class="btn btn-ghost btn-lg" data-a="setup">Ayarlar</button><a class="btn btn-ghost btn-lg" href="./">Kelime Arenası</a></div>
-  ${missed.length?`<div class="missed"><h3 style="margin:24px 0 6px">Tekrar etmen gereken kelimeler</h3>${missed.map(x=>`<div><button class="ka-icon-btn" data-say="${esc(x.en)}" aria-label="Dinle">${ic('sound')}</button><b>${esc(x.en)}</b><span class="mut">${esc(x.tr)}</span></div>`).join('')}</div>`:''}</section>`;
+  const hgt=[132,104,86],acc=st.tot?Math.round(st.ok/st.tot*100):0;
+  $('#main').innerHTML=`<section class="card end"><span class="eyebrow">${esc(MODES[CFG.mode].n)} · ${esc(DIFF[CFG.diff].n)}</span><h1>${won?'Arenanın fatihi sensin!':order[1]===0?'İkinci oldun, az kaldı':'Bu sefer olmadı'}</h1>
+  <p class="mut" style="margin:0">${my} puan · +${xp} XP${after.i>before.i?` · <b style="color:var(--acc2)">Yeni rütbe: ${esc(after.n)}</b>`:` · Rütben: ${esc(after.n)}`}</p>
+  <div class="podium">${[order[1],order[0],order[2]].map((i,k)=>`<div style="background:${col(i)};min-height:${hgt[[1,0,2][k]]}px">${emblem(i,1)}<b>${score(i)}</b><small>${['2.','1.','3.'][k]} · ${esc(G.pl[i].n)}</small></div>`).join('')}</div>
+  ${medals.length?`<div class="medals">${medals.map(([i,n],k)=>`<span class="medal" style="animation-delay:${k*.12}s"><i>${ic(i)}</i>${esc(n)}</span>`).join('')}</div>`:''}
+  <div class="tiles"><div><b>%${acc}</b><span>${st.ok}/${st.tot} doğru</span></div><div><b>${st.best}</b><span>en uzun seri</span></div><div><b>${st.caps+st.razed}</b><span>fetih</span></div><div><b>${st.def}</b><span>savunma</span></div></div>
+  <div class="row" style="justify-content:center"><button class="btn btn-p btn-lg" data-a="start" id="again">${ic('reset')}Rövanş</button><button class="btn btn-ghost btn-lg" data-a="setup">Ayarlar</button><a class="btn btn-ghost btn-lg" href="./">Ana sayfa</a></div>
+  ${missed.length?`<div class="missed"><h3 style="margin:0 0 6px">Tekrar etmen gereken kelimeler</h3>${missed.map(x=>`<div><button class="ka-icon-btn" data-say="${esc(head(x))}" aria-label="Dinle">${ic('sound')}</button><b>${esc(head(x))}</b><span class="mut grow">${esc(x.tr)}</span><button class="btn btn-ghost btn-sm" data-add="${esc(x.en)}">${ic('plus')}Listeme ekle</button></div>`).join('')}</div>`:''}</section>`;
+  LASTITEMS=G.items;G=null;scrollTo(0,0);
 }
-function confetti(){const c=document.createElement('div');c.className='conf';const C=['#0f766e','#14b8a6','#fbbf24','#f59e0b','#b42318'];for(let i=0;i<70;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';s.style.background=C[i%5];s.style.animationDelay=Math.random()*.8+'s';c.appendChild(s)}document.body.appendChild(c);setTimeout(()=>c.remove(),3800)}
+let LASTITEMS=[];
+function confetti(){const c=document.createElement('div');c.className='conf';const C=['#0f766e','#14b8a6','#fbbf24','#f59e0b','#c0392b'];for(let i=0;i<80;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';s.style.background=C[i%5];s.style.animationDelay=Math.random()*.8+'s';c.appendChild(s)}document.body.appendChild(c);setTimeout(()=>c.remove(),3800)}
 
 /* ---------- Kurulum ekranı ---------- */
 function setup(){
-  G=null;
+  G=null;document.body.classList.remove('ingame');
   const packs=KA.listPacks().filter(p=>(p.items||[]).filter(x=>x.tr).length>=8);
   if(!CFG.pack||!packs.find(p=>p.id===CFG.pack))CFG.pack=(packs.find(p=>p.id===KA.activeId())||packs[0]||{}).id||'';
-  const winRate=REC.games?Math.round(REC.wins/REC.games*100)+'%':'—';
+  const R=rankOf(REC.xp),pct=Math.min(100,Math.round((REC.xp-R.lo)/(R.hi-R.lo)*100));
+  const M=genMap(CFG.mode==='daily'?seeded(daySeed()+11):Math.random);
   $('#main').innerHTML=`<div class="setup">
-  <section class="card intro"><span class="eyebrow">Strateji ve bilgi oyunu</span><h1>Arena Fethi</h1><p>Kelimelerin senin ordun. Doğru ve hızlı cevaplarla haritada toprak kazan, rakip başkentleri kuşat ve arenanın tek hâkimi ol.</p>
-  <ul class="how"><li><i>1</i><div><b>Toprak kapma</b><span>Üç ordu aynı soruyu cevaplar. En hızlı doğru cevap 2, ikinci 1 bölge seçer.</span></div></li>
-  <li><i>2</i><div><b>Kuşatma</b><span>Sıra sana gelince komşu bir rakip bölgeye saldır. Düelloyu kazanan bölgeyi ve puanını alır.</span></div></li>
-  <li><i>3</i><div><b>Başkentler</b><span>Her başkentin üç kulesi var. Üç kuleyi de yıkan, o ordunun bütün topraklarını alır.</span></div></li>
-  <li><i>4</i><div><b>Seyirci bonusu</b><span>Rakipler kendi aralarında savaşırken sen de cevapla, bilirsen +50 puan.</span></div></li></ul>
-  <div class="recs" style="margin-top:auto;padding-top:20px"><span><b>${REC.games}</b> maç</span><span><b>${winRate}</b> galibiyet</span><span><b>${REC.best}</b> en iyi skor</span>${REC.daily[today()]!=null?`<span><b>${REC.daily[today()]}</b> bugünkü fetih</span>`:''}</div></section>
+  <section class="card hero"><div class="hero-map" id="pv">${M?mapSVG(M):''}</div>
+    <div class="hero-txt"><span class="eyebrow">Strateji · kelime · hız</span><h1>Arena Fethi</h1><p>Kelimelerin senin ordun. Her maçta yeni bir Akdeniz haritası kurulur: hızlı cevaplarla toprak kap, jokerlerini doğru anda kullan, rakip başkentlerin kulelerini tek tek yık.</p></div>
+    <div class="steps"><div><b>${ic('flag')}Yayılma</b>Herkes aynı soruyu cevaplar. En hızlı doğru 2, ikinci 1 bölge alır.</div><div><b>${ic('sword')}Düello</b>Komşu düşmana saldır. Hızlı ve doğru olan bölgeyi kazanır.</div><div><b>${ic('shield')}Jokerler</b>Yarı yarıya, Kalkan ve Çift saldırı. Her 3'lü seri yeni joker verir.</div><div><b>${ic('crown')}Başkent</b>3 kuleyi yıkan, o ordunun bütün topraklarını alır.</div></div>
+    <div class="rankcard">${emblem(0)}<div class="rk"><span class="eyebrow" style="margin:0">Rütben</span><b>${esc(R.n)}</b><div class="xpbar"><i style="width:${pct}%"></i></div><div class="recs"><span>${REC.xp} XP${R.next!=='—'?` · ${esc(R.next)} için ${R.hi-REC.xp} XP`:''}</span></div></div>
+      <div class="recs" style="flex-direction:column;gap:2px;text-align:right"><span><b>${REC.games}</b> maç</span><span><b>${REC.games?Math.round(REC.wins/REC.games*100)+'%':'—'}</b> galibiyet</span><span><b>${REC.best}</b> en iyi</span></div></div>
+  </section>
   <section class="card cfg">
-    <div><h3>Oyun modu</h3><div class="opts3">${Object.entries(MODES).map(([k,m])=>`<button class="choice ${CFG.mode===k?'on':''}" data-gm="${k}"><b>${m.n}</b><span>${m.d}</span></button>`).join('')}</div></div>
+    <div><h3>Oyun modu</h3><div class="opts3">${Object.entries(MODES).map(([k,m])=>`<button class="choice ${CFG.mode===k?'on':''}" data-gm="${k}"><b>${ic(m.ic)}${m.n}</b><span>${m.d}${k==='daily'&&REC.daily[today()]!=null?` · bugün: ${REC.daily[today()]}`:''}</span></button>`).join('')}</div></div>
     <div><h3>Rakip seviyesi</h3><div class="opts3">${Object.entries(DIFF).map(([k,m])=>`<button class="choice ${CFG.diff===k?'on':''}" data-diff="${k}"><b>${m.n}</b><span>${m.d} · ${m.lim} sn</span></button>`).join('')}</div></div>
-    <div><h3>Kelimeler</h3>${CFG.mode==='daily'?'<p class="mut" style="margin:0;font-size:14px">Günün Fethi herkes için aynı akademik kelime setini kullanır.</p>':packs.length?`<select class="select" id="pk">${packs.map(p=>`<option value="${esc(p.id)}" ${p.id===CFG.pack?'selected':''}>${esc(p.name)} · ${(p.items||[]).filter(x=>x.tr).length} kelime</option>`).join('')}</select>`:'<p class="mut" style="margin:0;font-size:14px">Henüz en az 8 anlamlı kelimesi olan bir listen yok; hazır akademik kelimelerle oynayacaksın. <a href="./">Liste oluştur</a></p>'}</div>
-    <div><h3>Rakiplerin</h3><div class="rivals"><span class="rv"><i style="background:var(--c0)"></i>Sen</span><span class="rv"><i style="background:var(--c1)"></i>Kızıl Lejyon</span><span class="rv"><i style="background:var(--c2)"></i>Altın Muhafız</span></div></div>
-    <button class="btn btn-p btn-lg" data-a="start" style="margin-top:auto">${ic('sword')}Arenaya gir</button>
+    <div><h3>Kelimeler</h3>${CFG.mode==='daily'?'<p class="mut" style="margin:0;font-size:14px">Günün Fethi herkes için aynı harita ve akademik kelimelerle oynanır.</p>':packs.length?`<select class="select" id="pk">${packs.map(p=>`<option value="${esc(p.id)}" ${p.id===CFG.pack?'selected':''}>${esc(p.name)} · ${(p.items||[]).filter(x=>x.tr).length} kelime</option>`).join('')}</select>`:'<p class="mut" style="margin:0;font-size:14px">Henüz en az 8 anlamlı kelimesi olan bir listen yok; hazır akademik kelimelerle oynayacaksın. <a href="./">Liste oluştur</a></p>'}</div>
+    <div><h3>Ordular</h3><div class="row" style="gap:12px">${PL.map((p,i)=>`<span class="row" style="gap:6px;font-weight:800;font-size:13.5px;flex-wrap:nowrap"><span style="width:22px;height:25px;display:inline-flex">${emblem(i)}</span>${esc(p.n)}</span>`).join('')}</div></div>
+    <button class="btn btn-p btn-lg startbtn" data-a="start">${ic('sword')}Arenaya gir</button>
   </section></div>`;
+  if(M){const pv=$('#pv svg');M.caps.forEach((r,i)=>{pv.querySelector(`.rg[data-r="${r}"]`).classList.add('o'+i);const C=M.regs[r];pv.querySelector('.lbs').insertAdjacentHTML('beforeend',castle(C.lx,C.ly+4,'#fff'))});
+    pv.querySelector('.lbs').insertAdjacentHTML('beforeend',M.regs.filter(r=>!M.caps.includes(r.i)).map(r=>`<text class="lb lbn" x="${f1(r.lx)}" y="${f1(r.ly+3)}">${esc(r.name)}</text>`).join(''))}
 }
 
 /* ---------- Olaylar ---------- */
 document.addEventListener('click',e=>{
   const t=e.target;
-  const m=t.closest('[data-gm]');if(m&&!G){CFG.mode=m.dataset.gm;setup();return}
-  const d=t.closest('[data-diff]');if(d&&!G){CFG.diff=d.dataset.diff;setup();return}
-  const a=t.closest('[data-a]');if(a){if(a.dataset.a==='start'||a.dataset.a==='again')newGame();else if(a.dataset.a==='setup')setup();return}
-  const s=t.closest('[data-say]');if(s&&!t.closest('#panel'))KA.speak(s.dataset.say);
+  const m=t.closest('[data-gm]');if(m&&!G){CFG.mode=m.dataset.gm;KA.store.set('ka_fetih_cfg',CFG);setup();return}
+  const d=t.closest('[data-diff]');if(d&&!G){CFG.diff=d.dataset.diff;KA.store.set('ka_fetih_cfg',CFG);setup();return}
+  const a=t.closest('[data-a]');if(a){const k=a.dataset.a;if(k==='start'){newGame();scrollTo(0,0)}else if(k==='setup')setup();else if(k==='quit'){if(confirm('Oyundan çıkılsın mı? Bu maç kaydedilmez.'))setup()}return}
+  const ad=t.closest('[data-add]');if(ad){const src=(G?G.items:LASTITEMS).concat(words());const x=src.find(o=>o.en===ad.dataset.add);if(x){const r=KA.addUnknown(x.en,x.tr,{s:x.s||'',st:x.st||'',syn:x.syn||[]});KA.toast(r==='var'?'Bu kelime zaten listende.':'“Bilmediklerim” listesine eklendi.');ad.disabled=true}return}
+  const s=t.closest('[data-say]');if(s)KA.speak(s.dataset.say);
 });
 document.addEventListener('change',e=>{if(e.target.id==='pk'){CFG.pack=e.target.value;KA.store.set('ka_fetih_cfg',CFG)}});
-document.addEventListener('keydown',e=>{if(G&&G.key&&!e.metaKey&&!e.ctrlKey)G.key(e)});
+document.addEventListener('keydown',e=>{if(!G||!G.key||e.metaKey||e.ctrlKey)return;if(e.target.matches&&e.target.matches('input')&&e.key!=='Enter')return;G.key(e)});
 KA.nav('fetih.html',{stats:true});
 setup();
 })();
