@@ -357,7 +357,7 @@ function makeQ(kind){
   if(r<.14){const c=cloze(x);if(c){const d=dEN(3);if(d.length===3)return mk('Boşluğa hangisi gelir?',{sent:c,ans:head(x),opts:shuf([head(x),...d])})}}
   if(r<.26&&x.syn&&x.syn.length){const s=x.syn[0],d=dEN(4).filter(w=>!x.syn.includes(w)).slice(0,3);if(d.length===3)return mk('Eş anlamlısı hangisi?',{text:head(x),ans:s,opts:shuf([s,...d])})}
   if(r<.34&&x.s&&x.st){const d=shuf(pool.filter(o=>o.st&&o.st!==x.st).map(o=>o.st)).slice(0,3);if(d.length===3)return mk('Cümlenin anlamı hangisi?',{sent:x.s,ans:x.st,opts:shuf([x.st,...d])})}
-  if(r<.42&&!G.noAudio)return mk('Dinle, anlamını seç',{listen:1,text:x.en,ans:x.tr,opts:shuf([x.tr,...dTR(3)])});
+  if(r<.42&&!G.noAudio)return mk('Kelimeyi oku ve dinle, anlamını seç',{listen:1,text:x.en,ans:x.tr,opts:shuf([x.tr,...dTR(3)])});
   const en=r<.72;
   return en?mk('İngilizce → Türkçe',{text:x.en,ans:x.tr,opts:shuf([x.tr,...dTR(3)])}):mk('Türkçe → İngilizce',{text:x.tr,ans:head(x),opts:shuf([head(x),...dEN(3)])});
 }
@@ -406,7 +406,7 @@ function ask(q,who,o={}){
     const tag=o.duel?`<div class="vs"><div class="side">${emblem(o.duel.a)}<span>${esc(G.pl[o.duel.a].n)}</span></div><span class="x">VS</span><div class="side"><span>${esc(G.pl[o.duel.d].n)}${o.duel.cap?' ♜':''}</span>${emblem(o.duel.d)}</div></div>`:'';
     $('#panel').innerHTML=`${tag}<div class="qh"><span class="qtag ${o.duel&&who.includes(0)?'duel':o.spectate?'spec':''}">${esc(o.label||'')}</span><div class="tmr" id="tm"><svg viewBox="0 0 36 36"><circle class="tb" cx="18" cy="18" r="16"/><circle class="tf" id="tf" cx="18" cy="18" r="16"/></svg><b id="tt">${lim}</b></div></div>
     <div class="qt">${esc(q.type)}</div>
-    ${q.listen?`<button class="lis" data-say="${esc(q.text)}">${ic('sound')}Kelimeyi dinle</button>`:q.sent?`<div class="qs">${esc(q.sent).replace('§','<span class="blank"></span>')}</div>`:`<div class="qw">${esc(q.text)}</div>`}
+    ${q.listen?`<div class="qw">${esc(q.text)}</div><button class="btn btn-ghost btn-sm" data-say="${esc(q.text)}">${ic('sound')}Tekrar dinle</button>`:q.sent?`<div class="qs">${esc(q.sent).replace('§','<span class="blank"></span>')}</div>`:`<div class="qw">${esc(q.text)}</div>`}
     ${q.typing?`<form class="qtype" id="qf" autocomplete="off"><input class="input" id="qi" placeholder="İngilizcesini yaz" autocapitalize="off" spellcheck="false"><button class="btn btn-p">Gönder</button></form>`:`<div class="qo">${q.opts.map((t,i)=>`<button data-o="${i}"><kbd>${i+1}</kbd><span>${esc(t)}</span></button>`).join('')}</div>`}
     ${!q.typing?`<div class="qj"><button class="jk" data-j="yari" ${G.pl[0].jok.yari?'':'disabled'}>${svgI('half')}<span>Yarı yarıya</span><i>${G.pl[0].jok.yari}</i></button>${o.defend?`<button class="jk ${G.shield?'use':''}" data-j="kalkan" ${G.pl[0].jok.kalkan||G.shield?'':'disabled'}>${svgI('shield')}<span>Kalkan</span><i>${G.pl[0].jok.kalkan}</i></button>`:''}</div>`:''}
     <div class="qps">${all.map(i=>`<div class="qp" id="qp${i}"><i style="background:${col(i)}"></i>${esc(G.pl[i].n)}<span class="r">düşünüyor…</span></div>`).join('')}</div><div id="qr"></div>`;

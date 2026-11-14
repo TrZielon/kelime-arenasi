@@ -254,7 +254,7 @@ X-intensive - Çok X gerektiren`;
 
 /* ---------- Yapay zekâ komutları ---------- */
 const TR_SYS=`Sen İngilizce-Türkçe sözlük yazarısın. Girdide numaralandırılmış İngilizce kelimeler ve kalıplar var. Her biri için en yaygın Türkçe karşılığını yaz (1-3 kelime). Kelimeyi İngilizce bırakma. YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"tr":"Türkçe karşılık"}]}. Her numarayı girdideki sırayla ve eksiksiz döndür.`;
-const BATCH=`Sen BUEPT düzeyinde akademik İngilizce öğretmenisin. YALNIZCA geçerli JSON döndür: {"items":[...]}. Girdideki her satır "en - tr" biçimindedir. Her kelime için: "en" girdideki kelimenin aynısı; "s" kelimeyi içeren akademik C1 düzeyinde 14-22 kelimelik tek İngilizce cümle; "st" cümlenin doğal Türkçe çevirisi; "d" cümlenin anlamına çok yakın ama zaman, olumsuzluk, neden-sonuç, kişi ya da nicelik bakımından bir noktada yanlış 3 Türkçe çeviri; "syn" kelimenin en fazla 3 İngilizce eş anlamlısı (yoksa boş dizi); "gl" cümledeki önemli kelimelerin en fazla 8 tanesi için {"kelime":"Türkçe anlam"} (küçük harf); "mo" ek-kök ayrımı öğretici en fazla 2 kelime için {"kelime":[["parça","kök" veya "ek","kısa Türkçe açıklama"]]}. "X" içeren maddelerde X yerine gerçek bir örnek kullan (ör. energy-intensive) ve cümlede onu kullan.`;
+const BATCH=`Sen BUEPT düzeyinde akademik İngilizce öğretmenisin. YALNIZCA geçerli JSON döndür: {"items":[...]}. Girdideki her satır "en - tr" biçimindedir. Her kelime için: "en" girdideki kelimenin aynısı; "s" kelimeyi içeren akademik C1 düzeyinde 14-22 kelimelik tek İngilizce cümle; "st" cümlenin doğal Türkçe çevirisi; "d" BUEPT çeviri sorusu çeldiricisi olarak 3 yanlış Türkçe çeviri: her biri doğru çeviriyle aynı kelimeleri, aynı üslubu ve neredeyse aynı uzunluğu kullansın, ilk okumada doğru gibi görünsün ama tek bir kilit noktada anlamı bozsun (hedef kelimenin yakın ama yanlış anlamı; neden-sonuç, karşıtlık ya da taviz ilişkisi; kesinlik/olasılık ve nicelik dereceleri; kimin kime ne yaptığı; zaman ya da olumsuzluk); bariz yanlış, eksik ya da konu dışı çeviri yazma; "dn" doğru çeviriyi çeldiricilerden ayıran kilit noktayı anlatan kısa Türkçe ipucu; "syn" kelimenin en fazla 3 İngilizce eş anlamlısı (yoksa boş dizi); "gl" cümledeki önemli kelimelerin en fazla 8 tanesi için {"kelime":"Türkçe anlam"} (küçük harf); "mo" ek-kök ayrımı öğretici en fazla 2 kelime için {"kelime":[["parça","kök" veya "ek","kısa Türkçe açıklama"]]}. "X" içeren maddelerde X yerine gerçek bir örnek kullan (ör. energy-intensive) ve cümlede onu kullan.`;
 const PARA_G=`Sen BUEPT sınavına hazırlanan öğrenciler için akademik İngilizce paragraf yazan bir yazarsın. YALNIZCA geçerli JSON döndür. Kurallar: (1) Verilen her kalıbı paragrafta en az bir kez, parantez içindeki Türkçe anlamına uygun ve doğal çekimli biçimde kullan. "a / b" biçimindeki kalıplarda biri yeterlidir. X içeren kalıplarda X yerine gerçek bir kelime kullan. (2) Tek bir konu seç, cümleleri mantıksal bağlarla bağla. (3) İlk cümle konuyu tanıtsın, son cümle sonuç ya da değerlendirme içersin. (4) C1 akademik üslup, dolgu ve tekrar yok. (5) Uzunluk 70-95 kelime. (6) Uydurma istatistik kullanma. Biçim: {"par":"paragraf metni","ana_fikir":"paragrafın kabataslak özeti, Türkçe, 1-2 cümle","gl":{"kelime":"Türkçe anlam"}} gl: en fazla 12 önemli kelime.`;
 const GLOSS=`Verilen İngilizce kelimelerin her birinin en yaygın Türkçe karşılığını yaz (1-3 kelime; çekimli biçimse o biçimin anlamı). YALNIZCA geçerli JSON döndür: {"kelime":"Türkçe karşılık"}. Anahtarlar küçük harfli ve girdideki gibi olsun.`;
 const REFGEN=`Aşağıdaki İngilizce akademik paragrafın kabataslak özetini Türkçe, 1-2 açık cümleyle yaz. Paragrafta olmayan bir şey ekleme. YALNIZCA geçerli JSON döndür: {"ana_fikir":"..."}`;
@@ -468,7 +468,17 @@ function wordOpts(x,dirEn){
   const d=shuf(pool).sort((a,b)=>Math.abs(key(a).length-L)-Math.abs(key(b).length-L)).slice(0,8);
   return shuf([ans,...shuf(d).slice(0,3).map(key)]);
 }
+const HARD=`Sen BUEPT (Boğaziçi İngilizce yeterlik sınavı) için çeviri sorusu hazırlayan deneyimli bir sınav yazarısın. Girdide numaralı İngilizce akademik cümleler ve doğru Türkçe çevirileri (TR) var. Her cümle için 3 çeldirici Türkçe çeviri yaz.
+Kurallar: Her çeldirici doğru çeviriyle aynı konuyu, büyük ölçüde aynı kelimeleri, aynı üslubu ve neredeyse aynı uzunluğu kullansın; dilbilgisi kusursuz ve doğal olsun; hızlı okuyan birine doğru gibi görünsün. Ama her biri TEK bir kilit noktada anlamı bozsun ve üçü farklı noktaları bozsun. Kilit noktalar: hedef kelimenin yakın ama yanlış anlamı; neden-sonuç, karşıtlık (however/although/despite) ya da koşul ilişkisinin tersine çevrilmesi; kesinlik, olasılık ve nicelik dereceleri (may/must, some/most, rarely/often, partly/entirely); kimin kime ne yaptığının yer değiştirmesi; zaman, karşılaştırma ya da olumsuzluk. Bariz yanlış, eksik, konu dışı ya da saçma çeviri yazma. Doğru çeviriyi aynen tekrar etme.
+YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"d":["çeldirici 1","çeldirici 2","çeldirici 3"],"dn":"doğru çeviriyi ayıran kilit noktayı anlatan kısa Türkçe ipucu"}]}`;
+async function hardenSet(list){
+  const need=list.filter(x=>x.s&&x.st&&x.dv!==2);if(!need.length)return;
+  await pool(chunks(need,5),async c=>{const r=await KA.askJ(HARD,c.map((x,i)=>`${i+1}. EN: ${x.s}\n   TR: ${x.st}`).join('\n'),{tier:'quick',ms:50000});
+    if(!r.json)return;(r.json.items||[]).forEach(o=>{const x=c[Number(o&&o.i)-1];if(!x||!Array.isArray(o.d))return;const d=o.d.map(v=>String(v).trim()).filter(v=>v&&v!==x.st);if(d.length>=3){x.d=d.slice(0,3);x.dv=2;x.dn=String(o.dn||'')}})},3);
+  save();
+}
 function sentOpts(x){
+  if(x.dv===2&&x.d&&x.d.length>=3)return shuf([x.st,...x.d.slice(0,3)]);
   const T=x.st,toks=s=>new Set((s.toLocaleLowerCase('tr').match(/[a-zçğıöşü]{4,}/g)||[]).map(w=>w.slice(0,5)));
   const A=toks(T),sc=s=>{let o=0;toks(s).forEach(w=>{if(A.has(w))o++});return Math.abs(s.length-T.length)*.12-o*3};
   const own=(x.d||[]).filter(v=>v&&v!==T);
@@ -586,10 +596,11 @@ function startCumle(){
   let gi=G.findIndex(g=>!g.every(x=>done.has(x.en)));if(gi<0)gi=0;
   C={G,gi,total:order.length};groupCumle();
 }
-function groupCumle(){
+async function groupCumle(){
   const done=new Set(cur.prog.cdone||[]);
   const g=C.G[C.gi];C.q=shuf(g.filter(x=>!done.has(x.en)));
   if(!C.q.length){return nextGroup()}
+  if(C.q.some(x=>x.dv!==2)){const my=C;ST().innerHTML=stripCumle()+`<div class="card done-card"><div class="bigic">${ic('spark')}</div><h2 style="font-size:24px">BUEPT tarzı şıklar hazırlanıyor…</h2><p class="mut">Her cümle için birbirine çok yakın, çeldirici çeviriler yazılıyor. Bu yalnızca ilk seferde birkaç saniye sürer.</p><span class="ka-spin"></span></div>`;await hardenSet(C.q);if(C!==my)return}
   nextCumle();
 }
 function nextGroup(){
@@ -620,7 +631,7 @@ function answerCumle(i){
   tally(ok);
   if(ok){C.q.shift();cur.prog.cdone=[...new Set([...(cur.prog.cdone||[]),q.x.en])];addXp(1);KA.sfx.ok()}else{C.q.push(C.q.shift());KA.sfx.bad()}
   save();prog((cur.prog.cdone||[]).length,C.total);
-  feedback(ok,ok?'Doğru!':'Bu cümle tekrar gelecek',ok?'':'Doğru çeviri: '+esc(q.ans));
+  feedback(ok,ok?'Doğru!':'Bu cümle tekrar gelecek',ok?'':'Doğru çeviri: '+esc(q.ans)+(q.x.dn?'<br><b>İpucu:</b> '+esc(q.x.dn):''));
 }
 
 /* ---------- 7. Paragraf: kabataslak özet ---------- */
@@ -724,7 +735,7 @@ async function prepare(){
     let todo=p.items.filter(x=>!x.tr),done=0;
     await pool(chunks(todo,40),async c=>{const r=await KA.askJ(TR_SYS,c.map((x,i)=>`${i+1}. ${x.en}`).join('\n'),{tier:'quick'});if(!r.json){LASTERR=r.err;return}(r.json.items||[]).forEach(o=>{const x=c[Number(o&&o.i)-1];if(x&&!x.tr&&o.tr&&String(o.tr).toLowerCase()!==x.en.toLowerCase())x.tr=String(o.tr).trim()});done+=c.length;prepMsg(`Anlamlar hazırlanıyor · ${done}/${todo.length}`);KA.savePack(p)},2);
     todo=p.items.filter(x=>x.tr&&!x.s);done=0;
-    await pool(chunks(todo,6),async c=>{const r=await KA.askJ(BATCH,c.map(w=>w.en+' - '+w.tr).join('\n'),{tier:'quick',ms:58000});if(!r.json){LASTERR=r.err;return}(r.json.items||[]).forEach(g=>{const it=c.find(x=>x.en.toLowerCase()===String(g&&g.en).toLowerCase());if(it&&g.s)Object.assign(it,{s:String(g.s),st:String(g.st||''),d:Array.isArray(g.d)?g.d.map(String):[],gl:lowerKeys(g.gl),mo:g.mo&&typeof g.mo==='object'?g.mo:{},syn:(Array.isArray(g.syn)?g.syn:[]).map(v=>String(v).toLowerCase()).slice(0,4)})});done+=c.length;prepMsg(`Örnek cümleler hazırlanıyor · ${Math.min(done,todo.length)}/${todo.length}`);KA.savePack(p)},3);
+    await pool(chunks(todo,6),async c=>{const r=await KA.askJ(BATCH,c.map(w=>w.en+' - '+w.tr).join('\n'),{tier:'quick',ms:58000});if(!r.json){LASTERR=r.err;return}(r.json.items||[]).forEach(g=>{const it=c.find(x=>x.en.toLowerCase()===String(g&&g.en).toLowerCase());if(it&&g.s)Object.assign(it,{s:String(g.s),st:String(g.st||''),d:Array.isArray(g.d)?g.d.map(String):[],dv:Array.isArray(g.d)&&g.d.length>=3?2:0,dn:String(g.dn||''),gl:lowerKeys(g.gl),mo:g.mo&&typeof g.mo==='object'?g.mo:{},syn:(Array.isArray(g.syn)?g.syn:[]).map(v=>String(v).toLowerCase()).slice(0,4)})});done+=c.length;prepMsg(`Örnek cümleler hazırlanıyor · ${Math.min(done,todo.length)}/${todo.length}`);KA.savePack(p)},3);
     const have=new Set(p.groups.flatMap(g=>g.w)),left=p.items.filter(x=>x.tr&&!have.has(x.en)).map(x=>x.en);
     for(let i=0;i<left.length;i+=10)p.groups.push({w:left.slice(i,i+10),text:'',ana:'',gl:{},ok:false});
     const gs=p.groups.filter(g=>!g.text);done=0;
