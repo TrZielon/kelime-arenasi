@@ -775,21 +775,38 @@ function modalNew(){
     if(p.items.some(x=>!x.tr)||p.items.length)setTimeout(prepare,400);
   };
 }
-const OCR=`Bu fotoğraf bir İngilizce kelime listesi, ders notu, defter, kitap sayfası ya da çalışma kâğıdı olabilir; el yazısı da olabilir. Fotoğraftaki öğrenilecek İngilizce kelimeleri ve kalıpları eksiksiz ve fotoğraftaki sırayla çıkar.
-Kurallar: Yanında Türkçe anlam yazılıysa onu aynen al (el yazısını dikkatle oku). Anlam yazılı değilse en yaygın Türkçe karşılığını sen yaz (1-4 kelime) ve "oto":true yap. Numaraları, madde işaretlerini, başlıkları, sayfa numaralarını ve talimatları alma. Kelimeyi sözlük biçiminde yaz, yazım hatası varsa düzelt. Fotoğraf düz bir metinse (paragraf) içindeki öğrenmeye değer akademik kelimeleri seç (en fazla 40). Fotoğrafta İngilizce kelime yoksa boş liste döndür.
+const OCR=`Görevin: Fotoğraftaki İngilizce kelimeleri bir kelime listesine dönüştürmek. Fotoğraf her şey olabilir: basılı ya da el yazısı kelime listesi, defter, tahta, kitap sayfası, çalışma kâğıdı, ekran görüntüsü, tablo, yamuk ya da bulanık çekilmiş bir sayfa.
+Fotoğraftaki BÜTÜN yazıyı dikkatle oku. Latin harfli her İngilizce kelime ve kalıp senin için adaydır; emin olmasan bile en iyi tahminini yaz. Listede ya da tabloda yazan her İngilizce kelimeyi eksiksiz ve sırasıyla al. Sayfa düz bir metinse içindeki öğrenmeye değer kelimeleri seç (en fazla 40).
+Yanında Türkçe anlam yazılıysa aynen al; yoksa en yaygın Türkçe karşılığını sen yaz ve "oto":true yap. Numara, madde işareti, başlık ve sayfa numarasını alma. Yazım hatalarını düzelt.
+Boş liste döndürmek için fotoğrafta gerçekten hiç Latin harfli yazı olmaması gerekir.
 YALNIZCA geçerli JSON döndür: {"items":[{"en":"kelime ya da kalıp","tr":"Türkçe anlam","oto":false}]}`;
-function shrinkImage(f){return new Promise((ok,no)=>{const u=URL.createObjectURL(f),im=new Image();im.onload=()=>{const M=1800,k=Math.min(1,M/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(im.naturalWidth*k);c.height=Math.round(im.naturalHeight*k);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL('image/jpeg',.86).split(',')[1])};im.onerror=()=>{URL.revokeObjectURL(u);no(new Error('Fotoğraf açılamadı. JPEG ya da PNG olarak dene.'))};im.src=u})}
+const OCR_RAW=`Fotoğraftaki bütün yazıyı satır satır, gördüğün gibi aynen yaz (OCR). Hiçbir şeyi atlama, yorum ekleme. El yazısını da oku. YALNIZCA geçerli JSON döndür: {"metin":"satır 1\\nsatır 2"}`;
+function shrinkImage(f,M){return new Promise((ok,no)=>{const u=URL.createObjectURL(f),im=new Image();im.onload=()=>{const k=Math.min(1,M/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(im.naturalWidth*k);c.height=Math.round(im.naturalHeight*k);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL('image/jpeg',.9).split(',')[1])};im.onerror=()=>{URL.revokeObjectURL(u);no(new Error('Fotoğraf açılamadı. Ekran görüntüsü ya da JPEG/PNG olarak dene.'))};im.src=u})}
+function ocrItems(j){
+  if(!j)return [];
+  let arr=Array.isArray(j)?j:Array.isArray(j.items)?j.items:Object.values(j).find(Array.isArray)||[];
+  return arr.map(o=>typeof o==='string'?{en:o,tr:'',oto:false}:o&&({en:o.en||o.word||o.english||o.kelime||'',tr:o.tr||o.turkish||o.anlam||'',oto:!!o.oto})).filter(o=>o&&/[a-z]/i.test(String(o.en))).map(o=>({en:String(o.en).trim(),tr:String(o.tr||'').trim(),oto:o.oto}));
+}
+async function scanPhoto(f){
+  const data=await shrinkImage(f,2200),img={mime:'image/jpeg',data};
+  let r=await KA.askJ(OCR,'Fotoğraftaki İngilizce kelimeleri listele.',{image:img,ms:80000});
+  let items=ocrItems(r.json);if(items.length)return {items};
+  // ikinci deneme: önce yazıyı aynen oku, sonra listeyi burada ayır
+  const r2=await KA.askJ(OCR_RAW,'Fotoğraftaki yazıyı aynen yaz.',{image:img,ms:80000});
+  const txt=r2.json&&String(r2.json.metin||r2.json.text||'');
+  if(txt){items=parse(txt).filter(x=>/[a-z]{2,}/i.test(x.en));
+    if(!items.length)items=[...new Set((txt.match(/[A-Za-z][A-Za-z'-]{2,}(?:\s[a-z]{2,}){0,2}/g)||[]))].slice(0,60).map(en=>({en,tr:''}));
+    if(items.length)return {items,raw:1}}
+  return {items:[],err:r.err||r2.err};
+}
 async function importFile(f,el){
   const out=el.querySelector('#pfs');out.innerHTML='<span class="ka-spin"></span> Dosya okunuyor…';
   try{
     const ext=f.name.split('.').pop().toLowerCase();let txt='';
     if(/^image\//.test(f.type)||/^(jpe?g|png|heic|heif|webp|gif|bmp)$/.test(ext)){
       out.innerHTML='<span class="ka-spin"></span> Fotoğraf taranıyor, kelimeler çıkarılıyor…';
-      const data=await shrinkImage(f);
-      const r=await KA.askJ(OCR,'Fotoğraftaki kelime listesini çıkar.',{image:{mime:'image/jpeg',data},ms:70000});
-      if(!r.json||!Array.isArray(r.json.items))throw new Error(r.err||'fotoğraf okunamadı');
-      const items=r.json.items.filter(o=>o&&o.en).map(o=>({en:String(o.en).trim(),tr:String(o.tr||'').trim(),oto:!!o.oto}));
-      if(!items.length){out.textContent='Fotoğrafta İngilizce kelime bulunamadı. Daha net ve yakından çekip tekrar dene.';return}
+      const {items,err}=await scanPhoto(f);
+      if(!items.length){out.textContent=err?'Fotoğraf okunamadı: '+err+'. Tekrar dene.':'Fotoğraftaki yazı okunamadı. Sayfayı düz tutup ışıklı bir yerde, kelimeler ekranı dolduracak şekilde çek.';return}
       const ta=el.querySelector('#pw');ta.value=(ta.value.trim()?ta.value.trim()+'\n':'')+items.map(x=>x.tr?x.en+' - '+x.tr:x.en).join('\n');
       const pn=el.querySelector('#pn');if(!pn.value)pn.value='Fotoğraftan liste';
       const auto=items.filter(x=>x.oto).length;
