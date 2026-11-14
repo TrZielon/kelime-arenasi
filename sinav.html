@@ -113,9 +113,11 @@
 .textLayer br::selection{background:transparent}
 .textLayer .endOfContent{display:block;position:absolute;inset:100% 0 0;z-index:0;cursor:default;-webkit-user-select:none;user-select:none}
 .textLayer.selecting .endOfContent{top:0}
-.pages.t-pen .ov,.pages.t-note .ov,.pages.t-rect .ov,.pages.t-erase .ov,.pages.t-txt .ov{pointer-events:auto;cursor:crosshair}
+.pages.t-pen .ov,.pages.t-note .ov,.pages.t-rect .ov,.pages.t-erase .ov,.pages.t-txt .ov,.pages.t-circ .ov{pointer-events:auto;cursor:crosshair}
 .pages.t-erase .ov{cursor:cell}.pages.t-txt .ov{cursor:text}
-.pages.t-pen .textLayer,.pages.t-note .textLayer,.pages.t-erase .textLayer,.pages.t-rect .textLayer,.pages.t-txt .textLayer{pointer-events:none}
+.pages.t-circ .textLayer,.pages.t-pen .textLayer,.pages.t-note .textLayer,.pages.t-erase .textLayer,.pages.t-rect .textLayer,.pages.t-txt .textLayer{pointer-events:none}
+.hintbar{display:flex;align-items:center;gap:10px;padding:10px 12px 10px 16px;margin-bottom:14px;font-size:14px;background:var(--acc-soft);border-color:transparent}
+.hintbar span{flex:1}.hintbar svg{width:18px;height:18px;vertical-align:-4px}
 .selfab{position:fixed;z-index:70;display:flex;gap:6px;padding:6px;border-radius:14px;background:var(--ink);box-shadow:var(--sh2)}
 .selfab button{border:0;border-radius:10px;padding:8px 12px;font-weight:800;font-size:13px;background:var(--card);color:var(--ink)}
 /* ---------- Cevap kâğıdı ---------- */
@@ -225,7 +227,7 @@ async function analyse(doc){
     const [pw,ph]=pages[q.p-1];
     // şıklar
     const mk=[];
-    for(let j=si;j<ei;j++){const l=L[j];if(j>si&&l.p!==L[si].p&&j>=k&&mk.length===0)break;l.parts.forEach(a=>{const re=/(^|\s)(\(([A-Ea-e])\)|([A-E])[.)]|([a-e])\))(?=\s|$)/g;let m;const n=a.s.length||1;while((m=re.exec(a.s))){const ci=m.index+m[1].length,len=m[2].length;mk.push({l:(m[3]||m[4]||m[5]).toUpperCase(),p:l.p,x:a.x+a.w*ci/n,y:l.top,w:Math.max(a.w*len/n,l.fs*.55),h:l.bot-l.top})}})}
+    for(let j=si;j<ei;j++){const l=L[j];if(j>si&&l.p!==L[si].p&&j>=k&&mk.length===0)break;l.parts.forEach(a=>{const re=/(^|\s)(\(([A-Ea-e])\)|([A-E])[.)]|([a-e])[.)])(?=\s|$)/g;let m;const n=a.s.length||1;while((m=re.exec(a.s))){const ci=m.index+m[1].length,len=m[2].length;mk.push({l:(m[3]||m[4]||m[5]).toUpperCase(),p:l.p,x:a.x+a.w*ci/n,y:l.top,w:Math.max(a.w*len/n,l.fs*.55),h:l.bot-l.top})}})}
     let run=[];for(let i=0;i<mk.length;i++){if(mk[i].l!=='A')continue;const r=[mk[i]];for(let j=i+1;j<mk.length&&r.length<5;j++)if(mk[j].l===String.fromCharCode(65+r.length))r.push(mk[j]);if(r.length>run.length)run=r}
     if(run.length>=3){q.t='mc';q.opts=run.map(o=>({l:o.l,p:o.p,x:r1(o.x),y:r1(o.y),w:r1(o.w),h:r1(o.h)}));maxL=Math.max(maxL,run.length)}
     else if(TFRE.test(q.text)||/\(\s*(T|F|true|false)\s*\)\s*$/i.test(q.text)||secAt[si]){
@@ -321,10 +323,11 @@ async function openExam(id){
     <span class="ttl" title="${esc(EX.title)}">${esc(EX.title)}</span>
     <div class="tools" role="toolbar" aria-label="Araçlar">
       <button data-tool="select" title="İşaretle ve seç (Esc)">${ic('cursor')}</button>
+      <button data-tool="circ" title="Sayfada daire içine al (O)">${icMark}</button>
       <button data-tool="hl" title="Vurgula (V)">${ic('hl')}</button>
       <button data-tool="ul" title="Altını çiz (U)">${ic('ul')}</button>
       <button data-tool="pen" title="Kalem (P)">${ic('pen')}</button>
-      <button data-tool="txt" title="Sayfaya yazı yaz (T)">${icT}</button>
+      <button data-tool="txt" title="Sayfanın üstüne yaz (T)">${icT}</button>
       <button data-tool="note" title="Not iğnesi (N)">${ic('note')}</button>
       <button data-tool="erase" title="Silgi (E)">${ic('eraser')}</button>
     </div>
@@ -333,6 +336,7 @@ async function openExam(id){
     <span class="grow"></span>
     <span class="tmr" id="tmr" title="Süre">${ic('clock')}<span>0:00</span></span>
   </div>
+  ${KA.store.raw('ka_sinav_hint','')?'':`<div class="card hintbar" id="hint"><span><b>Kâğıt üstünde çöz:</b> Bulunan şıklara doğrudan dokunarak daire içine alabilirsin. Her yerde işaretlemek için ${icMark} <b>Daire</b>, sayfanın üstüne yazmak için <b>T</b> aracını seç.</span><button class="ka-icon-btn" data-a="hint" aria-label="Kapat">${ic('x')}</button></div>`}
   <div class="exbody"><div class="pages" id="pages"><div class="mut" style="padding:40px"><span class="ka-spin"></span> Sınav açılıyor…</div></div><aside class="card sheet" id="sheet"></aside></div>
   <button class="btn btn-p sheet-fab" data-a="sheet">${ic('list')}Cevap kâğıdı</button>`;
   setTool(TOOL);setColor(COLOR);
@@ -422,7 +426,7 @@ function drawAnnos(n){
   const p=PAGES[n-1];if(!p||!p.el)return;
   const L=EX.annos[n]||[],H=1000*p.h/p.w;
   p.el.querySelector('.anno').innerHTML=L.filter(a=>a.t==='hl'||a.t==='box').map(a=>`<g data-id="${a.id}">${a.r.map(([x,y,w,h])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="${a.c}" fill-opacity=".55"/>`).join('')}</g>`).join('');
-  p.el.querySelector('.ink').innerHTML=L.filter(a=>a.t==='ul'||a.t==='pen').map(a=>a.t==='ul'?`<g data-id="${a.id}">${a.r.map(([x,y,w,h])=>`<line x1="${x}" y1="${(y+h-.6).toFixed(1)}" x2="${x+w}" y2="${(y+h-.6).toFixed(1)}" stroke="${ulColor(a.c)}" stroke-width="2.4" stroke-linecap="round"/>`).join('')}</g>`:`<path data-id="${a.id}" d="${a.d}" fill="none" stroke="${ulColor(a.c)}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`).join('');
+  p.el.querySelector('.ink').innerHTML=L.filter(a=>a.t==='circ').map(a=>`<ellipse data-id="${a.id}" cx="${a.x}" cy="${a.y}" rx="17" ry="11.5" transform="rotate(-8 ${a.x} ${a.y})" fill="none" stroke="#1f3fb0" stroke-width="2.6"/>`).join('')+L.filter(a=>a.t==='ul'||a.t==='pen').map(a=>a.t==='ul'?`<g data-id="${a.id}">${a.r.map(([x,y,w,h])=>`<line x1="${x}" y1="${(y+h-.6).toFixed(1)}" x2="${x+w}" y2="${(y+h-.6).toFixed(1)}" stroke="${ulColor(a.c)}" stroke-width="2.4" stroke-linecap="round"/>`).join('')}</g>`:`<path data-id="${a.id}" d="${a.d}" fill="none" stroke="${ulColor(a.c)}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`).join('');
   p.el.querySelector('.notes').innerHTML=L.filter(a=>a.t==='note').map(a=>`<button class="pin" data-pin="${a.id}" style="left:${a.x/10}%;top:${a.y/H*100}%" title="${esc(a.text||'Not')}"><svg viewBox="0 0 30 34"><path d="M15 33C15 33 2 20 2 12a13 13 0 0 1 26 0c0 8-13 21-13 21z" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/></svg><span>${noteNo(a)}</span></button>`).join('')
     +L.filter(a=>a.t==='txt').map(a=>`<textarea class="tbx" data-tx="${a.id}" rows="1" spellcheck="false" style="left:${a.x/10}%;top:${a.y/H*100}%;width:${a.w/10}%">${esc(a.text||'')}</textarea>`).join('');
   p.el.querySelectorAll('.tbx').forEach(fitTbx);
@@ -456,11 +460,12 @@ function onSelChange(){
 function bindPage(p){
   const ov=p.el.querySelector('.ov');let draw=null;
   p.el.querySelector('.textLayer').addEventListener('pointerup',e=>{if(e.pointerType==='mouse'&&(TOOL==='hl'||TOOL==='ul'))setTimeout(()=>applySel(TOOL),0)});
-  const eraseAt=e=>{const [x,y]=toUnits(p,e.clientX,e.clientY);const hit=(EX.annos[p.n]||[]).filter(a=>a.t!=='note'&&a.t!=='txt').reverse().find(a=>a.t==='pen'?a.d.slice(1).split('L').some(q=>{const [px,py]=q.split(' ').map(Number);return Math.hypot(px-x,py-y)<9}):a.r.some(([rx,ry,rw,rh])=>x>=rx-3&&x<=rx+rw+3&&y>=ry-4&&y<=ry+rh+4));if(hit)delAnno(p.n,hit.id)};
+  const eraseAt=e=>{const [x,y]=toUnits(p,e.clientX,e.clientY);const hit=(EX.annos[p.n]||[]).filter(a=>a.t!=='note'&&a.t!=='txt').reverse().find(a=>a.t==='circ'?Math.abs(a.x-x)<20&&Math.abs(a.y-y)<14:a.t==='pen'?a.d.slice(1).split('L').some(q=>{const [px,py]=q.split(' ').map(Number);return Math.hypot(px-x,py-y)<9}):a.r.some(([rx,ry,rw,rh])=>x>=rx-3&&x<=rx+rw+3&&y>=ry-4&&y<=ry+rh+4));if(hit)delAnno(p.n,hit.id)};
   ov.addEventListener('pointerdown',e=>{
     if(TOOL==='erase'){ov.setPointerCapture(e.pointerId);draw={erase:1};eraseAt(e);return}
     if(TOOL==='note'){const [x,y]=toUnits(p,e.clientX,e.clientY);addAnno(p.n,{t:'note',x:+x.toFixed(1),y:+y.toFixed(1),text:''});openNote(p.n,annos(p.n)[annos(p.n).length-1].id);drawSheet();return}
-    if(TOOL==='txt'){e.preventDefault();const [x,y]=toUnits(p,e.clientX,e.clientY);addAnno(p.n,{t:'txt',x:+x.toFixed(1),y:+(y-12).toFixed(1),w:Math.min(360,990-x),text:''});const id=annos(p.n)[annos(p.n).length-1].id;setTimeout(()=>{const t=p.el.querySelector(`[data-tx="${id}"]`);if(t)t.focus()},30);return}
+    if(TOOL==='circ'){const [x,y]=toUnits(p,e.clientX,e.clientY);const ex=(EX.annos[p.n]||[]).find(a=>a.t==='circ'&&Math.abs(a.x-x)<14&&Math.abs(a.y-y)<10);if(ex)delAnno(p.n,ex.id);else{addAnno(p.n,{t:'circ',x:+x.toFixed(1),y:+y.toFixed(1)});KA.sfx.tick()}return}
+    if(TOOL==='txt'){e.preventDefault();const [x,y]=toUnits(p,e.clientX,e.clientY);addAnno(p.n,{t:'txt',x:+x.toFixed(1),y:+(y-12).toFixed(1),w:Math.min(360,990-x),text:''});const id=annos(p.n)[annos(p.n).length-1].id;const t=p.el.querySelector(`[data-tx="${id}"]`);if(t)t.focus();return}
     if(TOOL!=='pen'&&TOOL!=='rect')return;
     ov.setPointerCapture(e.pointerId);const [x,y]=toUnits(p,e.clientX,e.clientY);draw={pts:[[x,y]],x,y};
     const ink=p.el.querySelector('.ink');draw.el=document.createElementNS('http://www.w3.org/2000/svg',TOOL==='pen'?'path':'rect');
@@ -611,7 +616,7 @@ document.addEventListener('click',async e=>{
   const tb=t.closest('[data-tab]');if(tb){TAB=tb.dataset.tab;drawSheet();return}
   const no=t.closest('[data-note]');if(no){const [n,id]=no.dataset.note.split(':');const p=PAGES[+n-1];const a=annos(+n).find(x=>x.id===id);if(p&&a){const r=p.el.getBoundingClientRect();scrollTo({top:scrollY+r.top+a.y/1000*r.width-200,behavior:'smooth'});$('#sheet').classList.remove('open');setTimeout(()=>openNote(+n,id),400)}return}
   const a=t.closest('[data-a]');if(!a)return;
-  ({lib:()=>{location.hash=''},undo,zin:()=>setZoom(ZOOM*1.15),zout:()=>setZoom(ZOOM/1.15),finish:()=>finish(false),ai:aiGrade,
+  ({lib:()=>{location.hash=''},hint:()=>{KA.store.set('ka_sinav_hint','1');const h=$('#hint');if(h)h.remove()},undo,zin:()=>setZoom(ZOOM*1.15),zout:()=>setZoom(ZOOM/1.15),finish:()=>finish(false),ai:aiGrade,
     sheet:()=>$('#sheet').classList.toggle('open'),
     keymode:()=>{EX.keyMode=1;TAB='ans';redrawQ();drawSheet();KA.toast('Doğru şıkları kâğıdın üstünde ya da formda işaretle.')},
     keydone:()=>{EX.keyMode=0;save();if(objKeys().length)KA.toast('Cevap anahtarı kaydedildi.');redrawQ();drawSheet()},keycancel:()=>{EX.keyMode=0;redrawQ();drawSheet()},
@@ -636,7 +641,7 @@ document.addEventListener('keydown',e=>{
   if(!EX||!PAGES.length)return;
   if(e.target.matches&&e.target.matches('input,textarea,select'))return;
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();undo();return}
-  const m={v:'hl',u:'ul',p:'pen',n:'note',e:'erase',t:'txt',escape:'select',r:'rect'}[e.key.toLowerCase()];if(m&&!e.ctrlKey&&!e.metaKey)setTool(m);
+  const m={v:'hl',u:'ul',p:'pen',n:'note',e:'erase',t:'txt',o:'circ',escape:'select',r:'rect'}[e.key.toLowerCase()];if(m&&!e.ctrlKey&&!e.metaKey)setTool(m);
 });
 let rz=null;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if(PAGES.length&&innerWidth<900){const z=ZOOM;fitZoom();if(Math.abs(z-ZOOM)>.02)layout();else ZOOM=z}},300)});
 addEventListener('hashchange',route);

@@ -173,7 +173,7 @@ const IC={
 KA.ic=(n,cls)=>`<svg class="${cls||''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||''}</svg>`;
 
 /* ---------- Gezinme çubuğu (tek kaynak) ---------- */
-const LINKS=[['index.html','Ana sayfa','home'],['haber.html','Haber','news'],['fetih.html','Arena Fethi','sword'],['sinav.html','Sınav','exam']];
+const LINKS=[['index.html','Ana sayfa','home'],['haber.html','Haber','news'],['fetih.html','Arena Fethi','sword'],['sinav.html','Sınav','exam'],['sozluk.html','Sözlük','book']];
 KA.nav=(active,o={})=>{
   const links=LINKS.map(([h,t,i])=>`<a href="${h==='index.html'?'./':h}" class="${h===active?'on':''}">${KA.ic(i)}<span>${t}</span></a>`).join('');
   const m=KA.mode();

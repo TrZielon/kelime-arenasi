@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="tr" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sözlük · Kelime Arenası</title>
+<meta name="description" content="İngilizce-Türkçe bağlam sözlüğü: anlamlar, cümle içinde örnekler, eş anlamlılar, kalıplar ve kelime ailesi.">
+<meta name="theme-color" content="#0f766e">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="ortak.css">
+<style>
+.dhead{padding:26px 28px 22px;background:linear-gradient(150deg,var(--card),var(--card2))}
+.dhead h1{font-size:clamp(28px,4vw,40px);margin:6px 0 4px}
+.dhead p{margin:0 0 16px;color:var(--ink2)}
+.sbar{display:flex;gap:8px;align-items:stretch}
+.sbox{flex:1;display:flex;align-items:center;gap:10px;border:2px solid var(--line2);border-radius:16px;background:var(--card);padding:0 8px 0 14px;transition:border-color .15s}
+.sbox:focus-within{border-color:var(--p)}
+.sbox svg{width:20px;height:20px;color:var(--mut);flex:0 0 20px}
+.sbox input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:18px;font-weight:700;height:54px}
+.dir{display:flex;padding:3px;border-radius:13px;background:var(--soft);border:1px solid var(--line)}
+.dir button{border:0;background:transparent;border-radius:10px;padding:0 12px;font-weight:800;font-size:13px;color:var(--mut);white-space:nowrap}
+.dir button.on{background:var(--card);color:var(--ink);box-shadow:var(--sh1)}
+.recent{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.recent button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 11px;font-size:13px;font-weight:700;color:var(--ink2)}
+.recent button:hover{border-color:var(--p);color:var(--p)}
+.res{margin-top:18px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;align-items:start}
+.wcard{padding:24px}
+.wtop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.wtop h2{font-size:clamp(30px,4vw,42px);margin:0}
+.wmeta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px;color:var(--mut);font-weight:700;font-size:14px}
+.wmeta .ipa{font-family:ui-monospace,Menlo,monospace;font-weight:500}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.senses{display:grid;gap:8px;margin-top:18px}
+.sense{display:flex;gap:12px;align-items:baseline;padding:10px 14px;border-radius:14px;background:var(--soft)}
+.sense .n{font-weight:800;color:var(--p);min-width:18px}
+.sense b{font-size:17px}
+.sense .tg{font-size:12px;font-weight:800;color:var(--mut);margin-left:6px}
+.sense .nt{display:block;font-size:13.5px;color:var(--ink2);margin-top:2px}
+.sec{margin-top:22px}
+.sec h3{font-family:inherit;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--mut);margin:0 0 10px}
+.ex{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:8px}
+.ex>div{padding:11px 14px;font-size:15px;line-height:1.5}
+.ex>div:first-child{border-right:1px solid var(--line);background:var(--card2)}
+.ex mark{background:color-mix(in srgb,var(--acc) 34%,transparent);color:inherit;border-radius:4px;padding:0 2px;font-weight:700}
+.ex .say{border:0;background:none;color:var(--mut);padding:0 0 0 6px;vertical-align:-3px}
+.ex .say svg{width:16px;height:16px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:6px 11px;font-weight:700;font-size:14px}
+.chips button:hover{border-color:var(--p);color:var(--p)}
+.side{display:grid;gap:16px}
+.side h3{font-family:inherit}
+.side .card{padding:18px 20px}
+.kal{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.kal:last-child{border-bottom:0}
+.kal b{font-weight:800}
+.kal span{color:var(--ink2);text-align:right}
+.ext{display:grid;gap:8px}
+.ext a{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 14px;border-radius:12px;border:1px solid var(--line);text-decoration:none;color:var(--ink);font-weight:700;font-size:14px}
+.ext a:hover{border-color:var(--p);color:var(--p)}
+.ext a svg{width:16px;height:16px}
+.skel{height:14px;border-radius:8px;background:linear-gradient(90deg,var(--soft),var(--line),var(--soft));background-size:200% 100%;animation:sk 1.2s infinite;margin:10px 0}
+@keyframes sk{to{background-position:-200% 0}}
+.empty{padding:34px;text-align:center;color:var(--ink2)}
+.empty .chips{justify-content:center;margin-top:12px}
+@media (max-width:900px){.res{grid-template-columns:1fr}.dhead,.wcard{padding:20px}}
+@media (max-width:600px){.ex{grid-template-columns:1fr}.ex>div:first-child{border-right:0;border-bottom:1px solid var(--line)}.sbar{flex-direction:column}.dir{align-self:flex-start;height:40px}}
+</style>
+</head>
+<body>
+<main class="ka-wrap" id="main">
+  <section class="card dhead"><span class="eyebrow">Sözlük</span><h1>Kelimeyi bağlamıyla öğren</h1><p>İngilizce ya da Türkçe bir kelime veya kalıp yaz: anlamları, gerçek cümlelerde nasıl kullanıldığını, eş anlamlılarını ve kalıplarını gör.</p>
+    <form class="sbar" id="sf" autocomplete="off"><label class="sbox"><span id="sic"></span><input id="q" placeholder="Örnek: undermine, take into account, gözetim" autocapitalize="off" spellcheck="false" aria-label="Aranacak kelime"></label>
+      <div class="dir" role="group" aria-label="Yön"><button type="button" data-dir="auto" class="on">Otomatik</button><button type="button" data-dir="en">EN → TR</button><button type="button" data-dir="tr">TR → EN</button></div>
+      <button class="btn btn-p btn-lg" id="go">Ara</button></form>
+    <div class="recent" id="rec"></div></section>
+  <div id="out"></div>
+</main>
+<script src="ortak.js"></script>
+<script>
+(function(){
+'use strict';
+const {$,esc}=KA;const ic=KA.ic;
+let DIR='auto',SEQ=0,LAST=null;
+const CACHE=KA.store.get('ka_dict',{})||{};
+const saveCache=()=>{const k=Object.keys(CACHE);if(k.length>300)k.sort((a,b)=>CACHE[a].t-CACHE[b].t).slice(0,k.length-250).forEach(x=>delete CACHE[x]);KA.store.set('ka_dict',CACHE)};
+let REC=KA.store.get('ka_dict_rec',[])||[];
+const SYS=`Sen Reverso ve Cambridge tarzında çalışan, BUEPT düzeyindeki öğrenciler için İngilizce-Türkçe bağlam sözlüğü yazarısın. Girdide bir kelime ya da kalıp ve arama yönü var. Doğru, güncel ve doğal dil kullan; uydurma anlam ya da örnek yazma.
+YALNIZCA geçerli JSON döndür:
+{"yon":"en-tr" ya da "tr-en","kelime":"aranan ifadenin sözlük biçimi","ipa":"İngilizce kelimenin IPA okunuşu (TR→EN aramada en yaygın karşılığın okunuşu)","tur":"isim / fiil / sıfat / zarf / kalıp","anlamlar":[{"karsilik":"hedef dildeki karşılık","tur":"kelime türü","not":"hangi bağlamda kullanıldığını anlatan kısa Türkçe açıklama"}],"ornekler":[{"en":"İngilizce cümle","tr":"doğal Türkçe çevirisi","en_vurgu":"İngilizce cümlede kelimenin geçtiği biçim, birebir","tr_vurgu":"Türkçe cümlede karşılığın geçtiği biçim, birebir"}],"es":["İngilizce eş anlamlılar"],"zit":["İngilizce zıt anlamlılar"],"kaliplar":[{"en":"sık kullanılan İngilizce kalıp ya da eşdizimlilik","tr":"Türkçesi"}],"aile":[{"en":"aynı kökten kelime","tur":"tür","tr":"Türkçesi"}]}
+Sayılar: anlamlar 2-6 (en yaygından aza), ornekler 7 (farklı anlamları ve akademik, haber ve günlük kullanımı kapsasın, 10-24 kelime), es en fazla 6, zit en fazla 4, kaliplar 3-6, aile en fazla 5. Yoksa boş dizi. Arama yanlış yazılmışsa doğru biçimini "kelime" alanına yaz.`;
+const trChars=/[çğıöşüÇĞİÖŞÜ]/;
+function guessDir(q){if(DIR!=='auto')return DIR;if(trChars.test(q))return 'tr';const s=KA.findWord&&KA.findWord(q.toLowerCase());if(s)return 'en';return /^[a-z' -]+$/i.test(q)?'en':'tr'}
+function mark(text,needle){const t=esc(text||'');if(!needle)return t;const n=esc(needle).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');try{return t.replace(new RegExp(n,'i'),m=>`<mark>${m}</mark>`)}catch(e){return t}}
+function drawRec(){$('#rec').innerHTML=REC.slice(0,10).map(r=>`<button data-q="${esc(r)}">${esc(r)}</button>`).join('')}
+function skeleton(q){$('#out').innerHTML=`<div class="res"><section class="card wcard"><h2 style="margin:0">${esc(q)}</h2><div class="mut" style="margin-top:6px"><span class="ka-spin"></span> Anlamlar ve örnek cümleler hazırlanıyor…</div>${'<div class="skel"></div>'.repeat(6)}</section><aside class="side"><div class="card">${'<div class="skel"></div>'.repeat(4)}</div></aside></div>`}
+async function search(raw,dirOverride){
+  const q=String(raw||'').trim().replace(/\s+/g,' ');if(!q)return;
+  $('#q').value=q;const dir=dirOverride||guessDir(q),key=dir+':'+q.toLowerCase();
+  REC=[q,...REC.filter(x=>x.toLowerCase()!==q.toLowerCase())].slice(0,20);KA.store.set('ka_dict_rec',REC);drawRec();
+  try{history.replaceState(null,'','#'+encodeURIComponent(q))}catch(e){}
+  const my=++SEQ;
+  if(CACHE[key])return render(CACHE[key].d,q);
+  skeleton(q);
+  const r=await KA.askJ(SYS,`ARAMA: ${q}\nYÖN: ${dir==='tr'?'Türkçe → İngilizce':'İngilizce → Türkçe'}`,{tier:'quick',ms:45000});
+  if(my!==SEQ)return;
+  const d=r.json;
+  if(!d||!Array.isArray(d.anlamlar)||!d.anlamlar.length){$('#out').innerHTML=`<div class="card empty"><h2 style="margin:0 0 6px">Sonuç getirilemedi</h2><p class="mut">${esc(r.err||'Bu ifade için anlam bulunamadı.')}</p><div class="row" style="justify-content:center"><button class="btn btn-p" data-retry="${esc(q)}">${ic('reset')}Tekrar dene</button><a class="btn btn-ghost" target="_blank" rel="noopener" href="${rev(q,dir)}">Reverso Context'te ara</a></div></div>`;return}
+  d.yon=d.yon||(dir==='tr'?'tr-en':'en-tr');
+  CACHE[key]={d,t:Date.now()};saveCache();render(d,q);
+}
+const enc=s=>encodeURIComponent(String(s).trim().toLowerCase());
+const rev=(q,dir)=>`https://context.reverso.net/ceviri/${dir==='tr'?'turkce-ingilizce':'ingilizce-turkce'}/${enc(q)}`;
+function render(d,q){
+  LAST=d;const en=d.yon!=='tr-en',head=d.kelime||q,enWord=en?head:((d.anlamlar[0]||{}).karsilik||'');
+  const L=(a,n)=>(Array.isArray(a)?a:[]).filter(Boolean).slice(0,n);
+  $('#out').innerHTML=`<div class="res"><section class="card wcard">
+    <div class="wtop"><div><h2>${esc(head)}</h2><div class="wmeta">${d.ipa?`<span class="ipa">/${esc(String(d.ipa).replace(/^\/|\/$/g,''))}/</span>`:''}${d.tur?`<span class="tag">${esc(d.tur)}</span>`:''}<span>${en?'İngilizce → Türkçe':'Türkçe → İngilizce'}</span></div></div>
+      <div class="acts"><button class="btn btn-ghost btn-sm" data-say="${esc(enWord)}">${ic('sound')}Dinle</button>${enWord?`<button class="btn btn-ghost btn-sm" data-add>${ic('plus')}Listeme ekle</button>`:''}</div></div>
+    <div class="senses">${L(d.anlamlar,6).map((s,i)=>`<div class="sense"><span class="n">${i+1}</span><div><b>${esc(s.karsilik||'')}</b>${s.tur?`<span class="tg">${esc(s.tur)}</span>`:''}${s.not?`<span class="nt">${esc(s.not)}</span>`:''}</div>${!en&&s.karsilik?`<button class="ka-icon-btn" data-say="${esc(s.karsilik)}" aria-label="Dinle" style="margin-left:auto;width:32px;height:32px">${ic('sound')}</button>`:''}</div>`).join('')}</div>
+    ${L(d.ornekler,8).length?`<div class="sec"><h3>Bağlam içinde örnekler</h3>${L(d.ornekler,8).map(o=>`<div class="ex"><div>${mark(o.en,o.en_vurgu)}<button class="say" data-say="${esc(o.en)}" aria-label="Cümleyi dinle">${ic('sound')}</button></div><div>${mark(o.tr,o.tr_vurgu)}</div></div>`).join('')}</div>`:''}
+  </section>
+  <aside class="side">
+    ${L(d.es,6).length||L(d.zit,4).length?`<div class="card">${L(d.es,6).length?`<h3 class="eyebrow" style="margin:0 0 8px">Eş anlamlılar</h3><div class="chips">${L(d.es,6).map(w=>`<button data-q="${esc(w)}" data-d="en">${esc(w)}</button>`).join('')}</div>`:''}${L(d.zit,4).length?`<h3 class="eyebrow" style="margin:14px 0 8px">Zıt anlamlılar</h3><div class="chips">${L(d.zit,4).map(w=>`<button data-q="${esc(w)}" data-d="en">${esc(w)}</button>`).join('')}</div>`:''}</div>`:''}
+    ${L(d.kaliplar,6).length?`<div class="card"><h3 class="eyebrow" style="margin:0 0 4px">Kalıplar ve eşdizimler</h3>${L(d.kaliplar,6).map(k=>`<div class="kal"><b>${esc(k.en)}</b><span>${esc(k.tr)}</span></div>`).join('')}</div>`:''}
+    ${L(d.aile,5).length?`<div class="card"><h3 class="eyebrow" style="margin:0 0 4px">Kelime ailesi</h3>${L(d.aile,5).map(k=>`<div class="kal"><b><a href="#" data-q="${esc(k.en)}" data-d="en" style="color:inherit">${esc(k.en)}</a> <span class="mut" style="font-weight:600;font-size:12.5px">${esc(k.tur||'')}</span></b><span>${esc(k.tr||'')}</span></div>`).join('')}</div>`:''}
+    <div class="card"><h3 class="eyebrow" style="margin:0 0 10px">Başka sözlüklerde aç</h3><div class="ext"><a target="_blank" rel="noopener" href="${rev(head,en?'en':'tr')}">Reverso Context ${ic('arrow')}</a>${en?`<a target="_blank" rel="noopener" href="https://dictionary.cambridge.org/dictionary/english-turkish/${enc(head).replace(/%20/g,'-')}">Cambridge Dictionary ${ic('arrow')}</a><a target="_blank" rel="noopener" href="https://www.oxfordlearnersdictionaries.com/search/english/?q=${enc(head)}">Oxford Learner's ${ic('arrow')}</a>`:''}</div></div>
+  </aside></div>`;
+}
+$('#sic').innerHTML=ic('search');
+$('#sf').onsubmit=e=>{e.preventDefault();search($('#q').value)};
+document.addEventListener('click',e=>{
+  const t=e.target;
+  const dr=t.closest('[data-dir]');if(dr){DIR=dr.dataset.dir;document.querySelectorAll('[data-dir]').forEach(b=>b.classList.toggle('on',b===dr));return}
+  const q=t.closest('[data-q]');if(q){e.preventDefault();search(q.dataset.q,q.dataset.d);scrollTo({top:0,behavior:'smooth'});return}
+  const rt=t.closest('[data-retry]');if(rt){search(rt.dataset.retry);return}
+  if(t.closest('[data-add]')&&LAST){const en=LAST.yon!=='tr-en',w=en?(LAST.kelime||$('#q').value):(LAST.anlamlar[0]||{}).karsilik,tr=en?LAST.anlamlar.slice(0,2).map(s=>s.karsilik).join(', '):(LAST.kelime||$('#q').value);
+    const ex=(LAST.ornekler||[])[0]||{};const r=KA.addUnknown(w,tr,{s:ex.en||'',st:ex.tr||'',syn:(LAST.es||[]).slice(0,4)});KA.toast(r==='var'?'Bu kelime zaten listende.':r?'“Bilmediklerim” listesine eklendi.':'Eklenemedi.');return}
+  const s=t.closest('[data-say]');if(s&&s.dataset.say)KA.speak(s.dataset.say);
+});
+KA.nav('sozluk.html');drawRec();
+const h=decodeURIComponent(location.hash.slice(1)||'');
+if(h)search(h);else $('#out').innerHTML=`<div class="card empty" style="margin-top:18px"><b style="font-size:17px">Ne aramak istersin?</b><p class="mut" style="margin:6px 0 0">BUEPT'te sık çıkan birkaç kelimeyle başla:</p><div class="chips">${['undermine','account for','albeit','prevalent','in terms of','consequently','gözetim'].map(w=>`<button data-q="${w}">${w}</button>`).join('')}</div></div>`;
+setTimeout(()=>{if(!h)$('#q').focus()},100);
+})();
+</script>
+</body>
+</html>

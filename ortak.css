@@ -50,6 +50,8 @@ img{max-width:100%}
 .ka-mode button svg{width:15px;height:15px}
 .ka-mode button.on{background:var(--card);color:var(--ink);box-shadow:var(--sh1)}
 .ka-tabbar{display:none}
+@media (max-width:1240px){.ka-links a{padding:8px 10px;gap:6px}.ka-mode button span{display:none}.ka-mode button{padding:0 9px}}
+@media (max-width:1060px){.ka-links svg{display:none}.ka-chip small{display:none}}
 @media (max-width:820px){
   .ka-nav-in{height:56px;padding:0 14px;gap:10px}
   .ka-links{display:none}
