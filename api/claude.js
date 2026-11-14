@@ -29,11 +29,12 @@ function limited(ip) {
   return arr.length > 40;
 }
 
-async function gemini(model, key, prompt, maxTokens) {
+async function gemini(model, key, prompt, maxTokens, image) {
   const gen = { temperature: 0.7, maxOutputTokens: maxTokens };
   const tb = process.env.GEMINI_THINKING_BUDGET;
   if (tb !== undefined && tb !== '') gen.thinkingConfig = { thinkingBudget: Number(tb) };
-  const body = { contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig: gen };
+  const parts = image ? [{ inline_data: { mime_type: image.mime, data: image.data } }, { text: prompt }] : [{ text: prompt }];
+  const body = { contents: [{ role: 'user', parts }], generationConfig: gen };
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
   let r, j = {};
   for (let attempt = 0; attempt < 3; attempt++) {
@@ -69,6 +70,14 @@ export default async function handler(req, res) {
     return send(res, 400, { error: 'prompt' });
   }
 
+  let image = null;
+  if (body.image) {
+    const im = body.image;
+    if (!im || typeof im.data !== 'string' || !/^image\/(jpeg|png|webp)$/.test(im.mime || '') || im.data.length > 4200000) {
+      return send(res, 400, { error: 'image' });
+    }
+    image = { mime: im.mime, data: im.data };
+  }
   const quick = body.tier === 'quick';
   const maxTokens = quick ? 4096 : 8192;
   const models = [...new Set(quick
@@ -77,7 +86,7 @@ export default async function handler(req, res) {
 
   let last = null, usedModel = '';
   for (const model of models) {
-    const { status, json } = await gemini(model, key, prompt, maxTokens);
+    const { status, json } = await gemini(model, key, prompt, maxTokens, image);
     usedModel = model;
     last = { status, json };
     if (status === 200) break;

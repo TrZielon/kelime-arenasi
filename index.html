@@ -755,15 +755,17 @@ async function prepare(){
 function modalNew(){
   const {el,close}=KA.modal(`<span class="eyebrow">Yeni kelime listesi</span><h2 style="margin:6px 0 4px">Kendi listeni oluştur</h2><p class="mut" style="margin:0 0 16px">Her satıra bir kelime yaz. “kelime - anlam” ya da “kelime : anlam” biçiminde yazabilirsin. Anlamı olmayanları Hazırla tamamlar.</p>
   <label class="eyebrow" for="pn">Liste adı</label><input class="input" id="pn" placeholder="Örnek: Hafta 3 okuma kelimeleri" style="margin:6px 0 14px">
-  <div class="drop" id="drop" tabindex="0" role="button"><div style="color:var(--p)">${ic('upload')}</div><b>PDF, Word (.docx) ya da .txt dosyası bırak</b><div class="mut" style="font-size:13px">ya da seçmek için tıkla</div><input type="file" id="pf" accept=".pdf,.docx,.txt" hidden></div>
+  <div class="drop" id="drop" tabindex="0" role="button"><div style="color:var(--p)">${ic('upload')}</div><b>Fotoğraf, PDF, Word (.docx) ya da .txt bırak</b><div class="mut" style="font-size:13px">ya da seçmek için tıkla · fotoğraftaki liste taranıp otomatik eklenir</div><input type="file" id="pf" accept=".pdf,.docx,.txt,image/*" hidden></div>
+  <div class="row" style="margin-top:8px;gap:8px"><label class="btn btn-ghost btn-sm" style="cursor:pointer">${ic('phone')}Fotoğraf çek ya da seç<input type="file" id="pc" accept="image/*" capture="environment" hidden></label></div>
   <div class="mut" id="pfs" style="font-size:13px;margin:8px 0;min-height:18px"></div>
   <textarea class="textarea" id="pw" placeholder="surveillance - gözetim&#10;legitimacy : meşruluk&#10;hinder" style="min-height:180px"></textarea>
+  <div class="mut" style="font-size:12.5px;margin-top:6px">Sadece İngilizcesini yazman yeterli: Türkçe anlamlar, eş anlamlılar ve örnek cümleler liste oluşunca otomatik eklenir.</div>
   <div class="row" style="margin-top:14px;justify-content:flex-end"><button class="btn btn-ghost" data-close>Vazgeç</button><button class="btn btn-p" id="mk">${ic('check')}Listeyi oluştur</button></div>`);
   const drop=el.querySelector('#drop'),pf=el.querySelector('#pf');
   pf.onclick=e=>e.stopPropagation();drop.onclick=e=>{if(e.target!==pf)pf.click()};drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')pf.click()};
   drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')};drop.ondragleave=()=>drop.classList.remove('over');
   drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');if(e.dataTransfer.files[0])importFile(e.dataTransfer.files[0],el)};
-  pf.onchange=()=>{if(pf.files[0])importFile(pf.files[0],el)};
+  pf.onchange=()=>{if(pf.files[0])importFile(pf.files[0],el)};const pc=el.querySelector('#pc');pc.onchange=()=>{if(pc.files[0])importFile(pc.files[0],el)};
   el.querySelector('[data-close]').onclick=close;
   el.querySelector('#mk').onclick=()=>{
     const w=parse(el.querySelector('#pw').value);
@@ -773,10 +775,27 @@ function modalNew(){
     if(p.items.some(x=>!x.tr)||p.items.length)setTimeout(prepare,400);
   };
 }
+const OCR=`Bu fotoğraf bir İngilizce kelime listesi, ders notu, defter, kitap sayfası ya da çalışma kâğıdı olabilir; el yazısı da olabilir. Fotoğraftaki öğrenilecek İngilizce kelimeleri ve kalıpları eksiksiz ve fotoğraftaki sırayla çıkar.
+Kurallar: Yanında Türkçe anlam yazılıysa onu aynen al (el yazısını dikkatle oku). Anlam yazılı değilse en yaygın Türkçe karşılığını sen yaz (1-4 kelime) ve "oto":true yap. Numaraları, madde işaretlerini, başlıkları, sayfa numaralarını ve talimatları alma. Kelimeyi sözlük biçiminde yaz, yazım hatası varsa düzelt. Fotoğraf düz bir metinse (paragraf) içindeki öğrenmeye değer akademik kelimeleri seç (en fazla 40). Fotoğrafta İngilizce kelime yoksa boş liste döndür.
+YALNIZCA geçerli JSON döndür: {"items":[{"en":"kelime ya da kalıp","tr":"Türkçe anlam","oto":false}]}`;
+function shrinkImage(f){return new Promise((ok,no)=>{const u=URL.createObjectURL(f),im=new Image();im.onload=()=>{const M=1800,k=Math.min(1,M/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(im.naturalWidth*k);c.height=Math.round(im.naturalHeight*k);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL('image/jpeg',.86).split(',')[1])};im.onerror=()=>{URL.revokeObjectURL(u);no(new Error('Fotoğraf açılamadı. JPEG ya da PNG olarak dene.'))};im.src=u})}
 async function importFile(f,el){
   const out=el.querySelector('#pfs');out.innerHTML='<span class="ka-spin"></span> Dosya okunuyor…';
   try{
     const ext=f.name.split('.').pop().toLowerCase();let txt='';
+    if(/^image\//.test(f.type)||/^(jpe?g|png|heic|heif|webp|gif|bmp)$/.test(ext)){
+      out.innerHTML='<span class="ka-spin"></span> Fotoğraf taranıyor, kelimeler çıkarılıyor…';
+      const data=await shrinkImage(f);
+      const r=await KA.askJ(OCR,'Fotoğraftaki kelime listesini çıkar.',{image:{mime:'image/jpeg',data},ms:70000});
+      if(!r.json||!Array.isArray(r.json.items))throw new Error(r.err||'fotoğraf okunamadı');
+      const items=r.json.items.filter(o=>o&&o.en).map(o=>({en:String(o.en).trim(),tr:String(o.tr||'').trim(),oto:!!o.oto}));
+      if(!items.length){out.textContent='Fotoğrafta İngilizce kelime bulunamadı. Daha net ve yakından çekip tekrar dene.';return}
+      const ta=el.querySelector('#pw');ta.value=(ta.value.trim()?ta.value.trim()+'\n':'')+items.map(x=>x.tr?x.en+' - '+x.tr:x.en).join('\n');
+      const pn=el.querySelector('#pn');if(!pn.value)pn.value='Fotoğraftan liste';
+      const auto=items.filter(x=>x.oto).length;
+      out.textContent=`${items.length} kelime bulundu${auto?` (${auto} tanesinin anlamı otomatik eklendi)`:''}. Kontrol edip “Listeyi oluştur”a bas.`;
+      return;
+    }
     if(ext==='pdf'){
       const lib=await import('./lib/pdfjs/pdf-v3.min.mjs');lib.GlobalWorkerOptions.workerSrc=new URL('lib/pdfjs/pdf.worker-v3.min.mjs',location.href).href;
       const doc=await lib.getDocument({data:new Uint8Array(await f.arrayBuffer())}).promise;

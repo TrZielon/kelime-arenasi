@@ -73,7 +73,7 @@ KA.addUnknown=(en,tr,extra)=>{
 };
 
 /* ---------- Yapay zekâ ---------- */
-const SRV={server_config:'Sunucuda API anahtarı tanımlı değil.',rate:'Çok fazla istek gönderildi, biraz bekle.',upstream:'Yapay zekâ servisine şu an ulaşılamadı.',prompt:'İstek geçersiz.',origin:'Bu adres sunucuda izinli değil.'};
+const SRV={server_config:'Sunucuda API anahtarı tanımlı değil.',rate:'Çok fazla istek gönderildi, biraz bekle.',upstream:'Yapay zekâ servisine şu an ulaşılamadı.',prompt:'İstek geçersiz.',origin:'Bu adres sunucuda izinli değil.',image:'Fotoğraf gönderilemedi (çok büyük ya da desteklenmeyen biçim).'};
 const gate={n:0,q:[],max:3};
 const gIn=()=>gate.n<gate.max?(gate.n++,Promise.resolve()):new Promise(r=>gate.q.push(r));
 const gOut=()=>{const r=gate.q.shift();if(r)r();else gate.n--};
@@ -82,7 +82,7 @@ KA.ai=async(prompt,o={})=>{
   await gIn();
   const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),o.ms||55000);
   try{
-    const r=await fetch('api/claude',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({prompt,tier:o.tier||'default'}),signal:ac.signal});
+    const r=await fetch('api/claude',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(Object.assign({prompt,tier:o.tier||'default'},o.image?{image:o.image}:{})),signal:ac.signal});
     if(!r.ok){let j={};try{j=await r.json()}catch(e){}throw new Error(SRV[j.error]||j.detail||('Sunucu hatası '+r.status))}
     const j=await r.json();return String(j.text||'');
   }catch(e){if(e.name==='AbortError')throw new Error('Zaman aşımı, tekrar dene.');throw e}
