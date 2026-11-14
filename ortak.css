@@ -137,3 +137,6 @@ img{max-width:100%}
 .ka-spin{width:18px;height:18px;border-radius:50%;border:2.5px solid var(--line2);border-top-color:var(--p);animation:kaSpin .8s linear infinite;display:inline-block;vertical-align:middle}
 @keyframes kaSpin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+.ka-foot{display:flex;gap:8px;justify-content:center;padding:8px 16px 28px;font-size:12.5px;color:var(--mut)}
+.ka-foot a{color:var(--mut)}

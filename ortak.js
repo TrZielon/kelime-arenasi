@@ -279,6 +279,12 @@ KA.lookup=async(word,o={})=>{
 document.addEventListener('keydown',e=>{if(e.key==='Escape')KA.closeLookup()});
 document.addEventListener('pointerdown',e=>{if(lexEl&&!lexEl.contains(e.target)&&!e.target.closest('.tk'))KA.closeLookup()},true);
 
+/* ---------- Alt bilgi ---------- */
+addEventListener('DOMContentLoaded',()=>{if(document.querySelector('.ka-foot'))return;const m=document.querySelector('main');if(m)m.insertAdjacentHTML('afterend','<footer class="ka-foot"><a href="gizlilik.html">Gizlilik politikası</a><span>·</span><span>Kelime Arenası</span></footer>')});
+
+/* ---------- Uygulama: çevrimdışı çalışma ---------- */
+if('serviceWorker' in navigator&&location.protocol==='https:'&&!/claude\.ai|claudeusercontent/.test(location.host))addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
+
 /* ---------- Başlangıç ---------- */
 document.addEventListener('click',e=>{
   const mb=e.target.closest('.ka-mode button');if(mb){KA.mode(mb.dataset.m);return}
