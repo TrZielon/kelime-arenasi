@@ -749,7 +749,7 @@ function modalNew(){
   <textarea class="textarea" id="pw" placeholder="surveillance - gözetim&#10;legitimacy : meşruluk&#10;hinder" style="min-height:180px"></textarea>
   <div class="row" style="margin-top:14px;justify-content:flex-end"><button class="btn btn-ghost" data-close>Vazgeç</button><button class="btn btn-p" id="mk">${ic('check')}Listeyi oluştur</button></div>`);
   const drop=el.querySelector('#drop'),pf=el.querySelector('#pf');
-  drop.onclick=()=>pf.click();drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')pf.click()};
+  pf.onclick=e=>e.stopPropagation();drop.onclick=e=>{if(e.target!==pf)pf.click()};drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')pf.click()};
   drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')};drop.ondragleave=()=>drop.classList.remove('over');
   drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');if(e.dataTransfer.files[0])importFile(e.dataTransfer.files[0],el)};
   pf.onchange=()=>{if(pf.files[0])importFile(pf.files[0],el)};

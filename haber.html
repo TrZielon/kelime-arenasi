@@ -112,7 +112,7 @@ function list(){
   $('#main').innerHTML=`<div class="head"><div><span class="eyebrow">Günlük haber · üç seviye</span><h1>Dünyadan haberler, gerçek İngilizce</h1><p>Her gün güncellenen haberleri seviyene göre oku. Bilmediğin kelimeye dokun, anlamını gör ve listene ekle, sonra kısa quizle pekiştir.</p></div>
   <div class="filters">${[['all','Tümü'],['new','Okunmadı'],['done','Okundu']].map(([k,t])=>`<button class="pill ${FILTER===k?'on':''}" data-f="${k}">${t}</button>`).join('')}</div></div>
   ${!items.length?'<div class="card" style="padding:40px;text-align:center"><p class="mut">Bu filtrede haber yok.</p></div>':''}
-  ${L?`<a class="card lead" href="#${esc(L.id)}"><div class="ph">${photo(L,true)}<span class="cat">${esc(catName(L.category))}</span>${badge(L)}</div><div class="tx"><span class="eyebrow">${dateTr(L.date)} · ${esc(L.source||'BBC News')}</span><h2>${esc(L.title)}</h2><p>${esc(firstText(L).split(/(?<=\.)\s/).slice(0,2).join(' '))}</p><div class="meta"><span>Seviye 1 · 2 · 3</span>${lvBar(L)}</div><div style="margin-top:16px"><span class="btn btn-p">Haberi oku${ic('arrow')}</span></div></div></a>`:''}
+  ${L?`<a class="card lead" href="#${esc(L.id)}"><div class="ph">${photo(L,true)}<span class="cat">${esc(catName(L.category))}</span>${badge(L)}</div><div class="tx"><span class="eyebrow">${dateTr(L.date)} · ${esc(L.source||'BBC News')}</span><h2>${esc(L.title)}</h2><p>${esc((firstText(L).match(/[^.]+\.?/g)||[]).slice(0,2).join('').trim())}</p><div class="meta"><span>Seviye 1 · 2 · 3</span>${lvBar(L)}</div><div style="margin-top:16px"><span class="btn btn-p">Haberi oku${ic('arrow')}</span></div></div></a>`:''}
   <div class="grid">${R.map(x=>`<a class="card ncard" href="#${esc(x.id)}"><div class="ph">${photo(x)}<span class="cat">${esc(catName(x.category))}</span>${badge(x)}</div><div class="tx"><span class="eyebrow">${dateTr(x.date)}</span><h3>${esc(x.title)}</h3><p>${esc(firstText(x))}</p><div class="meta"><span>Oku ve quiz çöz</span>${lvBar(x)}</div></div></a>`).join('')}</div>`;
 }
 
@@ -169,7 +169,7 @@ async function load(){
 }
 document.addEventListener('click',e=>{
   const t=e.target;
-  const tk=t.closest('.tk');if(tk){const p=tk.closest('p');const s=(p?p.textContent:'').split(/(?<=[.!?])\s+/).find(z=>z.includes(tk.dataset.w))||'';KA.lookup(tk.dataset.w,{anchor:tk,context:s});return}
+  const tk=t.closest('.tk');if(tk){const p=tk.closest('p');const s=((p?p.textContent:'').match(/[^.!?]+[.!?]*/g)||[]).map(z=>z.trim()).find(z=>z.includes(tk.dataset.w))||'';KA.lookup(tk.dataset.w,{anchor:tk,context:s});return}
   const f=t.closest('[data-f]');if(f){FILTER=f.dataset.f;list();return}
   const lv=t.closest('[data-lv]');if(lv){LEVEL=lv.dataset.lv;const x=DATA.find(i=>i.id===decodeURIComponent(location.hash.slice(1)));if(x)reader(x);return}
   const o=t.closest('[data-o]');if(o){answer(+o.dataset.q,+o.dataset.o);return}
