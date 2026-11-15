@@ -18,7 +18,7 @@
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css">
+<link rel="stylesheet" href="ortak.css?v=3">
 <style>
 :root{--inkc:#1f3fb0;--hand:Caveat,"Segoe Print","Bradley Hand",cursive}
 /* ---------- Kütüphane ---------- */
@@ -182,7 +182,7 @@
 </head>
 <body>
 <main class="ka-wrap" id="main"></main>
-<script src="ortak.js"></script>
+<script src="ortak.js?v=3"></script>
 <script type="module">
 const {$,esc}=KA;const ic=KA.ic;
 const icT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7V5h14v2M12 5v14M9 19h6"/></svg>';
@@ -203,10 +203,12 @@ const r1=n=>Math.round(n*10)/10;
 const isRule=l=>{const c=l.t.replace(/\s/g,'');return c.replace(/[_.…\-–—]/g,'').length<=2&&/[_.…]{8,}/.test(c)&&(l.x1-l.x0)>110};
 const SECRE=/^(part|section|bölüm|task|exercise)\b|^(choose|circle|fill in|complete|answer|read|write|match|decide)\b/i;
 const TFRE=/\btrue\s*(or|\/|-)\s*false\b|\(\s*T\s*\/\s*F\s*\)|\bT\s*\/\s*F\b|doğru\s*(mu|\/|ya da|veya)\s*yanlış|\bD\s*\/\s*Y\b/i,NGRE=/not\s*given|\bNG\b/i;
-async function analyse(doc){
+// OCR satırlarını (0-1000 kutular) pdf.js metin öğelerine çevir
+function ocrToItems(lines,pw,ph){return lines.map(l=>{const [y0,x0,y1,x1]=l.b,top=y0/1000*ph,bot=y1/1000*ph,fs=Math.max(4,(bot-top)/1.1),y=top+fs*.85;return {str:l.t,transform:[fs,0,0,fs,x0/1000*pw,ph-y],width:Math.max(4,(x1-x0)/1000*pw),height:fs}})}
+async function analyse(doc,ocr){
   const pages=[],L=[];let txt='';
   for(let p=1;p<=doc.numPages;p++){
-    const page=await doc.getPage(p),vp=page.getViewport({scale:1}),tc=await page.getTextContent();
+    const page=await doc.getPage(p),vp=page.getViewport({scale:1}),tc=ocr&&ocr[p-1]?{items:ocrToItems(ocr[p-1],vp.width,vp.height)}:await page.getTextContent();
     pages.push([vp.width,vp.height]);
     const lines=[];
     tc.items.forEach(it=>{if(!it.str||!it.str.trim())return;const t=it.transform,fs=Math.hypot(t[2],t[3])||it.height||10,x=t[4],y=vp.height-t[5];let l=lines.find(q=>Math.abs(q.y-y)<Math.max(2,fs*.35));if(!l){l={p,y,fs,parts:[]};lines.push(l)}l.fs=Math.max(l.fs,fs);l.parts.push({x,w:it.width||fs*.5*it.str.length,s:it.str,fs})});
@@ -287,32 +289,80 @@ async function library(){
   let list=[];try{list=(await idb.all()).sort((a,b)=>b.updated-a.updated)}catch(e){}
   $('#main').innerHTML=`<div class="lib"><section class="card lib-txt"><span class="eyebrow">Sınav Odası</span><h1>Sınavını yükle, kâğıt üstünde çöz</h1><p>PDF'teki bütün sorular ve paragraflar birebir görünür. Sınav, içindeki soru tiplerine göre kendini kurar: şıkları kâğıdın üstünde daire içine al, boşlukları doldur, yazılı soruların cevabını sayfaya yaz.</p>
     <div class="feat"><div><b>${icMark}Şıkkı işaretle</b>Çoktan seçmeli ve doğru/yanlış sorularda harfe dokun, kalemle daire içine alınır.</div><div><b>${icT}Sayfaya yaz</b>Boşluk doldurma ve yazılı sorularda cevap kutusu sorunun yanında açılır.</div><div><b>${ic('hl')}Vurgula, not al</b>Metni vurgula, altını çiz, kalemle çiz, sayfaya not iğnesi koy.</div><div><b>${ic('check')}Puanını gör</b>Cevap anahtarıyla anında puanla; yazılı cevapları yapay zekâ değerlendirsin.</div></div></section>
-  <label class="updrop" id="drop" tabindex="0"><span class="ico">${ic('upload')}</span><b>Sınav PDF'ini buraya bırak</b><span class="mut">ya da dosya seçmek için tıkla · en fazla 60 MB</span><span class="btn btn-p">${ic('upload')}PDF seç</span><input type="file" id="pf" accept="application/pdf,.pdf" hidden><span id="upmsg" class="upmsg"></span></label></div>
+  <div class="updrop" id="drop" tabindex="0"><span class="ico">${ic('upload')}</span><b>Sınav PDF'ini ya da fotoğraflarını bırak</b><span class="mut">PDF, taranmış PDF ya da kâğıdın fotoğrafları · birden fazla sayfa seçebilirsin</span><span class="row" style="gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px"><label class="btn btn-p" style="cursor:pointer">${ic('upload')}PDF seç<input type="file" id="pf" accept="application/pdf,.pdf" hidden></label><label class="btn btn-ghost" style="cursor:pointer">${ic('phone')}Fotoğraf çek<input type="file" id="pc" accept="image/*" capture="environment" hidden></label><label class="btn btn-ghost" style="cursor:pointer">${ic('upload')}Fotoğrafları seç<input type="file" id="pi" accept="image/*" multiple hidden></label></span><span id="upmsg" class="upmsg"></span></div></div>
   ${list.length?`<h2 style="font-size:22px;margin:0 0 12px">Sınavların</h2><div class="exlist">${list.map(x=>{const n=Object.keys(x.ans||{}).length;return `<div class="card excard" data-open="${x.id}" role="button" tabindex="0"><div class="th">${x.thumb?`<img src="${x.thumb}" alt="">`:''}</div><div class="tx"><b>${esc(x.title)}</b><span class="mut">${x.pages} sayfa · ${x.q} soru${x.result&&x.result.pct!=null?` · <b style="display:inline;color:var(--ok)">%${x.result.pct}</b>`:''}</span><div class="bar"><i style="width:${x.q?Math.min(100,n/x.q*100):0}%"></i></div><div class="ft"><span class="mut">${n}/${x.q} cevaplandı</span><button class="ka-icon-btn" data-del="${x.id}" aria-label="Sınavı sil" style="width:32px;height:32px">${ic('trash')}</button></div></div></div>`}).join('')}</div>`:''}`;
   const drop=$('#drop'),pf=$('#pf');
   drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')};drop.ondragleave=()=>drop.classList.remove('over');
-  drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');const f=e.dataTransfer.files[0];if(f)upload(f)};
-  drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pf.click()}};
-  pf.onchange=()=>{if(pf.files[0])upload(pf.files[0])};
+  drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');const fs=[...e.dataTransfer.files];if(fs.length)upload(fs)};
+  drop.onkeydown=e=>{if(e.target===drop&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pf.click()}};
+  drop.onclick=e=>{if(!e.target.closest('label'))pf.click()};
+  ['#pf','#pc','#pi'].forEach(id=>{const i=$(id);i.onclick=e=>e.stopPropagation();i.onchange=()=>{const fs=[...i.files];i.value='';if(fs.length)upload(fs)}});
 }
-async function upload(f){
+// JPEG sayfalarından PDF oluştur (fotoğrafla yüklenen sınavlar için)
+function makePdf(pgs){
+  const enc=new TextEncoder(),parts=[],offs=[];let len=0;
+  const put=x=>{const b=typeof x==='string'?enc.encode(x):x;parts.push(b);len+=b.length};
+  const obj=(n,body)=>{offs[n]=len;put(n+' 0 obj\n');body();put('\nendobj\n')};
+  put('%PDF-1.4\n');
+  const n=pgs.length,kids=pgs.map((_,i)=>(3+i*3)+' 0 R').join(' ');
+  obj(1,()=>put('<< /Type /Catalog /Pages 2 0 R >>'));
+  obj(2,()=>put(`<< /Type /Pages /Kids [${kids}] /Count ${n} >>`));
+  pgs.forEach((g,i)=>{const P=3+i*3,W=600,H=Math.round(600*g.h/g.w*100)/100,cs=`q ${W} 0 0 ${H} 0 0 cm /Im0 Do Q`;
+    obj(P,()=>put(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /XObject << /Im0 ${P+2} 0 R >> >> /Contents ${P+1} 0 R >>`));
+    obj(P+1,()=>put(`<< /Length ${cs.length} >>\nstream\n${cs}\nendstream`));
+    obj(P+2,()=>{put(`<< /Type /XObject /Subtype /Image /Width ${g.w} /Height ${g.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${g.bytes.length} >>\nstream\n`);put(g.bytes);put('\nendstream')});
+  });
+  const tot=3+n*3,xo=len;let x=`xref\n0 ${tot}\n0000000000 65535 f \n`;for(let i=1;i<tot;i++)x+=String(offs[i]).padStart(10,'0')+' 00000 n \n';
+  put(x+`trailer\n<< /Size ${tot} /Root 1 0 R >>\nstartxref\n${xo}\n%%EOF\n`);
+  const out=new Uint8Array(len);let o=0;parts.forEach(b=>{out.set(b,o);o+=b.length});return out;
+}
+async function ocrAll(imgs,msg){
+  const res=new Array(imgs.length),errs=[];let done=0,src='';
+  const say=t=>{msg.innerHTML=`<span class="ka-spin"></span> ${esc(t)}`};
+  say(`Sayfalar okunuyor… (0/${imgs.length})`);
+  await Promise.all(imgs.map(async(img,i)=>{const r=await KA.ocrLayout(img,{status:t=>say(`Sayfa ${i+1}: ${t}`)});res[i]=r.lines;if(r.err&&!r.lines.length)errs.push(r.err);src=src||r.src||'';done++;say(`Sayfalar okunuyor… (${done}/${imgs.length})`)}));
+  return {pages:res,errs,src};
+}
+async function upload(files){
   const msg=$('#upmsg');
-  if(!/\.pdf$/i.test(f.name)&&f.type!=='application/pdf'){msg.textContent='Lütfen PDF dosyası seç.';return}
-  if(f.size>60*1024*1024){msg.textContent='Dosya çok büyük (en fazla 60 MB).';return}
-  msg.innerHTML='<span class="ka-spin"></span> PDF okunuyor, sorular ve soru tipleri çıkarılıyor…';
+  files=[].concat(files).filter(Boolean);
+  const imgs=files.filter(KA.isImage),pdf=files.find(f=>/\.pdf$/i.test(f.name)||f.type==='application/pdf');
+  if(!imgs.length&&!pdf){msg.textContent='Lütfen PDF dosyası ya da sınav kâğıdının fotoğrafını seç.';return}
   try{
-    const buf=new Uint8Array(await f.arrayBuffer());
-    const L=await lib(),task=L.getDocument({data:buf.slice()}),doc=await task.promise;
-    const info=await analyse(doc);
+    let buf,title,ocr=null,info,doc,task;const L=await lib();
+    if(!pdf){
+      if(imgs.length>20){msg.textContent='En fazla 20 fotoğraf seçebilirsin.';return}
+      imgs.sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
+      msg.innerHTML='<span class="ka-spin"></span> Fotoğraflar hazırlanıyor…';
+      const pre=[];for(const f of imgs)pre.push(await KA.prepImage(f,2000));
+      buf=makePdf(pre.map(g=>({w:g.w,h:g.h,bytes:KA.b64bytes(g.data)})));
+      const r=await ocrAll(pre,msg);
+      if(r.pages.every(p=>!p||!p.length)){msg.textContent='Fotoğraftaki yazılar okunamadı'+(r.errs[0]?' ('+r.errs[0]+')':'')+'. Kâğıdı düz, ışıklı ve tam kadrajda çekip tekrar dene.';return}
+      ocr=r.pages;title='Fotoğraftan sınav · '+new Date().toLocaleDateString('tr-TR');
+    }else{
+      if(pdf.size>60*1024*1024){msg.textContent='Dosya çok büyük (en fazla 60 MB).';return}
+      msg.innerHTML='<span class="ka-spin"></span> PDF okunuyor, sorular ve soru tipleri çıkarılıyor…';
+      buf=new Uint8Array(await pdf.arrayBuffer());title=pdf.name.replace(/\.pdf$/i,'').replace(/[_-]+/g,' ').trim()||'Sınav';
+    }
+    task=L.getDocument({data:buf.slice()});doc=await task.promise;
+    info=await analyse(doc,ocr);
+    if(!ocr&&info.scanned&&doc.numPages<=20){
+      // taranmış PDF: sayfaları resme çevirip oku
+      msg.innerHTML='<span class="ka-spin"></span> Taranmış PDF, sayfalar okunuyor…';
+      const pre=[];for(let n=1;n<=doc.numPages;n++){const pg=await doc.getPage(n),v1=pg.getViewport({scale:1}),vp=pg.getViewport({scale:1800/v1.width}),c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;await pg.render({canvasContext:c.getContext('2d'),canvas:c,viewport:vp}).promise;pre.push(await KA.prepImage(c,2000))}
+      const r=await ocrAll(pre,msg);
+      if(r.pages.some(p=>p&&p.length)){ocr=r.pages;info=await analyse(doc,ocr)}
+    }
     const p1=await doc.getPage(1),vp=p1.getViewport({scale:300/p1.getViewport({scale:1}).width});
     const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;await p1.render({canvasContext:c.getContext('2d'),canvas:c,viewport:vp}).promise;
     const id=uid();
-    const ex={id,v:2,title:f.name.replace(/\.pdf$/i,'').replace(/[_-]+/g,' ').trim()||'Sınav',pages:doc.numPages,q:info.qs.length||20,opts:info.opts,qs:info.qs,doc:info.doc,scanned:info.scanned,detected:!!info.qs.length,
+    const ex={id,v:2,title,pages:doc.numPages,q:info.qs.length||20,opts:info.opts,qs:info.qs,doc:info.doc,scanned:ocr?false:info.scanned,ocr:!!ocr,detected:!!info.qs.length,
       ans:{},flags:{},key:{},ai:{},annos:{},elapsed:0,limit:0,created:Date.now(),updated:Date.now(),thumb:c.toDataURL('image/jpeg',.7)};
     await idb.putFile(id,buf);await idb.put(ex);
     task.destroy();
+    if(ocr)KA.store.set('ka_sinav_ocr_toast',id);
     location.hash=id;
-  }catch(e){msg.textContent='PDF açılamadı: '+(e&&e.message||e)}
+  }catch(e){msg.textContent='Sınav açılamadı: '+(e&&e.message||e)}
 }
 
 /* ---------- Sınav ekranı ---------- */
@@ -355,7 +405,8 @@ async function openExam(id){
   document.addEventListener('selectionchange',onSelChange);
   let last=performance.now();
   tick=setInterval(()=>{const now=performance.now();if(!document.hidden&&!EX.result){EX.elapsed+=(now-last)/1000;save()}last=now;drawTimer()},1000);drawTimer();
-  if(EX.scanned)KA.toast('Bu PDF taranmış görünüyor: cevapları sağdaki forma işaretle ya da Yazı aracıyla sayfaya yaz.',5200);
+  if(EX.ocr&&KA.store.raw('ka_sinav_ocr_toast','')===EX.id){KA.store.del('ka_sinav_ocr_toast');KA.toast(EX.detected?`Fotoğraftan ${EX.q} soru okundu. Şıkların yerini kontrol et; kayan varsa Daire aracıyla işaretleyebilirsin.`:'Yazılar okundu ama soru numaraları ayırt edilemedi: cevapları sağdaki kâğıda işaretle.',6500)}
+  else if(EX.scanned)KA.toast('Bu PDF taranmış görünüyor: cevapları sağdaki forma işaretle ya da Yazı aracıyla sayfaya yaz.',5200);
 }
 function fitZoom(){const box=$('#pages');const w=box.clientWidth-8;ZOOM=Math.max(.5,Math.min(1.6,w/BASEW))}
 function layout(){

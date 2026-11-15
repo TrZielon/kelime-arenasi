@@ -29,10 +29,16 @@ function limited(ip) {
   return arr.length > 40;
 }
 
-async function gemini(model, key, prompt, maxTokens, image) {
-  const gen = { temperature: 0.7, maxOutputTokens: maxTokens };
+async function gemini(model, key, prompt, maxTokens, image, ocr, wantJson, plain) {
+  const gen = { temperature: ocr ? 0 : 0.7, maxOutputTokens: maxTokens };
   const tb = process.env.GEMINI_THINKING_BUDGET;
-  if (tb !== undefined && tb !== '') gen.thinkingConfig = { thinkingBudget: Number(tb) };
+  if (!plain) {
+    if (tb !== undefined && tb !== '') gen.thinkingConfig = { thinkingBudget: Number(tb) };
+    else if (ocr && /gemini-3/.test(model)) gen.thinkingConfig = { thinkingLevel: 'low' };
+    else if (ocr && /2\.5-flash/.test(model)) gen.thinkingConfig = { thinkingBudget: 0 };
+    if (ocr && image) gen.mediaResolution = 'MEDIA_RESOLUTION_HIGH';
+    if (wantJson) gen.responseMimeType = 'application/json';
+  }
   const parts = image ? [{ inline_data: { mime_type: image.mime, data: image.data } }, { text: prompt }] : [{ text: prompt }];
   const body = { contents: [{ role: 'user', parts }], generationConfig: gen };
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
@@ -79,18 +85,25 @@ export default async function handler(req, res) {
     image = { mime: im.mime, data: im.data };
   }
   const quick = body.tier === 'quick';
-  const maxTokens = quick ? 4096 : 8192;
+  const ocr = body.mode === 'ocr';
+  const wantJson = !!body.json;
+  const maxTokens = ocr ? 24000 : quick ? 4096 : 8192;
   const models = [...new Set(quick
     ? [MODEL_FAST, MODEL_QUALITY, ...FALLBACK_MODELS]
     : [MODEL_QUALITY, MODEL_FAST, ...FALLBACK_MODELS])];
 
   let last = null, usedModel = '';
   for (const model of models) {
-    const { status, json } = await gemini(model, key, prompt, maxTokens, image);
+    let { status, json } = await gemini(model, key, prompt, maxTokens, image, ocr, wantJson, false);
+    let msg = (json && json.error && json.error.message) || '';
+    // Model ek ayarları (çözünürlük, düşünme, JSON) desteklemiyorsa sade istekle tekrar dene
+    if (status === 400 && (ocr || wantJson) && !/model/i.test(msg)) {
+      ({ status, json } = await gemini(model, key, prompt, maxTokens, image, ocr, false, true));
+      msg = (json && json.error && json.error.message) || '';
+    }
     usedModel = model;
     last = { status, json };
     if (status === 200) break;
-    const msg = (json && json.error && json.error.message) || '';
     const modelProblem = status === 404 || (status === 400 && /model/i.test(msg));
     if (!modelProblem) break;
   }
@@ -98,13 +111,13 @@ export default async function handler(req, res) {
   const { status, json } = last;
   if (status === 429) return send(res, 429, { error: 'rate' });
   if (status !== 200) {
-    const msg = String((json && json.error && json.error.message) || 'bilinmeyen hata').slice(0, 300);
-    return send(res, 502, { error: 'upstream', detail: `${usedModel} (${status}): ${msg}` });
+    const emsg = String((json && json.error && json.error.message) || 'bilinmeyen hata').slice(0, 300);
+    return send(res, 502, { error: 'upstream', detail: `${usedModel} (${status}): ${emsg}` });
   }
 
   const cand = json.candidates && json.candidates[0];
   const text = cand && cand.content && Array.isArray(cand.content.parts)
-    ? cand.content.parts.map(p => p.text || '').join('')
+    ? cand.content.parts.filter(p => !p.thought).map(p => p.text || '').join('')
     : '';
   if (!text.trim()) {
     const why = (cand && cand.finishReason) || (json.promptFeedback && json.promptFeedback.blockReason) || 'boş yanıt';

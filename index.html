@@ -16,7 +16,7 @@
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css">
+<link rel="stylesheet" href="ortak.css?v=3">
 <style>
 .hero{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:center;padding:30px 32px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%)}
 .hero h1{font-size:clamp(28px,4vw,40px);margin:8px 0 10px}
@@ -156,7 +156,7 @@
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="home"></div><section id="act" class="act" hidden></section></main>
-<script src="ortak.js"></script>
+<script src="ortak.js?v=3"></script>
 <script>
 (function(){
 'use strict';
@@ -755,8 +755,8 @@ async function prepare(){
 function modalNew(){
   const {el,close}=KA.modal(`<span class="eyebrow">Yeni kelime listesi</span><h2 style="margin:6px 0 4px">Kendi listeni oluştur</h2><p class="mut" style="margin:0 0 16px">Her satıra bir kelime yaz. “kelime - anlam” ya da “kelime : anlam” biçiminde yazabilirsin. Anlamı olmayanları Hazırla tamamlar.</p>
   <label class="eyebrow" for="pn">Liste adı</label><input class="input" id="pn" placeholder="Örnek: Hafta 3 okuma kelimeleri" style="margin:6px 0 14px">
-  <div class="drop" id="drop" tabindex="0" role="button"><div style="color:var(--p)">${ic('upload')}</div><b>Fotoğraf, PDF, Word (.docx) ya da .txt bırak</b><div class="mut" style="font-size:13px">ya da seçmek için tıkla · fotoğraftaki liste taranıp otomatik eklenir</div><input type="file" id="pf" accept=".pdf,.docx,.txt,image/*" hidden></div>
-  <div class="row" style="margin-top:8px;gap:8px"><label class="btn btn-ghost btn-sm" style="cursor:pointer">${ic('phone')}Fotoğraf çek ya da seç<input type="file" id="pc" accept="image/*" capture="environment" hidden></label></div>
+  <div class="drop" id="drop" tabindex="0" role="button"><div style="color:var(--p)">${ic('upload')}</div><b>Fotoğraf, PDF, Word (.docx) ya da .txt bırak</b><div class="mut" style="font-size:13px">ya da seçmek için tıkla · fotoğraftaki liste taranıp otomatik eklenir</div><input type="file" id="pf" accept=".pdf,.docx,.txt,image/*" multiple hidden></div>
+  <div class="row" style="margin-top:8px;gap:8px"><label class="btn btn-ghost btn-sm" style="cursor:pointer">${ic('phone')}Fotoğraf çek ya da seç<input type="file" id="pc" accept="image/*" capture="environment" hidden></label><label class="btn btn-ghost btn-sm" style="cursor:pointer">${ic('upload')}Birden fazla fotoğraf<input type="file" id="pm" accept="image/*" multiple hidden></label></div>
   <div class="mut" id="pfs" style="font-size:13px;margin:8px 0;min-height:18px"></div>
   <textarea class="textarea" id="pw" placeholder="surveillance - gözetim&#10;legitimacy : meşruluk&#10;hinder" style="min-height:180px"></textarea>
   <div class="mut" style="font-size:12.5px;margin-top:6px">Sadece İngilizcesini yazman yeterli: Türkçe anlamlar, eş anlamlılar ve örnek cümleler liste oluşunca otomatik eklenir.</div>
@@ -764,8 +764,8 @@ function modalNew(){
   const drop=el.querySelector('#drop'),pf=el.querySelector('#pf');
   pf.onclick=e=>e.stopPropagation();drop.onclick=e=>{if(e.target!==pf)pf.click()};drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')pf.click()};
   drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')};drop.ondragleave=()=>drop.classList.remove('over');
-  drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');if(e.dataTransfer.files[0])importFile(e.dataTransfer.files[0],el)};
-  pf.onchange=()=>{if(pf.files[0])importFile(pf.files[0],el)};const pc=el.querySelector('#pc');pc.onchange=()=>{if(pc.files[0])importFile(pc.files[0],el)};
+  drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');importFiles([...e.dataTransfer.files],el)};
+  pf.onchange=()=>{importFiles([...pf.files],el);pf.value=''};['#pc','#pm'].forEach(id=>{const i=el.querySelector(id);i.onchange=()=>{importFiles([...i.files],el);i.value=''}});
   el.querySelector('[data-close]').onclick=close;
   el.querySelector('#mk').onclick=()=>{
     const w=parse(el.querySelector('#pw').value);
@@ -775,44 +775,58 @@ function modalNew(){
     if(p.items.some(x=>!x.tr)||p.items.length)setTimeout(prepare,400);
   };
 }
-const OCR=`Görevin: Fotoğraftaki İngilizce kelimeleri bir kelime listesine dönüştürmek. Fotoğraf her şey olabilir: basılı ya da el yazısı kelime listesi, defter, tahta, kitap sayfası, çalışma kâğıdı, ekran görüntüsü, tablo, yamuk ya da bulanık çekilmiş bir sayfa.
-Fotoğraftaki BÜTÜN yazıyı dikkatle oku. Latin harfli her İngilizce kelime ve kalıp senin için adaydır; emin olmasan bile en iyi tahminini yaz. Listede ya da tabloda yazan her İngilizce kelimeyi eksiksiz ve sırasıyla al. Sayfa düz bir metinse içindeki öğrenmeye değer kelimeleri seç (en fazla 40).
-Yanında Türkçe anlam yazılıysa aynen al; yoksa en yaygın Türkçe karşılığını sen yaz ve "oto":true yap. Numara, madde işareti, başlık ve sayfa numarasını alma. Yazım hatalarını düzelt.
-Boş liste döndürmek için fotoğrafta gerçekten hiç Latin harfli yazı olmaması gerekir.
+const STRUCT=`Görevin: Bir fotoğraftan OCR ile okunmuş metni İngilizce kelime listesine dönüştürmek. Metin kelime listesi, defter, tablo, kitap sayfası ya da çalışma kâğıdı olabilir; OCR hataları içerebilir (harf karışması, bölünmüş kelime, gereksiz işaret).
+Kurallar:
+- Metindeki HER İngilizce kelimeyi ve kalıbı sırasıyla al (liste ya da tabloysa hiçbirini atlama). Metin düz bir paragrafsa öğrenmeye değer kelimeleri seç (en fazla 40).
+- OCR hatalarını düzelt ("rn"→"m", "0"→"o", bölünmüş kelimeleri birleştir). Numara, madde işareti, başlık, sayfa numarası ve tarih alma.
+- Kelimenin yanında Türkçe anlamı yazıyorsa aynen al ve "oto":false yap. Yoksa en yaygın Türkçe karşılığını SEN yaz ve "oto":true yap. Fiil kalıplarını ("take into account") tek öğe olarak al.
+- Türkçe kelimeyi İngilizce sanma; İngilizce kelime olmayan satırları alma.
 YALNIZCA geçerli JSON döndür: {"items":[{"en":"kelime ya da kalıp","tr":"Türkçe anlam","oto":false}]}`;
-const OCR_RAW=`Fotoğraftaki bütün yazıyı satır satır, gördüğün gibi aynen yaz (OCR). Hiçbir şeyi atlama, yorum ekleme. El yazısını da oku. YALNIZCA geçerli JSON döndür: {"metin":"satır 1\\nsatır 2"}`;
-function shrinkImage(f,M){return new Promise((ok,no)=>{const u=URL.createObjectURL(f),im=new Image();im.onload=()=>{const k=Math.min(1,M/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(im.naturalWidth*k);c.height=Math.round(im.naturalHeight*k);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL('image/jpeg',.9).split(',')[1])};im.onerror=()=>{URL.revokeObjectURL(u);no(new Error('Fotoğraf açılamadı. Ekran görüntüsü ya da JPEG/PNG olarak dene.'))};im.src=u})}
 function ocrItems(j){
   if(!j)return [];
   let arr=Array.isArray(j)?j:Array.isArray(j.items)?j.items:Object.values(j).find(Array.isArray)||[];
-  return arr.map(o=>typeof o==='string'?{en:o,tr:'',oto:false}:o&&({en:o.en||o.word||o.english||o.kelime||'',tr:o.tr||o.turkish||o.anlam||'',oto:!!o.oto})).filter(o=>o&&/[a-z]/i.test(String(o.en))).map(o=>({en:String(o.en).trim(),tr:String(o.tr||'').trim(),oto:o.oto}));
+  return arr.map(o=>typeof o==='string'?{en:o,tr:'',oto:false}:o&&({en:o.en||o.word||o.english||o.kelime||'',tr:o.tr||o.turkish||o.anlam||'',oto:!!o.oto})).filter(o=>o&&/[a-z]{2}/i.test(String(o.en))).map(o=>({en:String(o.en).trim(),tr:String(o.tr||'').trim(),oto:o.oto}));
 }
-async function scanPhoto(f){
-  const data=await shrinkImage(f,2200),img={mime:'image/jpeg',data};
-  let r=await KA.askJ(OCR,'Fotoğraftaki İngilizce kelimeleri listele.',{image:img,ms:80000});
-  let items=ocrItems(r.json);if(items.length)return {items};
-  // ikinci deneme: önce yazıyı aynen oku, sonra listeyi burada ayır
-  const r2=await KA.askJ(OCR_RAW,'Fotoğraftaki yazıyı aynen yaz.',{image:img,ms:80000});
-  const txt=r2.json&&String(r2.json.metin||r2.json.text||'');
-  if(txt){items=parse(txt).filter(x=>/[a-z]{2,}/i.test(x.en));
-    if(!items.length)items=[...new Set((txt.match(/[A-Za-z][A-Za-z'-]{2,}(?:\s[a-z]{2,}){0,2}/g)||[]))].slice(0,60).map(en=>({en,tr:''}));
-    if(items.length)return {items,raw:1}}
-  return {items:[],err:r.err||r2.err};
+function rawItems(txt){
+  let items=parse(txt).filter(x=>/[a-z]{2,}/i.test(x.en)&&!/[çğışİ]/.test(x.en));
+  if(items.length<2){const w=(txt.match(/\b[A-Za-z][a-z'-]{2,}(?:\s(?:in|on|of|to|up|out|for|with|into|off|down|away)\b)?/g)||[]);items=[...new Set(w.map(x=>x.toLowerCase()))].slice(0,60).map(en=>({en,tr:''}))}
+  return items;
+}
+async function scanPhoto(f,say){
+  const img=await KA.prepImage(f,2048);
+  say('Fotoğraftaki yazı okunuyor…');
+  const o=await KA.ocrText(img,{status:say});
+  if(!o.text)return {items:[],err:o.err};
+  say('Kelimeler ayıklanıyor ve eksik anlamlar tamamlanıyor…');
+  const r=await KA.askJ(STRUCT,o.text.slice(0,12000),{ms:60000,json:true});
+  let items=ocrItems(r.json);
+  if(!items.length)items=rawItems(o.text);
+  return {items,text:o.text};
+}
+async function importFiles(fs,el){
+  fs=fs.filter(Boolean);if(!fs.length)return;
+  const imgs=fs.filter(KA.isImage),rest=fs.filter(f=>!KA.isImage(f));
+  for(const f of rest)await importFile(f,el);
+  if(!imgs.length)return;
+  const out=el.querySelector('#pfs'),all=[],errs=[];
+  for(let i=0;i<imgs.length;i++){
+    const pre=imgs.length>1?`Fotoğraf ${i+1}/${imgs.length}: `:'';
+    const say=t=>{out.innerHTML='<span class="ka-spin"></span> '+esc(pre+t)};
+    try{const {items,err}=await scanPhoto(imgs[i],say);if(items.length)all.push(...items);else errs.push(err||'yazı bulunamadı')}
+    catch(e){errs.push(e.message)}
+  }
+  const seen=new Set(),items=all.filter(x=>{const k=x.en.toLowerCase();if(seen.has(k))return false;seen.add(k);return true});
+  if(!items.length){out.innerHTML=`Fotoğraftaki kelimeler okunamadı${errs[0]?' ('+esc(errs[0])+')':''}. Sayfayı düz tutup ışıklı bir yerde, kelimeler ekranı dolduracak şekilde yeniden çek ya da ekran görüntüsü kullan.`;return}
+  const ta=el.querySelector('#pw');ta.value=(ta.value.trim()?ta.value.trim()+'\n':'')+items.map(x=>x.tr?x.en+' - '+x.tr:x.en).join('\n');
+  const pn=el.querySelector('#pn');if(!pn.value)pn.value='Fotoğraftan liste';
+  const auto=items.filter(x=>x.oto).length,miss=items.filter(x=>!x.tr).length;
+  out.textContent=`${items.length} kelime bulundu${auto?` · ${auto} tanesinin Türkçesi otomatik eklendi`:''}${miss?` · ${miss} tanesinin anlamı liste oluşunca tamamlanacak`:''}${errs.length?` · ${errs.length} fotoğraf okunamadı`:''}. Kontrol edip “Listeyi oluştur”a bas.`;
 }
 async function importFile(f,el){
   const out=el.querySelector('#pfs');out.innerHTML='<span class="ka-spin"></span> Dosya okunuyor…';
   try{
     const ext=f.name.split('.').pop().toLowerCase();let txt='';
-    if(/^image\//.test(f.type)||/^(jpe?g|png|heic|heif|webp|gif|bmp)$/.test(ext)){
-      out.innerHTML='<span class="ka-spin"></span> Fotoğraf taranıyor, kelimeler çıkarılıyor…';
-      const {items,err}=await scanPhoto(f);
-      if(!items.length){out.textContent=err?'Fotoğraf okunamadı: '+err+'. Tekrar dene.':'Fotoğraftaki yazı okunamadı. Sayfayı düz tutup ışıklı bir yerde, kelimeler ekranı dolduracak şekilde çek.';return}
-      const ta=el.querySelector('#pw');ta.value=(ta.value.trim()?ta.value.trim()+'\n':'')+items.map(x=>x.tr?x.en+' - '+x.tr:x.en).join('\n');
-      const pn=el.querySelector('#pn');if(!pn.value)pn.value='Fotoğraftan liste';
-      const auto=items.filter(x=>x.oto).length;
-      out.textContent=`${items.length} kelime bulundu${auto?` (${auto} tanesinin anlamı otomatik eklendi)`:''}. Kontrol edip “Listeyi oluştur”a bas.`;
-      return;
-    }
+    if(KA.isImage(f))return importFiles([f],el);
     if(ext==='pdf'){
       const lib=await import('./lib/pdfjs/pdf-v3.min.mjs');lib.GlobalWorkerOptions.workerSrc=new URL('lib/pdfjs/pdf.worker-v3.min.mjs',location.href).href;
       const doc=await lib.getDocument({data:new Uint8Array(await f.arrayBuffer())}).promise;

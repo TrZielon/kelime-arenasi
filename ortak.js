@@ -82,11 +82,59 @@ KA.ai=async(prompt,o={})=>{
   await gIn();
   const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),o.ms||55000);
   try{
-    const r=await fetch('api/claude',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(Object.assign({prompt,tier:o.tier||'default'},o.image?{image:o.image}:{})),signal:ac.signal});
-    if(!r.ok){let j={};try{j=await r.json()}catch(e){}throw new Error(SRV[j.error]||j.detail||('Sunucu hatası '+r.status))}
+    const r=await fetch('api/claude',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(Object.assign({prompt,tier:o.tier||'default'},o.image?{image:o.image}:{},o.mode?{mode:o.mode}:{},o.json?{json:true}:{})),signal:ac.signal});
+    if(!r.ok){let j={};try{j=await r.json()}catch(e){}throw new Error(SRV[j.error]?SRV[j.error]+(j.detail?' ['+String(j.detail).slice(0,140)+']':''):(j.detail||('Sunucu hatası '+r.status)))}
     const j=await r.json();return String(j.text||'');
   }catch(e){if(e.name==='AbortError')throw new Error('Zaman aşımı, tekrar dene.');throw e}
   finally{clearTimeout(tm);gOut()}
+};
+/* ---------- Fotoğraftan yazı okuma (OCR) ---------- */
+KA.isImage=f=>!!f&&(/^image\//.test(f.type||'')||/\.(jpe?g|png|heic|heif|webp|gif|bmp|tiff?)$/i.test(f.name||''));
+KA.prepImage=(src,M=2048)=>new Promise((ok,no)=>{
+  const fin=(im,w,h,rev)=>{const k=Math.min(1,M/Math.max(w,h)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(w*k));c.height=Math.max(1,Math.round(h*k));const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);if(rev)rev();
+    let q=.88,u=c.toDataURL('image/jpeg',q);while(u.length>3600000&&q>.5){q-=.12;u=c.toDataURL('image/jpeg',q)}
+    const data=u.split(',')[1];ok({mime:'image/jpeg',data,w:c.width,h:c.height,canvas:c})};
+  if(src instanceof HTMLCanvasElement)return fin(src,src.width,src.height);
+  const u=URL.createObjectURL(src),im=new Image();
+  im.onload=()=>fin(im,im.naturalWidth,im.naturalHeight,()=>URL.revokeObjectURL(u));
+  im.onerror=()=>{URL.revokeObjectURL(u);no(new Error(/hei[cf]$/i.test(src.name||'')?'Bu tarayıcı HEIC fotoğrafı açamıyor. iPhone\'da Ayarlar → Kamera → Biçimler → "En Uyumlu" seç ya da ekran görüntüsü al.':'Fotoğraf açılamadı. JPEG/PNG ya da ekran görüntüsü olarak dene.'))};
+  im.src=u;
+});
+KA.b64bytes=b=>{const s=atob(b),a=new Uint8Array(s.length);for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return a};
+let tessP=null;
+KA.tesseract=async(canvas,onp)=>{
+  if(!tessP)tessP=new Promise((ok,no)=>{if(window.Tesseract)return ok();const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';s.onload=ok;s.onerror=()=>{tessP=null;no(new Error('Yedek okuyucu yüklenemedi'))};document.head.appendChild(s)});
+  await tessP;
+  const r=await Tesseract.recognize(canvas,'eng+tur',{logger:m=>{if(onp&&m.status==='recognizing text')onp(Math.round(m.progress*100))}});
+  return r.data;
+};
+const OCR_TXT=`You are a precise OCR engine. Transcribe ALL text in this image exactly as written, line by line, top to bottom. The text is usually English and/or Turkish: keep Turkish characters (ç ğ ı İ ö ş ü) exactly. Read handwriting too and give your best reading of unclear words. Keep each table row or list row on ONE line and separate its columns with " | ". Keep numbers, bullets, option letters and blanks (write blanks as _____). If the photo is rotated or tilted, read it in the correct orientation. Do not translate, summarize, explain or add anything. Output only the transcribed text.`;
+const OCR_LAY=`You are a precise OCR and layout engine for exam papers. Find every line of text in this page image and return its exact text and bounding box.
+Rules: keep reading order (top to bottom). If a line has large horizontal gaps (two columns, or answer options on one line such as "A) cat   B) dog   C) bird"), split it into separate items, one per piece, each with its own box. Keep question numbers ("1.", "2)"), option letters ("A)", "(b)"), Turkish characters exactly, and write blanks/underlines as _____ . A ruled answer line with no text is an item whose text is "__________". Do not translate or fix the text.
+Coordinates: "b" is [ymin, xmin, ymax, xmax] normalized to 0-1000 of the image height/width, tight around the text.
+Return ONLY JSON: {"lines":[{"t":"text","b":[ymin,xmin,ymax,xmax]}]}`;
+KA.ocrText=async(img,o={})=>{
+  let err='';
+  for(let i=0;i<2;i++){
+    try{const t=(await KA.ai(OCR_TXT,{image:{mime:img.mime,data:img.data},mode:'ocr',ms:65000})).replace(/^```[a-z]*\n?|```$/g,'').trim();
+      if(/[A-Za-zÇĞİÖŞÜçğıöşü]{2,}/.test(t))return {text:t,src:'ai'}}
+    catch(e){err=e.message;if(/API anahtarı|izinli değil/.test(err))break}
+  }
+  if(img.canvas&&o.fallback!==false){try{o.status&&o.status('Yedek okuyucu çalışıyor…');const d=await KA.tesseract(img.canvas,p=>o.status&&o.status('Yedek okuyucu çalışıyor… %'+p));const t=String(d.text||'').trim();if(t)return {text:t,src:'tess'}}catch(e){err=err||e.message}}
+  return {text:'',err:err||'Yazı bulunamadı'};
+};
+KA.ocrLayout=async(img,o={})=>{
+  let err='';
+  for(let i=0;i<2;i++){
+    try{const t=await KA.ai(OCR_LAY,{image:{mime:img.mime,data:img.data},mode:'ocr',json:true,ms:65000});const j=KA.parseJSON(t);
+      const arr=j&&(Array.isArray(j)?j:j.lines||Object.values(j).find(Array.isArray));
+      const lines=(arr||[]).map(l=>({t:String(l.t||l.text||'').trim(),b:(l.b||l.box||l.box_2d||[]).map(Number)})).filter(l=>l.t&&l.b.length===4&&l.b.every(isFinite)&&l.b[2]>l.b[0]&&l.b[3]>l.b[1]);
+      if(lines.length)return {lines,src:'ai'};err='Geçersiz yanıt'}
+    catch(e){err=e.message;if(/API anahtarı|izinli değil/.test(err))break}
+  }
+  if(img.canvas&&o.fallback!==false){try{o.status&&o.status('Yedek okuyucu çalışıyor…');const d=await KA.tesseract(img.canvas,p=>o.status&&o.status('Yedek okuyucu çalışıyor… %'+p));const W=img.canvas.width,H=img.canvas.height;
+    const lines=(d.lines||[]).map(l=>({t:String(l.text||'').trim(),b:[l.bbox.y0/H*1000,l.bbox.x0/W*1000,l.bbox.y1/H*1000,l.bbox.x1/W*1000]})).filter(l=>l.t);if(lines.length)return {lines,src:'tess'}}catch(e){err=err||e.message}}
+  return {lines:[],err:err||'Yazı bulunamadı'};
 };
 KA.parseJSON=t=>{const m=String(t||'').match(/[\[{][\s\S]*[\]}]/);if(!m)return null;try{return JSON.parse(m[0])}catch(e){return null}};
 KA.askJ=async(sys,input,o={})=>{try{const t=await KA.ai(sys+'\n\nGİRDİ:\n'+input,o);const j=KA.parseJSON(t);return {json:j,err:j?'':'Geçersiz yanıt'}}catch(e){return {json:null,err:e.message}}};
