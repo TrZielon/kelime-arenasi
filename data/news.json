@@ -1,6 +1,444 @@
 {
-  "updated": "2026-11-13T06:20:23.036Z",
+  "updated": "2026-11-15T06:20:27.376Z",
   "items": [
+    {
+      "id": "mwhg3xpsdyiw",
+      "date": "2026-11-15",
+      "category": "World",
+      "title": "US Floats Donbas and NATO Idea",
+      "src": "https://www.bbc.co.uk/news/articles/cwvg2l312ylqo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/fc82/live/f8afbeb0-e087-11f1-b780-31cc9daf154a.jpg",
+      "levels": {
+        "1": {
+          "text": "The president of Ukraine, Volodymyr Zelensky, spoke about a new idea. He said the US discussed a trade with Ukraine. In this idea, Ukraine would give up the Donbas area. In return, Ukraine could join NATO. NATO is a group of countries that protect each other. A US official talked to the BBC about this news. The official did not confirm Zelensky's words. However, the official said that people are still discussing many ideas. The situation is not final yet. Many talks are still happening between these countries.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this story?",
+              "opts": [
+                "The BBC made a new group",
+                "Donbas is now a part of the US",
+                "Ukraine joined NATO yesterday",
+                "The US floated an idea about Donbas and NATO"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does 'protect' mean in this text?",
+              "opts": [
+                "To give away",
+                "To keep safe",
+                "To make money",
+                "To talk fast"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Who talked to the BBC?",
+              "opts": [
+                "A NATO president",
+                "A news reader",
+                "A US official",
+                "A person from Donbas"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Ukraine has already joined NATO",
+                "Zelensky said the US discussed trading Donbas for NATO membership",
+                "No ideas are being discussed now",
+                "The US official confirmed Zelensky's words"
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "2": {
+          "text": "Ukrainian President Volodymyr Zelensky stated that the United States has floated a specific proposal regarding the ongoing war. According to Zelensky, the suggestion involves Ukraine ceding the Donbas region in exchange for joining NATO. NATO membership would offer Ukraine strong protection from other allied nations. However, the United States government has not officially confirmed the Ukrainian president's comments. A US official spoke to the BBC about the situation. The official did not say if Zelensky's statement was true or false, but they noted that many different ideas continue to be discussed behind the scenes. This shows that international discussions are still active as leaders search for possible solutions.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the text?",
+              "opts": [
+                "A US proposal regarding Donbas and NATO membership mentioned by Zelensky",
+                "The history of the NATO alliance",
+                "The total loss of the Donbas region",
+                "A speech by a US official about the BBC"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does 'ceding' mean in the context of the story?",
+              "opts": [
+                "Buying new property",
+                "Taking by force",
+                "Building a border",
+                "Giving up control of land"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Who did the US official speak to?",
+              "opts": [
+                "The Ukrainian army",
+                "The BBC",
+                "Volodymyr Zelensky",
+                "NATO leaders"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE based on the text?",
+              "opts": [
+                "A US official said many ideas are still being discussed",
+                "Ukraine has officially agreed to give up Donbas",
+                "The US confirmed Zelensky's comments immediately",
+                "Zelensky refused to talk about NATO"
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "Ukrainian President Volodymyr Zelensky revealed that the United States has floated the idea of Ukraine ceding the Donbas region in exchange for NATO membership. Securing a spot in NATO has long been a goal for Ukraine, as it provides collective defense commitments from member states. However, the US has not confirmed Zelensky's statement regarding this potential deal. When asked about the president's remarks, a US official informed the BBC that \"many ideas continue to be discussed.\" The official chose not to verify the specific details provided by Zelensky, reflecting the delicate nature of ongoing diplomatic conversations. For now, it remains unclear whether this specific trade-off will become an official part of future negotiations.",
+          "quiz": [
+            {
+              "q": "What is the main subject of the article?",
+              "opts": [
+                "The official US confirmation of a new peace treaty",
+                "A permanent end to all diplomatic discussions",
+                "The complete military victory of NATO forces",
+                "Zelensky's claims about a US idea involving Donbas and NATO"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does 'floated' mean as used in the article?",
+              "opts": [
+                "Signed an official contract",
+                "Rejected a plan completely",
+                "Suggested an idea for consideration",
+                "Stayed on top of water"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What did the US official tell the BBC?",
+              "opts": [
+                "The US completely denies the claims",
+                "Ukraine is already a NATO member",
+                "Many ideas continue to be discussed",
+                "Zelensky was not telling the truth"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "A US official verified all details of the potential deal",
+                "The US has not confirmed the Ukrainian president's comments",
+                "Ukraine has officially ceded the Donbas region",
+                "The US confirmed Zelensky's comments about Donbas"
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwhg3wv1497h",
+      "date": "2026-11-15",
+      "category": "World",
+      "title": "US Investigates Copper Wire Problem That Stopped Flights",
+      "src": "https://www.bbc.co.uk/news/articles/c6wy9lynq4qno?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/ea11/live/3adfb390-e05f-11f1-9e26-b3b65586122f.jpg",
+      "levels": {
+        "1": {
+          "text": "A big problem stopped flights across the United States. The US transport secretary spoke about the issue. He said an upgrade to a copper wire caused the nationwide flight suspension. Now, the US government is working to find out more. Government officials are trying to find out whether the chaos was caused by incompetence or faulty equipment. People want to know what happened to the system.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "The US government is looking into a wire issue that stopped flights nationwide.",
+                "A transport secretary is leaving his job after a big flight.",
+                "Passengers are buying cheaper tickets for nationwide flights.",
+                "The US government is building new airplanes for passengers."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'chaos' mean in this text?",
+              "opts": [
+                "A very fast copper wire",
+                "A new kind of airplane",
+                "A quiet and peaceful day",
+                "A state of complete confusion and disorder"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What specific item's upgrade caused the flight suspension?",
+              "opts": [
+                "A plastic pipe",
+                "A radio antenna",
+                "A copper wire",
+                "A computer screen"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "True or False: The US government already knows for sure if incompetence caused the problem.",
+              "opts": [
+                "True",
+                "False",
+                "The text says it was definitely faulty equipment.",
+                "The text says both reasons are completely proven."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "2": {
+          "text": "Flights across the United States were recently suspended nationwide, causing major disruption for travelers. According to the US transport secretary, the problem started during an upgrade to a copper wire. This technical issue led to a complete stop of flight operations across the country. Following the incident, the US government started an investigation into the situation. Officials are currently trying to find out whether the chaos was caused by incompetence or faulty equipment. Authorities want to understand the exact reasons behind the failure to prevent future flight disruptions.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the news report?",
+              "opts": [
+                "An investigation into a nationwide flight suspension caused by a wire upgrade.",
+                "The total cost of replacing all copper wires in American airports.",
+                "A new law passed by the US government regarding flight delays.",
+                "A plan by the US transport secretary to train new pilots."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In the text, what does 'suspended' mean?",
+              "opts": [
+                "Cleaned thoroughly",
+                "Temporarily stopped or stopped for a time",
+                "Sold to another country",
+                "Made much faster"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Who reported that a copper wire upgrade caused the flight stop?",
+              "opts": [
+                "A airport manager",
+                "A copper wire seller",
+                "An airline pilot",
+                "The US transport secretary"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "The copper wire was completely stolen from the airport.",
+                "The government is trying to determine if incompetence or faulty equipment caused the chaos.",
+                "The US transport secretary blamed international travelers for the chaos.",
+                "The flight suspension affected only one small city airport."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "A nationwide flight suspension recently grounded air traffic across the United States, leading to widespread travel disruption. The US transport secretary announced that an upgrade involving a copper wire was the root cause of the system failure. In the wake of the incident, the US government has launched an effort to determine the exact circumstances behind the breakdown. Specifically, investigators are trying to find out whether the resulting chaos was caused by incompetence or faulty equipment. As the government continues its inquiry, officials aim to clarify how a single wire upgrade could trigger such a massive disruption to the nation's aviation network.",
+          "quiz": [
+            {
+              "q": "Which statement best summarizes the main focus of the article?",
+              "opts": [
+                "US authorities are investigating if incompetence or bad equipment caused a wire-related flight suspension.",
+                "US officials have concluded that severe weather caused the nationwide flight disruption.",
+                "The US transport secretary is replacing all copper components in the nation's airports.",
+                "Airlines are suing the US government over financial losses from flight delays."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What is the meaning of 'incompetence' as used in the context of the investigation?",
+              "opts": [
+                "High electrical conductivity",
+                "Excessive speed and efficiency",
+                "Extreme physical strength",
+                "Lack of ability, skill, or effectiveness"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What specific possibilities is the US government investigating regarding the cause of the chaos?",
+              "opts": [
+                "Whether it was caused by incompetence or faulty equipment",
+                "Whether it was caused by severe storms or power outages",
+                "Whether it was caused by high ticket prices or worker strikes",
+                "Whether it was caused by foreign hackers or bad software"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "True or False: The copper wire upgrade caused a localized issue that only affected one airline.",
+              "opts": [
+                "The text states no flights were actually stopped.",
+                "The text states it only affected international arrivals.",
+                "False",
+                "True"
+              ],
+              "ans": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwhg3wg8kpks",
+      "date": "2026-11-15",
+      "category": "World",
+      "title": "Pope Leo speaks of community suffering on visit to remote Andes town",
+      "src": "https://www.bbc.co.uk/news/articles/cr4gnz0lv2vlo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/80df/live/ea970890-e09d-11f1-a298-b1f4784d44cc.jpg",
+      "levels": {
+        "1": {
+          "text": "Pope Leo visited a remote town in the Andes. The town is called Santa Cruz de Succhabamba. It is part of the Diocese of Chiclayo. Pope Leo served as a bishop in this diocese from 2015 to 2023. During his visit to the town, Pope Leo spoke about community suffering. Many local people came to see him. He remembered his time working in the region as a bishop. The people were glad to welcome him back to their quiet town in the mountains.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this news story?",
+              "opts": [
+                "Pope Leo built a new church in the Andes mountains.",
+                "Pope Leo moved to the Andes to live in a small town.",
+                "Pope Leo visited Santa Cruz de Succhabamba and spoke about community suffering.",
+                "Pope Leo became a bishop in the Diocese of Chiclayo in 2023."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "In this story, what does 'remote' mean?",
+              "opts": [
+                "Big and noisy",
+                "Warm and sunny",
+                "Very crowded",
+                "Far away from other places"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Where is Santa Cruz de Succhabamba located?",
+              "opts": [
+                "In the Andes",
+                "In Chiclayo city center",
+                "In a foreign country",
+                "Near the ocean"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE according to the story?",
+              "opts": [
+                "Santa Cruz de Succhabamba is a very large city.",
+                "Pope Leo never worked in the Diocese of Chiclayo before.",
+                "Pope Leo was a bishop in the Diocese of Chiclayo from 2015 to 2023.",
+                "Pope Leo visited the Andes in 2014."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "2": {
+          "text": "Pope Leo has traveled to Santa Cruz de Succhabamba, a remote town located in the Andes. During his visit, the pope spoke about the suffering of the local community. The small town is part of the Diocese of Chiclayo. This region is very familiar to Pope Leo because he previously served there as a bishop from 2015 until 2023. His return to the area brought attention to the mountain town. The pope shared words with the people about the hardships faced by the community. His past years as bishop in the diocese made this visit very meaningful for both the pope and the local residents who gathered to hear him speak.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the article?",
+              "opts": [
+                "The election of a new bishop in the Diocese of Chiclayo",
+                "The history of mountain towns located in the Andes",
+                "Pope Leo's future travel plans for 2023",
+                "Pope Leo's visit to a remote Andes town where he addressed community suffering"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does the word 'diocese' refer to in the text?",
+              "opts": [
+                "A special community gathering",
+                "A Catholic church district under a bishop",
+                "A remote village in the Andes",
+                "A type of mountain peak"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "How long did Pope Leo serve as bishop in the Diocese of Chiclayo?",
+              "opts": [
+                "For just one year",
+                "For over twenty years",
+                "From 2010 to 2015",
+                "From 2015 to 2023"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which of the following statements is FALSE based on the text?",
+              "opts": [
+                "Pope Leo served as bishop in Chiclayo until 2023.",
+                "Santa Cruz de Succhabamba is located in the Andes.",
+                "Santa Cruz de Succhabamba is a major city outside the Andes.",
+                "Pope Leo spoke about community suffering during his visit."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "3": {
+          "text": "Pope Leo has made a notable visit to Santa Cruz de Succhabamba, a remote town situated high in the Andes mountains. While addressing the gathered residents, the pope spoke directly about the community's suffering and hardships. Santa Cruz de Succhabamba falls under the jurisdiction of the Diocese of Chiclayo, a region with which Pope Leo shares a deep personal history. Before his papacy, he served as the bishop of the Diocese of Chiclayo for eight years, from 2015 to 2023. Returning to his former diocese allowed the pope to reconnect with the local population in an area he knows well. His remarks highlighted the struggles of those living in the isolated mountain community, reflecting his enduring connection to the diocese he led for nearly a decade.",
+          "quiz": [
+            {
+              "q": "What is the primary focus of the report?",
+              "opts": [
+                "The history of the Catholic Church in Chiclayo from 2015 to 2023",
+                "The resignation of the current bishop of the Diocese of Chiclayo",
+                "Pope Leo's visit to a remote Andes town in his former diocese to address community suffering",
+                "Economic problems facing mountain communities in the Andes"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which word in the text means 'far away from other communities or difficult to access'?",
+              "opts": [
+                "Notable",
+                "Remote",
+                "Enduring",
+                "Personal"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What connection does Pope Leo have to the Diocese of Chiclayo?",
+              "opts": [
+                "He visited the region for the first time in 2023.",
+                "He served as its bishop from 2015 to 2023.",
+                "He built the diocese in 2015.",
+                "He was born in Santa Cruz de Succhabamba."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE according to the passage?",
+              "opts": [
+                "Pope Leo became the bishop of Chiclayo in 2023.",
+                "Pope Leo refused to talk about the community's problems during his visit.",
+                "Santa Cruz de Succhabamba is a bustling metropolis in the flatlands.",
+                "Santa Cruz de Succhabamba is part of the Diocese of Chiclayo."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mwel8518uzwk",
       "date": "2026-11-13",
@@ -144,7 +582,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/f66c/live/4f0358a0-def1-11f1-bb80-c5cef03337ce.jpg"
     },
     {
       "id": "mwel84digxnk",
@@ -289,7 +728,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/9462/live/a60e9f80-df2b-11f1-a701-fddedf244c16.jpg"
     },
     {
       "id": "mwel83v4rrhd",
@@ -434,7 +874,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/c16a/live/65ee22f0-df02-11f1-b6e1-5b169363fed4.jpg"
     },
     {
       "id": "mwd5sancsfkc",
@@ -579,7 +1020,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/2a2c/live/a70e9220-de61-11f1-a701-fddedf244c16.jpg"
     },
     {
       "id": "mwd5sactco1z",
@@ -724,7 +1166,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/884a/live/97210150-de3d-11f1-a9ed-658311f31da9.jpg"
     },
     {
       "id": "mwd5sdj8ncv4",
@@ -869,7 +1312,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/d247/live/940d6f30-de7e-11f1-b88b-3f1671ea859d.jpg"
     },
     {
       "id": "mwbqcpms7rqh",
@@ -1014,7 +1458,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/c66f/live/939c6190-dd44-11f1-9ac0-6b8f7fc58221.png"
     },
     {
       "id": "mwbqde520179",
@@ -1159,7 +1604,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/5391/live/eb55ba30-dd67-11f1-a701-fddedf244c16.jpg"
     },
     {
       "id": "mwaax6bbcv40",
@@ -1304,7 +1750,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/123a/live/434e87b0-dcd9-11f1-a701-fddedf244c16.png"
     },
     {
       "id": "mwaawot1kl5u",
@@ -1449,7 +1896,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/4d8b/live/22dad050-dd25-11f1-93e1-3b657b665bcf.jpg"
     },
     {
       "id": "mwaawtufm9hn",
@@ -1594,7 +2042,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/0baa/live/f351b160-dcd8-11f1-93e1-3b657b665bcf.jpg"
     },
     {
       "id": "mw8vgp2ijq40",
@@ -1739,7 +2188,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/a160/live/111155a0-dc27-11f1-b441-2b33b063138f.jpg"
     },
     {
       "id": "mw8vgpf97eyx",
