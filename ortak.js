@@ -145,13 +145,13 @@ const mem=new Map();
 function pickVoice(){try{const vs=speechSynthesis.getVoices()||[];voice=vs.find(v=>/^en[-_]US/i.test(v.lang)&&/Samantha|Google US|Aaron|Ava|Allison|Zira|Jenny|Aria|Natural/i.test(v.name))||vs.find(v=>/^en[-_]US/i.test(v.lang))||null}catch(e){}}
 if('speechSynthesis' in window){pickVoice();try{speechSynthesis.onvoiceschanged=pickVoice}catch(e){}}
 function local(text,rate){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';if(voice)u.voice=voice;u.rate=rate||.95;speechSynthesis.speak(u)}catch(e){}}
-async function cloudUrl(text){
+async function cloudUrl(text,ms){
   if(mem.has(text))return mem.get(text);
   const key='https://ka-tts.local/'+encodeURIComponent(text);
   let blob=null;
   try{if(window.caches){const c=await caches.open('ka-tts-v1');const hit=await c.match(key);if(hit)blob=await hit.blob()}}catch(e){}
   if(!blob){
-    const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),text.length>60?6000:2500);
+    const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),ms||(text.length>60?6000:2500));
     try{const r=await fetch('api/tts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({text}),signal:ac.signal});if(!r.ok)throw 0;blob=await r.blob();try{if(window.caches)(await caches.open('ka-tts-v1')).put(key,new Response(blob.slice(0),{headers:{'content-type':'audio/wav'}}))}catch(e){}}
     finally{clearTimeout(tm)}
   }
@@ -165,6 +165,17 @@ KA.speak=(t,rate)=>{
   if(location.protocol==='file:')return local(text,rate);
   cloudUrl(text).then(u=>{if(my!==seq)return;audio=new Audio(u);audio.playbackRate=rate||1;return audio.play()}).catch(()=>{if(my===seq)local(text,rate)});
 };
+// Oynatma bitince çözülen sürüm (uzun dinleme metinleri için)
+KA.speakP=(t,rate)=>new Promise(res=>{
+  if(muted)return res(false);
+  const text=String(t||'').replace(/\s+/g,' ').trim().slice(0,1900);if(!text)return res(false);
+  const my=++seq;if(audio){try{audio.pause()}catch(e){}}
+  try{speechSynthesis.cancel()}catch(e){}
+  const loc=()=>{try{const u=new SpeechSynthesisUtterance(text);u.lang='en-US';if(voice)u.voice=voice;u.rate=(rate||1)*.95;u.onend=()=>res(my===seq);u.onerror=()=>res(false);speechSynthesis.speak(u)}catch(e){res(false)}};
+  if(location.protocol==='file:')return loc();
+  cloudUrl(text,25000).then(u=>{if(my!==seq)return res(false);audio=new Audio(u);audio.playbackRate=rate||1;audio.onended=()=>res(my===seq);audio.onerror=()=>{if(my===seq)loc();else res(false)};return audio.play()}).catch(()=>{if(my===seq)loc();else res(false)});
+});
+KA.ttsWarm=t=>{const x=String(t||'').replace(/\s+/g,' ').trim().slice(0,1900);if(!x||muted||location.protocol==='file:')return;cloudUrl(x,25000).catch(()=>{})};
 KA.stopSpeak=()=>{seq++;if(audio){try{audio.pause()}catch(e){}}try{speechSynthesis.cancel()}catch(e){}};
 KA.muted=v=>{if(v!==undefined){muted=!!v;S.set('ka_mute',muted?'1':'0');if(muted)KA.stopSpeak();document.querySelectorAll('[data-ka-snd]').forEach(b=>{b.innerHTML=KA.ic(muted?'mute':'sound');b.title=muted?'Sesi aç':'Sesi kapat'})}return muted};
 let ac=null;
@@ -185,6 +196,7 @@ const IC={
   exam:'<path d="M9 4h6l1 2h3v15H5V6h3z"/><path d="m9 13 2 2 4-4"/>',
   sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
   moon:'<path d="M20 14.5A8 8 0 0 1 9.5 4 7 7 0 1 0 20 14.5z"/>',
+  ear:'<path d="M6 8.5a6 6 0 1 1 12 0c0 3-2 4.2-3 5.5-.9 1.2-.9 2.4-1.6 3.6A3 3 0 0 1 8 16"/><path d="M10 8.5a2 2 0 1 1 4 0c0 1.2-1 1.7-1.5 2.3"/>',
   sound:'<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>',
   mute:'<path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6M21 9l-5 6"/>',
   x:'<path d="M18 6 6 18M6 6l12 12"/>',
@@ -221,7 +233,7 @@ const IC={
 KA.ic=(n,cls)=>`<svg class="${cls||''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||''}</svg>`;
 
 /* ---------- Gezinme çubuğu (tek kaynak) ---------- */
-const LINKS=[['index.html','Ana sayfa','home'],['haber.html','Haber','news'],['fetih.html','Arena Fethi','sword'],['sinav.html','Sınav','exam'],['sozluk.html','Sözlük','book']];
+const LINKS=[['index.html','Ana sayfa','home'],['haber.html','Haber','news'],['fetih.html','Arena Fethi','sword'],['sinav.html','Sınav','exam'],['sozluk.html','Sözlük','book'],['dinle.html','Dinle','ear']];
 KA.nav=(active,o={})=>{
   const links=LINKS.map(([h,t,i])=>`<a href="${h==='index.html'?'./':h}" class="${h===active?'on':''}">${KA.ic(i)}<span>${t}</span></a>`).join('');
   const m=KA.mode();

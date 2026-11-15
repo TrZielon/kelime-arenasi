@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="tr" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dinle & Konuş · Kelime Arenası</title>
+<meta name="description" content="Dinleme ve telaffuz çalışması: duyduğun kelimeyi ve cümleyi yaz, kelimeyi sesli oku ve puanını gör, benzer sesleri ayırt et.">
+<meta name="theme-color" content="#0f766e">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="K. Arenası">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="ortak.css?v=3">
+<style>
+.dhero{padding:26px 28px 24px;background:linear-gradient(150deg,var(--card),var(--card2))}
+.dhero h1{font-size:clamp(28px,4vw,40px);margin:6px 0 4px}
+.dhero>p{margin:0 0 18px;color:var(--ink2);max-width:680px}
+.modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mode{display:flex;gap:12px;align-items:flex-start;text-align:left;border:1.5px solid var(--line);background:var(--card);border-radius:16px;padding:14px;color:var(--ink);transition:border-color .15s,transform .15s}
+.mode:hover{border-color:var(--line2);transform:translateY(-1px)}
+.mode.on{border-color:var(--p);background:color-mix(in srgb,var(--p) 7%,var(--card));box-shadow:0 0 0 3px color-mix(in srgb,var(--p) 14%,transparent)}
+.mode .mi{flex:0 0 42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--soft);color:var(--p)}
+.mode.on .mi{background:var(--p);color:var(--p-ink)}
+.mode .mi svg{width:22px;height:22px}
+.mode b{display:block;font-size:15.5px}
+.mode span{display:block;font-size:13px;color:var(--mut);line-height:1.4;margin-top:2px}
+.opts{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.seg{display:inline-flex;padding:3px;border-radius:12px;background:var(--soft);border:1px solid var(--line)}
+.seg button{border:0;background:transparent;border-radius:9px;padding:7px 12px;font-weight:800;font-size:13px;color:var(--mut);white-space:nowrap}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:var(--sh1)}
+.opts select{height:38px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;font-size:13.5px;padding:0 10px;max-width:260px}
+.olab{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.lay{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;margin-top:16px;align-items:start}
+.stage{padding:0;overflow:hidden}
+.bar{height:6px;background:var(--soft)}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--p2));transition:width .35s}
+.sin{padding:26px 28px 28px;min-height:420px;display:flex;flex-direction:column}
+.stop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+.stop .eyebrow{margin:0}
+.cnt{font-weight:800;color:var(--mut);font-size:13.5px}
+.center-col{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;flex:1;justify-content:center}
+.bigplay{width:96px;height:96px;border-radius:50%;border:0;background:var(--p);color:var(--p-ink);display:grid;place-items:center;box-shadow:0 10px 30px color-mix(in srgb,var(--p) 35%,transparent);transition:transform .15s}
+.bigplay:hover{transform:scale(1.04)}
+.bigplay svg{width:40px;height:40px}
+.bigplay.pulse{animation:pulse 1.2s ease-out}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--p) 45%,transparent)}100%{box-shadow:0 0 0 26px transparent}}
+.minis{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.mask{font-family:ui-monospace,Menlo,monospace;font-size:22px;letter-spacing:.25em;color:var(--ink2);min-height:30px}
+.ans{width:100%;max-width:520px}
+.ans input,.ans textarea{width:100%;font-size:22px;font-weight:700;text-align:center;border:2px solid var(--line2);border-radius:16px;background:var(--card);color:var(--ink);padding:14px 16px;outline:0;font-family:inherit;resize:none}
+.ans textarea{font-size:18px;text-align:left;line-height:1.5;min-height:96px}
+.ans input:focus,.ans textarea:focus{border-color:var(--p)}
+.acts2{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.fb{width:100%;max-width:560px;border-radius:16px;padding:16px 18px;text-align:left;background:var(--soft);border:1px solid var(--line)}
+.fb.ok{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 35%,var(--line))}
+.fb.bad{background:var(--bad-soft);border-color:color-mix(in srgb,var(--bad) 30%,var(--line))}
+.fb h3{margin:0 0 6px;font-family:inherit;font-size:16px;display:flex;align-items:center;gap:8px}
+.fb .w{font-size:24px;font-weight:800;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fb .tr{color:var(--ink2);font-size:14.5px;margin-top:2px}
+.fb .s{margin-top:10px;font-size:15px;line-height:1.55;color:var(--ink2)}
+.diff{font-family:ui-monospace,Menlo,monospace;font-size:20px;letter-spacing:.04em;margin:6px 0 2px;word-break:break-word}
+.diff .g{color:var(--ok)}
+.diff .r{color:var(--bad);text-decoration:line-through}
+.diff .m{color:var(--bad);border-bottom:2px solid var(--bad)}
+.wd{display:inline-block;padding:1px 5px;border-radius:6px;margin:1px 0}
+.wd.g{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.wd.r{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.say2{border:0;background:none;color:var(--mut);padding:0 2px;vertical-align:-3px}
+.say2 svg{width:18px;height:18px}
+.target{font-size:clamp(38px,7vw,60px);font-weight:800;margin:0;line-height:1.05}
+.target.sent{font-size:clamp(20px,3vw,26px);font-weight:600;line-height:1.5;max-width:620px}
+.ttr{color:var(--mut);font-weight:700;margin-top:-6px}
+.mic{width:104px;height:104px;border-radius:50%;border:0;background:var(--acc);color:var(--acc-ink);display:grid;place-items:center;position:relative;box-shadow:0 10px 30px color-mix(in srgb,var(--acc) 40%,transparent);transition:transform .15s}
+.mic svg{width:42px;height:42px}
+.mic:hover{transform:scale(1.04)}
+.mic.rec{background:var(--bad);color:#fff}
+.mic.rec::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:3px solid var(--bad);animation:ring 1.1s ease-out infinite}
+@keyframes ring{0%{opacity:.8;transform:scale(.92)}100%{opacity:0;transform:scale(1.25)}}
+.heard{min-height:24px;color:var(--ink2);font-weight:600;font-style:italic}
+.score{display:flex;gap:16px;align-items:center;text-align:left}
+.ring{position:relative;width:84px;height:84px;flex:0 0 84px}
+.ring svg{width:84px;height:84px;transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:22px}
+.note{font-size:13px;color:var(--mut);max-width:520px}
+.pairs{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:520px}
+.pair{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:18px 12px;display:grid;gap:4px;justify-items:center;color:var(--ink);transition:border-color .15s,transform .15s}
+.pair:hover:not([disabled]){border-color:var(--p);transform:translateY(-1px)}
+.pair b{font-size:30px}
+.pair i{font-style:normal;font-family:ui-monospace,Menlo,monospace;color:var(--mut);font-size:14px}
+.pair.ok{border-color:var(--ok);background:var(--ok-soft)}
+.pair.bad{border-color:var(--bad);background:var(--bad-soft)}
+.side{padding:18px}
+.side h3{font-family:inherit;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--mut);margin:0 0 12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.stat{background:var(--soft);border-radius:14px;padding:10px;text-align:center}
+.stat b{display:block;font-size:22px}
+.stat span{font-size:11.5px;font-weight:800;color:var(--mut)}
+.miss{display:grid;gap:6px;max-height:260px;overflow:auto}
+.miss div{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:var(--soft);font-weight:700;font-size:14px}
+.miss div span{color:var(--mut);font-weight:600;font-size:12.5px}
+.tips{margin-top:16px;padding:14px;border-radius:14px;background:var(--acc-soft);font-size:13.5px;line-height:1.5;color:var(--ink2)}
+.tips b{color:var(--ink)}
+.end h2{font-size:34px;margin:0}
+.warnbox{max-width:520px;font-size:13.5px;padding:10px 14px;border-radius:12px;background:var(--acc-soft);color:var(--ink2);text-align:left}
+@media (max-width:900px){.lay{grid-template-columns:1fr}.modes{grid-template-columns:1fr}.mode{padding:12px}.mode span{display:none}.modes{grid-template-columns:repeat(3,minmax(0,1fr))}.mode{flex-direction:column;align-items:center;text-align:center;gap:6px}.mode .mi{flex-basis:auto;width:38px;height:38px}.mode b{font-size:13.5px}}
+@media (max-width:600px){.dhero{padding:20px 18px}.sin{padding:20px 16px 22px;min-height:380px}.opts{gap:8px}.opts select{max-width:100%;flex:1 1 100%}.pairs{gap:8px}.pair b{font-size:24px}.ans input{font-size:20px}}
+.mode .nw{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;background:var(--acc);color:var(--acc-ink);padding:2px 6px;border-radius:6px;margin-left:6px;vertical-align:2px}
+.modes{grid-template-columns:repeat(3,minmax(0,1fr))}
+body[data-long="1"] .lay{grid-template-columns:minmax(0,1fr) 340px}
+body[data-long="1"] .side{position:sticky;top:84px}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.steps span{display:inline-flex;align-items:center;gap:7px;padding:6px 11px 6px 6px;border-radius:999px;background:var(--soft);font-size:12.5px;font-weight:800;color:var(--mut)}
+.steps b{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--card);font-size:11px}
+.steps .on{background:color-mix(in srgb,var(--p) 14%,var(--card));color:var(--p)}.steps .on b{background:var(--p);color:var(--p-ink)}
+.steps .done{color:var(--ok)}.steps .done b{background:var(--ok);color:#fff}
+.chips2{display:flex;gap:6px;flex-wrap:wrap}
+.chips2 button{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;font-weight:700;font-size:13.5px;color:var(--ink2)}
+.chips2 button.on{border-color:var(--p);background:var(--p);color:var(--p-ink)}
+.hist{display:grid;gap:6px}
+.hist button{display:flex;justify-content:space-between;gap:10px;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 12px;color:var(--ink)}
+.hist button span{color:var(--mut);font-size:13px;font-weight:700;white-space:nowrap}
+.how{margin:0 0 14px;padding-left:18px;display:grid;gap:8px;font-size:14px;line-height:1.5;color:var(--ink2)}
+.notes{width:100%;min-height:360px;border:1.5px solid var(--line2);border-radius:14px;background:var(--card2);color:var(--ink);padding:12px 14px;font:500 15px/1.6 ui-monospace,Menlo,monospace;resize:vertical;outline:0;background-image:linear-gradient(transparent calc(1.6em - 1px),var(--line) calc(1.6em - 1px));background-size:100% 1.6em;background-attachment:local;background-position-y:12px}
+.notes:focus{border-color:var(--p)}
+.player{display:flex;gap:18px;align-items:center;margin-top:18px;padding:16px;border-radius:18px;background:var(--soft)}
+.player .bigplay{width:76px;height:76px;flex:0 0 76px}.player .bigplay svg{width:32px;height:32px}
+.player .bigplay[disabled]{background:var(--ok);opacity:.9}
+.pinfo{flex:1;min-width:0}
+.segs{display:flex;gap:5px}
+.segs button{flex:1;height:10px;border-radius:6px;border:0;background:var(--line2);padding:0}
+.segs button.h{background:var(--p2)}.segs button.c{background:var(--p);animation:blink 1.2s ease-in-out infinite}
+@keyframes blink{50%{opacity:.45}}
+.segs button:not([disabled]){cursor:pointer}
+.pst{margin-top:10px;font-weight:700;font-size:14px;color:var(--ink2)}
+.tx p{font-size:15.5px;line-height:1.65;margin:0 0 10px;color:var(--ink2)}
+.tx p.cur{color:var(--ink);background:color-mix(in srgb,var(--acc) 18%,transparent);border-radius:8px}
+.tx.open{margin-top:6px}
+.qz{display:grid;gap:12px;margin-top:14px}
+.qq{display:flex;gap:12px;padding:14px;border-radius:16px;border:1px solid var(--line);background:var(--card2)}
+.qn{flex:0 0 28px;height:28px;border-radius:9px;background:var(--p);color:var(--p-ink);display:grid;place-items:center;font-weight:800;font-size:13px}
+.qb{flex:1;min-width:0}.qb p{margin:2px 0 10px;font-weight:700;font-size:15.5px;line-height:1.45}
+.qo{display:grid;gap:6px}
+.qo button{display:flex;gap:10px;align-items:flex-start;text-align:left;border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:9px 12px;font-size:14.5px;color:var(--ink);line-height:1.4}
+.qo button b{flex:0 0 22px;height:22px;border-radius:7px;background:var(--soft);display:grid;place-items:center;font-size:12px}
+.qo button:hover{border-color:var(--line2)}
+.qo button.on{border-color:var(--p);background:color-mix(in srgb,var(--p) 8%,var(--card))}.qo button.on b{background:var(--p);color:var(--p-ink)}
+.qg{width:100%;max-width:320px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);padding:9px 12px;font-size:15px;font-weight:700;outline:0}
+.qg:focus{border-color:var(--p)}
+.rtop{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin:12px 0 16px}
+.rtop h2{font-size:40px;margin:2px 0}
+.rlist{display:grid;gap:10px}
+.rq{padding:14px;border-radius:16px;border:1px solid var(--line);border-left:5px solid var(--ok);background:var(--card2)}
+.rq.bad{border-left-color:var(--bad)}
+.rh{display:flex;gap:10px}.rh p{margin:2px 0 6px;font-weight:700;line-height:1.45}
+.rq.bad .qn{background:var(--bad);color:#fff}.rq.ok .qn{background:var(--ok);color:#fff}
+.ra{display:flex;flex-direction:column;gap:3px;padding-left:38px;font-size:14.5px;font-weight:700}
+.ra .good{color:var(--ok)}.ra .no{color:var(--bad)}
+.rq blockquote{margin:8px 0 0 38px;padding:8px 12px;border-left:3px solid var(--line2);background:var(--soft);border-radius:0 10px 10px 0;font-size:14px;line-height:1.5;color:var(--ink2);font-style:italic;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.rq blockquote .btn{font-style:normal}
+.tstamp{display:inline-flex;align-items:center;gap:4px;font-style:normal;font-weight:800;font-size:12.5px;color:var(--p);background:var(--card);border-radius:8px;padding:2px 8px}
+.tstamp svg{width:12px;height:12px}
+.sh{font-family:inherit;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--mut);margin:24px 0 10px}
+.vchips{display:flex;gap:6px;flex-wrap:wrap}
+.vchips button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:7px 11px;font-size:13.5px;color:var(--ink2)}
+.vchips button span svg{width:14px;height:14px;color:var(--p)}
+.vchips button.done{border-color:var(--ok);color:var(--ok)}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.talk{display:flex;flex-direction:column;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:16px;overflow:hidden;padding:0;color:var(--ink);transition:transform .15s,border-color .15s}
+.talk:hover{transform:translateY(-2px);border-color:var(--line2)}
+.tth{height:84px;display:flex;justify-content:space-between;align-items:flex-start;padding:10px 12px;color:#fff}
+.tth b{background:#e62b1e;padding:2px 7px;border-radius:5px;font-size:12px;letter-spacing:.04em}
+.tth i{font-style:normal;font-size:12px;font-weight:800;background:rgba(0,0,0,.35);padding:2px 8px;border-radius:999px}
+.t0{background:linear-gradient(135deg,#0f766e,#14b8a6)}.t1{background:linear-gradient(135deg,#7c3aed,#c084fc)}.t2{background:linear-gradient(135deg,#b45309,#f59e0b)}.t3{background:linear-gradient(135deg,#1d4ed8,#60a5fa)}.t4{background:linear-gradient(135deg,#be123c,#fb7185)}.t5{background:linear-gradient(135deg,#334155,#64748b)}
+.ttb{padding:10px 12px 12px;display:grid;gap:3px}
+.ttb b{font-size:14.5px;line-height:1.3}
+.ttb>span{font-size:13px;color:var(--mut);font-weight:600}
+.tmeta{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.tmeta em{font-style:normal;font-size:11.5px;font-weight:800;background:var(--soft);color:var(--ink2);padding:2px 7px;border-radius:6px}
+.tmeta em.sc{background:var(--ok-soft);color:var(--ok)}
+.sbar2{display:flex;gap:8px}.sbar2 input{flex:1;min-width:0;height:44px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);padding:0 12px;font-size:14.5px;outline:0}
+.video{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#111;margin-top:14px}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff;text-align:center;padding:20px;background:radial-gradient(circle at 30% 20%,#3b3b3b,#111)}
+.vph b{background:#e62b1e;padding:4px 10px;border-radius:6px;font-size:20px;letter-spacing:.05em}.vph span{font-size:20px;font-weight:800}.vph i{font-size:13px;opacity:.75}
+.tfoot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}
+.tst{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--ink2)}.tst.ok{color:var(--ok)}.tst.bad{color:var(--bad)}.tst svg{width:18px;height:18px}
+@media (max-width:900px){body[data-long="1"] .lay{grid-template-columns:1fr}body[data-long="1"] .side{position:static}.notes{min-height:200px}.modes{grid-template-columns:repeat(3,minmax(0,1fr))}.mode .nw{display:block;margin:4px auto 0;width:max-content}}
+@media (max-width:600px){.player{gap:12px;padding:12px}.player .bigplay{width:64px;height:64px;flex-basis:64px}.qq{padding:12px;gap:10px}.ra,.rq blockquote{padding-left:0;margin-left:0}.rtop h2{font-size:34px}.tgrid{grid-template-columns:1fr 1fr}.tth{height:64px}.ttb b{font-size:13.5px}}
+</style>
+</head>
+<body>
+<main class="ka-wrap" id="main">
+  <section class="card dhero">
+    <span class="eyebrow">Dinleme ve telaffuz</span>
+    <h1>Dinle, yaz, konuş</h1>
+    <p>Kendi kelime listelerinle çalış: duyduğun kelimeyi ya da cümleyi yaz, ekrandaki kelimeyi sesli oku ve telaffuz puanını gör, birbirine benzeyen sesleri ayırt et.</p>
+    <div class="modes" id="modes"></div>
+    <div class="opts" id="opts"></div>
+  </section>
+  <div class="lay">
+    <section class="card stage"><div class="bar"><i id="bar" style="width:0"></i></div><div class="sin" id="stage"></div></section>
+    <aside class="card side" id="side"></aside>
+  </div>
+</main>
+<script src="ortak.js?v=3"></script>
+<script>
+(function(){
+'use strict';
+const {$,esc}=KA;const ic=KA.ic;
+const I={
+  ear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8.5a6 6 0 1 1 12 0c0 3-2 4.2-3 5.5-.9 1.2-.9 2.4-1.6 3.6A3 3 0 0 1 8 16"/><path d="M10 8.5a2 2 0 1 1 4 0c0 1.2-1 1.7-1.5 2.3"/></svg>',
+  mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+  stop:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>',
+  pause:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg>',
+  hash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14M10 4 8 20M16 4l-2 16"/></svg>',
+  lec:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18v11H3zM8 21l4-6 4 6"/><path d="M7 8h6M7 11h9"/></svg>',
+  vid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></svg>',
+  pairs:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11M11 3l4 4-4 4M20 17H9M13 13l-4 4 4 4"/></svg>',
+  pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h6M14.5 4.5l5 5L9 20H4v-5z"/></svg>',
+  turtle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15c0-4 3.5-7 8-7s8 3 8 7z"/><path d="M6 15l-1 3M18 15l1 3M20 13h2"/></svg>'
+};
+/* ---------- Hazır kelime bankası (listen yoksa) ---------- */
+const BANK=[
+['analyse','analiz etmek','Researchers analyse the data carefully before drawing any conclusions.'],['significant','önemli, kayda değer','There has been a significant increase in the number of online students.'],['evidence','kanıt','There is little evidence that the new method improves learning.'],['approach','yaklaşım','This approach has been criticised by several economists.'],['consequence','sonuç','Climate change will have serious consequences for coastal cities.'],['environment','çevre','Children learn faster in a supportive environment.'],['thoroughly','baştan sona, iyice','The committee thoroughly examined every proposal.'],['although','-e rağmen','Although the results were promising, the study was quite small.'],['through','içinden, aracılığıyla','Knowledge is passed on through stories and songs.'],['thought','düşünce','The idea was the result of years of careful thought.'],['determine','belirlemek','Genes partly determine how tall a person will become.'],['decline','düşüş; azalmak','The population of the village has declined since the factory closed.'],['assume','varsaymak','We cannot simply assume that all students have internet access.'],['crucial','kritik','Sleep plays a crucial role in memory.'],['phenomenon','olgu','Migration is not a new phenomenon.'],['vehicle','araç, taşıt','Electric vehicles are becoming cheaper every year.'],['whether','-ip -mediği','It is unclear whether the policy will work.'],['wealthy','varlıklı','Wealthy countries produce most of the world’s emissions.'],['comfortable','rahat','Many people feel comfortable sharing their data online.'],['vegetable','sebze','Fresh vegetables are expensive in winter.'],['particularly','özellikle','The effect was particularly strong among young adults.'],['nevertheless','yine de','The task was difficult; nevertheless, most students finished it.'],['hypothesis','hipotez','The experiment was designed to test this hypothesis.'],['sufficient','yeterli','There was not sufficient time to complete the survey.'],['beneficial','faydalı','Regular exercise is beneficial for both body and mind.'],['acquire','edinmek','Children acquire language without formal teaching.'],['achieve','başarmak','The team achieved its goals ahead of schedule.'],['research','araştırma','Recent research suggests that bilingualism delays memory loss.'],['architecture','mimari','The city is famous for its Ottoman architecture.'],['psychology','psikoloji','Psychology studies how people think and behave.'],['knowledge','bilgi','Scientific knowledge grows by questioning old ideas.'],['island','ada','Few people live on the island all year round.'],['debt','borç','Many graduates start their careers in debt.'],['receipt','fiş, makbuz','Keep the receipt in case you need to return the item.'],['colleague','iş arkadaşı','She discussed the findings with her colleagues.'],['schedule','program, takvim','The new schedule leaves little time for revision.'],['entrepreneur','girişimci','Young entrepreneurs often struggle to find investors.'],['hierarchy','hiyerarşi','Traditional companies have a strict hierarchy.'],['wonder','merak etmek','Scientists wonder why some animals live so long.'],['wander','dolaşmak','Tourists wander through the narrow streets of the old town.'],['live','yaşamak','Most people now live in cities.'],['leave','ayrılmak','Many young people leave their villages to find work.'],['walk','yürümek','It takes ten minutes to walk to the library.'],['work','çalışmak','Remote work has changed office life.'],['three','üç','The study lasted three years.'],['tree','ağaç','An old oak tree stands in the middle of the campus.'],['vary','değişmek','Prices vary from one region to another.'],['very','çok','The lecture was very informative.']
+].map(([en,tr,s])=>({en,tr,s}));
+const PAIRS=[
+['ship','sheep','/ɪ/ kısa · /iː/ uzun','Kısa “i” ağzı biraz gevşek, uzun “ii” gülümser gibi ve daha uzun.'],['live','leave','/ɪ/ · /iː/','“leave” uzun ii ile söylenir.'],['full','fool','/ʊ/ · /uː/','“fool” dudaklar daha yuvarlak ve ses daha uzun.'],['bad','bed','/æ/ · /e/','“bad” için ağzı “a” ile “e” arası, daha geniş aç.'],['cap','cup','/æ/ · /ʌ/','“cup” kısa ve Türkçe “a”ya yakın.'],['think','sink','/θ/ · /s/','“th” için dil ucu dişlerin arasında, hava üfle.'],['three','tree','/θ/ · /t/','“three” dil dişlerin arasında, “t” gibi patlatma.'],['then','den','/ð/ · /d/','“then” titreşimli th: dil dişlerin arasında.'],['vest','west','/v/ · /w/','“v” üst dişler alt dudağa değer; “w” dudaklar yuvarlak.'],['vine','wine','/v/ · /w/','“wine” dudaklar yuvarlanır, dişler dudağa değmez.'],['walk','work','/ɔː/ · /ɜː/','“work” Türkçe “ö”ye yakın ve r hafif.'],['law','low','/ɔː/ · /əʊ/','“low” sonunda “u”ya kayar: “lou”.'],['hat','hut','/æ/ · /ʌ/','“hut” kısa, Türkçe “a” gibi.'],['pull','pool','/ʊ/ · /uː/','“pool” uzun uu.'],['sit','seat','/ɪ/ · /iː/','“seat” uzun ii.'],['fan','van','/f/ · /v/','“van” titreşimli, boğazında titreşim hisset.'],['light','right','/l/ · /r/','“r” için dil hiçbir yere değmez.'],['wet','vet','/w/ · /v/','“vet” dişler dudağa değer.'],['thin','tin','/θ/ · /t/','“thin” dil dişlerin arasında.'],['heart','hurt','/ɑː/ · /ɜː/','“hurt” Türkçe “ö”ye yakın.']
+].map(([a,b,ipa,tip])=>({a,b,ipa,tip}));
+
+/* ---------- Durum ---------- */
+const CFG=Object.assign({mode:'dict',unit:'word',src:'',rate:1},KA.store.get('ka_dinle',{})||{});if(!['dict','speak','pairs','nums','lec','ted'].includes(CFG.mode))CFG.mode='dict';
+const save=()=>KA.store.set('ka_dinle',CFG);
+const ROUND=10;
+let SES=null,REC=null,MR=null,ownUrl='';
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+function packs(){try{return KA.listPacks().filter(p=>(p.items||p.words||[]).length)}catch(e){return []}}
+function srcItems(){
+  let items=[];
+  if(CFG.src&&CFG.src!=='bank'){const p=KA.getPack(CFG.src);if(p){KA.normPack(p);items=p.items.filter(x=>x.en&&/[a-z]/i.test(x.en)).map(x=>({en:x.en.trim(),tr:x.tr||'',s:x.s||''}))}}
+  if(!items.length)items=BANK.slice();
+  return items;
+}
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function newSession(again){
+  let list;
+  if(CFG.mode==='lec'||CFG.mode==='ted'){SES=null;return draw()}
+  stopPlayer();
+  if(CFG.mode==='nums')list=Array.from({length:ROUND},(_,i)=>NUMGEN[(i+Math.floor(Math.random()*NUMGEN.length))%NUMGEN.length]());
+  else if(CFG.mode==='pairs')list=shuffle(PAIRS).slice(0,ROUND).map(p=>({...p,ans:Math.random()<.5?p.a:p.b}));
+  else{
+    let it=again&&again.length?again:srcItems();
+    if(CFG.unit==='sent'){let w=it.filter(x=>x.s);if(w.length<3)w=BANK;it=w}
+    list=shuffle(it).slice(0,ROUND);
+  }
+  SES={list,i:0,ok:0,streak:0,best:0,miss:[],done:false,state:'ask'};
+  draw();
+}
+/* ---------- Karşılaştırma ---------- */
+const norm=s=>String(s||'').toLowerCase().replace(/[’‘`]/g,"'").replace(/[^a-z0-9' ]+/g,' ').replace(/\s+/g,' ').trim();
+function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let p=Array.from({length:n+1},(_,j)=>j);for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[n]}
+// harf düzeyi fark (yazılan → doğru)
+function charDiff(got,want){
+  const a=got,b=want,m=a.length,n=b.length,d=Array.from({length:m+1},()=>new Array(n+1).fill(0));
+  for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+  const out=[];let i=m,j=n;
+  while(i>0||j>0){
+    if(i>0&&j>0&&a[i-1]===b[j-1]&&d[i][j]===d[i-1][j-1]){out.push(['g',b[j-1]]);i--;j--}
+    else if(i>0&&j>0&&d[i][j]===d[i-1][j-1]+1){out.push(['m',b[j-1]]);out.push(['r',a[i-1]]);i--;j--}
+    else if(j>0&&d[i][j]===d[i][j-1]+1){out.push(['m',b[j-1]]);j--}
+    else{out.push(['r',a[i-1]]);i--}
+  }
+  return out.reverse().map(([k,c])=>`<span class="${k}">${c===' '?'&nbsp;':esc(c)}</span>`).join('');
+}
+// kelime düzeyi hizalama: hedefteki her kelime bulundu mu?
+function wordAlign(heard,target){
+  const H=norm(heard).split(' ').filter(Boolean),T=target.split(/\s+/).filter(Boolean),Tn=T.map(norm);
+  const m=H.length,n=T.length,L=Array.from({length:m+1},()=>new Array(n+1).fill(0));
+  const eq=(h,t)=>h===t||(t.length>4&&lev(h,t)<=1);
+  for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--)L[i][j]=eq(H[i],Tn[j])?L[i+1][j+1]+1:Math.max(L[i+1][j],L[i][j+1]);
+  const ok=new Array(n).fill(false);let i=0,j=0;
+  while(i<m&&j<n){if(eq(H[i],Tn[j])){ok[j]=true;i++;j++}else if(L[i+1][j]>=L[i][j+1])i++;else j++}
+  const cnt=Tn.filter(Boolean).length||1;
+  return {html:T.map((w,k)=>`<span class="wd ${ok[k]?'g':'r'}">${esc(w)}</span>`).join(' '),score:ok.filter((v,k)=>v&&Tn[k]).length/cnt};
+}
+/* ---------- Çizim ---------- */
+const MODES=[['dict','Dinle ve yaz',"Sesi duy, kelimeyi ya da cümleyi yaz",I.pen],['speak','Sesli oku','Kelimeyi söyle, telaffuz puanını gör',I.mic],['pairs','Ses ayrımı','ship mi sheep mi? Benzer sesleri ayırt et',I.pairs],['nums','Sayılar','Yıl, fiyat, saat, tarih ve isim diktesi',I.hash,1],['lec','Ders salonu','BUEPT gibi ders dinle, not al, soruları çöz',I.lec,1],['ted','Video salonu','TED konuşması izle, konuşmaya özel quiz',I.vid,1]];
+function drawTop(){
+  $('#modes').innerHTML=MODES.map(([k,t,d,svg,nw])=>`<button type="button" class="mode ${CFG.mode===k?'on':''}" data-dm="${k}"><span class="mi">${svg}</span><div><b>${t}${nw?'<em class="nw">Yeni</em>':''}</b><span>${d}</span></div></button>`).join('');
+  const ps=packs();
+  $('#opts').innerHTML=(['dict','speak'].includes(CFG.mode)?`<span class="olab">Kaynak</span><select id="src" aria-label="Kelime kaynağı"><option value="bank">BUEPT temel kelimeler</option>${ps.map(p=>`<option value="${esc(p.id)}" ${CFG.src===p.id?'selected':''}>${esc(p.name||'Liste')} · ${(p.items||p.words||[]).length} kelime</option>`).join('')}</select>
+    <div class="seg" role="group" aria-label="Birim"><button data-unit="word" class="${CFG.unit==='word'?'on':''}">Kelime</button><button data-unit="sent" class="${CFG.unit==='sent'?'on':''}">Cümle</button></div>`:'')+
+    `<div class="seg" role="group" aria-label="Hız"><button data-rate="0.75" class="${CFG.rate==.75?'on':''}">0.75×</button><button data-rate="1" class="${CFG.rate==1?'on':''}">1×</button><button data-rate="1.2" class="${CFG.rate==1.2?'on':''}">1.2×</button></div>`;
+}
+function drawSide(){
+  const s=SES;const acc=s&&s.i?Math.round(s.ok/Math.max(1,s.i-(s.state==='ask'?0:0))*100):0;
+  const tip=CFG.mode==='nums'?'<b>İpucu:</b> BUEPT not almada en çok kaybettiren yer sayılar ve isimlerdir. Rakamla yazabilirsin: 15, 1984, 7:45, $12.99.':CFG.mode==='pairs'?'<b>İpucu:</b> Önce iki kelimeyi ayrı ayrı dinle, sonra soruya geç. Farkı duyamıyorsan hızı 0.75× yap.':CFG.mode==='speak'?'<b>İpucu:</b> Önce doğrusunu dinle, sonra mikrofona bas ve net, normal hızda söyle. Puan, telefonun seni hangi kelime olarak duyduğuna göre hesaplanır.':'<b>İpucu:</b> Takıldığında “Yavaş” düğmesiyle tekrar dinle. İpucu harf sayısını ve ilk harfi gösterir. Enter ile kontrol edip sonrakine geçebilirsin.';
+  $('#side').innerHTML=`<h3>Bu tur</h3><div class="stats"><div class="stat"><b>${s?s.ok:0}/${s?s.list.length:0}</b><span>Doğru</span></div><div class="stat"><b>${s?s.streak:0}</b><span>Seri</span></div><div class="stat"><b>${s&&s.i?Math.round(s.ok/s.i*100):0}%</b><span>Başarı</span></div></div>
+  <h3>Tekrar çalışılacaklar</h3><div class="miss">${s&&s.miss.length?s.miss.map(m=>`<div>${esc(m.en)} <span>${esc(m.why||'')}</span><button class="say2" data-say="${esc(m.say||m.en)}" aria-label="Dinle">${ic('sound')}</button></div>`).join(''):'<p class="mut" style="margin:0;font-size:13.5px">Hata yaptığın kelimeler burada toplanır.</p>'}</div>
+  <div class="tips">${tip}</div>`;
+}
+function cur(){return SES.list[SES.i]}
+function say(t,r){KA.speak(t,(r||1)*CFG.rate)}
+function draw(){
+  drawTop();
+  document.body.dataset.long=(CFG.mode==='lec'||CFG.mode==='ted')?'1':'';
+  if(CFG.mode==='lec')return drawLec();
+  if(CFG.mode==='ted')return drawTed();
+  drawSide();
+  $('#bar').style.width=(SES?Math.round(SES.i/SES.list.length*100):0)+'%';
+  if(SES.done)return drawEnd();
+  ({dict:drawDict,speak:drawSpeak,pairs:drawPairs,nums:drawNums})[CFG.mode]();
+}
+const head=t=>`<div class="stop"><span class="eyebrow">${t}</span><span class="cnt">${SES.i+1} / ${SES.list.length}</span></div>`;
+/* ---------- 1. Dinle ve yaz ---------- */
+function drawDict(){
+  const x=cur(),sent=CFG.unit==='sent',T=sent?x.s:x.en;
+  $('#stage').innerHTML=head(sent?'Duyduğun cümleyi yaz':'Duyduğun kelimeyi yaz')+`<div class="center-col">
+    <button class="bigplay" id="play" aria-label="Dinle">${ic('sound')}</button>
+    <div class="minis"><button class="btn btn-ghost btn-sm" id="slow">${I.turtle}Yavaş</button><button class="btn btn-ghost btn-sm" id="hint">İpucu</button></div>
+    <div class="mask" id="mask"></div>
+    <div class="ans">${sent?'<textarea id="in" rows="3" placeholder="Duyduğun cümleyi yaz…" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>':'<input id="in" placeholder="Kelimeyi yaz…" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">'}</div>
+    <div id="fbx" style="width:100%;display:flex;justify-content:center"></div>
+    <div class="acts2" id="acts"><button class="btn btn-p btn-lg" id="check">${ic('check')}Kontrol et</button><button class="btn btn-ghost" id="skip">Bilmiyorum</button></div>
+  </div>`;
+  const play=r=>{$('#play').classList.remove('pulse');void $('#play').offsetWidth;$('#play').classList.add('pulse');say(T,r)};
+  $('#play').onclick=()=>play(1);$('#slow').onclick=()=>play(.7);
+  let hl=0;$('#hint').onclick=()=>{hl++;const m=$('#mask');
+    if(sent){m.style.letterSpacing='.05em';m.style.fontSize='16px';m.textContent=T.split(/\s+/).map((w,i)=>hl>1&&i===0?w:w.replace(/[A-Za-z]/g,'_')).join(' ')+`  (${T.split(/\s+/).length} kelime)`}
+    else m.textContent=T.split('').map((c,i)=>c===' '?' ':(i===0||(hl>1&&i===T.length-1))?c:'_').join('')};
+  $('#check').onclick=()=>checkDict(false);$('#skip').onclick=()=>checkDict(true);
+  $('#in').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();checkDict(false)}};
+  setTimeout(()=>{play(1);try{$('#in').focus({preventScroll:true})}catch(e){}},350);
+}
+function checkDict(skip){
+  if(SES.state!=='ask')return next();
+  const x=cur(),sent=CFG.unit==='sent',T=sent?x.s:x.en,got=skip?'':$('#in').value;
+  if(!skip&&!norm(got)){$('#in').focus();return}
+  let ok,html,why;
+  if(sent){const r=wordAlign(got,T);ok=r.score>=.999;html=`<div class="s" style="font-size:17px">${r.html}</div>`;why=Math.round(r.score*100)+'%';if(!ok&&r.score>=.85){ok=true}}
+  else{const a=norm(got),b=norm(T),d=lev(a,b);ok=d===0||(b.length>=7&&d===1);html=a===b?'':`<div class="diff">${charDiff(a,b)}</div>`;why=d?'yazım':'';}
+  SES.state='done';score(ok,{en:sent?T.split(' ').slice(0,4).join(' ')+'…':T,say:T,why:skip?'bilmiyorum':(sent?why:'yazım')});
+  const exact=sent?norm(got)===norm(T):norm(got)===norm(T);
+  $('#in').disabled=true;$('#acts').innerHTML=`<button class="btn btn-p btn-lg" id="nx">Sonraki ${ic('arrow')}</button>`;$('#nx').onclick=next;setTimeout(()=>$('#nx').focus(),50);
+  $('#fbx').innerHTML=`<div class="fb ${ok?'ok':'bad'}"><h3>${ok?(exact?'Doğru!':'Neredeyse, küçük bir yazım hatası'):skip?'Doğrusu bu':'Tam olmadı'}</h3>
+    ${sent?html:`<div class="w">${esc(T)}<button class="say2" data-say="${esc(T)}" aria-label="Dinle">${ic('sound')}</button></div>${html}<div class="tr">${esc(x.tr||'')}</div>${x.s?`<div class="s">${KA.tokens(x.s)} <button class="say2" data-say="${esc(x.s)}" aria-label="Cümleyi dinle">${ic('sound')}</button></div>`:''}`}
+    ${sent&&x.tr?`<div class="tr" style="margin-top:8px">Anahtar kelime: <b>${esc(x.en)}</b> · ${esc(x.tr)}</div>`:''}</div>`;
+  seeFb();
+}
+function seeFb(){setTimeout(()=>{const a=$('#acts');if(a&&a.getBoundingClientRect().bottom>innerHeight-80)a.scrollIntoView({behavior:'smooth',block:'center'})},60)}
+/* ---------- 2. Sesli oku ---------- */
+function drawSpeak(o={}){
+  const x=cur(),sent=o.sent!==undefined?o.sent:CFG.unit==='sent',T=sent?x.s:x.en;
+  SES.sent=sent;
+  $('#stage').innerHTML=head(sent?'Cümleyi sesli oku':'Kelimeyi sesli oku')+`<div class="center-col">
+    <p class="target ${sent?'sent':'serif'}">${esc(T)}</p>${!sent&&x.tr?`<div class="ttr">${esc(x.tr)}</div>`:''}
+    <div class="minis"><button class="btn btn-ghost btn-sm" data-say="${esc(T)}">${ic('sound')}Doğrusunu dinle</button><button class="btn btn-ghost btn-sm" id="slow">${I.turtle}Yavaş</button></div>
+    <button class="mic" id="mic" aria-label="Konuşmaya başla">${I.mic}</button>
+    <div class="heard" id="heard">${SR?'Mikrofona dokun ve oku':''}</div>
+    ${SR?'':`<div class="warnbox">Bu tarayıcı konuşma tanımayı desteklemiyor. Puan için Chrome ya da Safari kullan. Yine de sesini kaydedip doğrusuyla karşılaştırabilirsin.</div>`}
+    <div id="fbx" style="width:100%;display:flex;justify-content:center"></div>
+    <div class="acts2" id="acts"><button class="btn btn-ghost" id="skip">Geç</button></div>
+  </div>`;
+  $('#slow').onclick=()=>say(T,.7);
+  $('#mic').onclick=()=>REC?stopRec():startRec(T,sent);
+  $('#skip').onclick=()=>{if(SES.state==='ask'){score(false,{en:x.en,say:T,why:'geçildi'})}next()};
+}
+async function startRec(T,sent){
+  KA.stopSpeak();ownUrl='';
+  const mic=$('#mic'),heard=$('#heard');mic.classList.add('rec');mic.innerHTML=I.stop;heard.textContent='Dinliyorum…';
+  // kendi sesini kaydet (karşılaştırmak için)
+  try{if(window.MediaRecorder&&navigator.mediaDevices&&!/iPhone|iPad|iPod/.test(navigator.userAgent)){const st=await navigator.mediaDevices.getUserMedia({audio:true});const ch=[],mr=new MediaRecorder(st);MR=mr;mr.ondataavailable=e=>ch.push(e.data);mr.onstop=()=>{st.getTracks().forEach(t=>t.stop());ownUrl=URL.createObjectURL(new Blob(ch,{type:mr.mimeType||'audio/webm'}));const b=$('#own');if(b)b.hidden=false};mr.start()}}catch(e){MR=null}
+  if(!SR){REC={stop(){}};heard.textContent='Kaydediliyor… bitince durdur.';return}
+  const r=new SR();REC=r;r.lang='en-US';r.interimResults=true;r.maxAlternatives=5;r.continuous=false;
+  let alts=[],fin='';
+  r.onresult=e=>{let t='';alts=[];for(let i=0;i<e.results.length;i++){t+=e.results[i][0].transcript;if(e.results[i].isFinal){fin+=e.results[i][0].transcript+' ';for(let k=0;k<e.results[i].length;k++)alts.push(e.results[i][k].transcript)}}heard.textContent='“'+t.trim()+'”'};
+  r.onerror=e=>{heard.textContent=e.error==='not-allowed'||e.error==='service-not-allowed'?'Mikrofon izni verilmedi. Adres çubuğundan mikrofona izin ver.':e.error==='no-speech'?'Ses duyulmadı, tekrar dene.':'Konuşma tanınamadı ('+e.error+').'};
+  r.onend=()=>{REC=null;resetMic();try{MR&&MR.state!=='inactive'&&MR.stop()}catch(e){}MR=null;if(fin.trim()||alts.length)judge(T,sent,fin.trim(),alts)};
+  try{r.start();setTimeout(()=>{if(REC===r)r.stop()},sent?15000:6000)}catch(e){REC=null;resetMic();heard.textContent='Mikrofon başlatılamadı.'}
+}
+function stopRec(){try{REC&&REC.stop()}catch(e){}if(!SR){REC=null;resetMic();try{MR&&MR.stop()}catch(e){}MR=null;selfJudge()}}
+function resetMic(){const m=$('#mic');if(m){m.classList.remove('rec');m.innerHTML=I.mic}}
+function judge(T,sent,heard,alts){
+  const x=cur();let sc,html='';
+  if(sent){const r=wordAlign(heard,T);sc=r.score;html=`<div class="s" style="font-size:17px;margin-top:0">${r.html}</div>`}
+  else{const b=norm(T);sc=Math.max(0,...[heard,...alts].map(a=>{const n=norm(a);if(!n)return 0;if(n.split(' ').includes(b)||n===b)return 1;return 1-lev(n,b)/Math.max(n.length,b.length)}))}
+  const pct=Math.round(sc*100),ok=pct>=85,first=SES.state==='ask';
+  if(first){SES.state='done';score(ok,{en:x.en,say:T,why:pct+'%'})}
+  const col=ok?'var(--ok)':pct>=60?'var(--warn)':'var(--bad)',C=2*Math.PI*36;
+  const verdict=pct>=95?'Mükemmel!':ok?'Çok iyi':pct>=60?'Yaklaştın':'Tekrar dene';
+  const heardW=sent?'':(norm(heard)&&norm(heard)!==norm(T)?`<div class="tr">Seni “<b>${esc(heard)}</b>” gibi duydu.</div>`:'');
+  $('#fbx').innerHTML=`<div class="fb ${ok?'ok':pct<60?'bad':''}"><div class="score"><div class="ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="var(--line)" stroke-width="8"/><circle cx="42" cy="42" r="36" fill="none" stroke="${col}" stroke-width="8" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-sc)}"/></svg><b>${pct}</b></div><div><h3 style="margin:0">${verdict}</h3>${heardW}${sent?'<div class="tr">Yeşil kelimeleri doğru duydu, kırmızıları tekrar et.</div>':''}</div></div>${html}
+    <div class="minis" style="justify-content:flex-start;margin-top:12px"><button class="btn btn-ghost btn-sm" data-say="${esc(T)}">${ic('sound')}Doğrusu</button><button class="btn btn-ghost btn-sm" id="own" ${ownUrl?'':'hidden'}>${I.mic}Benim sesim</button></div></div>`;
+  $('#own').onclick=()=>{if(ownUrl){KA.stopSpeak();new Audio(ownUrl).play()}};
+  $('#acts').innerHTML=`<button class="btn btn-ghost" id="again">Tekrar dene</button>${!sent&&x.s?`<button class="btn btn-ghost" id="tosent">Şimdi cümlesini oku</button>`:''}<button class="btn btn-p" id="nx">Sonraki ${ic('arrow')}</button>`;
+  $('#again').onclick=()=>{$('#fbx').innerHTML='';$('#heard').textContent='Mikrofona dokun ve oku'};
+  const ts=$('#tosent');if(ts)ts.onclick=()=>drawSpeak({sent:true});
+  $('#nx').onclick=next;seeFb();
+}
+function selfJudge(){
+  const x=cur(),T=SES.sent?x.s:x.en;
+  $('#heard').textContent='';
+  $('#fbx').innerHTML=`<div class="fb"><h3>Kendini değerlendir</h3><div class="tr">Önce doğrusunu, sonra kendi sesini dinle.</div><div class="minis" style="justify-content:flex-start;margin-top:10px"><button class="btn btn-ghost btn-sm" data-say="${esc(T)}">${ic('sound')}Doğrusu</button><button class="btn btn-ghost btn-sm" id="own" ${ownUrl?'':'hidden'}>${I.mic}Benim sesim</button></div></div>`;
+  $('#own').onclick=()=>{if(ownUrl)new Audio(ownUrl).play()};
+  $('#acts').innerHTML=`<button class="btn btn-ok" id="gd">Doğru söyledim</button><button class="btn btn-ghost" id="bd">Çalışmalıyım</button>`;
+  $('#gd').onclick=()=>{if(SES.state==='ask'){SES.state='done';score(true,{en:x.en,say:T})}next()};
+  $('#bd').onclick=()=>{if(SES.state==='ask'){SES.state='done';score(false,{en:x.en,say:T,why:'tekrar'})}next()};
+}
+/* ---------- 3. Ses ayrımı ---------- */
+function drawPairs(){
+  const x=cur(),opts=Math.random()<.5?[x.a,x.b]:[x.b,x.a];
+  $('#stage').innerHTML=head('Hangisini duydun?')+`<div class="center-col">
+    <button class="bigplay" id="play" aria-label="Dinle">${ic('sound')}</button>
+    <div class="minis"><button class="btn btn-ghost btn-sm" id="slow">${I.turtle}Yavaş</button></div>
+    <div class="pairs">${opts.map(w=>`<button class="pair" data-pick="${esc(w)}"><b>${esc(w)}</b><i>${esc(w===x.a?x.ipa.split('·')[0]:x.ipa.split('·')[1]||'')}</i></button>`).join('')}</div>
+    <div id="fbx" style="width:100%;display:flex;justify-content:center"></div>
+    <div class="acts2" id="acts"></div>
+  </div>`;
+  const play=r=>{$('#play').classList.remove('pulse');void $('#play').offsetWidth;$('#play').classList.add('pulse');say(x.ans,r)};
+  $('#play').onclick=()=>play(1);$('#slow').onclick=()=>play(.7);
+  document.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>{
+    if(SES.state!=='ask')return;SES.state='done';
+    const ok=b.dataset.pick===x.ans;
+    document.querySelectorAll('[data-pick]').forEach(o=>{o.disabled=true;if(o.dataset.pick===x.ans)o.classList.add('ok');else if(o===b)o.classList.add('bad')});
+    score(ok,{en:x.a+' / '+x.b,say:x.a+'. '+x.b,why:'ses'});
+    $('#fbx').innerHTML=`<div class="fb ${ok?'ok':'bad'}"><h3>${ok?'Doğru duydun!':'Duyduğun: '+esc(x.ans)}</h3><div class="tr">${esc(x.tip)}</div><div class="minis" style="justify-content:flex-start;margin-top:10px"><button class="btn btn-ghost btn-sm" data-say="${esc(x.a)}">${ic('sound')}${esc(x.a)}</button><button class="btn btn-ghost btn-sm" data-say="${esc(x.b)}">${ic('sound')}${esc(x.b)}</button></div></div>`;
+    $('#acts').innerHTML=`<button class="btn btn-p btn-lg" id="nx">Sonraki ${ic('arrow')}</button>`;$('#nx').onclick=next;seeFb();
+  });
+  setTimeout(()=>play(1),350);
+}
+/* ---------- 4. Sayılar ve isimler ---------- */
+const ONES=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'],TENS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+const w99=n=>n<20?ONES[n]:TENS[Math.floor(n/10)]+(n%10?'-'+ONES[n%10]:'');
+function words(n){if(n<100)return w99(n);if(n<1000)return ONES[Math.floor(n/100)]+' hundred'+(n%100?' and '+w99(n%100):'');const t=Math.floor(n/1000),r=n%1000;return words(t)+' thousand'+(r?(r<100?' and ':' ')+words(r):'')}
+function yearW(y){if(y>=2000&&y<2010)return 'two thousand'+(y%10?' and '+ONES[y%10]:'');const a=Math.floor(y/100),b=y%100;return w99(a)+' '+(b===0?'hundred':b<10?'oh '+ONES[b]:w99(b))}
+const ORD={one:'first',two:'second',three:'third',five:'fifth',eight:'eighth',nine:'ninth',twelve:'twelfth'};
+function ordW(n){const p=w99(n).split('-');let l=p.pop();l=ORD[l]||(l.endsWith('y')?l.slice(0,-1)+'ieth':l+'th');return [...p,l].join('-')}
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const SURN=['Thompson','Wright','Fletcher','Hughes','Morrison','Gallagher','Whitfield','Bradshaw','Ashworth','Henderson','McKenzie','Lindqvist','Harrington','Bishop','Crawford','Vaughan'];
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[Math.floor(Math.random()*a.length)];
+const digits=s=>String(s).replace(/[^0-9]/g,'');
+const pad=n=>String(n).padStart(2,'0');
+const NUMGEN=[
+  ()=>{const b=rnd(3,9),n=Math.random()<.5?10+b:b*10;return {cat:'-teen mi, -ty mi?',say:words(n),show:n+'  ·  '+words(n),ok:g=>digits(g)===String(n)||norm(g)===words(n).replace('-',' '),tip:'-teen ile bitenlerde vurgu sonda ve ses uzun (fif-TEEN); -ty ile bitenlerde vurgu başta (FIF-ty).'}},
+  ()=>{const n=rnd(1100,98000);return {cat:'Büyük sayı',say:words(n),show:n.toLocaleString('en-US')+'  ·  '+words(n),ok:g=>digits(g)===String(n),tip:'İngilizcede “and” yüzlerden sonra gelir: three thousand four hundred AND twelve.'}},
+  ()=>{const y=rnd(1890,2024);return {cat:'Yıl',say:yearW(y),show:y+'  ·  '+yearW(y),ok:g=>digits(g)===String(y),tip:'Yıllar ikişer ikişer okunur: 1984 = nineteen eighty-four.'}},
+  ()=>{const d=rnd(1,99),c=pick([0,25,50,75,99,45,20]),cur=pick(['$','£']),nm=cur==='$'?(d===1?'dollar':'dollars'):(d===1?'pound':'pounds');return {cat:'Fiyat',say:`${words(d)} ${nm}${c?' '+w99(c):''}`,show:`${cur}${d}.${pad(c)}`,ok:g=>{const m=String(g).replace(',','.').match(/\d+(?:\.\d{1,2})?/);return !!m&&Math.abs(parseFloat(m[0])-(d+c/100))<.001},tip:'Fiyatlarda “cents/pence” çoğu zaman söylenmez: $12.99 = twelve ninety-nine.'}},
+  ()=>{const d=rnd(1,28),m=rnd(0,11);return {cat:'Tarih',say:`the ${ordW(d)} of ${MONTHS[m]}`,show:`${d} ${MONTHS[m]}`,ok:g=>{const x=String(g).toLowerCase(),n=(x.match(/\d+/g)||[]).map(Number);return n.includes(d)&&(x.includes(MONTHS[m].slice(0,3).toLowerCase())||n.includes(m+1))},tip:'Tarihler sıra sayısıyla söylenir: the twenty-first of March = 21 March.'}},
+  ()=>{const h=rnd(1,12),mm=pick([0,5,10,15,20,30,40,45,50]);const say=mm===0?`${w99(h)} o'clock`:mm===15?`quarter past ${w99(h)}`:mm===30?`half past ${w99(h)}`:mm===45?`quarter to ${w99(h%12+1)}`:`${w99(h)} ${mm<10?'oh '+ONES[mm]:w99(mm)}`;return {cat:'Saat',say,show:`${h}:${pad(mm)}  ·  ${say}`,ok:g=>{const n=(String(g).match(/\d+/g)||[]).map(Number);return n.length>=1&&(n[0]%12===h%12)&&((n[1]||0)===mm)},tip:'“quarter to eight” = 7:45; “half past seven” = 7:30.'}},
+  ()=>{const ds=Array.from({length:8},(_,i)=>i===0?pick([0,2,5,7]):rnd(0,9));const say=[ds.slice(0,4),ds.slice(4)].map(g=>g.map(x=>x===0?'oh':ONES[x]).join(', ')).join('. ');return {cat:'Telefon numarası',say,show:ds.slice(0,4).join('')+' '+ds.slice(4).join(''),ok:g=>digits(g)===ds.join(''),tip:'0 rakamı telefon numaralarında genelde “oh” diye okunur; aynı iki rakam “double five” diye söylenebilir.'}},
+  ()=>{const s=pick(SURN);return {cat:'İsim hecele',say:s.toUpperCase().split('').join(', '),show:s,ok:g=>norm(g).replace(/\s/g,'')===s.toLowerCase(),tip:'Karıştırılan harfler: E (ii) – I (ay), G (ci) – J (cey), A (ey) – R (ar).'}},
+  ()=>{const n=rnd(11,99);return {cat:'Yüzde',say:words(n)+' per cent',show:n+'%',ok:g=>digits(g)===String(n),tip:'“per cent” iki kelime olarak söylenir; not alırken % yazman yeterli.'}}
+];
+function drawNums(){
+  const x=cur();
+  $('#stage').innerHTML=head('Duyduğunu rakam ya da kelimeyle yaz')+`<div class="center-col">
+    <span class="tag">${esc(x.cat)}</span>
+    <button class="bigplay" id="play" aria-label="Dinle">${ic('sound')}</button>
+    <div class="minis"><button class="btn btn-ghost btn-sm" id="slow">${I.turtle}Yavaş</button></div>
+    <div class="ans"><input id="in" placeholder="${x.cat==='İsim hecele'?'İsmi yaz…':'Örn. 15, 1984, 7:45, $12.99'}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="${/İsim|Tarih/.test(x.cat)?'text':'text'}"></div>
+    <div id="fbx" style="width:100%;display:flex;justify-content:center"></div>
+    <div class="acts2" id="acts"><button class="btn btn-p btn-lg" id="check">${ic('check')}Kontrol et</button><button class="btn btn-ghost" id="skip">Bilmiyorum</button></div>
+  </div>`;
+  const play=r=>{$('#play').classList.remove('pulse');void $('#play').offsetWidth;$('#play').classList.add('pulse');say(x.say,r)};
+  $('#play').onclick=()=>play(1);$('#slow').onclick=()=>play(.7);
+  const chk=skip=>{
+    if(SES.state!=='ask')return next();
+    const g=skip?'':$('#in').value;if(!skip&&!g.trim()){$('#in').focus();return}
+    const ok=!skip&&x.ok(g);SES.state='done';score(ok,{en:x.show.split('  ·')[0],say:x.say,why:x.cat});
+    $('#in').disabled=true;
+    $('#fbx').innerHTML=`<div class="fb ${ok?'ok':'bad'}"><h3>${ok?'Doğru!':'Doğrusu'}</h3><div class="w">${esc(x.show.split('  ·  ')[0])}<button class="say2" data-say="${esc(x.say)}" aria-label="Dinle">${ic('sound')}</button></div><div class="tr">Okunuşu: ${esc(x.say.replace(/, /g,' '))}</div><div class="s">${esc(x.tip)}</div></div>`;
+    $('#acts').innerHTML=`<button class="btn btn-p btn-lg" id="nx">Sonraki ${ic('arrow')}</button>`;$('#nx').onclick=next;setTimeout(()=>$('#nx').focus(),50);seeFb();
+  };
+  $('#check').onclick=()=>chk(false);$('#skip').onclick=()=>chk(true);
+  $('#in').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();chk(false)}};
+  setTimeout(()=>{play(1);try{$('#in').focus({preventScroll:true})}catch(e){}},350);
+}
+
+/* ---------- Ortak quiz (ders ve video) ---------- */
+function quizHTML(Q){
+  return `<div class="qz">${Q.qs.map((q,i)=>`<div class="qq" data-qi="${i}"><span class="qn">${i+1}</span><div class="qb"><p>${esc(q.q)}</p>${q.type==='gap'?`<input class="qg" data-gap="${i}" placeholder="1-3 kelime" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(Q.ans[i]||'')}">`:`<div class="qo">${q.opts.map((o,k)=>`<button type="button" data-opt="${i}:${k}" class="${Q.ans[i]===k?'on':''}"><b>${'ABCD'[k]}</b>${esc(o)}</button>`).join('')}</div>`}</div></div>`).join('')}</div>`;
+}
+const gapOk=(g,q)=>{const a=norm(g);if(!a)return false;return [q.a,...(q.alt||[])].some(x=>{const b=norm(x);return a===b||(b.length>5&&lev(a,b)<=1)||(b.split(' ').length>1&&a.includes(b))})};
+function gradeQuiz(Q){let n=0;Q.res=Q.qs.map((q,i)=>{const ok=q.type==='gap'?gapOk(Q.ans[i],q):Q.ans[i]===q.a;if(ok)n++;return ok});Q.score=n;return n}
+function resultHTML(Q,o){
+  return Q.qs.map((q,i)=>{const ok=Q.res[i],mine=q.type==='gap'?(Q.ans[i]||'—'):(Q.ans[i]===undefined?'—':'ABCD'[Q.ans[i]]+') '+q.opts[Q.ans[i]]),right=q.type==='gap'?q.a:'ABCD'[q.a]+') '+q.opts[q.a];
+    return `<div class="rq ${ok?'ok':'bad'}"><div class="rh"><span class="qn">${i+1}</span><p>${esc(q.q)}</p></div>
+    <div class="ra">${ok?`<span class="good">✓ ${esc(right)}</span>`:`<span class="no">✗ Senin cevabın: ${esc(mine)}</span><span class="good">Doğrusu: ${esc(right)}</span>`}</div>
+    ${q.kanit?`<blockquote>“${esc(q.kanit)}”${o.where?o.where(q):''}</blockquote>`:''}</div>`}).join('');
+}
+
+/* ---------- 5. Ders salonu (BUEPT not alma) ---------- */
+const TOPICS=[['Psikoloji','psychology'],['Çevre','environment and climate'],['Teknoloji','technology and society'],['Tarih','history'],['Eğitim','education'],['Sağlık','health and medicine'],['Ekonomi','economics'],['Dil bilimi','linguistics and language learning'],['Sosyoloji','sociology'],['Rastgele','']];
+const LECSYS=`You are a university lecturer writing a listening task in the style of the Boğaziçi University BUEPT listening section (lecture + note-taking). Write an ORIGINAL short academic lecture on the given topic for upper-intermediate (B2-C1) students, then questions that can be answered from good notes.
+Lecture rules: natural spoken style ("Good morning", "Now, let's turn to...", "In other words", "To sum up"), clear signposting, an introduction that lists the main points, definitions, at least one example, one number or date, and a conclusion. Split it into 6-9 paragraphs of 35-90 words. Facts must be accurate and general; do not invent precise statistics or researchers.
+Questions: exactly 10. 6 multiple choice ("mc", 4 options, one correct, distractors plausible and also mentioned or hinted in the lecture) and 4 note-completion gaps ("gap": a note-style sentence with ____ where the answer is 1-3 words said in the lecture). Cover main idea, details, examples, the speaker's purpose and the conclusion, in lecture order. For each question give "p" (0-based paragraph index) and "kanit" (the exact short quote from the lecture that proves the answer).
+Also give 6 useful academic words from the lecture with Turkish meanings.
+Return ONLY JSON: {"title":"...","topic":"...","paras":["..."],"qs":[{"type":"mc","q":"...","opts":["...","...","...","..."],"a":0,"p":0,"kanit":"..."},{"type":"gap","q":"... ____ ...","a":"answer","alt":["other acceptable form"],"p":2,"kanit":"..."}],"vocab":[{"en":"...","tr":"..."}]}`;
+const SAMPLE_LEC={title:'Why we forget, and what to do about it',topic:'Psikoloji',paras:[
+"Good morning, everyone. Today I'd like to talk about something that every student experiences but few of us really understand: forgetting. I'll start with a famous experiment from the nineteenth century, then look at why we forget so quickly, and finally I'll suggest two techniques that can help you remember more of what you study.",
+"In 1885, a German psychologist called Hermann Ebbinghaus decided to test his own memory. To make sure that his previous knowledge would not affect the results, he memorised lists of nonsense syllables, such as dax or bok, which had no meaning at all. He then tested himself after different periods of time, from twenty minutes to thirty-one days.",
+"What he found was rather surprising. Most of the forgetting happened very early. After only one hour, he had lost more than half of what he had learnt, and after a day, roughly two thirds was gone. After that, however, the rate of forgetting slowed down considerably. When we draw these results on a graph, we get what is now known as the forgetting curve: a line that drops sharply at first and then gradually levels off.",
+"Now, why does this happen? One explanation is that memories which are not used become weaker over time; this is sometimes called decay. Another explanation, which many researchers find more convincing, is interference. In other words, new information competes with old information, so it becomes harder to find the memory we need. It's a bit like looking for one particular book in a library where thousands of new books arrive every day.",
+"So, what can students do about it? The first technique is spaced repetition. Instead of studying a topic for three hours in one evening, you study it for shorter periods spread over several days. Each time you review the material, the curve becomes flatter, which means you forget more slowly. Ebbinghaus himself noticed this: relearning a list took less time on each occasion.",
+"The second technique is retrieval practice, or simply testing yourself. Many students reread their notes again and again because it feels productive. However, studies show that trying to recall information without looking at it is far more effective. When you force your brain to retrieve a memory, you actually strengthen it. This is why flashcards and practice questions work so well, even when you get the answer wrong.",
+"To sum up, forgetting is not a sign that something is wrong with your memory; it's completely normal. The key point is this: the timing of your study matters as much as the amount. Combine short, spaced sessions with regular self-testing, and you'll find that much more of what you learn actually stays with you. Next week, we'll look at how sleep affects memory."],
+qs:[
+{type:'mc',q:'Why did Ebbinghaus use nonsense syllables?',opts:['To make the experiment shorter','So that his previous knowledge would not affect the results','Because they are easier to pronounce','To compare children and adults'],a:1,p:1,kanit:'To make sure that his previous knowledge would not affect the results, he memorised lists of nonsense syllables'},
+{type:'gap',q:'Ebbinghaus experiment: year ____',a:'1885',alt:['eighteen eighty-five'],p:1,kanit:'In 1885, a German psychologist called Hermann Ebbinghaus decided to test his own memory.'},
+{type:'mc',q:'According to the lecture, how much had Ebbinghaus forgotten after one day?',opts:['About one third','A little less than half','Roughly two thirds','Almost everything'],a:2,p:2,kanit:'after a day, roughly two thirds was gone'},
+{type:'gap',q:'Forgetting curve: drops ____ at first, then levels off',a:'sharply',alt:['quickly','fast'],p:2,kanit:'a line that drops sharply at first and then gradually levels off'},
+{type:'mc',q:'Which explanation of forgetting do many researchers find more convincing?',opts:['Decay','Interference','Lack of sleep','Stress'],a:1,p:3,kanit:'Another explanation, which many researchers find more convincing, is interference.'},
+{type:'mc',q:'What is the purpose of the library example?',opts:['To show why unused memories decay','To explain how new information makes old memories harder to find','To recommend reading more books','To describe how memory is organised'],a:1,p:3,kanit:"It's a bit like looking for one particular book in a library where thousands of new books arrive every day."},
+{type:'gap',q:'Technique 1: ____ repetition (short sessions over several days)',a:'spaced',alt:['spaced repetition'],p:4,kanit:'The first technique is spaced repetition.'},
+{type:'mc',q:'What does the lecturer say about rereading notes?',opts:['It is the most effective method','It feels productive but is less effective than testing yourself','It should be done before sleeping','It only works together with flashcards'],a:1,p:5,kanit:'Many students reread their notes again and again because it feels productive. However, studies show that trying to recall information without looking at it is far more effective.'},
+{type:'mc',q:'What is the main point of the lecture?',opts:['Some people have naturally weak memories','The timing of study matters as much as the amount','Nonsense syllables are the best way to study','Forgetting can be completely prevented'],a:1,p:6,kanit:'the timing of your study matters as much as the amount'},
+{type:'gap',q:"Next week's topic: how ____ affects memory",a:'sleep',alt:[],p:6,kanit:"Next week, we'll look at how sleep affects memory."}],
+vocab:[{en:'interference',tr:'karışma, girişim'},{en:'retrieve',tr:'(bilgiyi) geri çağırmak'},{en:'considerably',tr:'önemli ölçüde'},{en:'level off',tr:'dengelenmek, yatay seyretmek'},{en:'convincing',tr:'ikna edici'},{en:'nonsense',tr:'anlamsız'}]};
+let LEC={phase:'setup',topic:9,len:'short',exam:true};
+const PL={tok:0,on:false,i:0,heard:new Set(),done:false};
+const lecHist=()=>KA.store.get('ka_ders',[])||[];
+function notesPanel(title,key,ro){
+  return `<h3>${title}</h3><textarea class="notes" id="notes" placeholder="Konu:&#10;Ana fikir:&#10;1.&#10;2.&#10;Örnek:&#10;Sonuç:" ${ro?'readonly':''}>${esc(LEC.notes||'')}</textarea><p class="mut" style="font-size:12.5px;margin:8px 0 0">Kısaltma kullan: ↑ artış, ↓ azalış, → sonuç, e.g. örnek, b/c çünkü.</p>`;
+}
+function bindNotes(){const n=$('#notes');if(n)n.oninput=()=>{LEC.notes=n.value}}
+function stopPlayer(){PL.tok++;PL.on=false;KA.stopSpeak()}
+async function playFrom(i,paras,draw){
+  const tok=++PL.tok;PL.on=true;
+  for(let k=i;k<paras.length;k++){
+    if(tok!==PL.tok)return;PL.i=k;draw();
+    KA.ttsWarm(paras[k+1]);
+    await KA.speakP(paras[k],CFG.rate);
+    if(tok!==PL.tok)return;PL.heard.add(k);
+    await new Promise(r=>setTimeout(r,700));
+  }
+  if(tok!==PL.tok)return;PL.on=false;PL.done=true;draw();
+}
+function drawLec(){
+  $('#bar').style.width=({setup:0,listen:33,quiz:66,result:100})[LEC.phase]+'%';
+  if(LEC.phase==='setup')return lecSetup();
+  if(LEC.phase==='listen')return lecListen();
+  if(LEC.phase==='quiz')return lecQuiz();
+  return lecResult();
+}
+function stepsHTML(n,v){return `<div class="steps">${[v?'İzle ve not al':'Dinle ve not al','Soruları cevapla','Sonuç ve metin'].map((t,i)=>`<span class="${i<n?'done':i===n?'on':''}"><b>${i+1}</b>${t}</span>`).join('')}</div>`}
+function lecSetup(){
+  const H=lecHist();
+  $('#stage').innerHTML=`<span class="eyebrow">Ders salonu · BUEPT dinleme</span><h2 class="serif" style="margin:6px 0 4px;font-size:28px">Bir ders dinle, not al, soruları notlarınla cevapla</h2>
+  <p class="mut" style="margin:0 0 16px">BUEPT'teki gibi: ders sırasında soruları görmezsin, sadece not alırsın. Ders bitince 10 soru gelir.</p>${stepsHTML(-1)}
+  <div class="olab" style="margin:18px 0 8px">Konu</div><div class="chips2">${TOPICS.map(([t],i)=>`<button data-topic="${i}" class="${LEC.topic===i?'on':''}">${t}</button>`).join('')}</div>
+  <div class="row" style="gap:18px;margin-top:16px;flex-wrap:wrap"><div><div class="olab" style="margin-bottom:8px">Uzunluk</div><div class="seg"><button data-len="short" class="${LEC.len==='short'?'on':''}">Kısa · ≈2 dk</button><button data-len="long" class="${LEC.len==='long'?'on':''}">Uzun · ≈4 dk</button></div></div>
+  <div><div class="olab" style="margin-bottom:8px">Dinleme</div><div class="seg"><button data-exam="1" class="${LEC.exam?'on':''}">Sınav gibi · 1 kez</button><button data-exam="0" class="${!LEC.exam?'on':''}">Serbest · geri sar</button></div></div></div>
+  <div class="acts2" style="justify-content:flex-start;margin-top:22px"><button class="btn btn-p btn-lg" id="mk">${ic('spark')}Ders oluştur</button><button class="btn btn-ghost" id="smp">Örnek dersi dene</button></div>
+  <div id="lmsg" class="mut" style="margin-top:10px;font-size:14px"></div>
+  ${H.length?`<div class="olab" style="margin:24px 0 8px">Önceki derslerin</div><div class="hist">${H.map((h,i)=>`<button data-hist="${i}"><b>${esc(h.data.title)}</b><span>${esc(h.data.topic||'')} · ${h.score!=null?h.score+'/10':'yarım kaldı'}</span></button>`).join('')}</div>`:''}`;
+  $('#side').innerHTML=`<h3>Nasıl çalışır?</h3><ol class="how"><li><b>Dinle:</b> Ders paragraf paragraf okunur. Sağdaki kutuya not al.</li><li><b>Cevapla:</b> Ders bitince 6 çoktan seçmeli ve 4 not tamamlama sorusu gelir; notların yanında durur.</li><li><b>Öğren:</b> Her cevabın derste geçtiği cümleyi görür, o kısmı tekrar dinlersin.</li></ol><div class="tips"><b>BUEPT ipucu:</b> Hocanın “First”, “However”, “In other words”, “To sum up” gibi işaret kelimeleri yeni bir not başlığıdır.</div>`;
+  $('#mk').onclick=lecMake;$('#smp').onclick=()=>lecStart(JSON.parse(JSON.stringify(SAMPLE_LEC)));
+}
+async function lecMake(){
+  if(window.KA_PREVIEW){KA.toast('Önizlemede yapay zekâ kapalı; örnek ders açılıyor.');return lecStart(JSON.parse(JSON.stringify(SAMPLE_LEC)))}
+  const b=$('#mk'),msg=$('#lmsg');b.disabled=true;msg.innerHTML='<span class="ka-spin"></span> Ders yazılıyor ve sorular hazırlanıyor (20-40 sn)…';
+  const t=TOPICS[LEC.topic][1]||pick(TOPICS.slice(0,9))[1];
+  const r=await KA.askJ(LECSYS,`TOPIC: ${t}\nLENGTH: ${LEC.len==='long'?'about 520-600 words (8-9 paragraphs)':'about 300-350 words (6-7 paragraphs)'}\nPick a specific, interesting sub-topic that is not the forgetting curve.`,{ms:90000});
+  const d=r.json;
+  const okD=d&&Array.isArray(d.paras)&&d.paras.length>=4&&Array.isArray(d.qs)&&d.qs.length>=5;
+  if(!okD){b.disabled=false;msg.textContent='Ders oluşturulamadı'+(r.err?' ('+r.err+')':'')+'. Tekrar dene ya da örnek dersi aç.';return}
+  d.qs=d.qs.filter(q=>q&&q.q&&(q.type==='gap'?q.a:Array.isArray(q.opts)&&q.opts.length>=2&&q.a>=0&&q.a<q.opts.length)).slice(0,10);
+  d.topic=d.topic||TOPICS[LEC.topic][0];
+  lecStart(d,true);
+}
+function lecStart(d,save){
+  stopPlayer();PL.heard=new Set();PL.done=false;PL.i=0;
+  LEC=Object.assign(LEC,{phase:'listen',data:d,notes:'',Q:{qs:d.qs,ans:{}}});
+  if(save){const H=lecHist();H.unshift({data:d,score:null,t:Date.now()});KA.store.set('ka_ders',H.slice(0,8))}
+  KA.ttsWarm(d.paras[0]);draw();
+}
+function lecListen(){
+  const d=LEC.data,n=d.paras.length;
+  const render=()=>{
+    const pb=$('#pb');if(!pb)return;
+    pb.innerHTML=PL.on?I.pause:PL.done&&LEC.exam?ic('check'):ic('play');
+    pb.disabled=PL.done&&LEC.exam;
+    $('#segs').innerHTML=d.paras.map((_,k)=>`<button data-seg="${k}" class="${PL.heard.has(k)?'h':''} ${PL.on&&PL.i===k?'c':''}" ${LEC.exam?'disabled':''} aria-label="Bölüm ${k+1}"></button>`).join('');
+    $('#pst').textContent=PL.done?'Ders bitti. Notlarını kontrol et ve sorulara geç.':PL.on?`Bölüm ${PL.i+1} / ${n} çalıyor…`:PL.heard.size?`Duraklatıldı · Bölüm ${PL.i+1} / ${n}`:'Hazır olduğunda dersi başlat.';
+    if(!LEC.exam&&$('#tx').dataset.open==='1')$('#tx').innerHTML=d.paras.map((p,k)=>`<p class="${PL.on&&PL.i===k?'cur':''}">${esc(p)}</p>`).join('');
+  };
+  $('#stage').innerHTML=`<div class="stop"><span class="eyebrow">${esc(d.topic||'Ders')}</span><span class="cnt">${LEC.exam?'Sınav modu · 1 kez':'Serbest mod'}</span></div><h2 class="serif" style="margin:4px 0 14px;font-size:26px">${esc(d.title)}</h2>${stepsHTML(0)}
+    <div class="player"><button class="bigplay" id="pb" aria-label="Oynat / duraklat"></button><div class="pinfo"><div class="segs" id="segs"></div><div class="pst" id="pst"></div></div></div>
+    ${LEC.exam?`<p class="note" style="margin:6px 0 0">Sınav modunda ders bir kez çalar, geri saramazsın. Duraklatırsan bulunduğun bölümün başından devam eder.</p>`:`<button class="btn btn-ghost btn-sm" id="txb" style="margin-top:10px">Metni göster</button>`}
+    <div id="tx" class="tx" data-open="0"></div>
+    <div class="acts2" style="margin-top:auto;padding-top:22px"><button class="btn btn-p btn-lg" id="toq">Sorulara geç ${ic('arrow')}</button></div>`;
+  $('#side').innerHTML=notesPanel('Notların');bindNotes();
+  $('#pb').onclick=()=>{if(PL.on){stopPlayer();render()}else{playFrom(PL.done?0:PL.i,d.paras,render);render()}};
+  $('#segs').onclick=e=>{const b=e.target.closest('[data-seg]');if(!b||LEC.exam)return;playFrom(+b.dataset.seg,d.paras,render)};
+  const tb=$('#txb');if(tb)tb.onclick=()=>{const t=$('#tx');t.dataset.open=t.dataset.open==='1'?'0':'1';tb.textContent=t.dataset.open==='1'?'Metni gizle':'Metni göster';if(t.dataset.open==='0')t.innerHTML='';render()};
+  $('#toq').onclick=()=>{if(LEC.exam&&!PL.done&&!confirmBox())return;stopPlayer();LEC.phase='quiz';draw()};
+  render();
+}
+function confirmBox(){const b=$('#toq');if(b.dataset.sure)return true;b.dataset.sure='1';b.innerHTML='Ders bitmedi, yine de geç?';return false}
+function lecQuiz(){
+  const Q=LEC.Q;
+  $('#stage').innerHTML=`<div class="stop"><span class="eyebrow">${esc(LEC.data.title)}</span><span class="cnt" id="qcnt"></span></div>${stepsHTML(1)}${quizHTML(Q)}<div class="acts2" style="margin-top:18px"><button class="btn btn-p btn-lg" id="sub">${ic('check')}Cevapları kontrol et</button></div>`;
+  $('#side').innerHTML=notesPanel('Notların',null,false);bindNotes();
+  bindQuiz(Q,()=>{gradeQuiz(Q);const H=lecHist();const h=H.find(x=>x.data===LEC.data||x.data.title===LEC.data.title);if(h){h.score=Q.score;KA.store.set('ka_ders',H)}LEC.phase='result';draw();scrollTo({top:0,behavior:'smooth'})});
+}
+function bindQuiz(Q,onSubmit){
+  const cnt=()=>{const c=$('#qcnt');if(c)c.textContent=Object.keys(Q.ans).filter(k=>Q.ans[k]!==''&&Q.ans[k]!==undefined).length+' / '+Q.qs.length+' cevaplandı'};cnt();
+  $('#stage').querySelectorAll('[data-opt]').forEach(b=>b.onclick=()=>{const [i,k]=b.dataset.opt.split(':').map(Number);Q.ans[i]=k;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));cnt()});
+  $('#stage').querySelectorAll('[data-gap]').forEach(inp=>inp.oninput=()=>{Q.ans[+inp.dataset.gap]=inp.value;cnt()});
+  $('#sub').onclick=onSubmit;
+}
+function lecResult(){
+  const Q=LEC.Q,d=LEC.data,sc=Q.score;
+  $('#stage').innerHTML=`${stepsHTML(2)}<div class="rtop"><div><span class="eyebrow">Sonuç</span><h2 class="serif">${sc} / ${Q.qs.length}</h2><p class="mut" style="margin:0">${sc>=8?'Harika! Notların sınav için yeterli.':sc>=6?'İyi. Kaçırdığın kısımları aşağıdan tekrar dinle.':'Notlarında eksikler var. İşaret kelimelerine dikkat ederek tekrar dene.'}</p></div><div class="acts2"><button class="btn btn-ghost" id="rel">Tekrar çöz</button><button class="btn btn-p" id="nwl">Yeni ders</button></div></div>
+    <div class="rlist">${resultHTML(Q,{where:q=>Number.isInteger(q.p)&&d.paras[q.p]?` <button class="btn btn-ghost btn-sm" data-para="${q.p}">${ic('sound')}Bu kısmı dinle</button>`:''})}</div>
+    <h3 class="sh">Dersin metni</h3><div class="tx open">${d.paras.map((p,k)=>`<p><button class="say2" data-para="${k}" aria-label="Dinle">${ic('sound')}</button> ${KA.tokens(p)}</p>`).join('')}</div>
+    ${(d.vocab||[]).length?`<h3 class="sh">Dersten kelimeler</h3><div class="vchips">${d.vocab.map((v,i)=>`<button data-voc="${i}"><b>${esc(v.en)}</b> · ${esc(v.tr)} <span>${ic('plus')}</span></button>`).join('')}</div>`:''}`;
+  $('#side').innerHTML=notesPanel('Notların',null,true);
+  $('#rel').onclick=()=>{LEC.Q={qs:d.qs,ans:{}};LEC.phase='quiz';draw()};
+  $('#nwl').onclick=()=>{stopPlayer();LEC.phase='setup';draw()};
+  $('#stage').querySelectorAll('[data-para]').forEach(b=>b.onclick=()=>{stopPlayer();KA.speakP(d.paras[+b.dataset.para],CFG.rate)});
+  vocBind(d.vocab);
+}
+function vocBind(v){$('#stage').querySelectorAll('[data-voc]').forEach(b=>b.onclick=()=>{const x=v[+b.dataset.voc];try{KA.addUnknown(x.en,x.tr);b.classList.add('done');b.disabled=true;KA.toast(x.en+' Bilmediklerim listesine eklendi.')}catch(e){}})}
+
+/* ---------- 6. Video salonu (TED) ---------- */
+const TALKS=[
+ ['matt_cutts_try_something_new_for_30_days','Try something new for 30 days','Matt Cutts',3,'Yaşam','B1'],
+ ['angela_lee_duckworth_grit_the_power_of_passion_and_perseverance','Grit: the power of passion and perseverance','Angela Lee Duckworth',6,'Eğitim','B2'],
+ ['julian_treasure_how_to_speak_so_that_people_want_to_listen','How to speak so that people want to listen','Julian Treasure',10,'İletişim','B2'],
+ ['carol_dweck_the_power_of_believing_that_you_can_improve','The power of believing that you can improve','Carol Dweck',10,'Psikoloji','B2'],
+ ['shawn_achor_the_happy_secret_to_better_work','The happy secret to better work','Shawn Achor',12,'Psikoloji','B2'],
+ ['kelly_mcgonigal_how_to_make_stress_your_friend','How to make stress your friend','Kelly McGonigal',14,'Sağlık','C1'],
+ ['tim_urban_inside_the_mind_of_a_master_procrastinator','Inside the mind of a master procrastinator','Tim Urban',14,'Psikoloji','B2'],
+ ['dan_pink_the_puzzle_of_motivation','The puzzle of motivation','Dan Pink',18,'Ekonomi','C1'],
+ ['simon_sinek_how_great_leaders_inspire_action','How great leaders inspire action','Simon Sinek',18,'İş dünyası','C1'],
+ ['ken_robinson_do_schools_kill_creativity','Do schools kill creativity?','Sir Ken Robinson',19,'Eğitim','C1'],
+ ['hans_rosling_the_best_stats_you_ve_ever_seen',"The best stats you've ever seen",'Hans Rosling',20,'Dünya','C1'],
+ ['brene_brown_the_power_of_vulnerability','The power of vulnerability','Brené Brown',20,'Psikoloji','C1']
+].map(([slug,title,speaker,min,topic,lvl])=>({slug,title,speaker,min,topic,lvl}));
+const TEDSYS=`You write BUEPT-style listening comprehension questions for a TED talk. You get the talk's transcript as numbered paragraphs [index | mm:ss]. Use ONLY information in the transcript.
+Write exactly 10 questions in the order of the talk: 7 multiple choice ("mc", 4 options, one correct, plausible distractors) testing main idea, key details, examples/stories, the speaker's opinion and purpose; 3 note-completion gaps ("gap": a note-style sentence with ____ whose answer is 1-3 words spoken in the talk). For each question give "p" (paragraph index) and "kanit" (an exact short quote, max 25 words, that proves the answer).
+Also give a one-sentence Turkish summary ("ozet") and 6 useful words from the talk with Turkish meanings ("vocab").
+Return ONLY JSON: {"ozet":"...","qs":[{"type":"mc","q":"...","opts":["...","...","...","..."],"a":0,"p":0,"kanit":"..."},{"type":"gap","q":"...____...","a":"...","alt":[],"p":0,"kanit":"..."}],"vocab":[{"en":"...","tr":"..."}]}`;
+let TED={phase:'pick'};
+const tedCache=()=>KA.store.get('ka_ted',{})||{};
+const mmss=ms=>{const s=Math.round((ms||0)/1000);return Math.floor(s/60)+':'+pad(s%60)};
+function drawTed(){
+  $('#bar').style.width=({pick:0,watch:33,quiz:66,result:100})[TED.phase]+'%';
+  if(TED.phase==='pick')return tedPick();
+  if(TED.phase==='watch')return tedWatch();
+  if(TED.phase==='quiz')return tedQuiz();
+  return tedResult();
+}
+function tedPick(){
+  const C=tedCache();
+  $('#stage').innerHTML=`<span class="eyebrow">Video salonu · TED</span><h2 class="serif" style="margin:6px 0 4px;font-size:28px">TED konuşması izle, konuşmaya özel quiz çöz</h2>
+  <p class="mut" style="margin:0 0 16px">Sorular konuşmanın gerçek metninden hazırlanır; her cevabın videonun kaçıncı dakikasında geçtiğini görürsün.</p>
+  <div class="tgrid">${TALKS.map((t,i)=>`<button class="talk" data-talk="${i}"><span class="tth t${i%6}"><b>TED</b><i>${t.min} dk</i></span><span class="ttb"><b>${esc(t.title)}</b><span>${esc(t.speaker)}</span><span class="tmeta"><em>${esc(t.topic)}</em><em>${t.lvl}</em>${C[t.slug]&&C[t.slug].score!=null?`<em class="sc">${C[t.slug].score}/10</em>`:''}</span></span></button>`).join('')}</div>
+  <div class="olab" style="margin:22px 0 8px">Başka bir TED konuşması</div><div class="sbar2"><input id="tlink" placeholder="TED bağlantısını yapıştır: https://www.ted.com/talks/..." autocomplete="off"><button class="btn btn-p" id="topen">Aç</button></div><div id="tmsg" class="mut" style="margin-top:8px;font-size:14px"></div>`;
+  $('#side').innerHTML=`<h3>Nasıl çalışır?</h3><ol class="how"><li><b>İzle:</b> Önce altyazısız izle, sağdaki kutuya not al.</li><li><b>Quiz:</b> 7 çoktan seçmeli, 3 not tamamlama sorusu.</li><li><b>Kontrol:</b> Yanlışlarının videoda geçtiği dakikayı ve cümleyi gör.</li></ol><div class="tips"><b>Seviye:</b> B1-B2 konuşmalar kısa ve yavaş; C1 konuşmalar BUEPT'teki ders dinlemesine en yakın olanlar.</div>`;
+  $('#stage').querySelectorAll('[data-talk]').forEach(b=>b.onclick=()=>tedOpen(TALKS[+b.dataset.talk]));
+  $('#topen').onclick=()=>{const m=$('#tlink').value.match(/ted\.com\/talks\/([A-Za-z0-9_]+)/);if(!m){$('#tmsg').textContent='Geçerli bir TED bağlantısı yapıştır (ted.com/talks/… ile başlayan).';return}tedOpen({slug:m[1],title:m[1].replace(/_/g,' '),speaker:'',min:0,topic:'TED',lvl:''})};
+}
+function tedOpen(t){
+  LEC.notes='';TED={phase:'watch',talk:t,status:'loading',quiz:null};draw();
+  tedPrepare(t);
+}
+async function tedPrepare(t){
+  const C=tedCache();
+  if(C[t.slug]&&C[t.slug].quiz){TED.quiz=C[t.slug].quiz;TED.status='ready';return tedStatus()}
+  if(window.KA_PREVIEW_TED&&KA_PREVIEW_TED[t.slug]){await new Promise(r=>setTimeout(r,900));TED.quiz=KA_PREVIEW_TED[t.slug];TED.status='ready';return tedStatus()}
+  if(window.KA_PREVIEW){TED.status='err';TED.err='Önizlemede yalnızca “Try something new for 30 days” konuşmasının örnek quiz’i var.';return tedStatus()}
+  let data=null,err='';
+  try{const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),20000);const r=await fetch('api/ted?slug='+encodeURIComponent(t.slug),{signal:ac.signal});clearTimeout(tm);if(r.ok)data=await r.json();else err='metin bulunamadı'}catch(e){err='bağlantı'}
+  if(TED.talk!==t)return;
+  if(!data||!Array.isArray(data.paras)||data.paras.length<3){TED.status='err';TED.err='Bu konuşmanın metnine şu an ulaşılamadı ('+err+'). Başka bir konuşma seç.';return tedStatus()}
+  if(data.title)t.title=data.title;if(data.speaker)t.speaker=data.speaker;
+  TED.status='quiz';tedStatus();
+  let txt='',lim=14000;data.paras.forEach((p,i)=>{const line=`[${i} | ${mmss(p.t)}] ${p.text}\n`;if(txt.length+line.length<lim)txt+=line});
+  const r=await KA.askJ(TEDSYS,`TALK: ${t.title} — ${t.speaker}\nTRANSCRIPT:\n${txt}`,{ms:90000});
+  if(TED.talk!==t)return;
+  const d=r.json;
+  if(!d||!Array.isArray(d.qs)||d.qs.length<5){TED.status='err';TED.err='Quiz hazırlanamadı'+(r.err?' ('+r.err+')':'')+'. Tekrar dene.';return tedStatus()}
+  d.qs=d.qs.filter(q=>q&&q.q&&(q.type==='gap'?q.a:Array.isArray(q.opts)&&q.opts.length>=2&&q.a>=0&&q.a<q.opts.length)).slice(0,10);
+  d.qs.forEach(q=>{if(Number.isInteger(q.p)&&data.paras[q.p])q.t=data.paras[q.p].t});
+  TED.quiz=d;TED.status='ready';
+  const C2=tedCache();C2[t.slug]={quiz:d,title:t.title,score:null};const ks=Object.keys(C2);if(ks.length>25)delete C2[ks[0]];KA.store.set('ka_ted',C2);
+  tedStatus();
+}
+function tedStatus(){
+  const s=$('#tst'),b=$('#tgo');if(!s||!b)return;
+  s.innerHTML=TED.status==='ready'?`${ic('check')} Quiz hazır · 10 soru`:TED.status==='err'?esc(TED.err):TED.status==='quiz'?'<span class="ka-spin"></span> Metin alındı, sorular hazırlanıyor…':'<span class="ka-spin"></span> Konuşmanın metni alınıyor…';
+  s.className='tst '+(TED.status==='ready'?'ok':TED.status==='err'?'bad':'');
+  b.disabled=TED.status!=='ready';
+}
+function tedWatch(){
+  const t=TED.talk;
+  const vid=window.KA_PREVIEW?`<div class="vph"><b>TED</b><span>${esc(t.title)}</span><i>Video gerçek sitede burada oynar (önizlemede dış videolar kapalı).</i></div>`:`<iframe src="https://embed.ted.com/talks/${encodeURIComponent(t.slug)}" title="${esc(t.title)}" allow="autoplay; fullscreen; encrypted-media" allowfullscreen loading="lazy"></iframe>`;
+  $('#stage').innerHTML=`<div class="stop"><span class="eyebrow">${esc(t.topic)}${t.lvl?' · '+t.lvl:''}</span><button class="btn btn-ghost btn-sm" id="tback">${ic('back')}Konuşmalar</button></div><h2 class="serif" style="margin:4px 0 2px;font-size:24px">${esc(t.title)}</h2><p class="mut" style="margin:0 0 12px">${esc(t.speaker)}${t.min?' · ≈'+t.min+' dk':''}</p>${stepsHTML(0,1)}
+    <div class="video">${vid}</div>
+    <p class="note" style="margin:10px 0 0">Önce altyazısız izle. Zorlanırsan videonun altındaki altyazı düğmesinden İngilizce altyazıyı aç.</p>
+    <div class="tfoot"><span id="tst" class="tst"></span><button class="btn btn-p btn-lg" id="tgo" disabled>Quiz'e geç ${ic('arrow')}</button></div>`;
+  $('#side').innerHTML=notesPanel('İzlerken notların');bindNotes();
+  $('#tback').onclick=()=>{TED={phase:'pick'};draw()};
+  $('#tgo').onclick=()=>{TED.Q={qs:TED.quiz.qs,ans:{}};TED.phase='quiz';draw();scrollTo({top:0,behavior:'smooth'})};
+  tedStatus();
+}
+function tedQuiz(){
+  const Q=TED.Q;
+  $('#stage').innerHTML=`<div class="stop"><span class="eyebrow">${esc(TED.talk.title)}</span><span class="cnt" id="qcnt"></span></div>${stepsHTML(1,1)}${quizHTML(Q)}<div class="acts2" style="margin-top:18px"><button class="btn btn-ghost" id="bk">Videoya dön</button><button class="btn btn-p btn-lg" id="sub">${ic('check')}Cevapları kontrol et</button></div>`;
+  $('#side').innerHTML=notesPanel('Notların');bindNotes();
+  $('#bk').onclick=()=>{TED.phase='watch';draw()};
+  bindQuiz(Q,()=>{gradeQuiz(Q);const C=tedCache();if(C[TED.talk.slug]){C[TED.talk.slug].score=Q.score;KA.store.set('ka_ted',C)}TED.phase='result';draw();scrollTo({top:0,behavior:'smooth'})});
+}
+function tedResult(){
+  const Q=TED.Q,d=TED.quiz,sc=Q.score;
+  $('#stage').innerHTML=`${stepsHTML(2,1)}<div class="rtop"><div><span class="eyebrow">Sonuç · ${esc(TED.talk.title)}</span><h2 class="serif">${sc} / ${Q.qs.length}</h2><p class="mut" style="margin:0">${esc(d.ozet||'')}</p></div><div class="acts2"><button class="btn btn-ghost" id="rw">Videoyu tekrar izle</button><button class="btn btn-p" id="nt">Başka konuşma</button></div></div>
+    <div class="rlist">${resultHTML(Q,{where:q=>q.t!=null?` <span class="tstamp">${ic('play')}${mmss(q.t)}</span>`:''})}</div>
+    ${(d.vocab||[]).length?`<h3 class="sh">Konuşmadan kelimeler</h3><div class="vchips">${d.vocab.map((v,i)=>`<button data-voc="${i}"><b>${esc(v.en)}</b> · ${esc(v.tr)} <span>${ic('plus')}</span></button>`).join('')}</div>`:''}
+    <p class="note" style="margin-top:18px">Video ve konuşma metni TED'e aittir (ted.com).</p>`;
+  $('#side').innerHTML=notesPanel('Notların',null,true);
+  $('#rw').onclick=()=>{TED.phase='watch';draw()};$('#nt').onclick=()=>{TED={phase:'pick'};draw()};
+  vocBind(d.vocab||[]);
+}
+
+/* ---------- Ortak ---------- */
+function score(ok,m){
+  if(ok){SES.ok++;SES.streak++;SES.best=Math.max(SES.best,SES.streak);KA.sfx&&KA.sfx.ok()}
+  else{SES.streak=0;SES.miss.push(m);KA.sfx&&KA.sfx.bad()}
+  drawSide();
+}
+function next(){
+  if(REC)stopRec();KA.stopSpeak();
+  SES.i++;SES.state='ask';
+  if(SES.i>=SES.list.length)SES.done=true;
+  draw();
+}
+function drawEnd(){
+  const s=SES,pct=Math.round(s.ok/s.list.length*100);
+  $('#bar').style.width='100%';
+  $('#stage').innerHTML=`<div class="center-col end"><span class="eyebrow">Tur bitti</span><h2 class="serif">${s.ok} / ${s.list.length}</h2><p class="mut" style="margin:0">Başarı %${pct} · en uzun seri ${s.best}</p>
+    <div class="acts2" style="margin-top:8px">${s.miss.length&&CFG.mode!=='pairs'?`<button class="btn btn-p" id="redo">Hatalıları tekrar çalış</button><button class="btn btn-ghost" id="unk">${ic('plus')}Bilmediklerime ekle</button>`:''}<button class="btn ${s.miss.length&&CFG.mode!=='pairs'?'btn-ghost':'btn-p'}" id="newr">Yeni tur</button></div></div>`;
+  $('#newr').onclick=()=>newSession();
+  const rd=$('#redo');if(rd)rd.onclick=()=>{const ens=new Set(s.miss.map(m=>m.say));newSession(s.list.filter(x=>ens.has(x.en)||ens.has(x.s)))};
+  const uk=$('#unk');if(uk)uk.onclick=()=>{const ens=new Set(s.miss.map(m=>m.say));let n=0;s.list.filter(x=>ens.has(x.en)||ens.has(x.s)).forEach(x=>{try{KA.addUnknown(x.en,x.tr,{s:x.s});n++}catch(e){}});KA.toast(n+' kelime Bilmediklerim listesine eklendi.');uk.disabled=true};
+}
+document.addEventListener('click',e=>{
+  const t=e.target;
+  const m=t.closest("[data-dm]");if(m){if(REC)stopRec();CFG.mode=m.dataset.dm;save();return newSession()}
+  const u=t.closest('[data-unit]');if(u){CFG.unit=u.dataset.unit;save();return newSession()}
+  const r=t.closest('[data-rate]');if(r){CFG.rate=+r.dataset.rate;save();drawTop();return}
+  const tp=t.closest('[data-topic]');if(tp){LEC.topic=+tp.dataset.topic;return draw()}
+  const ln=t.closest('[data-len]');if(ln){LEC.len=ln.dataset.len;return draw()}
+  const ex=t.closest('[data-exam]');if(ex){LEC.exam=ex.dataset.exam==='1';return draw()}
+  const hs=t.closest('[data-hist]');if(hs){const h=lecHist()[+hs.dataset.hist];if(h)lecStart(h.data);return}
+});
+document.addEventListener('change',e=>{if(e.target.id==='src'){CFG.src=e.target.value;save();newSession()}});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&SES&&!SES.done&&SES.state==='done'&&!e.target.closest('textarea,input')){const n=$('#nx');if(n&&document.activeElement!==n){e.preventDefault();n.click()}}});
+KA.nav('dinle.html');
+newSession();
+})();
+</script>
+</body>
+</html>
