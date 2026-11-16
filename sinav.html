@@ -156,6 +156,22 @@
 .qrow.ok .bub button.on{background:var(--ok);border-color:var(--ok)}
 .qrow.no .bub button.on{background:var(--bad);border-color:var(--bad);color:#fff}
 .sh-f{padding:12px 14px;border-top:1px solid var(--line);display:grid;gap:8px}
+.pkb{position:absolute;transform:translateY(-1px);font:800 9px/1 var(--font,inherit);letter-spacing:.02em;padding:2px 4px;border-radius:5px;opacity:.9;background:#1f3fb0;color:#fff;white-space:nowrap;pointer-events:none;z-index:3}
+.ttag.pk{background:color-mix(in srgb,var(--p) 14%,var(--card));color:var(--p)}
+.qrow.part{background:color-mix(in srgb,#f59e0b 16%,var(--card))}
+.qrow.part .bub button.on{background:#d97706;border-color:#d97706;color:#fff}
+.bub.multi button{border-radius:8px}
+.autosave{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--mut)}
+.autosave svg{width:13px;height:13px;color:var(--ok)}
+.info.mkread{display:grid;gap:8px;justify-items:start}
+.rdm{display:flex;gap:10px;align-items:flex-start;text-align:left;max-width:440px;margin:14px auto 0;padding:10px 12px;border-radius:12px;background:var(--soft);font-size:13.5px;line-height:1.45;color:var(--ink2);cursor:pointer}
+.rdm input{margin-top:3px;width:17px;height:17px;accent-color:var(--p);flex:0 0 auto}
+.mkbar{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);z-index:60;padding:10px 16px;font-weight:700;font-size:14px;display:flex;gap:8px;align-items:center;box-shadow:var(--sh2)}
+.rsopts{display:grid;gap:8px}
+.rso{display:grid;gap:3px;text-align:left;border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:12px 14px;color:var(--ink)}
+.rso:hover{border-color:var(--p)}.rso[data-r=all]:hover{border-color:var(--bad)}
+.rso span{font-size:13px;color:var(--mut);line-height:1.45}
+
 .res{padding:14px;border-radius:14px;background:var(--soft);margin:6px 4px 10px}
 .res b.big{font-family:Fraunces,serif;font-size:30px;display:block}
 .res .btn{margin-top:10px;width:100%}
@@ -201,8 +217,19 @@ async function lib(){if(!pdfjs){pdfjs=await import('./lib/pdfjs/pdf-v3.min.mjs')
 /* ---------- Sınavı oku: soruları, şıkları, boşlukları ve yazı alanlarını bul ---------- */
 const r1=n=>Math.round(n*10)/10;
 const isRule=l=>{const c=l.t.replace(/\s/g,'');return c.replace(/[_.…\-–—]/g,'').length<=2&&/[_.…]{8,}/.test(c)&&(l.x1-l.x0)>110};
-const SECRE=/^(part|section|bölüm|task|exercise)\b|^(choose|circle|fill in|complete|answer|read|write|match|decide)\b/i;
+const SECRE=/^(part|section|bölüm|task|exercise)\b|^questions?\s+\d|^(choose|circle|fill in|complete|answer|read|write|match|decide)\b/i;
 const TFRE=/\btrue\s*(or|\/|-)\s*false\b|\(\s*T\s*\/\s*F\s*\)|\bT\s*\/\s*F\b|doğru\s*(mu|\/|ya da|veya)\s*yanlış|\bD\s*\/\s*Y\b/i,NGRE=/not\s*given|\bNG\b/i;
+// Birden fazla şık isteyen soruları bul: "Choose TWO", "Which two…", "iki doğru cevap", "all that apply"
+const NUMW={two:2,three:3,'2':2,'3':3,iki:2,'üç':3};
+function pickOf(t){
+  t=String(t||'');let m;
+  if(/more than one (answer|option)|all (that|which) apply|one or more|birden (fazla|çok)/i.test(t))return 9;
+  if((m=t.match(/\b(?:choose|select|circle|mark|tick|pick|identify|underline|give|find)\s+(?:the\s+|any\s+)?(two|three|TWO|THREE|2|3)\b/i)))return NUMW[m[1].toLowerCase()];
+  if((m=t.match(/\b(two|three|2|3)\s+(?:correct\s+|best\s+|right\s+|true\s+)?(?:answers|options|letters|statements|choices|reasons|words|items)\b/i)))return NUMW[m[1].toLowerCase()];
+  if((m=t.match(/\bwhich\s+(two|three)\b/i)))return NUMW[m[1].toLowerCase()];
+  if((m=t.match(/(iki|üç)\s+(?:tane\s+)?(?:doğru\s+)?(?:cevab|cevap|şık|seçenek|ifade)/i)))return NUMW[m[1].toLocaleLowerCase('tr')];
+  return 0;
+}
 // OCR satırlarını (0-1000 kutular) pdf.js metin öğelerine çevir
 function ocrToItems(lines,pw,ph){return lines.map(l=>{const [y0,x0,y1,x1]=l.b,top=y0/1000*ph,bot=y1/1000*ph,fs=Math.max(4,(bot-top)/1.1),y=top+fs*.85;return {str:l.t,transform:[fs,0,0,fs,x0/1000*pw,ph-y],width:Math.max(4,(x1-x0)/1000*pw),height:fs}})}
 async function analyse(doc,ocr){
@@ -220,8 +247,9 @@ async function analyse(doc,ocr){
   const QRE=/^(?:Q(?:uestion)?\s*)?(\d{1,3})\s*[.)]\s*(?=\S)/i,starts=[];let want=1;
   L.forEach((l,i)=>{const m=l.t.match(QRE);if(m&&+m[1]===want&&!/^\d{1,3}\s*[.)]\s*\d/.test(l.t)){starts.push(i);want++}});
   if(starts.length<2)return empty;
-  const secAt=[];let sec='';const S=new Set(starts);
-  L.forEach((l,i)=>{if(S.has(i)){secAt[i]=sec;return}
+  const secAt=[],secPk=[];let sec='',spk=0;const S=new Set(starts);
+  L.forEach((l,i)=>{if(S.has(i)){secAt[i]=sec;secPk[i]=spk;return}
+    const pp=pickOf(l.t);if(pp)spk=pp;else if(/^(part|section|bölüm|task|exercise|questions?\s+\d)/i.test(l.t)||/choose the (best|correct) (answer|option)\b(?!s)/i.test(l.t))spk=0;
     if(TFRE.test(l.t)||/write\s+(T|true)\b/i.test(l.t))sec=NGRE.test(l.t)?'tfng':/doğru|yanlış|\bD\s*\/\s*Y/i.test(l.t)?'dy':'tf';
     else if(/^(part|section|bölüm|task|exercise)\b/i.test(l.t)||/choose the (best|correct)|circle the|fill in|complete the|answer the following|write (a|your)|in your own words/i.test(l.t))sec=''});
   const qs=[];let maxL=4;
@@ -235,7 +263,7 @@ async function analyse(doc,ocr){
     const mk=[];
     for(let j=si;j<ei;j++){const l=L[j];if(j>si&&l.p!==L[si].p&&j>=k&&mk.length===0)break;l.parts.forEach(a=>{const re=/(^|\s)(\(([A-Ea-e])\)|([A-E])[.)]|([a-e])[.)])(?=\s|$)/g;let m;const n=a.s.length||1;while((m=re.exec(a.s))){const ci=m.index+m[1].length,len=m[2].length;mk.push({l:(m[3]||m[4]||m[5]).toUpperCase(),p:l.p,x:a.x+a.w*ci/n,y:l.top,w:Math.max(a.w*len/n,l.fs*.55),h:l.bot-l.top})}})}
     let run=[];for(let i=0;i<mk.length;i++){if(mk[i].l!=='A')continue;const r=[mk[i]];for(let j=i+1;j<mk.length&&r.length<5;j++)if(mk[j].l===String.fromCharCode(65+r.length))r.push(mk[j]);if(r.length>run.length)run=r}
-    if(run.length>=3){q.t='mc';q.opts=run.map(o=>({l:o.l,p:o.p,x:r1(o.x),y:r1(o.y),w:r1(o.w),h:r1(o.h)}));maxL=Math.max(maxL,run.length)}
+    if(run.length>=3){q.t='mc';q.opts=run.map(o=>({l:o.l,p:o.p,x:r1(o.x),y:r1(o.y),w:r1(o.w),h:r1(o.h)}));maxL=Math.max(maxL,run.length);const pk=pickOf(q.text)||secPk[si]||0;if(pk>1)q.pick=pk>=9?9:Math.min(pk,run.length)}
     else if(TFRE.test(q.text)||/\(\s*(T|F|true|false)\s*\)\s*$/i.test(q.text)||secAt[si]){
       const s=secAt[si],ng=NGRE.test(q.text)||s==='tfng',dy=/doğru|yanlış/i.test(q.text)||s==='dy';
       q.t='tf';q.ch=dy?['D','Y']:ng?['T','F','NG']:['T','F'];
@@ -266,12 +294,19 @@ async function analyse(doc,ocr){
 let EX=null,DOC=null,DOCT=null,PAGES=[],ZOOM=1,BASEW=0,TOOL='select',COLOR='#fde047',UNDO=[],saveT=null,tick=null,io=null,renderQ=[],rendering=0,TAB='ans';
 const COLORS=['#fde047','#86efac','#f9a8d4','#93c5fd'];
 const TYPES={mc:'Çoktan seçmeli',tf:'Doğru / Yanlış',blank:'Boşluk doldurma',open:'Yazılı'};
+const TYPES2={mc:'Çoktan seçmeli · 1 şık',mc2:'Çoktan seçmeli · 2 şık',mc3:'Çoktan seçmeli · 3 şık',mc9:'Çoktan seçmeli · birden fazla',tf:'Doğru / Yanlış',blank:'Boşluk doldurma',open:'Yazılı'};
+const tyVal=q=>multi(q)?'mc'+Math.min(9,q.pick):q.t;
+const hasObjQ=()=>Array.from({length:EX.q},(_,i)=>qOf(i+1)).some(q=>q.p&&q.t!=='open');
 const save=()=>{clearTimeout(saveT);saveT=setTimeout(()=>{if(EX){EX.updated=Date.now();idb.put(EX).catch(()=>{})}},350)};
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const fmt=s=>{s=Math.max(0,Math.round(s));const h=s/3600|0,m=(s%3600)/60|0,x=s%60;return (h?h+':':'')+String(m).padStart(h?2:1,'0')+':'+String(x).padStart(2,'0')};
 const LET='ABCDE';
 const qOf=k=>(EX.qs||[]).find(q=>q.n===k)||{n:k,t:'mc',gen:1};
 const choices=q=>q.t==='tf'?q.ch:q.opts?q.opts.map(o=>o.l):LET.slice(0,EX.opts).split('');
+const multi=q=>q.t==='mc'&&q.pick>1;
+const has=(a,L,q)=>multi(q)?String(a||'').includes(L):a===L;
+const pkLabel=q=>q.pick>=9?'Çoklu':q.pick+' şık';
+function mScore(a,key){const K=new Set(String(key||'').split('')),A=[...new Set(String(a||'').split(''))];if(!K.size)return 0;const right=A.filter(x=>K.has(x)).length,wrong=A.length-right;return Math.max(0,right-wrong)/K.size}
 const answered=k=>{const a=EX.ans[k];return Array.isArray(a)?a.some(v=>String(v||'').trim()):!!String(a||'').trim()};
 const nAnswered=()=>Array.from({length:EX.q},(_,i)=>i+1).filter(answered).length;
 const norm=s=>String(s||'').toLowerCase().replace(/[^\p{L}\p{N}\s'-]/gu,' ').replace(/\s+/g,' ').trim();
@@ -280,6 +315,7 @@ function verdict(k){
   if(q.t==='open')return '';
   if(!answered(k))return 'empty';
   if(q.t==='blank'){const ks=String(key).split(/\s*[;|]\s*/),as=EX.ans[k]||[];return ks.every((kv,i)=>kv.split('/').map(norm).includes(norm(as[i])))?'ok':'no'}
+  if(multi(q)){const sc=mScore(EX.ans[k],key);return sc>=1?'ok':sc>0?'part':'no'}
   return EX.ans[k]===key?'ok':'no';
 }
 
@@ -289,13 +325,14 @@ async function library(){
   let list=[];try{list=(await idb.all()).sort((a,b)=>b.updated-a.updated)}catch(e){}
   $('#main').innerHTML=`<div class="lib"><section class="card lib-txt"><span class="eyebrow">Sınav Odası</span><h1>Sınavını yükle, kâğıt üstünde çöz</h1><p>PDF'teki bütün sorular ve paragraflar birebir görünür. Sınav, içindeki soru tiplerine göre kendini kurar: şıkları kâğıdın üstünde daire içine al, boşlukları doldur, yazılı soruların cevabını sayfaya yaz.</p>
     <div class="feat"><div><b>${icMark}Şıkkı işaretle</b>Çoktan seçmeli ve doğru/yanlış sorularda harfe dokun, kalemle daire içine alınır.</div><div><b>${icT}Sayfaya yaz</b>Boşluk doldurma ve yazılı sorularda cevap kutusu sorunun yanında açılır.</div><div><b>${ic('hl')}Vurgula, not al</b>Metni vurgula, altını çiz, kalemle çiz, sayfaya not iğnesi koy.</div><div><b>${ic('check')}Puanını gör</b>Cevap anahtarıyla anında puanla; yazılı cevapları yapay zekâ değerlendirsin.</div></div></section>
-  <div class="updrop" id="drop" tabindex="0"><span class="ico">${ic('upload')}</span><b>Sınav PDF'ini ya da fotoğraflarını bırak</b><span class="mut">PDF, taranmış PDF ya da kâğıdın fotoğrafları · birden fazla sayfa seçebilirsin</span><span class="row" style="gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px"><label class="btn btn-p" style="cursor:pointer">${ic('upload')}PDF seç<input type="file" id="pf" accept="application/pdf,.pdf" hidden></label><label class="btn btn-ghost" style="cursor:pointer">${ic('phone')}Fotoğraf çek<input type="file" id="pc" accept="image/*" capture="environment" hidden></label><label class="btn btn-ghost" style="cursor:pointer">${ic('upload')}Fotoğrafları seç<input type="file" id="pi" accept="image/*" multiple hidden></label></span><span id="upmsg" class="upmsg"></span></div></div>
+  <div class="updrop" id="drop" tabindex="0"><span class="ico">${ic('upload')}</span><b>Sınav PDF'ini ya da fotoğraflarını bırak</b><span class="mut">PDF, taranmış PDF ya da kâğıdın fotoğrafları · birden fazla sayfa seçebilirsin</span><span class="row" style="gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px"><label class="btn btn-p" style="cursor:pointer">${ic('upload')}PDF seç<input type="file" id="pf" accept="application/pdf,.pdf" hidden></label><label class="btn btn-ghost" style="cursor:pointer">${ic('phone')}Fotoğraf çek<input type="file" id="pc" accept="image/*" capture="environment" hidden></label><label class="btn btn-ghost" style="cursor:pointer">${ic('upload')}Fotoğrafları seç<input type="file" id="pi" accept="image/*" multiple hidden></label></span><label class="rdm"><input type="checkbox" id="rdm" ${KA.store.raw('ka_sinav_rdm','')==='1'?'checked':''}><span><b>Bu kâğıdı çözdüm.</b> İşaretlediğim şıkları ve boşluklara yazdıklarımı da oku, cevap kâğıdına kaydet.</span></label><span id="upmsg" class="upmsg"></span></div></div>
   ${list.length?`<h2 style="font-size:22px;margin:0 0 12px">Sınavların</h2><div class="exlist">${list.map(x=>{const n=Object.keys(x.ans||{}).length;return `<div class="card excard" data-open="${x.id}" role="button" tabindex="0"><div class="th">${x.thumb?`<img src="${x.thumb}" alt="">`:''}</div><div class="tx"><b>${esc(x.title)}</b><span class="mut">${x.pages} sayfa · ${x.q} soru${x.result&&x.result.pct!=null?` · <b style="display:inline;color:var(--ok)">%${x.result.pct}</b>`:''}</span><div class="bar"><i style="width:${x.q?Math.min(100,n/x.q*100):0}%"></i></div><div class="ft"><span class="mut">${n}/${x.q} cevaplandı</span><button class="ka-icon-btn" data-del="${x.id}" aria-label="Sınavı sil" style="width:32px;height:32px">${ic('trash')}</button></div></div></div>`}).join('')}</div>`:''}`;
   const drop=$('#drop'),pf=$('#pf');
   drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')};drop.ondragleave=()=>drop.classList.remove('over');
   drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');const fs=[...e.dataTransfer.files];if(fs.length)upload(fs)};
   drop.onkeydown=e=>{if(e.target===drop&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pf.click()}};
   drop.onclick=e=>{if(!e.target.closest('label'))pf.click()};
+  const rd=$('#rdm');if(rd)rd.onchange=()=>KA.store.set('ka_sinav_rdm',rd.checked?'1':'');
   ['#pf','#pc','#pi'].forEach(id=>{const i=$(id);i.onclick=e=>e.stopPropagation();i.onchange=()=>{const fs=[...i.files];i.value='';if(fs.length)upload(fs)}});
 }
 // JPEG sayfalarından PDF oluştur (fotoğrafla yüklenen sınavlar için)
@@ -361,6 +398,7 @@ async function upload(files){
     await idb.putFile(id,buf);await idb.put(ex);
     task.destroy();
     if(ocr)KA.store.set('ka_sinav_ocr_toast',id);
+    const rdm=$('#rdm');if(rdm&&rdm.checked)KA.store.set('ka_sinav_marks',id);
     location.hash=id;
   }catch(e){msg.textContent='Sınav açılamadı: '+(e&&e.message||e)}
 }
@@ -397,6 +435,7 @@ async function openExam(id){
   const L=await lib();
   DOCT=L.getDocument({data:new Uint8Array(buf).slice()});DOC=await DOCT.promise;
   if(!EX.v||!EX.qs){const info=await analyse(DOC);EX.v=2;EX.qs=info.qs;EX.doc=info.doc;EX.scanned=info.scanned;if(info.qs.length){EX.q=Math.max(info.qs.length,EX.q||0);EX.opts=info.opts;EX.detected=true}save()}
+  if(!EX.pkv){(EX.qs||[]).forEach(q=>{if(q.t==='mc'&&q.pick==null){const pk=pickOf(q.text);if(pk>1)q.pick=pk>=9?9:Math.min(pk,(q.opts||[]).length||5)}});EX.pkv=1;save()}
   drawSheet();
   const sizes=[];for(let i=1;i<=DOC.numPages;i++){const v=(await DOC.getPage(i)).getViewport({scale:1});sizes.push([v.width,v.height])}
   BASEW=sizes[0][0];
@@ -407,6 +446,7 @@ async function openExam(id){
   tick=setInterval(()=>{const now=performance.now();if(!document.hidden&&!EX.result){EX.elapsed+=(now-last)/1000;save()}last=now;drawTimer()},1000);drawTimer();
   if(EX.ocr&&KA.store.raw('ka_sinav_ocr_toast','')===EX.id){KA.store.del('ka_sinav_ocr_toast');KA.toast(EX.detected?`Fotoğraftan ${EX.q} soru okundu. Şıkların yerini kontrol et; kayan varsa Daire aracıyla işaretleyebilirsin.`:'Yazılar okundu ama soru numaraları ayırt edilemedi: cevapları sağdaki kâğıda işaretle.',6500)}
   else if(EX.scanned)KA.toast('Bu PDF taranmış görünüyor: cevapları sağdaki forma işaretle ya da Yazı aracıyla sayfaya yaz.',5200);
+  if(KA.store.raw('ka_sinav_marks','')===EX.id){KA.store.del('ka_sinav_marks');readMarks(true)}
 }
 function fitZoom(){const box=$('#pages');const w=box.clientWidth-8;ZOOM=Math.max(.5,Math.min(1.6,w/BASEW))}
 function layout(){
@@ -440,7 +480,8 @@ function qlayHTML(pn){
   const pw=PAGES[pn-1].w,ph=PAGES[pn-1].h,P=(x,y,w,h)=>`left:${(x/pw*100).toFixed(3)}%;top:${(y/ph*100).toFixed(3)}%;${w!=null?`width:${(w/pw*100).toFixed(3)}%;`:''}${h!=null?`height:${(h/ph*100).toFixed(3)}%;`:''}`;
   const km=EX.keyMode;let h='';
   EX.qs.forEach(q=>{const n=q.n;if(n>EX.q)return;const a=km?EX.key[n]:EX.ans[n],v=verdict(n),key=EX.key[n];
-    const cls=L=>EX.result&&key?(L===key?(a===L?'ok':'key'):(a===L?'no':'')):(a===L?'on':'');
+    const cls=L=>{const ia=has(a,L,q);if(EX.result&&key){const ik=has(key,L,q);return ik?(ia?'ok':'key'):(ia?'no':'')}return ia?'on':''};
+    if(multi(q)&&q.p===pn)h+=`<span class="pkb" style="${P(Math.max(1,q.x-46),q.y)}" title="Bu soruda ${q.pick>=9?'birden fazla':q.pick} şık seçilir">${pkLabel(q)}</span>`;
     if(q.t==='mc')q.opts.filter(o=>o.p===pn).forEach(o=>{h+=`<button class="mk ${cls(o.l)}" data-mq="${n}" data-l="${o.l}" style="${P(o.x-1,o.y,o.w+2,o.h)}" title="${n}. soru · ${o.l} şıkkı" aria-label="${n}. soru ${o.l} şıkkı"></button>`});
     else if(q.t==='tf'&&q.tf.p===pn)h+=`<div class="tfc" style="${P(q.tf.x,q.tf.y-1)}">${q.ch.map(c=>`<button class="${cls(c)}" data-mq="${n}" data-l="${c}" aria-label="${n}. soru ${c}">${c}</button>`).join('')}</div>`;
     else if(q.t==='blank')q.bl.forEach((b,i)=>{if(b.p===pn)h+=`<input class="bl ${v==='ok'?'ok':v==='no'?'no':''}" data-bq="${n}" data-i="${i}" data-w="${b.w}" value="${esc(((EX.ans[n]||[])[i])||'')}" style="${P(b.x,b.y,b.w,b.h)}" autocomplete="off" spellcheck="false" aria-label="${n}. soru, ${i+1}. boşluk" ${EX.result?'readonly':''}>`});
@@ -452,9 +493,14 @@ function qlayHTML(pn){
 }
 function fitBl(el){const p=el.closest('.pg');if(!p)return;const z=parseFloat(p.style.getPropertyValue('--scale-factor'))||1,base=+el.dataset.w*z,u=el.value.length*.48+1;let f=Math.min(14.5*z,base/u);if(f<9*z){f=9*z;el.style.width=u*f+'px'}else el.style.width=base+'px';el.style.fontSize=f+'px'}
 function redrawQ(){PAGES.forEach(p=>{const l=p.el&&p.el.querySelector('.qlay');if(l){l.innerHTML=qlayHTML(p.n);l.querySelectorAll('.bl').forEach(fitBl)}})}
+function toggleMulti(cur,v,q){let s=String(cur||'');if(s.includes(v))return s.replace(v,'');s+=v;const mx=q.pick>=9?99:q.pick;if(s.length>mx){s=s.slice(s.length-mx);KA.toast(`Bu soruda ${mx} şık seçilir; ilk seçtiğin kaldırıldı.`)}return s}
 function setAns(k,v){
-  if(EX.keyMode){if(EX.key[k]===v)delete EX.key[k];else EX.key[k]=v}
-  else{if(EX.result)return KA.toast('Sınav puanlandı. Değiştirmek için “Yeniden çöz”e bas.');if(EX.ans[k]===v)delete EX.ans[k];else EX.ans[k]=v;KA.sfx.tick()}
+  const q=qOf(k);
+  if(!EX.keyMode&&EX.result)return KA.toast('Sınav puanlandı. Değiştirmek için “Yeniden çöz”e bas.');
+  const O=EX.keyMode?EX.key:EX.ans;
+  if(multi(q)){const s2=toggleMulti(O[k],v,q);if(s2)O[k]=s2;else delete O[k]}
+  else if(O[k]===v)delete O[k];else O[k]=v;
+  if(!EX.keyMode)KA.sfx.tick();
   save();redrawQ();drawSheet();
 }
 function openAnsPop(n){
@@ -563,7 +609,7 @@ function setZoom(z){ZOOM=Math.max(.5,Math.min(2.4,+z.toFixed(2)));layout()}
 /* ---------- Cevap kâğıdı ---------- */
 function rowCtl(k){
   const q=qOf(k),km=EX.keyMode,a=EX.ans[k],key=EX.key[k];
-  if(q.t==='mc'||q.t==='tf')return `<div class="bub">${choices(q).map(L=>`<button class="${(km?key:a)===L?'on':''} ${EX.result&&key===L&&a!==L?'key':''}" data-b="${k}" data-l="${L}" aria-label="Soru ${k} ${L}">${L}</button>`).join('')}</div>`;
+  if(q.t==='mc'||q.t==='tf')return `<div class="bub ${multi(q)?'multi':''}">${choices(q).map(L=>`<button class="${has(km?key:a,L,q)?'on':''} ${EX.result&&key!=null&&has(key,L,q)&&!has(a,L,q)?'key':''}" data-b="${k}" data-l="${L}" aria-label="Soru ${k} ${L}">${L}</button>`).join('')}</div>`;
   if(q.t==='blank'){if(km)return `<input class="sbl" data-sk="${k}" value="${esc(key||'')}" placeholder="Doğru cevap${q.bl.length>1?'lar (; ile ayır)':''}">`;
     return q.bl.map((b,i)=>`<input class="sbl" data-sb="${k}" data-i="${i}" value="${esc((a||[])[i]||'')}" placeholder="${q.bl.length>1?(i+1)+'. boşluk':'Cevabın'}" ${EX.result?'readonly':''}>`).join('')}
   if(km)return `<textarea class="skey" data-sk="${k}" rows="1" placeholder="Örnek cevap (isteğe bağlı)">${esc(key||'')}</textarea>`;
@@ -574,7 +620,7 @@ function drawSheet(){
   const sh=$('#sheet');if(!sh||!EX)return;
   const R=EX.result,km=EX.keyMode,n=nAnswered();
   const cnt={};for(let k=1;k<=EX.q;k++){const t=qOf(k).t;cnt[t]=(cnt[t]||0)+1}
-  const rows=Array.from({length:EX.q},(_,i)=>{const k=i+1,q=qOf(k),v=verdict(k);return `<div class="qrow ${v==='ok'?'ok':v==='no'?'no':''}"><button class="qn ${q.p?'has':''}" data-go="${k}" title="${q.p?'Soruya git':''}">${k}.</button><div class="qctl">${rowCtl(k)}</div>${q.t!=='mc'?`<span class="ttag">${q.t==='tf'?'D/Y':q.t==='blank'?'Boşluk':'Yazılı'}</span>`:''}<button class="fl ${EX.flags[k]?'on':''}" data-fl="${k}" title="Sonra bakmak için işaretle">${ic('flag')}</button></div>`}).join('');
+  const rows=Array.from({length:EX.q},(_,i)=>{const k=i+1,q=qOf(k),v=verdict(k);return `<div class="qrow ${v==='ok'?'ok':v==='no'?'no':v==='part'?'part':''}"><button class="qn ${q.p?'has':''}" data-go="${k}" title="${q.p?'Soruya git':''}">${k}.</button><div class="qctl">${rowCtl(k)}</div>${q.t!=='mc'?`<span class="ttag">${q.t==='tf'?'D/Y':q.t==='blank'?'Boşluk':'Yazılı'}</span>`:multi(q)?`<span class="ttag pk">${pkLabel(q)}</span>`:''}<button class="fl ${EX.flags[k]?'on':''}" data-fl="${k}" title="Sonra bakmak için işaretle">${ic('flag')}</button></div>`}).join('');
   const notes=allNotes();
   const openQs=Array.from({length:EX.q},(_,i)=>i+1).filter(k=>qOf(k).t==='open');
   const openDone=openQs.filter(k=>EX.ai[k]),openAns=openQs.filter(answered);
@@ -583,9 +629,10 @@ function drawSheet(){
     <div class="types">${Object.entries(cnt).map(([t,c])=>`<span>${c} ${TYPES[t]}</span>`).join('')}</div>
     <div class="sh-tabs"><button class="${TAB==='ans'?'on':''}" data-tab="ans">Cevaplar</button><button class="${TAB==='notes'?'on':''}" data-tab="notes">Notlar (${notes.length})</button><button class="${TAB==='set'?'on':''}" data-tab="set">Ayarlar</button></div></div>
   <div class="sh-b">${TAB==='ans'?
-      (R?`<div class="res">${R.pct!=null?`<b class="big">%${R.pct}</b><span>${R.ok} doğru · ${R.no} yanlış · ${R.empty} boş · ${fmt(R.time)}</span>`:`<b>Sınav bitti · ${fmt(R.time)}</b><div class="mut" style="font-size:13px">Cevap anahtarı girmediğin için objektif sorular puanlanmadı.</div>`}
+      (R?`<div class="res">${R.pct!=null?`<b class="big">%${R.pct}</b><span>${R.ok} doğru${R.part?` · ${R.part} yarım`:''} · ${R.no} yanlış · ${R.empty} boş · ${fmt(R.time)}</span>`:`<b>Sınav bitti · ${fmt(R.time)}</b><div class="mut" style="font-size:13px">Cevap anahtarı girmediğin için objektif sorular puanlanmadı.</div>`}
         ${openQs.length?`<div style="margin-top:10px;font-size:13.5px"><b>Yazılı sorular:</b> ${openDone.length?`${aiTot}/${openDone.length*10} puan`:`${openAns.length} cevap`}</div>${openAns.length&&openDone.length<openAns.length?`<button class="btn btn-acc btn-sm" data-a="ai">${ic('spark')}Yazılı cevaplarımı değerlendir</button>`:''}`:''}</div>`:'')
       +(km?'<p class="mut" style="font-size:13px;margin:4px 6px 8px">Doğru şıkları kâğıdın üstünde ya da burada işaretle. Boşluk ve yazılı sorular için doğru cevabı yaz.</p>':'')
+      +(!km&&!R&&!n&&hasObjQ()?`<div class="info mkread"><b>Bu kâğıdı önceden çözdün mü?</b> Kâğıtta daire içine aldığın ya da işaretlediğin şıkları okuyup cevap kâğıdına kaydedebilirim.<button class="btn btn-ghost btn-sm" data-a="marks">${ic('spark')}İşaretlerimi oku</button></div>`:'')
       +(EX.scanned&&!R?'<div class="info">Bu PDF taranmış görünüyor, soruları otomatik bulamadık. Cevaplarını bu forma işaretle; yazmak için araç çubuğundaki <b>T</b> (Yazı) aracını kullan.</div>':'')
       +rows
     :TAB==='notes'?(notes.length?notes.map(a=>`<div class="nitem" data-note="${a.n}:${a.id}"><b>Not ${noteNo(a)}</b> <span class="mut">· sayfa ${a.n}</span><div>${esc(a.text||'(boş not)')}</div></div>`).join(''):'<p class="mut" style="padding:8px">Henüz not yok. Araç çubuğundan <b>Not</b> aracını seçip sayfaya dokun.</p>')
@@ -593,17 +640,18 @@ function drawSheet(){
       <label><span class="eyebrow">Soru sayısı</span><input class="input" id="sQ" type="number" min="1" max="300" value="${EX.q}" style="margin-top:6px"></label><p class="mut" style="margin:-8px 0 0;font-size:12.5px">${EX.detected?'PDF içinde '+(EX.qs||[]).length+' soru bulundu.':'Soru numaraları otomatik bulunamadı; sayıyı kendin ayarla.'}</p>
       <label><span class="eyebrow">Süre sınırı (dakika, 0 = sınırsız)</span><input class="input" id="sLim" type="number" min="0" max="600" value="${Math.round((EX.limit||0)/60)}" style="margin-top:6px"></label>
       <div><span class="eyebrow">Cevap anahtarını yapıştır</span><textarea class="textarea" id="sKey" placeholder="1A 2C 3T 4F 5 increase …" style="min-height:80px;margin-top:6px"></textarea><button class="btn btn-ghost btn-sm" data-a="pastekey" style="margin-top:6px">Anahtarı yükle</button></div>
-      <details><summary style="cursor:pointer;font-weight:800;font-size:14px">Soru tiplerini düzelt</summary><p class="mut" style="font-size:12.5px;margin:6px 0">Bir soru yanlış tipte bulunduysa buradan değiştir.</p>${Array.from({length:EX.q},(_,i)=>{const k=i+1,t=qOf(k).t;return `<div class="tsel"><b>${k}.</b><select class="select" data-ty="${k}">${Object.entries(TYPES).map(([v,l])=>`<option value="${v}" ${t===v?'selected':''}>${l}</option>`).join('')}</select></div>`}).join('')}</details>
+      <details><summary style="cursor:pointer;font-weight:800;font-size:14px">Soru tiplerini düzelt</summary><p class="mut" style="font-size:12.5px;margin:6px 0">Bir soru yanlış tipte bulunduysa buradan değiştir.</p>${Array.from({length:EX.q},(_,i)=>{const k=i+1,t=tyVal(qOf(k));return `<div class="tsel"><b>${k}.</b><select class="select" data-ty="${k}">${Object.entries(TYPES2).map(([v,l])=>`<option value="${v}" ${t===v?'selected':''}>${l}</option>`).join('')}</select></div>`}).join('')}</details>
+      ${hasObjQ()?`<button class="btn btn-ghost btn-sm" data-a="marks">${ic('spark')}Kâğıttaki işaretlerimi oku</button>`:''}
       <button class="btn btn-ghost btn-sm" data-a="savecfg">${ic('check')}Ayarları kaydet</button>
-      <button class="btn btn-bad btn-sm" data-a="clearans">${ic('reset')}Cevapları ve sonucu temizle</button></div>`}</div>
-  <div class="sh-f">${km?`<button class="btn btn-p" data-a="keydone">${ic('check')}Anahtarı kaydet</button><button class="btn btn-ghost btn-sm" data-a="keycancel">Vazgeç</button>`:(R?`<button class="btn btn-ghost" data-a="reopen">${ic('reset')}Yeniden çöz</button>`:`<button class="btn btn-p" data-a="finish">${ic('check')}Bitir ve puanla</button><button class="btn btn-ghost btn-sm" data-a="keymode">Cevap anahtarı gir</button>`)}</div>`;
+      <button class="btn btn-bad btn-sm" data-a="reset">${ic('reset')}Sınavı sıfırla</button></div>`}</div>
+  <div class="sh-f">${km?`<button class="btn btn-p" data-a="keydone">${ic('check')}Anahtarı kaydet</button><button class="btn btn-ghost btn-sm" data-a="keycancel">Vazgeç</button>`:(R?`<div class="row" style="gap:6px"><button class="btn btn-ghost" data-a="reopen" style="flex:1">${ic('reset')}Yeniden çöz</button><button class="btn btn-ghost btn-sm" data-a="reset">Sıfırla</button></div>`:`<button class="btn btn-p" data-a="finish">${ic('check')}Bitir ve puanla</button><div class="row" style="gap:6px"><button class="btn btn-ghost btn-sm" data-a="keymode" style="flex:1">Cevap anahtarı gir</button><button class="btn btn-ghost btn-sm" data-a="reset" title="Cevapları ya da her şeyi sıfırla">${ic('reset')}Sıfırla</button></div>`)}<div class="autosave">${ic('check')}Cevapların ve notların bu cihazda otomatik kaydediliyor</div></div>`;
 }
 function syncRow(k){const b=document.querySelector(`[data-row="${k}"]`);if(b){b.classList.toggle('has',answered(k));b.textContent=answered(k)?String(EX.ans[k]).slice(0,80):'Cevabını sayfaya yaz'}document.querySelectorAll(`[data-sb="${k}"]`).forEach(inp=>{if(document.activeElement!==inp)inp.value=((EX.ans[k]||[])[+inp.dataset.i])||''});const t=document.querySelector('.sh-h .tag');if(t&&!EX.keyMode)t.textContent=nAnswered()+'/'+EX.q}
 function drawTimer(){const t=$('#tmr');if(!t||!EX)return;const lim=EX.limit||0,s=lim?lim-EX.elapsed:EX.elapsed;t.lastChild.textContent=(lim?'Kalan ':'')+fmt(s);t.classList.toggle('low',lim>0&&s<300);if(lim&&s<=0&&!EX.result){KA.toast('Süre doldu.');finish(true)}}
 const objKeys=()=>Object.keys(EX.key).filter(k=>+k<=EX.q&&qOf(+k).t!=='open'&&String(EX.key[k]).trim());
-function grade(){let ok=0,no=0,empty=0;const ks=objKeys();
-  EX.result={};ks.forEach(k=>{const v=verdict(+k);if(v==='ok')ok++;else if(v==='no')no++;else empty++});
-  EX.result={ok,no,empty,pct:ks.length?Math.round(ok/ks.length*100):null,time:EX.elapsed};save()}
+function grade(){let ok=0,no=0,empty=0,part=0,pts=0;const ks=objKeys();
+  EX.result={};ks.forEach(k=>{const v=verdict(+k);if(v==='ok'){ok++;pts++}else if(v==='part'){part++;pts+=mScore(EX.ans[k],EX.key[k])}else if(v==='no')no++;else empty++});
+  EX.result={ok,no,empty,part,pct:ks.length?Math.round(pts/ks.length*100):null,time:EX.elapsed};save()}
 function finish(force){
   const n=nAnswered(),hasObj=Array.from({length:EX.q},(_,i)=>i+1).some(k=>qOf(k).t!=='open');
   if(hasObj&&!objKeys().length&&!force){
@@ -617,16 +665,16 @@ function finish(force){
   grade();redrawQ();drawSheet();openSheet();KA.sfx.win();if(EX.result.pct!=null)KA.addXp(Math.round(EX.result.pct/5));
 }
 function parseKey(t){
-  t=String(t||'');const K={};let any=false;
+  t=String(t||'').replace(/\b([A-Ea-e])\s*(?:,|&|\+|\/|\band\b|\bve\b)\s*(?=[A-Ea-e]\b)/g,'$1');const K={};let any=false;
   const pairs=[...t.matchAll(/(\d{1,3})\s*[-.):]?\s*([^\s\d,;][^\n,;]*?)(?=\s+\d{1,3}\s*[-.):]?\s*[^\s\d]|[\n,;]|$)/g)];
   if(pairs.length>=2||(pairs.length===1&&!/^[A-Ea-e]{3,}$/.test(t.trim()))){
     pairs.forEach(m=>{const k=+m[1];if(k<1||k>EX.q)return;const q=qOf(k);let v=m[2].trim();
-      if(q.t==='mc'){v=v[0].toUpperCase();if(!choices(q).includes(v))return}
+      if(q.t==='mc'){if(multi(q)){const ls=[...new Set(v.toUpperCase().replace(/[^A-E]/g,'').split(''))];if(!ls.length||!ls.every(x=>choices(q).includes(x)))return;v=ls.sort().join('')}else{v=v[0].toUpperCase();if(!choices(q).includes(v))return}}
       else if(q.t==='tf'){const u=v.toLocaleUpperCase('tr');v=/^(NG|NOT GIVEN)/.test(u)?'NG':/^(T|TRUE|D|DOĞRU)$/.test(u)?(q.ch.includes('D')?'D':'T'):/^(F|FALSE|Y|YANLIŞ)$/.test(u)?(q.ch.includes('Y')?'Y':'F'):'';if(!v)return}
       K[k]=v;any=true});
   }else{
     const s=t.toUpperCase().replace(/[^A-E]/g,'');let i=0;
-    for(let k=1;k<=EX.q&&i<s.length;k++){const q=qOf(k);if(q.t!=='mc')continue;if(choices(q).includes(s[i])){K[k]=s[i];any=true}i++}
+    for(let k=1;k<=EX.q&&i<s.length;k++){const q=qOf(k);if(q.t!=='mc')continue;const nn=multi(q)&&q.pick<9?q.pick:1,v=s.slice(i,i+nn);if(v.split('').every(x=>choices(q).includes(x))){K[k]=v.split('').sort().join('');any=true}i+=nn}
   }
   if(!any)return false;EX.key=Object.assign({},EX.key,K);save();return true;
 }
@@ -634,6 +682,59 @@ function openSheet(){const s=$('#sheet');if(s)s.classList.add('open')}
 function goQ(k){const q=qOf(k);if(!q.p)return;const pg=PAGES[q.p-1];if(!pg)return;const r=pg.el.getBoundingClientRect();scrollTo({top:scrollY+r.top+q.y/pg.h*r.height-140,behavior:'smooth'});$('#sheet').classList.remove('open');
   setTimeout(()=>{const el=document.querySelector(`[data-wq="${k}"],[data-bq="${k}"]`);if(el)el.focus({preventScroll:true})},450)}
 
+
+/* ---------- Kâğıttaki işaretleri oku (önceden çözülmüş sınav) ---------- */
+const MARKSYS=`You are looking at one page of an exam paper that a STUDENT has already answered. Report ONLY the student's own marks: circled, ticked, crossed, underlined, highlighted or filled options, letters/words written next to a question, and handwriting in blanks. Printed text, printed underlines and printed boxes are NOT student marks. If a question has no clear student mark, leave it out. Never guess or solve a question yourself.
+For each question in the list: "mc" → the marked option letter(s), more than one only if the student clearly marked several; "tf" → the marked choice exactly as listed; "blank" → the handwritten word(s) in each blank, in order.
+Return ONLY JSON: {"answers":[{"n":1,"a":"B"},{"n":3,"a":"AC"},{"n":5,"a":"T"},{"n":7,"a":["word1","word2"]}]}`;
+let MARKING=false;
+async function readMarks(auto){
+  if(MARKING||!EX||!DOC)return;
+  const qs=Array.from({length:EX.q},(_,i)=>qOf(i+1)).filter(q=>q.p&&q.t!=='open');
+  if(!qs.length)return KA.toast('Bu sınavda okunacak şıklı ya da boşluklu soru bulunamadı.');
+  const pages=[...new Set(qs.map(q=>q.p))].sort((a,b)=>a-b);
+  MARKING=true;const id=EX.id;let found=0,fail=0;
+  const bar=document.createElement('div');bar.className='card mkbar';document.body.appendChild(bar);
+  const say=t=>{bar.innerHTML=`<span class="ka-spin"></span> ${t}`};
+  try{
+    for(let i=0;i<pages.length;i++){
+      if(!EX||EX.id!==id)break;
+      const pn=pages[i];say(`Kâğıttaki işaretlerin okunuyor… sayfa ${i+1}/${pages.length}`);
+      const pg=await DOC.getPage(pn),v1=pg.getViewport({scale:1}),vp=pg.getViewport({scale:1700/v1.width}),c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
+      await pg.render({canvasContext:c.getContext('2d'),canvas:c,viewport:vp}).promise;
+      const img=await KA.prepImage(c,2000);
+      const list=qs.filter(q=>q.p===pn).map(q=>q.t==='mc'?`${q.n}. mc · options ${choices(q).join(' ')}${multi(q)?` · choose ${q.pick>=9?'one or more':q.pick}`:''}`:q.t==='tf'?`${q.n}. tf · choices ${q.ch.join(' / ')}`:`${q.n}. blank · ${q.bl.length} blank(s)`).join('\n');
+      let j=null;
+      try{j=KA.parseJSON(await KA.ai(MARKSYS+'\n\nQUESTIONS ON THIS PAGE:\n'+list,{image:{mime:img.mime,data:img.data},mode:'ocr',json:true,ms:65000}))}catch(e){fail++;if(/API anahtarı|izinli değil/.test(e.message)){KA.toast(e.message);break}continue}
+      const arr=j&&(Array.isArray(j)?j:j.answers)||[];
+      arr.forEach(r=>{const k=+r.n,q=qOf(k);if(!q.p||q.p!==pn||answered(k))return;let a=r.a;
+        if(q.t==='mc'){const ls=[...new Set(String(Array.isArray(a)?a.join(''):a||'').toUpperCase().replace(/[^A-E]/g,'').split(''))].filter(x=>choices(q).includes(x));if(!ls.length)return;a=multi(q)?ls.slice(0,q.pick>=9?9:q.pick).join(''):ls.length===1?ls[0]:null;if(!a)return}
+        else if(q.t==='tf'){const u=String(a||'').toLocaleUpperCase('tr').trim();a=/^(NG|NOT GIVEN)/.test(u)?'NG':/^(T|TRUE|D|DOĞRU)$/.test(u)?(q.ch.includes('D')?'D':'T'):/^(F|FALSE|Y|YANLIŞ)$/.test(u)?(q.ch.includes('Y')?'Y':'F'):'';if(!a||!q.ch.includes(a))return}
+        else if(q.t==='blank'){const w=(Array.isArray(a)?a:[a]).map(x=>String(x||'').trim()).slice(0,q.bl.length);if(!w.some(Boolean))return;while(w.length<q.bl.length)w.push('');a=w}
+        EX.ans[k]=a;found++});
+      save();redrawQ();drawSheet();
+    }
+  }finally{MARKING=false;bar.remove()}
+  if(!EX||EX.id!==id)return;
+  EX.marked=Date.now();save();
+  KA.toast(found?`Kâğıttaki ${found} cevabın okundu ve kaydedildi. Yanlış okunan varsa üstüne dokunup düzeltebilirsin.`:fail?'İşaretler okunamadı (bağlantı ya da kota sorunu). Biraz sonra Ayarlar → “Kâğıttaki işaretlerimi oku” ile tekrar dene.':'Kâğıtta işaretlenmiş bir cevap bulunamadı.',6500);
+}
+/* ---------- Sıfırlama ---------- */
+function resetExam(){
+  const m=KA.modal(`<h2 style="margin:0 0 6px">Sınavı sıfırla</h2><p class="mut" style="margin:0 0 14px">Sınav dosyası silinmez; sadece seçtiğin kısım temizlenir.</p>
+    <div class="rsopts"><button class="rso" data-r="ans"><b>Sadece cevaplarımı sıfırla</b><span>Cevaplar, puan, süre ve bayraklar silinir. Notların, vurguların ve cevap anahtarı kalır.</span></button>
+    <button class="rso" data-r="all"><b>Her şeyi sıfırla</b><span>Cevaplar, puan, cevap anahtarı, notlar, vurgular ve çizimler silinir. Sınav ilk yüklendiği haline döner.</span></button></div>
+    <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn btn-ghost" id="rsc">Vazgeç</button></div>`);
+  m.el.querySelector('#rsc').onclick=()=>m.close();
+  m.el.querySelectorAll('[data-r]').forEach(b=>b.onclick=async()=>{
+    const all=b.dataset.r==='all';m.close();
+    EX.ans={};EX.flags={};EX.ai={};EX.result=null;EX.elapsed=0;EX.keyMode=0;
+    if(all){EX.key={};EX.annos={}}
+    EX.updated=Date.now();await idb.put(EX);
+    if(all)return openExam(EX.id);
+    redrawQ();drawSheet();drawTimer();KA.toast('Cevapların sıfırlandı.');
+  });
+}
 /* ---------- Yazılı cevapları yapay zekâ değerlendirir ---------- */
 const AISYS=`Sen deneyimli bir İngilizce sınav değerlendiricisisin. Aşağıda bir sınavdan yazılı (açık uçlu) sorular var. Her soru için sınav metninden ilgili BAĞLAM, varsa öğretmenin ÖRNEK CEVABI ve öğrencinin CEVABI verildi.
 Her soruyu 0-10 arası puanla: içerik doğruluğu ve sorunun istediğini karşılama en önemlisi; dil hataları puanı yalnızca anlamı bozuyorsa düşürür. Boş, alakasız, anlamsız ya da metinle çelişen cevaplara 0-2 ver. Uydurma bilgi ekleme.
@@ -678,12 +779,13 @@ document.addEventListener('click',async e=>{
     reopen:()=>{EX.result=null;save();redrawQ();drawSheet()},
     pastekey:()=>{if(parseKey($('#sKey').value)){KA.toast(Object.keys(EX.key).length+' cevaplık anahtar yüklendi.');TAB='ans';drawSheet()}else KA.toast('Anahtar okunamadı. Örnek: 1A 2C 3T')},
     savecfg:()=>{EX.title=$('#sTitle').value.trim()||EX.title;EX.q=Math.max(1,Math.min(300,+$('#sQ').value||EX.q));EX.limit=Math.max(0,+$('#sLim').value||0)*60;
-      document.querySelectorAll('[data-ty]').forEach(s=>{const k=+s.dataset.ty,q=qOf(k);if(q.t===s.value)return;let Q=(EX.qs||[]).find(x=>x.n===k);if(!Q){Q={n:k,gen:1};(EX.qs=EX.qs||[]).push(Q)}
-        Q.t=s.value;delete EX.ans[k];delete EX.key[k];
+      document.querySelectorAll('[data-ty]').forEach(s=>{const k=+s.dataset.ty,q=qOf(k);if(tyVal(q)===s.value)return;let Q=(EX.qs||[]).find(x=>x.n===k);if(!Q){Q={n:k,gen:1};(EX.qs=EX.qs||[]).push(Q)}
+        const mm=s.value.match(/^mc(\d)$/);Q.t=mm?'mc':s.value;if(mm)Q.pick=+mm[1];else delete Q.pick;delete EX.ans[k];delete EX.key[k];
         if(Q.t==='tf'&&!Q.ch)Q.ch=['T','F'];if(Q.t==='blank'&&!Q.bl)Q.bl=[{p:0,x:0,y:0,w:0,h:0}];if(Q.t==='mc'&&!Q.opts)delete Q.opts;if(Q.t==='open'&&!Q.area&&!Q.pin&&Q.p)Q.pin={p:Q.p,x:Math.max(6,Q.x-28),y:Q.y};
         if(Q.t==='tf'&&!Q.tf&&Q.p)Q.tf={p:Q.p,x:Math.max(40,(PAGES[Q.p-1]||{w:600}).w-110),y:Q.y,h:12}});
       save();redrawQ();drawSheet();const tt=document.querySelector('.ttl');if(tt)tt.textContent=EX.title;KA.toast('Ayarlar kaydedildi.')},
-    clearans:()=>{if(confirm('Bütün cevaplar ve sonuç silinsin mi? Notlar ve vurgular kalır.')){EX.ans={};EX.flags={};EX.ai={};EX.result=null;EX.elapsed=0;save();redrawQ();drawSheet()}}
+    reset:resetExam,marks:()=>readMarks(false),
+    clearans:resetExam
   }[a.dataset.a]||(()=>{}))();
 });
 document.addEventListener('input',e=>{
