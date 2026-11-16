@@ -244,8 +244,21 @@ async function analyse(doc,ocr){
   }
   const empty={pages,qs:[],opts:4,doc:txt.slice(0,60000),scanned:L.length<3};
   if(L.length<3)return empty;
-  const QRE=/^(?:Q(?:uestion)?\s*)?(\d{1,3})\s*[.)]\s*(?=\S)/i,starts=[];let want=1;
-  L.forEach((l,i)=>{const m=l.t.match(QRE);if(m&&+m[1]===want&&!/^\d{1,3}\s*[.)]\s*\d/.test(l.t)){starts.push(i);want++}});
+  const QRE=/^(?:Q(?:uestion)?\s*)?(\d{1,3})\s*[.)]\s*(?=\S)/i;
+  // Numaralı satırlardan olası diziler kur (okuma parçasının numaralı paragrafları da 1, 2, 3… diye gidebilir)
+  const cand=[];L.forEach((l,i)=>{const m=l.t.match(QRE);if(m&&!/^\d{1,3}\s*[.)]\s*\d/.test(l.t))cand.push({i,n:+m[1]})});
+  const seqs=[];
+  cand.forEach((c,ci)=>{if(c.n!==1&&!(seqs.length===0&&ci===0&&!cand.some(x=>x.n===1)))return;const sq=[c.i];let want=c.n+1;for(let j=ci+1;j<cand.length;j++)if(cand[j].n===want){sq.push(cand[j].i);want++}seqs.push(sq)});
+  // Her öğe için "soru mu, paragraf mı" puanı: şık, soru işareti, boşluk, D/Y, soru kelimesi artı; şıksız uzun metin eksi
+  const OPTRE=/(^|\s)(\(([A-Ea-e])\)|([A-E])[.)]|([a-e])[.)])(?=\s|$)/g,QW=/^(?:\d{1,3}\s*[.)]\s*)(what|why|how|which|who|whom|whose|when|where|according|explain|describe|discuss|summari[sz]e|the (word|phrase|author|writer|passage|text)|in (paragraph|line|the)|choose|complete|write|fill|find|identify|do|does|is|are|can|give|list|state|mention|compare|it can be|we can|which of)/i;
+  const itemScore=(i,nextI)=>{const end=Math.min(nextI==null?L.length:nextI,i+14);let blk=L[i].t,j=i+1;for(;j<end;j++){const a=L[j],b=L[j-1];if(a.p!==b.p||a.top-b.bot>Math.max(a.fs,b.fs)*1.6)break;blk+=' '+a.t}
+    let rng='';for(let k=i;k<end;k++)rng+=' '+L[k].t;const letters=new Set();let m;OPTRE.lastIndex=0;while((m=OPTRE.exec(rng)))letters.add((m[3]||m[4]||m[5]).toUpperCase());
+    let sc=0;const hasO=['A','B','C'].every(x=>letters.has(x)),q=/\?/.test(blk.slice(0,400)),bl=/_{3,}|\.{5,}|…{2,}/.test(rng),tf=TFRE.test(rng);
+    if(hasO)sc+=4;if(q)sc+=2;if(bl)sc+=2;if(tf)sc+=2;if(QW.test(L[i].t))sc+=1;
+    if(blk.length>320&&!hasO&&!q&&!bl&&!tf)sc-=3;else if(blk.length>520)sc-=1;
+    return sc};
+  let starts=[],best=-1e9;
+  seqs.forEach(sq=>{let t=0;sq.forEach((li,x)=>{t+=itemScore(li,sq[x+1])});if(t>best||(t===best&&sq.length>starts.length)){best=t;starts=sq}});
   if(starts.length<2)return empty;
   const secAt=[],secPk=[];let sec='',spk=0;const S=new Set(starts);
   L.forEach((l,i)=>{if(S.has(i)){secAt[i]=sec;secPk[i]=spk;return}
@@ -393,7 +406,7 @@ async function upload(files){
     const p1=await doc.getPage(1),vp=p1.getViewport({scale:300/p1.getViewport({scale:1}).width});
     const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;await p1.render({canvasContext:c.getContext('2d'),canvas:c,viewport:vp}).promise;
     const id=uid();
-    const ex={id,v:2,title,pages:doc.numPages,q:info.qs.length||20,opts:info.opts,qs:info.qs,doc:info.doc,scanned:ocr?false:info.scanned,ocr:!!ocr,detected:!!info.qs.length,
+    const ex={id,v:3,ocrL:ocr||null,title,pages:doc.numPages,q:info.qs.length||20,opts:info.opts,qs:info.qs,doc:info.doc,scanned:ocr?false:info.scanned,ocr:!!ocr,detected:!!info.qs.length,
       ans:{},flags:{},key:{},ai:{},annos:{},elapsed:0,limit:0,created:Date.now(),updated:Date.now(),thumb:c.toDataURL('image/jpeg',.7)};
     await idb.putFile(id,buf);await idb.put(ex);
     task.destroy();
@@ -434,7 +447,16 @@ async function openExam(id){
   setTool(TOOL);setColor(COLOR);
   const L=await lib();
   DOCT=L.getDocument({data:new Uint8Array(buf).slice()});DOC=await DOCT.promise;
-  if(!EX.v||!EX.qs){const info=await analyse(DOC);EX.v=2;EX.qs=info.qs;EX.doc=info.doc;EX.scanned=info.scanned;if(info.qs.length){EX.q=Math.max(info.qs.length,EX.q||0);EX.opts=info.opts;EX.detected=true}save()}
+  if(!EX.v||!EX.qs){const info=await analyse(DOC);EX.v=3;EX.qs=info.qs;EX.doc=info.doc;EX.scanned=info.scanned;if(info.qs.length){EX.q=Math.max(info.qs.length,EX.q||0);EX.opts=info.opts;EX.detected=true}save()}
+  else if(EX.v<3&&(!EX.ocr||EX.ocrL)){
+    // Eski sürümde numaralı paragraflar soru sanılmış olabilir: soruları yeniden bul, uyan cevapları koru
+    const info=await analyse(DOC,EX.ocrL||null);
+    if(info.qs.length){const old={};(EX.qs||[]).forEach(q=>old[q.n]=q.t);
+      const same=info.qs.length===(EX.qs||[]).length&&info.qs.every(q=>old[q.n]===q.t);
+      if(!same){const keep=(o)=>{const r={};Object.keys(o||{}).forEach(k=>{const q=info.qs.find(x=>x.n===+k);if(q&&old[+k]===q.t)r[k]=o[k]});return r};
+        EX.ans=keep(EX.ans);EX.key=keep(EX.key);EX.result=null;EX.qs=info.qs;EX.q=info.qs.length;EX.opts=info.opts;EX.detected=true;EX.doc=info.doc;
+        setTimeout(()=>KA.toast('Sorular yeniden bulundu: okuma parçasının paragrafları artık soru sayılmıyor.',5200),600)}}
+    EX.v=3;save()}
   if(!EX.pkv){(EX.qs||[]).forEach(q=>{if(q.t==='mc'&&q.pick==null){const pk=pickOf(q.text);if(pk>1)q.pick=pk>=9?9:Math.min(pk,(q.opts||[]).length||5)}});EX.pkv=1;save()}
   drawSheet();
   const sizes=[];for(let i=1;i<=DOC.numPages;i++){const v=(await DOC.getPage(i)).getViewport({scale:1});sizes.push([v.width,v.height])}
