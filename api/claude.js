@@ -105,7 +105,8 @@ export default async function handler(req, res) {
     last = { status, json };
     if (status === 200) break;
     const modelProblem = status === 404 || (status === 400 && /model/i.test(msg));
-    if (!modelProblem) break;
+    const busy = status === 429 || status >= 500; // kota dolduysa ya da model yoğunsa sıradaki modele geç
+    if (!modelProblem && !busy) break;
   }
 
   const { status, json } = last;

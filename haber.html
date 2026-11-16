@@ -15,10 +15,10 @@
 <meta name="apple-mobile-web-app-title" content="K. Arenası">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.webmanifest">
-<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
+<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=3">
+<link rel="stylesheet" href="ortak.css?v=5">
 <style>
 .head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
 .head h1{font-size:clamp(28px,4vw,38px);margin:6px 0 4px}
@@ -74,16 +74,44 @@
 .skel{border-radius:20px;background:var(--soft);min-height:260px;animation:pulse 1.4s ease-in-out infinite}
 @keyframes pulse{50%{opacity:.55}}
 @media (max-width:860px){.lead{grid-template-columns:1fr}.lead .ph{min-height:0;aspect-ratio:16/9}.lead .tx{padding:20px}.body{font-size:18.5px}}
+
+.rhead h1.veil{filter:blur(9px);user-select:none;pointer-events:none}
+.fsteps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.fsteps span{display:inline-flex;align-items:center;gap:7px;padding:6px 12px 6px 6px;border-radius:999px;background:var(--soft);font-size:12.5px;font-weight:800;color:var(--mut)}
+.fsteps b{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--card);font-size:11px}
+.fsteps .on{background:var(--p-soft);color:var(--p)}.fsteps .on b{background:var(--p);color:var(--p-ink)}
+.fsteps .done{color:var(--ok)}.fsteps .done b{background:var(--ok);color:#fff}
+.hl{padding:18px 20px}
+.hline{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 14px;min-height:44px}
+.hline span{min-width:34px;padding:6px 10px;border-radius:10px;border:1.5px dashed var(--line2);font-family:Fraunces,serif;font-weight:800;font-size:18px;line-height:1.3}
+.hline span.in{border-style:solid;border-color:transparent;background:var(--p);color:var(--p-ink);animation:kaStamp .35s var(--spring)}
+.hbank{display:flex;flex-wrap:wrap;gap:8px}
+.hbank button{--d:var(--line2);border:0;border-radius:12px;padding:9px 13px;background:var(--card);color:var(--ink);font-weight:800;font-size:15px;box-shadow:0 0 0 1.5px var(--line2) inset,0 4px 0 var(--d);transition:transform .08s,box-shadow .08s,opacity .2s}
+.hbank button:active:not(:disabled){transform:translateY(3px);box-shadow:0 0 0 1.5px var(--line2) inset,0 1px 0 var(--d)}
+.hbank button.used{opacity:.25;box-shadow:0 0 0 1.5px var(--line) inset}
+.hbank button.no{animation:kaShake .45s}
+.tell{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.olab{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.btn.onb{box-shadow:0 0 0 1.5px var(--acc) inset,0 3px 0 var(--acc2)}
+.body.shownew .tk.nw{background:linear-gradient(transparent 62%,color-mix(in srgb,var(--acc) 45%,transparent) 62%)}
+.quiz h2{margin:10px 0 14px;font-size:22px}
+.qpips{display:flex;gap:6px;margin-top:10px}
+.qpips i{flex:1;height:8px;border-radius:5px;background:var(--soft)}
+.qpips i.cur{background:var(--line2)}.qpips i.ok{background:var(--ok)}.qpips i.no{background:var(--bad)}
+.fstamp{width:132px;height:132px;margin:18px auto 14px;border-radius:50%;display:grid;place-content:center;text-align:center;gap:2px;border:4px double currentColor;color:var(--ok);rotate:-8deg;animation:kaSlam .55s var(--spring) backwards}
+.fstamp.half{color:var(--acc2)}
+.fstamp b{font-family:Fraunces,serif;font-size:34px;line-height:1}
+.fstamp span{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 </style>
 </head>
 <body>
 <main class="ka-wrap" id="main"><div class="skel"></div></main>
-<script src="ortak.js?v=3"></script>
+<script src="ortak.js?v=5"></script>
 <script>
 (function(){
 'use strict';
 const {$,esc}=KA;const ic=KA.ic;
-const LV={1:['Seviye 1','A2'],2:['Seviye 2','B1'],3:['Seviye 3','B2']};
+const LV={1:['Sade','A2'],2:['Dengeli','B1'],3:['Zengin','B2']};
 const TR_CAT={world:'Dünya',politics:'Siyaset',business:'Ekonomi',technology:'Teknoloji',science:'Bilim',health:'Sağlık',sport:'Spor',culture:'Kültür',environment:'Çevre'};
 let DATA=[],LEVEL='1',FILTER='all';
 const DONE=()=>KA.store.get('ka_hn_done',{})||{};
@@ -99,7 +127,7 @@ function cover(item){
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${P[0]}"/><stop offset="1" stop-color="${P[1]}"/></linearGradient></defs><rect width="640" height="360" fill="url(#g)"/>${shapes}<text x="36" y="318" font-family="Georgia,serif" font-size="40" font-weight="700" fill="#fff" opacity=".92">${esc(words)}</text></svg>`;
   return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
 }
-function photoSrc(item){if(item.img)return item.img;if(item.src&&/bbc\./.test(item.src)&&location.protocol!=='file:')return 'api/og-image?u='+encodeURIComponent(item.src.split('?')[0]);return cover(item)}
+function photoSrc(item){return cover(item);if(item.img)return item.img;if(item.src&&/bbc\./.test(item.src)&&location.protocol!=='file:')return 'api/og-image?u='+encodeURIComponent(item.src.split('?')[0]);return cover(item)}
 function photo(item,eager){return `<img src="${esc(photoSrc(item))}" alt="" ${eager?'fetchpriority="high"':'loading="lazy"'} decoding="async" data-cover="${esc(cover(item))}" onerror="if(this.src!==this.dataset.cover)this.src=this.dataset.cover">`}
 const catName=c=>TR_CAT[String(c||'').toLowerCase()]||c||'Dünya';
 const dateTr=d=>{try{return new Date(d+'T12:00:00').toLocaleDateString('tr-TR',{day:'numeric',month:'long'})}catch(e){return d}};
@@ -113,44 +141,82 @@ function list(){
   const lvBar=x=>`<span class="lv">${[1,2,3].map(n=>`<i class="${done[x.id]&&done[x.id][n]!=null?'on':''}"></i>`).join('')}</span>`;
   const badge=x=>done[x.id]?`<span class="done">${ic('check')}Okundu</span>`:'';
   const [L,...R]=items;
-  $('#main').innerHTML=`<div class="head"><div><span class="eyebrow">Günlük haber · üç seviye</span><h1>Dünyadan haberler, gerçek İngilizce</h1><p>Her gün güncellenen haberleri seviyene göre oku. Bilmediğin kelimeye dokun, anlamını gör ve listene ekle, sonra kısa quizle pekiştir.</p></div>
+  $('#main').innerHTML=`<div class="head"><div><span class="eyebrow">Günlük dosya · manşeti kur, oku, sorguyu geç</span><h1>Günün bülteni: <span class="sq">gerçek İngilizce<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M1 6 C 12 1, 20 9, 32 5 S 52 1, 64 5 S 86 9, 99 3"/></svg></span></h1><p>Her haber bir dosya: önce manşeti kelimelerinden kur, sonra haberi istediğin anlatımla oku, en sonda sorguyu geçip dosyayı kapat.</p></div>
   <div class="filters">${[['all','Tümü'],['new','Okunmadı'],['done','Okundu']].map(([k,t])=>`<button class="pill ${FILTER===k?'on':''}" data-f="${k}">${t}</button>`).join('')}</div></div>
   ${!items.length?'<div class="card" style="padding:40px;text-align:center"><p class="mut">Bu filtrede haber yok.</p></div>':''}
-  ${L?`<a class="card lead" href="#${esc(L.id)}"><div class="ph">${photo(L,true)}<span class="cat">${esc(catName(L.category))}</span>${badge(L)}</div><div class="tx"><span class="eyebrow">${dateTr(L.date)} · ${esc(L.source||'BBC News')}</span><h2>${esc(L.title)}</h2><p>${esc((firstText(L).match(/[^.]+\.?/g)||[]).slice(0,2).join('').trim())}</p><div class="meta"><span>Seviye 1 · 2 · 3</span>${lvBar(L)}</div><div style="margin-top:16px"><span class="btn btn-p">Haberi oku${ic('arrow')}</span></div></div></a>`:''}
-  <div class="grid">${R.map(x=>`<a class="card ncard" href="#${esc(x.id)}"><div class="ph">${photo(x)}<span class="cat">${esc(catName(x.category))}</span>${badge(x)}</div><div class="tx"><span class="eyebrow">${dateTr(x.date)}</span><h3>${esc(x.title)}</h3><p>${esc(firstText(x))}</p><div class="meta"><span>Oku ve quiz çöz</span>${lvBar(x)}</div></div></a>`).join('')}</div>`;
+  ${L?`<a class="card lead" href="#${esc(L.id)}"><div class="ph">${photo(L,true)}<span class="cat">${esc(catName(L.category))}</span>${badge(L)}</div><div class="tx"><span class="eyebrow">Günün manşeti · ${dateTr(L.date)} · kaynak ${esc(L.source||'BBC News')}</span><h2>${esc(L.title)}</h2><p>${esc((firstText(L).match(/[^.]+\.?/g)||[]).slice(0,2).join('').trim())}</p><div class="meta"><span>Sade · Dengeli · Zengin</span>${lvBar(L)}</div><div style="margin-top:16px"><span class="btn btn-p">Haberi oku${ic('arrow')}</span></div></div></a>`:''}
+  ${R.length?`<div class="sec-b"><h2>Bültenin devamı</h2><span class="mut">${R.length} haber</span></div>`:''}
+  <div class="bul">${R.map((x,i)=>{const wc=firstText(x).split(/\s+/).length,full=String(((x.levels||{})[LEVEL]||{}).text||'').split(/\s+/).length;return `<a class="card brow" href="#${esc(x.id)}" style="--i:${Math.min(i,8)}"><span class="bn">${String(i+2).padStart(2,'0')}</span><span class="bstrip" style="background-image:url('${esc(cover(x))}')"></span><div class="tx"><div class="bm"><span class="cat">${esc(catName(x.category))}</span><span>${dateTr(x.date)}</span><span>${Math.max(1,Math.round(full/170))} dk okuma</span>${badge(x)}</div><h3>${esc(x.title)}</h3><p>${esc(firstText(x))}</p></div><div class="bside">${lvBar(x)}<span class="go">${ic('arrow')}</span></div></a>`}).join('')}</div>`;
 }
 
 /* ---------- Okuyucu ---------- */
 let QS=null;
+const wordsOf=t=>new Set((String(t||'').toLowerCase().match(/[a-z][a-z'-]{2,}/g)||[]));
+const stem=w=>w.replace(/(ing|ed|es|s|ly)$/,'');
 function reader(x){
   document.title=x.title+' · Haber';
   const lv=x.levels||{};if(!lv[LEVEL])LEVEL=Object.keys(lv)[0]||'1';
   const L=lv[LEVEL]||{text:'',quiz:[]};
   const paras=String(L.text).split(/\n+/).filter(Boolean);
   const host=(()=>{try{return new URL(x.src).hostname.replace(/^www\./,'')}catch(e){return ''}})();
+  const d=DONE()[x.id]||{},keys=['1','2','3'].filter(n=>lv[n]);
+  // bu anlatımda, bir sade anlatıma göre yeni gelen kelimeler
+  const prev=lv[String(+LEVEL-1)];let fresh=new Set();
+  if(prev){const base=new Set([...wordsOf(prev.text)].map(stem));fresh=new Set([...wordsOf(L.text)].filter(w=>w.length>4&&!base.has(stem(w))))}
   $('#main').innerHTML=`<article class="reader">
-  <a href="#" class="btn btn-ghost btn-sm">${ic('back')}Bütün haberler</a>
-  <div class="rhead"><span class="eyebrow">${esc(catName(x.category))} · ${dateTr(x.date)}</span><h1>${esc(x.title)}</h1></div>
-  <div class="rph ph">${photo(x,true)}</div>
-  <div class="credit">Fotoğraf ve kaynak: ${x.src?`<a href="${esc(x.src)}" target="_blank" rel="noopener">${esc(x.source||host)}</a>`:esc(x.source||'')}</div>
-  <div class="row" style="justify-content:space-between">
-    <div class="tabs" role="tablist">${['1','2','3'].filter(n=>lv[n]).map(n=>`<button role="tab" class="${n===LEVEL?'on':''}" data-lv="${n}">${LV[n][0]}<small>${LV[n][1]}</small></button>`).join('')}</div>
-    <div class="tools"><button class="btn btn-ghost btn-sm" data-read="1">${ic('sound')}Haberi dinle</button><button class="btn btn-ghost btn-sm" data-read=".8">Yavaş dinle</button></div>
+  <a href="#" class="btn btn-ghost btn-sm">${ic('back')}Bülten</a>
+  <div class="rhead"><span class="eyebrow">Dosya · ${esc(catName(x.category))} · ${dateTr(x.date)}</span><h1 id="ttl" class="${HL[x.id]?'':'veil'}">${esc(x.title)}</h1></div>
+  <div class="fsteps"><span class="${HL[x.id]?'done':'on'}"><b>1</b>Manşeti kur</span><span class="${HL[x.id]?'on':''}"><b>2</b>Oku</span><span class="${d[LEVEL]!=null?'done':''}"><b>3</b>Sorgu</span></div>
+  <section class="card hl" id="hl"></section>
+  <div class="row" style="justify-content:space-between;margin-top:18px">
+    <div class="tell"><span class="olab">Anlatım</span><div class="tabs" role="tablist">${keys.map(n=>`<button role="tab" class="${n===LEVEL?'on':''}" data-lv="${n}">${LV[n][0]}${d[n]!=null?' ✓':''}</button>`).join('')}</div></div>
+    <div class="tools">${fresh.size?`<button class="btn btn-ghost btn-sm ${SHOWNEW?'onb':''}" data-new>${ic('spark')}Bu anlatımda yeni: ${fresh.size} kelime</button>`:''}<button class="btn btn-ghost btn-sm" data-read="1">${ic('sound')}Dinle</button><button class="btn btn-ghost btn-sm" data-read=".8">Yavaş</button></div>
   </div>
-  <div class="body" id="body">${paras.map(p=>`<p>${KA.tokens(p)}</p>`).join('')}</div>
-  <p class="mut" style="font-size:13.5px;margin-top:-6px">${ic('spark')} Bilmediğin bir kelimeye dokun: anlamı, eş anlamlıları ve “Bilmediklerime ekle” düğmesi açılır. Eklediğin kelimeler ana sayfada <b>Bilmediklerim</b> listesine düşer.</p>
+  <div class="body ${SHOWNEW?'shownew':''}" id="body">${paras.map(p=>`<p>${KA.tokens(p)}</p>`).join('')}</div>
+  <p class="mut" style="font-size:13.5px;margin-top:-6px">Bilmediğin kelimeye dokun: anlamı açılır, istersen <b>Bilmediklerim</b> listene eklenir. Kaynak: ${x.src?`<a href="${esc(x.src)}" target="_blank" rel="noopener">${esc(x.source||host)}</a>`:esc(x.source||'')}</p>
   <section class="card quiz" id="quiz"></section>
   </article>`;
-  QS={x,lv:LEVEL,ans:{},quiz:(L.quiz||[]).filter(q=>q&&Array.isArray(q.opts))};
-  drawQuiz();
+  if(fresh.size)document.querySelectorAll('#body .tk').forEach(t=>{if(fresh.has(String(t.dataset.w||'').toLowerCase()))t.classList.add('nw')});
+  QS={x,lv:LEVEL,ans:{},i:0,quiz:(L.quiz||[]).filter(q=>q&&Array.isArray(q.opts))};
+  drawHL(x);drawQuiz();
   scrollTo(0,0);
+}
+/* Manşeti kur: başlığın kelimeleri karışık gelir, sırayla dokunup kurarsın */
+const HL={};let HS=null,SHOWNEW=true;
+function drawHL(x){
+  const box=$('#hl');if(!box)return;
+  if(HL[x.id]){box.hidden=true;return}
+  const W=x.title.split(/\s+/).filter(Boolean);
+  if(W.length<4||W.length>16){HL[x.id]=1;$('#ttl').classList.remove('veil');box.hidden=true;return}
+  if(!HS||HS.id!==x.id){let o=W.map((_,i)=>i);for(let k=0;k<5&&o.every((v,i)=>v===i);k++)o=o.sort(()=>Math.random()-.5);HS={id:x.id,W,order:o.sort(()=>Math.random()-.5),got:0,miss:0}}
+  box.innerHTML=`<div class="row" style="justify-content:space-between"><span class="eyebrow">1 · Manşeti kur</span><button class="btn btn-ghost btn-sm" data-hl="skip">Geç, manşeti göster</button></div>
+  <div class="hline">${HS.W.map((w,i)=>`<span class="${i<HS.got?'in':''}">${i<HS.got?esc(w):'&nbsp;'}</span>`).join('')}</div>
+  <div class="hbank">${HS.order.map(i=>`<button data-hw="${i}" ${i<HS.got?'disabled class="used"':''}>${esc(HS.W[i])}</button>`).join('')}</div>
+  <p class="mut" style="margin:10px 0 0;font-size:13px">Manşetin kelimelerine doğru sırayla dokun. İngilizce cümle sırasını kurmak, okumaya başlamadan konuyu kafanda toplar.</p>`;
+}
+function pickHL(i,el){
+  if(!HS)return;const want=HS.W[HS.got];
+  if(HS.W[i]===want){// aynı kelimeden iki tane varsa hangisine dokunulduğu fark etmez
+    const real=HS.got;if(i!==real){const a=HS.order.indexOf(i),b=HS.order.indexOf(real);[HS.order[a],HS.order[b]]=[HS.order[b],HS.order[a]]}
+    HS.got++;KA.sfx.tick&&KA.sfx.tick();
+    if(HS.got===HS.W.length){HL[HS.id]=1;KA.sfx.ok();KA.addXp(HS.miss?3:6);KA.toast(HS.miss?'Manşet kuruldu: +3 XP':'İlk seferde kurdun: +6 XP');const x=QS.x;HS=null;reader(x);return}
+    drawHL(QS.x)}
+  else{HS.miss++;KA.sfx.bad();el.classList.remove('no');void el.offsetWidth;el.classList.add('no')}
 }
 function drawQuiz(){
   const {quiz,ans}=QS,n=Object.keys(ans).length,ok=Object.entries(ans).filter(([i,v])=>quiz[i].ans===v).length;
-  if(!quiz.length){$('#quiz').innerHTML='<p class="mut">Bu seviye için quiz yok.</p>';return}
-  $('#quiz').innerHTML=`<span class="eyebrow">${LV[QS.lv][0]} quiz</span><h2>Ne kadar anladın?</h2><p class="mut" style="margin:0 0 6px">${quiz.length} soru · her doğru +5 XP</p>
-  ${quiz.map((q,i)=>`<div class="qq"><b>${i+1}. ${esc(q.q)}</b><div class="qo">${q.opts.map((o,k)=>{const a=ans[i];const cls=a==null?'':(k===q.ans?'ok':(k===a?'no':''));return `<button class="${cls}" data-q="${i}" data-o="${k}" ${a!=null?'disabled':''}><kbd>${'ABCD'[k]}</kbd><span>${esc(o)}</span></button>`}).join('')}</div></div>`).join('')}
-  ${n===quiz.length?`<div class="qres"><b>${ok}/${quiz.length}</b><div class="grow">${ok===quiz.length?'Kusursuz! Bir üst seviyeyi dene.':ok>=quiz.length/2?'Güzel. Yanlışlarını metinde tekrar bul.':'Metni bir kez daha oku, sonra tekrar dene.'}</div>${QS.lv<'3'&&QS.x.levels[String(+QS.lv+1)]?`<button class="btn btn-p" data-lv="${+QS.lv+1}">Seviye ${+QS.lv+1}'e geç${ic('arrow')}</button>`:''}<button class="btn btn-ghost" data-retry>${ic('reset')}Tekrar çöz</button></div>`:''}`;
+  if(!quiz.length){$('#quiz').innerHTML='<p class="mut">Bu anlatım için sorgu yok.</p>';return}
+  const pips=`<div class="qpips">${quiz.map((q,i)=>`<i class="${ans[i]==null?(i===QS.i?'cur':''):ans[i]===q.ans?'ok':'no'}"></i>`).join('')}</div>`;
+  if(n===quiz.length&&QS.i>=quiz.length){
+    const up=QS.lv<'3'&&QS.x.levels[String(+QS.lv+1)];
+    $('#quiz').innerHTML=`<span class="eyebrow">3 · Sorgu · ${LV[QS.lv][0]} anlatım</span>${pips}<div class="fstamp ${ok===quiz.length?'':'half'}"><b>${ok}/${quiz.length}</b><span>${ok===quiz.length?'Dosya kapandı':'Dosya açık'}</span></div>
+    <p style="text-align:center;margin:0 0 14px;color:var(--ink2)">${ok===quiz.length?(up?'Kusursuz. Aynı haberi daha zengin anlatımla oku; yeni gelen kelimeler işaretli olacak.':'Kusursuz. Bu dosyanın en zengin anlatımını da bitirdin.'):ok>=quiz.length/2?'Yanlış yaptığın soruların cevabını metinde bul, sonra tekrar dene.':'Haberi bir kez daha oku, sonra sorguya dön.'}</p>
+    <div class="row" style="justify-content:center">${up?`<button class="btn btn-p" data-lv="${+QS.lv+1}">${LV[+QS.lv+1][0]} anlatımla oku${ic('arrow')}</button>`:''}<button class="btn btn-ghost" data-retry>${ic('reset')}Sorguyu tekrarla</button><a class="btn btn-ghost" href="#">Bültene dön</a></div>`;
+    return}
+  const i=Math.min(QS.i,quiz.length-1),q=quiz[i],a=ans[i];
+  $('#quiz').innerHTML=`<span class="eyebrow">3 · Sorgu · ${LV[QS.lv][0]} anlatım</span>${pips}<h2>${esc(q.q)}</h2>
+  <div class="qo">${q.opts.map((o,k)=>{const cls=a==null?'':(k===q.ans?'ok':(k===a?'no':''));return `<button class="${cls}" data-q="${i}" data-o="${k}" ${a!=null?'disabled':''}><kbd>${'ABCD'[k]}</kbd><span>${esc(o)}</span></button>`}).join('')}</div>
+  ${a!=null?`<div class="row" style="justify-content:space-between;margin-top:14px"><span class="mut" style="font-weight:700">${a===q.ans?'Doğru · +5 XP':'Cevabı metinde bulabilirsin; yukarı kaydırıp bak.'}</span><button class="btn btn-p" data-qn>${i===quiz.length-1?'Sonucu gör':'Sıradaki soru'}${ic('arrow')}</button></div>`:`<p class="mut" style="margin:12px 0 0;font-size:13px">Soru ${i+1} / ${quiz.length} · her doğru +5 XP</p>`}`;
 }
 function answer(i,k){
   if(QS.ans[i]!=null)return;QS.ans[i]=k;const ok=QS.quiz[i].ans===k;ok?KA.sfx.ok():KA.sfx.bad();
@@ -177,7 +243,11 @@ document.addEventListener('click',e=>{
   const f=t.closest('[data-f]');if(f){FILTER=f.dataset.f;list();return}
   const lv=t.closest('[data-lv]');if(lv){LEVEL=lv.dataset.lv;const x=DATA.find(i=>i.id===decodeURIComponent(location.hash.slice(1)));if(x)reader(x);return}
   const o=t.closest('[data-o]');if(o){answer(+o.dataset.q,+o.dataset.o);return}
-  if(t.closest('[data-retry]')){QS.ans={};drawQuiz();return}
+  if(t.closest('[data-retry]')){QS.ans={};QS.i=0;drawQuiz();return}
+  if(t.closest('[data-qn]')){QS.i++;drawQuiz();if(QS.i>=QS.quiz.length&&Object.entries(QS.ans).every(([a,v])=>QS.quiz[a].ans===v))KA.sfx.win();return}
+  const hw=t.closest('[data-hw]');if(hw){pickHL(+hw.dataset.hw,hw);return}
+  if(t.closest('[data-hl]')){HL[QS.x.id]=1;HS=null;reader(QS.x);return}
+  if(t.closest('[data-new]')){SHOWNEW=!SHOWNEW;$('#body').classList.toggle('shownew',SHOWNEW);t.closest('[data-new]').classList.toggle('onb',SHOWNEW);return}
   const rd=t.closest('[data-read]');if(rd){const b=$('#body');if(b)KA.speak(b.textContent,+rd.dataset.read);return}
 });
 addEventListener('hashchange',route);

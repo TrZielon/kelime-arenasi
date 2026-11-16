@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Kelime Arenası · Akademik İngilizce kelime oyunu</title>
-<meta name="description" content="Akademik İngilizce kelimelerini kartlar, eşleştirme, testler, Boss savaşı, cümle ve paragraf özetiyle oyun gibi öğren.">
+<meta name="description" content="Akademik İngilizce kelimelerini Kapı, Çark, Nişan, Kalem, Bekçi, Tercüman ve Kürsü ringleriyle oyun gibi öğren.">
 <meta name="theme-color" content="#0f766e">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -13,10 +13,10 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="K. Arenası">
-<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
+<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=3">
+<link rel="stylesheet" href="ortak.css?v=5">
 <style>
 .hero{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:center;padding:30px 32px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%)}
 .hero h1{font-size:clamp(28px,4vw,40px);margin:8px 0 10px}
@@ -156,7 +156,7 @@
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="home"></div><section id="act" class="act" hidden></section></main>
-<script src="ortak.js?v=3"></script>
+<script src="ortak.js?v=5"></script>
 <script>
 (function(){
 'use strict';
@@ -284,13 +284,13 @@ const MIC={
 };
 const mic=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${MIC[k]}</svg>`;
 const MODES=[
-  {k:'kart',n:'Kartlar',d:'Kelimeyi gör, anlamını hatırla, kartı çevir. Bilmediklerin geri döner.',x:15},
-  {k:'esle',n:'Eşleştir',d:'Her turda altı kelimeyi doğru Türkçe anlamıyla eşleştir.',x:20},
-  {k:'sec',n:'Seç',d:'Listedeki bütün kelimeler; yanlış bildiğin sona eklenir.',x:20},
-  {k:'yaz',n:'Yaz',d:'Türkçesini gör, İngilizcesini yaz. İlk hatada ipucu alırsın.',x:25},
-  {k:'boss',n:'Boss',d:'12 hamlelik karma savaş. Tam üç canın var, dikkatli ol.',x:40},
-  {k:'cumle',n:'Cümle',d:'Akademik cümleleri oku, doğru Türkçe anlamını seç.',x:25},
-  {k:'para',n:'Paragraf',d:'Paragrafı oku, kabataslak özetini çıkar, bot puanlasın.',x:35}
+  {k:'kart',n:'Kapı',d:'Kelimeyi gör, ne kadar emin olduğunu söyle, kapı açılıp anlamı göstersin. Bilmediklerin geri döner.',x:15},
+  {k:'esle',n:'Çark',d:'Ortadaki anlamın kelimesini çarktan seç. Altı dilim yanınca çark döner.',x:20},
+  {k:'sec',n:'Nişan',d:'Dört şıktan doğru anlamı vur. Listedeki bütün kelimeler; yanlış bildiğin sona eklenir.',x:20},
+  {k:'yaz',n:'Kalem',d:'Türkçesini gör, İngilizcesini yaz. İlk hatada ipucu alırsın.',x:25},
+  {k:'boss',n:'Bekçi',d:'En zayıf kelimelerin kemerin taşları. Hepsini düşür; üç canın var, kaçırdığın taş yerine geri oturur.',x:40},
+  {k:'cumle',n:'Tercüman',d:'Akademik cümleleri oku, doğru Türkçe anlamını seç.',x:25},
+  {k:'para',n:'Kürsü',d:'Paragrafı oku, kabataslak özetini çıkar, bot puanlasın.',x:35}
 ];
 const ROMAN=['I','II','III','IV','V','VI','VII'];
 
@@ -317,7 +317,8 @@ const bx=x=>cur.prog.box[x.en]||1;
 const withTr=()=>cur.items.filter(x=>x.tr);
 const sentOf=()=>cur.items.filter(x=>x.tr&&x.s&&x.st);
 function addXp(n){cur.prog.xp=(cur.prog.xp||0)+n;KA.markDay();save();KA.refreshChips()}
-function tally(ok){const m=KA.meta();m.tot=(m.tot||0)+1;if(ok)m.ok=(m.ok||0)+1;KA.saveMeta(m)}
+let COMBO=0;function comboFx(ok){COMBO=ok?COMBO+1:0;const c=$('#combo');if(!c)return;c.hidden=false;c.textContent='Seri ×'+COMBO;c.classList.remove('pop','brk');void c.offsetWidth;c.classList.add(ok?'pop':'brk')}
+function tally(ok){comboFx(ok);const m=KA.meta();m.tot=(m.tot||0)+1;if(ok)m.ok=(m.ok||0)+1;KA.saveMeta(m)}
 function missing(p){const tr=p.items.filter(x=>!x.tr).length,s=p.items.filter(x=>x.tr&&!x.s).length,cov=new Set(p.groups.filter(g=>g.text).flatMap(g=>g.w));return {tr,s,g:p.items.filter(x=>x.tr&&!cov.has(x.en)).length}}
 function rankOf(xp){const R=[[0,'Çaylak Savaşçı'],[150,'Arena Adayı'],[400,'Gladyatör'],[900,'Şampiyon'],[1800,'Arena Efsanesi']];let r=R[0][1];R.forEach(([t,n])=>{if(xp>=t)r=n});return r}
 function nextMode(){const s=cur.prog.steps;const i=s.findIndex(v=>!v);return i<0?0:i}
@@ -346,7 +347,7 @@ function renderHome(){
   const tiers=[5,4,3,2,1].map(b=>({b,n:cur.items.filter(x=>bx(x)===b).length}));
   const tn={5:'Efsane',4:'Şampiyon',3:'Gladyatör',2:'Savaşçı',1:'Başlangıç'};
   const maxT=Math.max(1,...tiers.map(t=>t.n));
-  const badges=[['İlk kart','kart',st[0]||meta.kart>0],['Keskin nişancı','sec',meta.tot>=30&&meta.ok/meta.tot>=.9],['7 gün seri','flame',KA.streak(meta)>=7],['Boss avcısı','boss',!!st[4]],['Yazar','yaz',!!st[3]],['Paragraf ustası','para',!!st[6]]];
+  const badges=[['İlk kapı','kart',st[0]||meta.kart>0],['Keskin nişancı','sec',meta.tot>=30&&meta.ok/meta.tot>=.9],['7 gün seri','flame',KA.streak(meta)>=7],['Bekçiyi geçen','boss',!!st[4]],['Yazar','yaz',!!st[3]],['Paragraf ustası','para',!!st[6]]];
   H.innerHTML=`
   ${needs?`<div class="card prep" id="prep"><span style="color:var(--acc2)">${ic('spark')}</span><p id="prepTxt">${BUSY?'Hazırlanıyor…':`Bu listede ${[ms.tr&&ms.tr+' kelimenin anlamı',ms.s&&ms.s+' kelimenin örnek cümlesi',ms.g&&ms.g+' kelimenin paragrafı'].filter(Boolean).join(', ')} eksik.`}</p><button class="btn btn-acc btn-sm" data-a="prep" ${BUSY?'disabled':''}>${ic('spark')}Hazırla</button></div>`:''}
   <section class="card hero">
@@ -358,18 +359,14 @@ function renderHome(){
     </div>
     <div class="arena-vis">${arenaSvg(st)}</div>
   </section>
+  <div class="sec-h"><h2><span class="sq">Arena yolu<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M1 6 C 12 1, 20 9, 32 5 S 52 1, 64 5 S 86 9, 99 3"/></svg></span></h2><span class="mut" style="font-size:13.5px;font-weight:700">İstediğin ringe istediğin sırayla gir</span></div>
+  ${roadHtml(st,nx)}
   <section class="stats">
-    <div class="card stat"><i>${ic('flame')}</i><div><b>${KA.streak(meta)} gün</b><span>Günlük seri</span></div></div>
+    ${ticketHtml(meta,learned)}
     <div class="card stat"><i>${ic('star')}</i><div><b>${KA.totalXp()}</b><span>Toplam XP</span></div></div>
-    <div class="card stat"><i>${mic('kart')}</i><div><b>${learned}</b><span>Öğrenilen kelime</span></div></div>
     <div class="card stat"><i>${mic('sec')}</i><div><b>${acc}</b><span>İsabet oranı</span></div></div>
   </section>
-  <div class="sec-h"><h2>Arena ringleri</h2><span class="mut" style="font-size:13.5px;font-weight:700">İstediğin ringe istediğin sırayla gir</span></div>
-  <section class="rings">${MODES.map((m,i)=>`<button class="ring ${st[i]?'done':''} ${i===nx&&!st[i]?'next':''} ${m.k==='boss'?'boss':''}" data-m="${i}">
-    <div class="top"><span class="num">RİNG ${ROMAN[i]}</span>${st[i]?`<span class="st">Tamamlandı</span>`:(i===nx?'<span class="st">Sıradaki</span>':'')}</div>
-    <div class="row" style="gap:12px;align-items:center"><span class="ico">${mic(m.k)}</span><h3>${m.n}</h3></div>
-    <p>${m.d}</p>
-    <div class="meta"><span>${ringMeta(i)}</span><span>+${m.x} XP</span></div></button>`).join('')}</section>
+  ${extrasHtml()}
   <section class="split" style="margin-top:16px">
     <div class="card box"><span class="eyebrow">Kelime listesi</span><h3>${esc(cur.name)}</h3>
       <div class="counts"><span class="tag">${cur.items.length} kelime</span><span class="tag">${cur.items.filter(x=>x.tr).length} anlam</span><span class="tag">${cur.items.filter(x=>x.s).length} örnek cümle</span><span class="tag">${cur.groups.filter(g=>g.text).length} paragraf</span></div>
@@ -380,9 +377,31 @@ function renderHome(){
   <section class="card box" style="margin-top:16px"><span class="eyebrow">Rozetler</span><div class="badges">${badges.map(([n,k,on])=>`<div class="badge ${on?'on':''}"><div>${k==='flame'?ic('flame'):mic(k)}</div>${n}</div>`).join('')}</div></section>
   ${pwaHtml()}`;
 }
+function roadHtml(st,nx){
+  const H=[],V=[];for(let i=0;i<7;i++){H.push([80+i*156.67,i%2?186:102]);V.push([i%2?246:84,48+i*88])}
+  const seg=(P,i,vert)=>{const a=P[i],b=P[i+1];return vert?`M${a[0]} ${a[1]} C${a[0]} ${(a[1]+b[1])/2} ${b[0]} ${(a[1]+b[1])/2} ${b[0]} ${b[1]}`:`M${a[0]} ${a[1]} C${(a[0]+b[0])/2} ${a[1]} ${(a[0]+b[0])/2} ${b[1]} ${b[0]} ${b[1]}`};
+  const first=st.findIndex(v=>!v),upto=first<0?6:first;
+  const paths=(P,vert,n)=>Array.from({length:n},(_,i)=>`<path d="${seg(P,i,vert)}"/>`).join('');
+  const svg=(cls,P,vert,w,h)=>`<svg class="${cls}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true"><g class="base">${paths(P,vert,6)}</g><g class="prog">${paths(P,vert,upto)}</g></svg>`;
+  return `<section class="card road"><div class="road-in">${svg('h',H,false,1100,280)}${svg('v',V,true,330,620)}${MODES.map((m,i)=>{const done=!!st[i],now=i===nx&&!done;
+    return `<button class="rstop ${done?'done':''} ${now?'now':''} ${i%2?'dn':'up'}" data-m="${i}" style="--i:${i};--hx:${(H[i][0]/11).toFixed(2)}%;--hy:${(H[i][1]/2.8).toFixed(2)}%;--vx:${(V[i][0]/3.3).toFixed(2)}%;--vy:${(V[i][1]/6.2).toFixed(2)}%" aria-label="${m.n}${done?', tamamlandı':now?', sıradaki':''}"><span class="knob">${done?ic('check'):mic(m.k)}</span><span class="lab"><b>${m.n}</b><span>${done?'Tamamlandı':now?'Sıradaki · +'+m.x+' XP':ringMeta(i)}</span></span></button>`}).join('')}</div></section>`;
+}
+function extrasHtml(){
+  const pool=cur.items.filter(x=>x.tr);if(!pool.length)return '';
+  const d=new Date(),w=pool[(d.getFullYear()*372+d.getMonth()*31+d.getDate())%pool.length];
+  return `<section class="xrow"><div class="card wod"><span class="tape">KAT ${bx(w)}</span><span class="eyebrow">Günün kelimesi</span><h3 aria-label="${esc(w.en)}">${w.en.split('').map((c,i)=>c===' '?'<span>&nbsp;</span>':`<span style="--i:${i}" aria-hidden="true">${esc(c)}</span>`).join('')}</h3><p>${esc(w.tr)}</p>${w.s?`<p class="ex">${esc(w.s)}</p>`:''}<div class="row"><button class="btn btn-ghost btn-sm" data-say="${esc(w.en)}">${ic('sound')}Dinle</button><a class="btn btn-ghost btn-sm" href="sozluk.html#${encodeURIComponent(w.en)}">${ic('book')}Sözlükte aç</a></div></div>
+  <div class="card decksbox"><span class="eyebrow">Listelerin</span><div class="decks">${packs.slice(0,3).map(p=>{const n=p.items.length,l=p.items.filter(x=>(p.prog.box[x.en]||1)>=3).length;return `<button class="deck ${p.id===cur.id?'on':''}" data-pack="${esc(p.id)}"><i></i><i></i><span class="top"><b>${esc(p.name)}</b><small>${n} kelime · ${l} öğrenildi</small><span class="meter"><u style="width:${n?l/n*100:0}%"></u></span></span></button>`}).join('')}<button class="deck add" data-a="new"><span class="top">${ic('plus')}<b>Yeni liste</b><small>Yaz, yapıştır ya da fotoğraf çek</small></span></button></div></div></section>`;
+}
+function ticketHtml(meta,learned){
+  const dk=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  const days=new Set(meta.days||[]),now=new Date(),mon=new Date(now);mon.setDate(now.getDate()-((now.getDay()+6)%7));
+  const week=['Pt','Sa','Ça','Pe','Cu','Ct','Pz'].map((n,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);const k=dk(d);return `<span class="${days.has(k)?'d':k===dk(now)?'t':''}" style="--i:${i}">${n}</span>`}).join('');
+  const tot=cur.items.length,left=Math.max(0,tot-learned),pct=tot?learned/tot*100:0;
+  return `<div class="card tkt"><div class="tk-main"><div class="tring"><svg viewBox="0 0 40 40"><circle class="t" cx="20" cy="20" r="15.9"/><circle class="v" pathLength="100" cx="20" cy="20" r="15.9" style="stroke-dashoffset:${(100-pct).toFixed(1)}"/></svg><div><b>${learned}</b><span>/ ${tot}</span></div></div><div class="tk-txt"><span class="eyebrow">Öğrenilen kelime</span><h3>${left?left+' kelime kaldı':'Hepsi öğrenildi'}</h3><div class="week" aria-label="Bu hafta çalıştığın günler">${week}</div></div></div><div class="tk-stub"><div>${ic('flame')}<b>${KA.streak(meta)}</b><span>gün seri</span></div></div></div>`;
+}
 function ringMeta(i){
   const n=withTr().length;
-  if(i===4)return '12 hamle · 3 can';
+  if(i===4)return '12 taş · 3 can';
   if(i===5){const s=sentOf().length;return s?s+' cümle':'Cümle hazır değil'}
   if(i===6){const g=cur.groups.filter(g=>g.text).length;return g?g+' paragraf':'Paragraf hazır değil'}
   return n+' kelime';
@@ -395,8 +414,8 @@ function pwaHtml(){
 /* ---------- Etkinlik çerçevesi ---------- */
 function openMode(i){
   if(!cur)return;
-  mode=i;$('#home').hidden=true;const A=$('#act');A.hidden=false;KA.closeLookup();scrollTo(0,0);
-  A.innerHTML=`<div class="actbar"><button class="ka-icon-btn" data-a="home" aria-label="Ana sayfaya dön">${ic('x')}</button><span class="t">${MODES[i].n}</span><div class="pbar"><i id="pb" style="width:0"></i></div><span id="hearts" class="hearts" hidden></span><span id="cnt" class="mut" style="font-weight:800;font-size:13px"></span></div><div id="st"></div>`;
+  mode=i;COMBO=0;$('#home').hidden=true;const A=$('#act');A.hidden=false;KA.closeLookup();scrollTo(0,0);
+  A.innerHTML=`<div class="actbar"><button class="ka-icon-btn" data-a="home" aria-label="Ana sayfaya dön">${ic('x')}</button><span class="t">${MODES[i].n}</span><div class="pbar"><i id="pb" style="width:0"></i></div><span class="combo" id="combo" hidden></span><span id="hearts" class="hearts" hidden></span><span id="cnt" class="mut" style="font-weight:800;font-size:13px"></span></div><div id="st"></div>`;
   [startKart,startEsle,()=>startQuiz('sec'),()=>startQuiz('yaz'),startBoss,startCumle,startPara][i]();
 }
 const ST=()=>$('#st');
@@ -404,7 +423,7 @@ const prog=(a,b)=>{const p=$('#pb');if(p)p.style.width=(b?Math.min(100,a/b*100):
 function finish(i,title,sub){
   const first=!cur.prog.steps[i];cur.prog.steps[i]=1;addXp(MODES[i].x);save(true);KA.sfx.win();
   const nx=cur.prog.steps.findIndex(v=>!v);
-  ST().innerHTML=`<div class="card done-card"><div class="bigic">${ic('check')}</div><h2>${title}</h2><p class="mut">${sub} · +${MODES[i].x} XP${first?' · Ring tamamlandı':''}</p><div class="row" style="justify-content:center;margin-top:18px"><button class="btn btn-ghost" data-m="${i}">${ic('reset')}Tekrar oyna</button>${nx>=0?`<button class="btn btn-p" data-m="${nx}">${MODES[nx].n} ringine geç${ic('arrow')}</button>`:`<button class="btn btn-p" data-a="home">Ana sayfa</button>`}</div></div>`;
+  ST().innerHTML=`<div class="card done-card"><div class="bigic">${ic('check')}</div><h2>${title}</h2><p class="mut">${sub} · +${MODES[i].x} XP${first?' · Ring tamamlandı':''}</p><div class="endb"><div class="eb" style="--r:-8deg;--dl:.45s"><b>+${MODES[i].x}</b><span>XP</span></div><div class="eb" style="--r:5deg;--dl:.62s"><b>${cur.prog.steps.filter(Boolean).length}/7</b><span>ring</span></div><div class="eb" style="--r:-3deg;--dl:.79s"><b>${KA.streak(KA.meta())}</b><span>gün seri</span></div></div><div class="row" style="justify-content:center;margin-top:18px"><button class="btn btn-ghost" data-m="${i}">${ic('reset')}Tekrar oyna</button>${nx>=0?`<button class="btn btn-p" data-m="${nx}">${MODES[nx].n} ringine geç${ic('arrow')}</button>`:`<button class="btn btn-p" data-a="home">Ana sayfa</button>`}</div></div>`;
   prog(1,1);
 }
 const emptyMsg=(t,act)=>{ST().innerHTML=`<div class="card done-card"><div class="bigic bad">${ic('spark')}</div><h2 style="font-size:24px">${t}</h2>${act?`<div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-acc" data-a="prep">${ic('spark')}Hazırla</button><button class="btn btn-ghost" data-a="home">Ana sayfa</button></div>`:''}</div>`};
@@ -418,45 +437,48 @@ function startKart(){
   K={q:s,total:s.length,known:0,flip:false};drawKart();
 }
 function drawKart(){
-  if(!K.q.length){const m=KA.meta();m.kart=(m.kart||0)+K.total;KA.saveMeta(m);return finish(0,'Bütün kartları bildin','Kartlar ringi')}
+  if(!K.q.length){const m=KA.meta();m.kart=(m.kart||0)+K.total;KA.saveMeta(m);return finish(0,'Bütün kapıları açtın','Kapı ringi')}
   const x=K.q[0];prog(K.known,K.total);
-  const front=`<span class="hint">İngilizce · çevirmek için dokun ya da boşluk tuşuna bas</span><div class="qword">${esc(x.en)}</div><span class="tag" style="margin:0 auto">Kat ${bx(x)}</span>`;
-  const back=`<span class="hint">Türkçe anlamı</span><div class="qword" style="font-size:clamp(24px,4.5vw,32px)">${esc(x.en)}</div><div class="tr">${esc(x.tr)}</div>${x.syn&&x.syn.length?`<div class="syns">${x.syn.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>`:''}${x.s?`<div class="sentbox" data-stop>${KA.tokens(x.s)}${x.st?`<div class="st">${esc(x.st)}</div>`:''}</div>`:''}`;
-  ST().innerHTML=`<div class="card qcard flip" id="flip">${K.flip?back:front}</div>
-  <div class="cardbtns"><button class="btn btn-ghost back" data-say="${esc(K.flip&&x.s?x.s:x.en)}">${ic('sound')}Dinle</button><button class="btn btn-bad btn-lg" data-k="0">Bilmiyorum <kbd class="mut" style="font-size:12px">1</kbd></button><button class="btn btn-ok btn-lg" data-k="1">Biliyorum <kbd style="font-size:12px;opacity:.8">2</kbd></button></div>`;
+  const open=K.stage==='open',cf=K.conf;
+  const inside=open?`<div class="tr">${esc(x.tr)}</div>${x.syn&&x.syn.length?`<div class="syns">${x.syn.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>`:''}${x.s?`<div class="sentbox" data-stop>${KA.tokens(x.s)}${x.st?`<div class="st">${esc(x.st)}</div>`:''}</div>`:''}`:'';
+  ST().innerHTML=`<div class="card qcard gk ${open?'open':'ask'}" id="gk"><span class="hint">${open?(cf===2?'Emindin':cf===1?'Tahmin ettin':'Bilmiyordun')+' · kapı açıldı':'Anlamı kapının ardında. Ne kadar eminsin? (Kapıya dokunmak = Sanırım)'}</span><div class="qword">${esc(x.en)}</div><div class="row" style="justify-content:center;gap:8px"><span class="tag">Kat ${bx(x)}</span><button class="btn btn-ghost btn-sm" data-say="${esc(x.en)}">${ic('sound')}Dinle</button></div>
+    <div class="arch"><div class="inside">${inside}</div><i class="leaf l"></i><i class="leaf r"></i></div></div>
+  <div class="cardbtns gkb">${!open?`<button class="btn btn-ok btn-lg" data-conf="2">Eminim <kbd>1</kbd></button><button class="btn btn-acc btn-lg" data-conf="1">Sanırım <kbd>2</kbd></button><button class="btn btn-ghost btn-lg" data-conf="0">Bilmiyorum <kbd>3</kbd></button>`
+    :cf===0?`<button class="btn btn-p btn-lg" data-k="0" style="grid-column:1/-1">Öğrendim, sonra tekrar sor${ic('arrow')}</button>`
+    :`<button class="btn btn-bad btn-lg" data-k="0">Yanılmışım <kbd>1</kbd></button><button class="btn btn-ok btn-lg" data-k="1" style="grid-column:span 2">Doğru bildim <kbd>2</kbd></button>`}</div>`;
 }
 function answerKart(ok){
   const x=K.q.shift();
-  if(ok){cur.prog.box[x.en]=Math.min(5,bx(x)+1);K.known++;addXp(1)}else{cur.prog.box[x.en]=1;K.q.splice(Math.min(K.q.length,4+((Math.random()*3)|0)),0,x)}
-  K.flip=false;save();drawKart();
+  if(ok){cur.prog.box[x.en]=Math.min(5,bx(x)+(K.conf===2?2:1));K.known++;addXp(K.conf===2?2:1)}else{cur.prog.box[x.en]=1;K.q.splice(Math.min(K.q.length,4+((Math.random()*3)|0)),0,x)}
+  K.flip=false;K.stage='ask';K.conf=null;save();drawKart();
 }
 
 /* ---------- 2. Eşleştir ---------- */
 let M=null;
 function startEsle(){
-  const all=withTr();if(all.length<2)return emptyMsg('Eşleştirme için en az iki anlamlı kelime gerekli.',true);
+  const all=withTr();if(all.length<2)return emptyMsg('Çark için en az iki anlamlı kelime gerekli.',true);
   const done=new Set(cur.prog.mdone||[]);if(all.every(x=>done.has(x.en)))cur.prog.mdone=[];
   M={all:all.length};roundEsle();
 }
 function roundEsle(){
   const done=new Set(cur.prog.mdone||[]),rem=withTr().filter(x=>!done.has(x.en));
-  if(!rem.length){cur.prog.mdone=[];return finish(1,'Bütün kelimeleri eşleştirdin','Eşleştir ringi')}
-  const r=shuf(rem).slice(0,6);M.r=r;M.l=null;M.rr=null;M.ok=new Set();M.L=shuf(r.map((_,i)=>i));M.R=shuf(r.map((_,i)=>i));
+  if(!rem.length){cur.prog.mdone=[];return finish(1,'Bütün çarkları döndürdün','Çark ringi')}
+  const r=shuf(rem).slice(0,6);M.r=r;M.ok=new Set();M.order=shuf(r.map((_,i)=>i));M.pos=shuf(r.map((_,i)=>i));M.pi=0;M.lock=false;M.fresh=true;
   prog(M.all-rem.length,M.all);drawEsle();
 }
 function drawEsle(){
-  ST().innerHTML=`<p class="qlab" style="text-align:center;margin:0 0 12px">Kelimeyi seç, sonra anlamını seç</p><div class="mgrid"><div>${M.L.map(i=>`<button class="mtile ${M.ok.has(i)?'gone':''} ${M.l===i?'sel':''}" data-ml="${i}">${esc(M.r[i].en)}</button>`).join('')}</div><div>${M.R.map(i=>`<button class="mtile ${M.ok.has(i)?'gone':''} ${M.rr===i?'sel':''}" data-mr="${i}">${esc(M.r[i].tr)}</button>`).join('')}</div></div>`;
+  const n=M.r.length,t=M.order[M.pi],done=M.ok.size===n,C=2*Math.PI*46,g=4;
+  const arcs=M.pos.map((wi,k)=>`<circle class="${M.ok.has(wi)?'on':''}" cx="50" cy="50" r="46" pathLength="${n*100}" stroke-dasharray="${100-g} ${n*100-100+g}" stroke-dashoffset="${-(k*100)+50-g/2}"/>`).join('');
+  ST().innerHTML=`<p class="qlab" style="text-align:center;margin:0 0 6px">Ortadaki anlamın kelimesini çarktan seç</p><div class="wheel ${M.fresh?'in':''} ${done?'done':''}" style="--n:${n}"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(-90 50 50)">${arcs}</g></svg>
+    <div class="hub"><span>${done?'Çark tamam':'Anlamı'}</span><b>${done?ic('check'):esc(M.r[t].tr)}</b><small>${M.ok.size} / ${n}</small></div>
+    ${M.pos.map((wi,k)=>`<button class="wtile ${M.ok.has(wi)?'gone':''}" data-mw="${wi}" style="--a:${(k/n*360).toFixed(1)}deg;--k:${k}" ${M.ok.has(wi)?'disabled':''}>${esc(M.r[wi].en)}</button>`).join('')}</div>`;
+  M.fresh=false;
 }
-function pickEsle(side,i,el){
-  if(M.ok.has(i))return;
-  if(side==='l'){M.l=i;KA.speak(M.r[i].en)}else M.rr=i;
-  if(M.l!=null&&M.rr!=null){
-    if(M.l===M.rr){M.ok.add(i);cur.prog.mdone=[...new Set([...(cur.prog.mdone||[]),M.r[i].en])];KA.sfx.ok();addXp(1);tally(true)}
-    else{KA.sfx.bad();tally(false);const a=M.l,b=M.rr;M.l=M.rr=null;drawEsle();document.querySelector(`[data-ml="${a}"]`).classList.add('no');document.querySelector(`[data-mr="${b}"]`).classList.add('no');return}
-    M.l=M.rr=null;
-  }
-  drawEsle();
-  if(M.ok.size===M.r.length)setTimeout(roundEsle,450);
+function pickEsle(i,el){
+  if(M.lock||M.ok.has(i))return;const t=M.order[M.pi];
+  if(i===t){M.ok.add(i);KA.speak(M.r[i].en);KA.sfx.ok();tally(true);addXp(1);cur.prog.mdone=[...new Set([...(cur.prog.mdone||[]),M.r[i].en])];cur.prog.box[M.r[i].en]=Math.max(2,bx(M.r[i]));save();M.pi++;
+    drawEsle();if(M.ok.size===M.r.length){M.lock=true;setTimeout(()=>{if(mode===1)roundEsle()},1100)}}
+  else{tally(false);KA.sfx.bad();el.classList.remove('no');void el.offsetWidth;el.classList.add('no')}
 }
 
 /* ---------- 3-4. Seç ve Yaz (bütün kelimeler) ---------- */
@@ -538,27 +560,38 @@ function yazCheck(skip){
   feedback(false,'Doğru cevap: '+esc(q.x.en),esc(q.x.tr)+' · bu kelime tekrar gelecek');
 }
 
-/* ---------- 5. Boss: 12 hamle, tam 3 can ---------- */
+/* ---------- 5. Bekçi: en zayıf 12 kelime kemerin taşları, 3 can ---------- */
 let B=null;const BOSS_MOVES=12,LIVES=3;
 function startBoss(){
-  const pool=withTr();if(pool.length<4)return emptyMsg('Boss için en az 4 anlamlı kelime gerekli.',true);
-  const pick=shuf(pool).slice(0,Math.min(BOSS_MOVES,pool.length));
-  const hasS=sentOf().length>=4;
-  B={moves:pick.map((x,i)=>{const r=Math.random();let t=r<.35?'sec':r<.6?'ters':r<.8?'yaz':'cumle';if(t==='cumle'&&!(hasS&&x.s&&x.st))t='sec';if(t==='yaz'&&/(^|[-\s])x($|[-\s])/i.test(x.en))t='ters';return {x,t}}),i:0,lives:LIVES,hits:0,locked:false};
+  const pool=withTr();if(pool.length<4)return emptyMsg('Bekçi için en az 4 anlamlı kelime gerekli.',true);
+  const pick=shuf(pool).sort((a,b)=>bx(a)-bx(b)).slice(0,Math.min(BOSS_MOVES,pool.length));
+  const hasS=sentOf().length>=4,noType=x=>/(^|[-\s])x($|[-\s])/i.test(x.en);
+  const q=shuf(pick).map(x=>{const r=Math.random();let t=r<.4?'sec':r<.65?'ters':r<.82?'yaz':'cumle';if(t==='cumle'&&!(hasS&&x.s&&x.st))t='sec';if(t==='yaz'&&noType(x))t='ters';return {x,t}});
+  const last=q[q.length-1];if(!noType(last.x))last.t='yaz';last.key=1; // kilit taşı: son darbe yazarak
+  const n=q.length,ord=[];for(let a=0,b=n-1;a<=b;a++,b--){ord.push(a);if(a!==b)ord.push(b)} // taşlar dıştan içe düşer, en son tepedeki kilit taşı
+  B={q,total:n,ord,lives:LIVES,hits:0,miss:[],locked:false,fell:-1};
   $('#hearts').hidden=false;drawHearts();nextBoss();
 }
 function drawHearts(){const h=$('#hearts');if(!h)return;const heart='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.6-9.2C.8 8.2 3 4.5 6.6 4.5c2 0 3.3 1 4.4 2.4 1.1-1.4 2.4-2.4 4.4-2.4 3.6 0 5.8 3.7 4.2 7.3C19.5 16.4 12 21 12 21z"/></svg>';h.innerHTML=Array.from({length:LIVES},(_,i)=>`<span class="${i<B.lives?'':'off'}">${heart}</span>`).join('');h.setAttribute('aria-label',B.lives+' can')}
+function archSvg(){
+  const n=B.total,cx=160,cy=150,r1=92,r2=138,pt=(r,a)=>[(cx+r*Math.cos(a)).toFixed(1),(cy-r*Math.sin(a)).toFixed(1)];
+  const stones=Array.from({length:n},(_,i)=>{const a0=Math.PI-(i/n)*Math.PI,a1=Math.PI-((i+1)/n)*Math.PI,g=.012;
+    const [x1,y1]=pt(r1,a0-g),[x2,y2]=pt(r2,a0-g),[x3,y3]=pt(r2,a1+g),[x4,y4]=pt(r1,a1+g);
+    const k=B.ord.indexOf(i),cls=k<B.hits?(k===B.fell?'fall':'gone'):k===B.hits?'cur':'';
+    return `<path class="st ${cls}" d="M${x1} ${y1}L${x2} ${y2}A${r2} ${r2} 0 0 1 ${x3} ${y3}L${x4} ${y4}A${r1} ${r1} 0 0 0 ${x1} ${y1}Z"/>`}).join('');
+  const left=B.total-B.hits;
+  return `<div class="keeper ${B.hurt?'hurt':''} ${B.fell>=0?'hit':''}"><svg viewBox="0 0 320 160" aria-hidden="true">${stones}<path class="gr" d="M8 152h304"/></svg><div class="kin"><i>${mic('boss')}</i><b>${left} taş</b><span>${B.q[0]&&B.q[0].key&&left===1?'Kilit taşı · son darbe':B.q[0]&&B.q[0].again?'Geri dönen taş':'Kemer Bekçisi'}</span></div></div>`;
+}
 function nextBoss(){
   KA.closeLookup();
   if(B.lives<=0)return bossEnd(false);
-  if(B.i>=B.moves.length)return bossEnd(true);
-  B.locked=false;prog(B.i,B.moves.length);
-  const {x,t}=B.moves[B.i],hp=Math.round((B.moves.length-B.hits)/B.moves.length*100);
-  const top=`<div class="bosshp"><b>BOSS</b><div class="pbar"><i style="width:${hp}%"></i></div><b>%${hp}</b></div>`;
-  const lab=`Hamle ${B.i+1}/${B.moves.length} · `;
+  if(!B.q.length)return bossEnd(true);
+  B.locked=false;prog(B.hits,B.total);
+  B.fell=-1;B.hurt=false;const {x,t}=B.q[0],top=archSvg();
+  const lab=`Taş ${B.hits+1}/${B.total} · `;
   if(t==='yaz'){
     B.cur={x,ans:x.en,t};
-    ST().innerHTML=top+`<div class="card qcard"><div class="qlab">${lab}Yaz</div><div class="qword">${esc(x.tr)}</div><input class="input yin" id="yin" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="İngilizcesini yaz"><div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-p btn-lg" data-a="bcheck">Saldır</button></div><div id="fb"></div></div>`;
+    ST().innerHTML=top+`<div class="card qcard"><div class="qlab">${lab}${B.q[0].key?'Son darbe · yaz':'Yaz'}</div><div class="qword">${esc(x.tr)}</div><input class="input yin" id="yin" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="İngilizcesini yaz"><div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-p btn-lg" data-a="bcheck">Vur</button></div><div id="fb"></div></div>`;
     setTimeout(()=>{const i=$('#yin');if(i)i.focus()},30);return;
   }
   if(t==='cumle'){const o=sentOpts(x);if(o){B.cur={x,t,ans:x.st,opts:o};ST().innerHTML=top;ST().insertAdjacentHTML('beforeend','<div id="mc"></div>');drawMCInto(B.cur,lab+'Cümlenin anlamı',`<div class="qsent">${KA.tokens(x.s)}</div>`);return}}
@@ -568,19 +601,22 @@ function nextBoss(){
 }
 function drawMCInto(q,lab,body){$('#mc').innerHTML=`<div class="card qcard"><div class="qlab">${lab}</div>${body}</div><div class="opts">${q.opts.map((o,i)=>`<button class="opt" data-o="${i}"><kbd>${i+1}</kbd><span>${esc(o)}</span></button>`).join('')}</div><div id="fb"></div>`}
 function bossResolve(ok,shown){
-  B.locked=true;tally(ok);
-  if(ok){B.hits++;KA.sfx.hit();addXp(2)}else{B.lives=Math.max(0,B.lives-1);KA.sfx.bad();drawHearts()}
-  B.i++;prog(B.i,B.moves.length);
-  const dead=B.lives<=0;
-  feedback(ok,ok?'İsabet! Boss sarsıldı':'Boss sana vurdu',ok?esc(B.cur.x.en)+' = '+esc(B.cur.x.tr):'Doğru cevap: '+esc(shown)+(dead?'':' · '+B.lives+' canın kaldı'),dead?'Sonucu gör':(B.i>=B.moves.length?'Zafer ekranı':'Sıradaki hamle'));
+  B.locked=true;tally(ok);const m=B.q.shift(),x=m.x;
+  if(ok){B.fell=B.hits;B.hits++;KA.sfx.hit();addXp(2);cur.prog.box[x.en]=Math.min(5,bx(x)+1)}
+  else{B.lives=Math.max(0,B.lives-1);B.hurt=true;KA.sfx.bad();drawHearts();cur.prog.box[x.en]=1;if(!B.miss.includes(x))B.miss.push(x);m.again=1;if(m.t==='yaz'&&!m.key)m.t='ters';B.q.splice(Math.min(B.q.length,2),0,m)}
+  save();prog(B.hits,B.total);
+  const k=document.querySelector('.keeper');if(k)k.outerHTML=archSvg();
+  const dead=B.lives<=0,won=!B.q.length;
+  feedback(ok,ok?(won?'Kilit taşı düştü, kemer açıldı!':'Taş düştü!'):'Bekçi taşı yerine oturttu',ok?esc(x.en)+' = '+esc(x.tr):'Doğru cevap: '+esc(shown)+(dead?'':' · bu taş birazdan yine gelecek · '+B.lives+' can'),dead?'Sonucu gör':(won?'Kemerden geç':'Sıradaki taş'));
 }
 function bossMC(i){const q=B.cur;if(!q||B.locked||!q.opts)return;const ok=q.opts[i]===q.ans;document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(q.opts[k]===q.ans)b.classList.add('ok');else if(k===i)b.classList.add('no')});bossResolve(ok,q.ans)}
 function bossYaz(){const q=B.cur;if(!q||B.locked)return;const inp=$('#yin'),v=String(inp&&inp.value||'').trim().toLowerCase().replace(/^to /,'');if(!v)return;const fs=forms(q.x.en);const ok=fs.includes(v)||(v.length>4&&fs.some(a=>near(a,v)));inp.disabled=true;bossResolve(ok,q.x.en)}
 function bossEnd(won){
   $('#hearts').hidden=true;
-  if(won)return finish(4,'Boss yenildi!',`${B.hits}/${B.moves.length} isabet · ${B.lives} can kaldı`);
-  KA.sfx.bad();prog(B.i,B.moves.length);
-  ST().innerHTML=`<div class="card done-card"><div class="bigic bad">${mic('boss')}</div><h2>Canların bitti</h2><p class="mut">${B.hits} isabet aldın. Boss'u yenmek için 3 canla 12 hamleyi bitirmelisin.</p><div class="row" style="justify-content:center;margin-top:18px"><button class="btn btn-p btn-lg" data-m="4">${ic('reset')}Tekrar dene</button><button class="btn btn-ghost" data-m="0">Kartlarla tekrar et</button></div></div>`;
+  const rev=B.miss.length?`<div class="brev"><span class="eyebrow">Bekçinin seni yakaladığı kelimeler</span>${B.miss.map(x=>`<div><button class="ka-icon-btn" data-say="${esc(x.en)}" aria-label="Dinle">${ic('sound')}</button><b>${esc(x.en)}</b><span>${esc(x.tr)}</span></div>`).join('')}</div>`:'';
+  if(won){finish(4,'Kemerden geçtin!',`${B.total} taş · ${B.lives} can kaldı${B.miss.length?'':' · kusursuz'}`);if(rev)ST().querySelector('.done-card').insertAdjacentHTML('beforeend',rev);return}
+  KA.sfx.bad();prog(B.hits,B.total);
+  ST().innerHTML=`<div class="card done-card"><div class="bigic bad">${mic('boss')}</div><h2>Bekçi geçit vermedi</h2><p class="mut">${B.hits}/${B.total} taşı düşürdün. Aşağıdaki kelimelere bir bak, sonra tekrar dene.</p>${rev}<div class="row" style="justify-content:center;margin-top:18px"><button class="btn btn-p btn-lg" data-m="4">${ic('reset')}Tekrar dene</button><button class="btn btn-ghost" data-m="0">Kapı ile tekrar et</button></div></div>`;
 }
 
 /* ---------- 6. Cümle: bütün cümleler, onar onar ---------- */
@@ -868,12 +904,14 @@ function exportPack(){
 document.addEventListener('click',e=>{
   const t=e.target;
   const tk=t.closest('.tk');if(tk){const host=tk.closest('.para,.qsent,.sentbox,.serif');const ctx=host?host.textContent:'';const it=Q&&Q.cur&&Q.cur.x||K&&K.q&&K.q[0];lookupOn(tk,ctx,(C&&C.cur&&C.cur.x&&C.cur.x.mo)||(it&&it.mo));return}
-  if(t.closest('#flip')&&!t.closest('[data-stop]')){K.flip=!K.flip;drawKart();return}
+  if(t.closest('#flip')&&!t.closest('[data-stop]')){K.flip=!K.flip;K.anim='turn';drawKart();return}
   const sy=t.closest('[data-say]');if(sy){KA.speak(sy.dataset.say);return}
-  const mb=t.closest('[data-m]');if(mb){openMode(+mb.dataset.m);return}
+  const mb=t.closest('[data-m]');if(mb&&!mb.closest('.ka-mode')){openMode(+mb.dataset.m);return}
+  const pkb=t.closest('[data-pack]');if(pkb){KA.activeId(pkb.dataset.pack);renderHome();return}
+  if(K&&mode===0&&K.stage!=='open'&&t.closest('#gk .arch')){K.conf=1;K.stage='open';if(K.q[0])KA.speak(K.q[0].en);drawKart();return}
+  const cfb=t.closest('[data-conf]');if(cfb&&K){K.conf=+cfb.dataset.conf;K.stage='open';if(K.q[0])KA.speak(K.q[0].en);drawKart();return}
   const kb=t.closest('[data-k]');if(kb){answerKart(kb.dataset.k==='1');return}
-  const ml=t.closest('[data-ml]');if(ml){pickEsle('l',+ml.dataset.ml,ml);return}
-  const mr=t.closest('[data-mr]');if(mr){pickEsle('r',+mr.dataset.mr,mr);return}
+  const mw=t.closest('[data-mw]');if(mw){pickEsle(+mw.dataset.mw,mw);return}
   const o=t.closest('[data-o]');if(o){const i=+o.dataset.o;if(mode===4)bossMC(i);else if(mode===5)answerCumle(i);else answerMC(i);return}
   const cg=t.closest('[data-cg]');if(cg){C.gi=+cg.dataset.cg;groupCumle();return}
   const pg=t.closest('[data-pg]');if(pg){P.gi=+pg.dataset.pg;drawPara();scrollTo({top:0,behavior:'smooth'});return}
@@ -893,7 +931,7 @@ document.addEventListener('keydown',e=>{
   const inInput=e.target.matches&&e.target.matches('input,textarea,select');
   if(e.key==='Enter'&&e.target.id==='yin'){e.preventDefault();if($('#nextBtn'))$('#nextBtn').click();else if(mode===4)bossYaz();else yazCheck(false);return}
   if(inInput)return;
-  if(mode===0&&K){if(e.key===' '){e.preventDefault();K.flip=!K.flip;drawKart()}else if(e.key==='1')answerKart(false);else if(e.key==='2')answerKart(true);return}
+  if(mode===0&&K&&K.q.length){const op=K.stage==='open';if(!op){const c={'1':2,'2':1,'3':0,' ':1}[e.key];if(c!==undefined){e.preventDefault();K.conf=c;K.stage='open';drawKart()}}else if(K.conf===0){if(e.key==='Enter'||e.key===' '||e.key==='1'){e.preventDefault();answerKart(false)}}else if(e.key==='1')answerKart(false);else if(e.key==='2')answerKart(true);return}
   const nb=$('#nextBtn');if(nb&&(e.key==='Enter'||e.key===' ')){e.preventDefault();nb.click();return}
   if(/^[1-4]$/.test(e.key)){const b=document.querySelector(`.opt[data-o="${e.key-1}"]`);if(b&&!b.disabled){e.preventDefault();b.click()}}
 });
