@@ -1,6 +1,444 @@
 {
-  "updated": "2026-11-15T06:20:27.376Z",
+  "updated": "2026-11-16T06:20:25.563Z",
   "items": [
+    {
+      "id": "mwivjneusae8",
+      "date": "2026-11-16",
+      "category": "World",
+      "title": "Zelensky Urges US and Musk to Lift Starlink Restrictions",
+      "src": "https://www.bbc.co.uk/news/articles/c6m25zg88k45o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/9a51/live/78372760-e180-11f1-9386-1b849272ca8f.jpg",
+      "levels": {
+        "1": {
+          "text": "President Zelensky is the leader of Ukraine. He asks the US and Elon Musk for help. He wants them to lift restrictions on Starlink internet. Ukrainian people use Starlink for internet connection. Now, the internet is slowed down. President Zelensky says this slow internet makes things hard. It is difficult to stop Russian attacks because of the slow connection. He asks the US and Musk to be on the right side of history. He wants full internet speed to help his country stay safe from attacks.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this news story?",
+              "opts": [
+                "Russia is buying Starlink from Elon Musk.",
+                "The US is building a new internet system.",
+                "Ukraine needs faster internet to help stop attacks.",
+                "Elon Musk is visiting Ukraine today."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does 'restrictions' mean in this text?",
+              "opts": [
+                "Fast movements",
+                "Rules that limit something",
+                "Free gifts",
+                "New weapons"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Who is the president of Ukraine?",
+              "opts": [
+                "President Zelensky",
+                "Vladimir Putin",
+                "Joe Biden",
+                "Elon Musk"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "True or False: The slow internet makes it easy to stop Russian attacks.",
+              "opts": [
+                "False",
+                "True",
+                "Only on weekends",
+                "The text does not say"
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "Ukrainian President Zelensky is appealing to the United States and Elon Musk to remove restrictions on the Starlink satellite internet system. Currently, the internet service in the region has been slowed down. President Zelensky explained that this reduced internet speed is creating serious problems for his country. Specifically, he stated that the slowed-down internet is making it very difficult for Ukrainian forces to stop Russian attacks effectively. To solve this issue, Zelensky is asking both the US government and Musk to act and be on the 'right side of history' by lifting the limits on Starlink so Ukraine can better defend itself.",
+          "quiz": [
+            {
+              "q": "Why is President Zelensky asking for Starlink restrictions to be lifted?",
+              "opts": [
+                "To sell internet to other countries",
+                "To help stop Russian attacks",
+                "To start a new tech company",
+                "To stream videos faster"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'appealing' mean in this context?",
+              "opts": [
+                "Playing a game",
+                "Making a serious request",
+                "Closing a business",
+                "Running away"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which service is experiencing a slowdown?",
+              "opts": [
+                "The national railway",
+                "Postal delivery services",
+                "Local television stations",
+                "Starlink satellite internet"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "True or False: President Zelensky asked the US and Musk to be on the 'right side of history'.",
+              "opts": [
+                "True",
+                "He only asked Musk",
+                "He only asked the US",
+                "False"
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "Ukrainian President Volodymyr Zelensky has directly called on the United States and billionaire Elon Musk to lift current restrictions placed on the Starlink internet service. According to Zelensky, the recent operational slowdown of the satellite internet network is actively hindering Ukraine's military capabilities. He emphasized that the degraded internet connection is making it increasingly difficult for Ukrainian defenders to counter and stop ongoing Russian attacks across the country. Urging swift action, Zelensky called on both American leaders and Musk to stand on the 'right side of history' by fully restoring the service capabilities. Without reliable, high-speed internet provided by Starlink, defense operations against incoming strikes face significant operational challenges during the conflict.",
+          "quiz": [
+            {
+              "q": "What is the central message of President Zelensky's statement?",
+              "opts": [
+                "Starlink is no longer useful in Ukraine.",
+                "Ukraine plans to launch its own satellite network.",
+                "Restoring full Starlink service is vital to countering Russian attacks.",
+                "The US has refused to provide further aid to Ukraine."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'hindering' mean in the passage?",
+              "opts": [
+                "Creating new jobs",
+                "Making something difficult or slow",
+                "Making something easier",
+                "Fixing broken machines"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What specific issue is currently affecting Ukraine's military capabilities?",
+              "opts": [
+                "Slowed-down Starlink internet",
+                "A shortage of food supplies",
+                "Extreme winter weather",
+                "A lack of vehicles"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "True or False: President Zelensky stated that the slowed-down internet makes it easier to stop attacks.",
+              "opts": [
+                "The text says it only affects civilians",
+                "The text says it has no effect",
+                "False",
+                "True"
+              ],
+              "ans": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwivjqzff6r4",
+      "date": "2026-11-16",
+      "category": "World",
+      "title": "Yemeni forces' retreat leaves Houthis in control of key Red Sea waterway",
+      "src": "https://www.bbc.co.uk/news/articles/cqvg2xgyvnjpo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/e0bf/live/84ae2db0-e165-11f1-9e72-69608c7a1547.jpg",
+      "levels": {
+        "1": {
+          "text": "Saudi-backed forces left their spots near the Bab al-Mandab Strait. This is a very key waterway in the Red Sea. Now, Houthi fighters control this important area. The Saudi-backed forces said they had to move their troops. They need to defend Aden. Aden is their interim capital. The move helps the Houthi fighters gain more power in the region. People watch this area because it is important for ships. The military groups are changing their positions in Yemen right now as the situation changes.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Ships are no longer using the Red Sea waterway.",
+                "Houthi fighters moved their troops to Aden.",
+                "Aden is a new city in the Red Sea.",
+                "Saudi-backed forces left a key Red Sea area to defend Aden."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does 'interim' mean in the text?",
+              "opts": [
+                "Large",
+                "Old",
+                "Temporary",
+                "Permanent"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Why did the Saudi-backed forces move their troops?",
+              "opts": [
+                "To defend their interim capital Aden",
+                "To help the Houthis",
+                "To leave Yemen completely",
+                "To attack new ships"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "True or false: Houthi fighters now control the Bab al-Mandab Strait.",
+              "opts": [
+                "False",
+                "Only Saudi forces control it",
+                "The text does not say",
+                "True"
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "2": {
+          "text": "Saudi-backed military forces have withdrawn from their positions near the Bab al-Mandab Strait. This location is a key waterway in the Red Sea. Because of this movement, Houthi fighters are now in control of the vital area. Representatives from the Saudi-backed forces explained the reason for the retreat. They stated that they are moving their troops to defend Aden, which serves as their interim capital. This strategic change in troop positions alters the situation in Yemen, as the Houthis take over the important maritime route while the other forces focus on protecting their capital.",
+          "quiz": [
+            {
+              "q": "What main event is described in the article?",
+              "opts": [
+                "Saudi-backed forces moved away from a Red Sea waterway to protect Aden.",
+                "Aden was captured by new fighters.",
+                "The Red Sea was closed to all ships.",
+                "Houthis retreated from Aden."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In this text, what does 'vital' mean?",
+              "opts": [
+                "Very important",
+                "Slow",
+                "Dangerous",
+                "Small"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which city is the interim capital for the Saudi-backed forces?",
+              "opts": [
+                "Red Sea",
+                "Houthi",
+                "Aden",
+                "Bab al-Mandab"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "True or false: The Saudi-backed forces moved their troops to attack the Bab al-Mandab Strait.",
+              "opts": [
+                "False",
+                "The forces stayed in place",
+                "True",
+                "The text says they moved to defend Aden"
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "Saudi-backed forces in Yemen have executed a strategic retreat from their positions along the Bab al-Mandab Strait, a key waterway situated in the Red Sea. The departure of these troops has left Houthi fighters in control of the crucial maritime route. According to statements from the Saudi-backed forces, the decision to relocate their military personnel was made in order to bolster defenses around Aden. Aden currently serves as the forces' interim capital. This redeployment shifts the regional dynamic, granting the Houthi movement authority over the strategically vital Red Sea passage while the Saudi-backed coalition prioritizes the protection of their main political and administrative hub against potential threats.",
+          "quiz": [
+            {
+              "q": "Which statement best summarizes the news report?",
+              "opts": [
+                "Houthi forces gained control of a key Red Sea waterway after Saudi-backed troops redeployed to Aden.",
+                "Aden was abandoned by Saudi-backed forces to secure the Red Sea.",
+                "The Bab al-Mandab Strait was closed due to military fighting.",
+                "Saudi-backed forces captured the Bab al-Mandab Strait from the Houthis."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'relocate' mean in the context of the story?",
+              "opts": [
+                "To stop fighting",
+                "To move to a different place",
+                "To attack an enemy",
+                "To build a new city"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What is the current function of Aden for the Saudi-backed forces?",
+              "opts": [
+                "It is a Red Sea port for Houthis.",
+                "It is an abandoned military base.",
+                "It is a secondary trading route.",
+                "It is their interim capital."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "True or false: The Houthi fighters retreated to defend their capital city of Aden.",
+              "opts": [
+                "True",
+                "Saudi forces left Aden to the Houthis",
+                "The text does not mention the Houthis",
+                "False"
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwivjo9etomc",
+      "date": "2026-11-16",
+      "category": "World",
+      "title": "Suspected China Spy Linked to Nvidia's Ex-Boss Left in 2025",
+      "src": "https://www.bbc.co.uk/news/articles/cmdx1vpprk9vo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/fa43/live/e2a9a870-e10d-11f1-93e1-3b657b665bcf.jpg",
+      "levels": {
+        "1": {
+          "text": "There is a scandal with the company Nvidia. People have questions about advanced AI chips. The US has restrictions on these chips. People want to know if the chips went to China anyway. A suspected spy for China was linked to a former boss at Nvidia. The company Megaspeed says this person left in 2025. Now, many people are talking about the rules for AI technology.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the story?",
+              "opts": [
+                "A new computer game by Nvidia",
+                "A new factory opening in 2025",
+                "How to make AI chips at home",
+                "Questions about AI chips going to China"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "In the story, what does the word 'restrictions' mean?",
+              "opts": [
+                "Free gifts for everyone",
+                "New ideas for businesses",
+                "Rules that limit something",
+                "Fast computer speeds"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "When did the suspected spy leave Megaspeed?",
+              "opts": [
+                "In 2020",
+                "In 2023",
+                "In 2024",
+                "In 2025"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE according to the story?",
+              "opts": [
+                "Megaspeed said the person left in 2025.",
+                "The US has no restrictions on AI chips.",
+                "Nvidia is a company that only makes phones.",
+                "No one has questions about Nvidia."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "A recent scandal involving the technology company Nvidia has raised serious questions. People are asking whether advanced artificial intelligence chips ended up in China. The United States has strict restrictions to prevent these high-tech chips from going there. However, concerns remain about where the products actually went. Reports show that a suspected spy for China was connected to a former boss at Nvidia. According to the company Megaspeed, this suspected spy left the firm in 2025. The situation has created renewed focus on how advanced technology is controlled globally.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this text?",
+              "opts": [
+                "Megaspeed is buying Nvidia to make better chips.",
+                "Nvidia is closing all of its offices in China.",
+                "A scandal raised concerns about Nvidia AI chips reaching China.",
+                "The US is removing all restrictions on advanced technology."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'advanced' mean in the text?",
+              "opts": [
+                "Modern and highly developed",
+                "Very old and broken",
+                "Slow and cheap",
+                "Easy to understand"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Who was the suspected spy linked to?",
+              "opts": [
+                "A former boss at Nvidia",
+                "A worker at a store",
+                "An engineer at a school",
+                "A current US president"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE based on the text?",
+              "opts": [
+                "The US encourages sending all AI chips to China.",
+                "The suspected spy currently works as Nvidia's boss.",
+                "Nvidia announced it did not make any AI chips.",
+                "Megaspeed claims the suspected spy left in 2025."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "3": {
+          "text": "A growing scandal surrounding chipmaker Nvidia has raised intense scrutiny over whether advanced artificial intelligence chips reached China despite strict US trade restrictions. The regulations were designed to keep cutting-edge technology out of Chinese hands, but doubts persist about compliance. Adding to the controversy, a suspected spy for China was linked to a former Nvidia executive. Addressing the allegations, the company Megaspeed stated that the individual in question left the organization in 2025. The incident highlights ongoing challenges in enforcing technological safeguards.",
+          "quiz": [
+            {
+              "q": "What is the main focus of this article?",
+              "opts": [
+                "How Megaspeed creates new artificial intelligence software",
+                "The retirement plans of Nvidia's current executive team",
+                "A trade agreement between the US and China in 2025",
+                "Concerns over Nvidia AI chips reaching China despite US limits"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which word is closest in meaning to 'scrutiny' as used in the context of the story?",
+              "opts": [
+                "Complete ignorance",
+                "Casual agreement",
+                "Sudden celebration",
+                "Careful examination"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What did Megaspeed say about the suspected spy?",
+              "opts": [
+                "The person left the company in 2025.",
+                "The person never worked for Megaspeed.",
+                "The person moved to Nvidia in 2025.",
+                "The person was just hired as the new boss."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which of the following statements is TRUE according to the passage?",
+              "opts": [
+                "Megaspeed confirmed the suspected spy departed in 2025.",
+                "US restrictions failed because no rules were ever created.",
+                "China officially bought Megaspeed to get AI chips.",
+                "Nvidia's former boss was proven to be a spy for the US."
+              ],
+              "ans": 0
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mwhg3xpsdyiw",
       "date": "2026-11-15",
@@ -2334,7 +2772,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/e5f9/live/5b43f440-db76-11f1-b1f1-3be4e895d0fe.jpg"
     },
     {
       "id": "mw8vgprh4ks2",
@@ -2479,7 +2918,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/3886/live/ab03aa70-db8a-11f1-b441-2b33b063138f.jpg"
     },
     {
       "id": "mw7g0ucnzjy0",
@@ -2624,7 +3064,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/f6c3/live/95455f00-dac5-11f1-bda8-29fb69dbc026.jpg"
     },
     {
       "id": "mw7g0ua54t84",
@@ -2769,7 +3210,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/1ff8/live/d9aea170-daf1-11f1-a701-fddedf244c16.jpg"
     },
     {
       "id": "mw7g0us4u491",
@@ -2914,7 +3356,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/3578/live/a76cb0d0-dab5-11f1-a701-fddedf244c16.jpg"
     },
     {
       "id": "mw60l4ccpqkr",
@@ -3059,7 +3502,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/fdde/live/9036f7e0-da01-11f1-93e1-3b657b665bcf.jpg"
     },
     {
       "id": "mw60l7tty2r1",
@@ -3204,7 +3648,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/613a/live/900577b0-d9ed-11f1-b441-2b33b063138f.png"
     },
     {
       "id": "mw60lgty4dnj",
@@ -3349,7 +3794,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/5740/live/92c81290-d9cb-11f1-bb8e-efaa31738708.jpg"
     },
     {
       "id": "mw4l59wb7me0",
@@ -3494,7 +3940,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/b0d1/live/49c24750-d9d0-11f1-9e5a-c30c5e3d8c85.jpg"
     },
     {
       "id": "mw4l57gn6ysj",
@@ -3639,7 +4086,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/97ff/live/e5957760-d9b2-11f1-93e1-3b657b665bcf.jpg"
     },
     {
       "id": "mw4l5a04s2y3",
@@ -3784,7 +4232,8 @@
             }
           ]
         }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/69dd/live/60312250-d9ca-11f1-93e1-3b657b665bcf.jpg"
     },
     {
       "id": "mw3h7vgo6rm5",
@@ -3929,297 +4378,8 @@
             }
           ]
         }
-      }
-    },
-    {
-      "id": "mw3h7k5r1jif",
-      "date": "2026-11-05",
-      "category": "World",
-      "title": "What Democrats can and can't do with their new power after taking Congress",
-      "src": "https://www.bbc.co.uk/news/articles/cq1kdgnn2xdeo?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "Democrats have new power in Congress. They can vote and pass new legislation. This means they can make new rules and laws. However, Donald Trump is still the president. Trump has veto power. Veto means he can stop a law from passing even if Congress votes for it. So, Democrats can approve new laws in Congress, but they cannot make every law happen alone. They must remember that President Trump can still block their plans with his veto.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "Congress cannot vote on any new legislation.",
-                "Democrats have new power, but Trump can still veto their laws.",
-                "Trump lost all of his power to the Democrats.",
-                "Democrats and Trump agree on every new law."
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What does the word 'veto' mean in the text?",
-              "opts": [
-                "To help write a law",
-                "To stop a law from passing",
-                "To start a new party",
-                "To vote for a new leader"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What can Democrats do with their new power?",
-              "opts": [
-                "They can stop Trump from using his veto.",
-                "They can remove the president immediately.",
-                "They can vote legislation through.",
-                "They can change the president's name."
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Which statement is true based on the text?",
-              "opts": [
-                "Democrats can make every law happen alone.",
-                "Congress is not allowed to vote.",
-                "Trump still has veto power.",
-                "Trump no longer has veto power."
-              ],
-              "ans": 2
-            }
-          ]
-        },
-        "2": {
-          "text": "After taking Congress, Democrats now hold significant new power in government. With this position, they have the ability to vote legislation through and advance their policy goals. This allows them to pass new laws in the legislative branch. However, their power is not unlimited because Donald Trump remains president. President Trump still holds veto power over any bills that Congress passes. A presidential veto can prevent proposed legislation from officially becoming law. Therefore, while Democrats can successfully vote on and pass legislation through Congress, they must still deal with the fact that President Trump can block their bills. They cannot enact laws completely on their own without facing the president's potential veto.",
-          "quiz": [
-            {
-              "q": "What is the main topic of the text?",
-              "opts": [
-                "Why Donald Trump lost his veto power",
-                "How to vote in American elections",
-                "The full history of Congress",
-                "The limits and abilities of the Democrats' new power"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What does 'legislation' mean in the text?",
-              "opts": [
-                "Laws or bills",
-                "Vetoes",
-                "Elections",
-                "Presidents"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Who still holds veto power?",
-              "opts": [
-                "The legislative branch alone",
-                "The Democrats",
-                "Donald Trump",
-                "Congress"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Which statement is true according to the text?",
-              "opts": [
-                "Donald Trump cannot stop bills passed by Congress.",
-                "Democrats can pass laws completely on their own without limits.",
-                "Democrats can vote legislation through Congress.",
-                "Trump has lost his role as president."
-              ],
-              "ans": 2
-            }
-          ]
-        },
-        "3": {
-          "text": "Following their recent takeover of Congress, Democrats have gained substantial new authority within the legislative process. Equipped with this political power, Democrats now possess the capability to vote legislation through the chamber. This milestone enables them to shape the legislative agenda and push forward proposed bills. Nevertheless, there are distinct boundaries to what they can achieve. Donald Trump remains in the presidency and retains his full veto power. This constitutional mechanism allows President Trump to reject and block any legislation passed by Congress, preventing it from taking effect as law. Consequently, despite their ability to approve bills in Congress, Democrats cannot enact legislation entirely at will, as the threat of a presidential veto continues to stand in their path.",
-          "quiz": [
-            {
-              "q": "What is the main focus of this article?",
-              "opts": [
-                "The balance between Democratic congressional power and Trump's veto authority",
-                "Why President Trump decided to give up his power",
-                "The process of electing a new president in Congress",
-                "A complete list of laws recently passed by Democrats"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "In the context of the text, what does 'retains' mean?",
-              "opts": [
-                "Rejects",
-                "Creates",
-                "Loses",
-                "Keeps"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What specific action can Democrats take after taking Congress?",
-              "opts": [
-                "They can replace the president.",
-                "They can eliminate the presidential veto.",
-                "They can vote legislation through.",
-                "They can pass laws without any opposition."
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Which of the following statements is FALSE based on the text?",
-              "opts": [
-                "Democrats can pass laws without facing any presidential veto.",
-                "Trump still has the power to veto legislation.",
-                "Trump can block legislation passed by Congress.",
-                "Democrats gained new power after taking Congress."
-              ],
-              "ans": 0
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "mw3h7o67vqmk",
-      "date": "2026-11-05",
-      "category": "World",
-      "title": "France gears up for strikes and protests as unions promise national mobilisation",
-      "src": "https://www.bbc.co.uk/news/articles/ckx2qzv835pgo?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "Five trade unions in France joined together for a national day of action. Workers started strikes and protests across the country. They want to show their power and make their voices heard. Many people are participating in these events. The unions promised a big national mobilisation. Because of this, many services in France may stop or work slowly. The unions hope that this action will bring changes for the workers. More protests are expected to happen as the unions continue to work together on this big day.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "Five French unions organised a national day of strikes and protests.",
-                "French unions decided to stop all protests forever.",
-                "Only one small union is striking in France today.",
-                "France is closing all of its public services permanently."
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What does 'mobilisation' mean in this text?",
-              "opts": [
-                "Buying new cars",
-                "Organising people to take action",
-                "Sleeping for a long time",
-                "Traveling to another country"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "How many trade unions joined the national day of action?",
-              "opts": [
-                "Two",
-                "Four",
-                "Three",
-                "Five"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "True or False: The strikes and protests are happening across the nation.",
-              "opts": [
-                "True",
-                "False",
-                "Only in Paris",
-                "Not mentioned"
-              ],
-              "ans": 0
-            }
-          ]
-        },
-        "2": {
-          "text": "Five of France's trade unions have joined a widespread wave of strikes and protests as part of a national day of action. The unions have promised a strong national mobilisation to push for their demands. This coordinated effort means that workers from different sectors across the country are walking out of their jobs and taking to the streets. Public transport, schools, and other services could face severe disruptions throughout the day. Union leaders hope this large-scale action will demonstrate their strength and force officials to listen to their concerns. The national mobilisation marks a significant moment of unity among the five different labor organisations as they push forward together.",
-          "quiz": [
-            {
-              "q": "What is the main topic of the article?",
-              "opts": [
-                "A new law passed by the French government",
-                "A holiday celebrated by workers in France",
-                "A national day of strikes by five French unions",
-                "A union election in France"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What does the word 'disruptions' mean in the text?",
-              "opts": [
-                "Very fast public transport",
-                "Problems that interrupt normal activities",
-                "Celebrations in the street",
-                "New job opportunities"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What have the five unions promised to deliver?",
-              "opts": [
-                "Free transport for everyone",
-                "A new political party",
-                "An end to all strikes",
-                "A national mobilisation"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which of the following is TRUE according to the text?",
-              "opts": [
-                "Five trade unions joined the wave of strikes.",
-                "No services will be affected by the protests.",
-                "The protests are limited to a single town.",
-                "Only one union is participating in the action."
-              ],
-              "ans": 0
-            }
-          ]
-        },
-        "3": {
-          "text": "Five of France's leading trade unions have joined forces in a widespread wave of strikes and protests, marking a powerful national day of action. Promising a full-scale national mobilisation, the labor organisations have called upon workers nationwide to demonstrate their collective strength. The coordinated strike action is expected to cause notable disruptions to public services, transport networks, and various business sectors throughout the country. By uniting five major unions under a single cause, labor leaders aim to send a strong message to both employers and government officials. As citizens gear up for the widespread movement, public attention remains focused on the scale of the participation and the potential impact of this massive display of union solidarity across France.",
-          "quiz": [
-            {
-              "q": "What is the main idea of Level 3?",
-              "opts": [
-                "Five unions united for a major national day of strikes and protests.",
-                "French trade unions are ending their agreements.",
-                "The French government banned all national demonstrations.",
-                "Public transport in France is operating without any issues."
-              ],
-              "ans": 0
-            },
-            {
-              "q": "In the context of the passage, what does 'solidarity' mean?",
-              "opts": [
-                "A type of strike action",
-                "Unity and mutual support among a group",
-                "Complete disagreement among people",
-                "A financial system"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What kind of day of action have the unions joined?",
-              "opts": [
-                "A national day of action",
-                "An international meeting",
-                "A local city action",
-                "A weekend festival"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Which statement is FALSE based on the text?",
-              "opts": [
-                "Five unions joined the wave of strikes.",
-                "The action is a national day of protests.",
-                "The unions promised a national mobilisation.",
-                "Only one trade union is taking part in the strikes."
-              ],
-              "ans": 3
-            }
-          ]
-        }
-      }
+      },
+      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/3c74/live/1d4cf850-d8e5-11f1-a701-fddedf244c16.jpg"
     }
   ]
 }
