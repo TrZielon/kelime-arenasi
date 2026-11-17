@@ -1,6 +1,444 @@
 {
-  "updated": "2026-11-16T06:20:25.563Z",
+  "updated": "2026-11-17T06:20:38.228Z",
   "items": [
+    {
+      "id": "mwkazpbuicss",
+      "date": "2026-11-17",
+      "category": "World",
+      "title": "Two major Kyiv bridges hit in Russian attack, mayor says",
+      "src": "https://www.bbc.co.uk/news/articles/cw772jk4rvmxo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/1524/live/baf89050-e227-11f1-a094-5fdc692f3e33.jpg",
+      "levels": {
+        "1": {
+          "text": "The mayor of Kyiv says a Russian attack hit two main bridges in the city. This event happened after a big attack by Ukraine. Moscow said Ukraine used many drones to attack Russia one day before. Moscow called it the largest drone attack by Ukraine since the war started. Now, people in Kyiv are worried about the damaged bridges. Both countries are using many weapons in the war. The situation remains very dangerous for everyone in the area.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Russia built two new bridges in Kyiv.",
+                "Kyiv bridges were hit after Ukraine launched a large drone attack.",
+                "The mayor of Kyiv visited Moscow.",
+                "Ukraine stopped all drone attacks against Russia."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "In the text, what does the word 'largest' mean?",
+              "opts": [
+                "Smallest",
+                "Quiet",
+                "Biggest",
+                "Slowest"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "When did Ukraine launch its big drone attack according to Moscow?",
+              "opts": [
+                "Two weeks ago",
+                "On the same night",
+                "One day before the bridges were hit",
+                "One month ago"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "The mayor of Moscow reported the bridge hits.",
+                "Moscow reported the largest drone attack from Ukraine.",
+                "No bridges were damaged in Kyiv.",
+                "Russia launched zero attacks on Kyiv."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "2": {
+          "text": "According to the mayor of Kyiv, Russian forces hit two major bridges in the capital city. The reported strikes on the key bridges occurred just one day after Ukraine launched a massive attack against Russia. Russian officials in Moscow stated that Ukraine used a record number of drones in that previous strike. They called it the largest drone attack recorded by Ukraine since the war originally began. These continuous strikes show an increase in heavy actions between the two nations. The hits on the bridges in Kyiv have caused major concern, coming directly after the reported record-breaking drone event over Russian territory.",
+          "quiz": [
+            {
+              "q": "What is the main topic of this news report?",
+              "opts": [
+                "Strikes on Kyiv bridges following a huge Ukrainian drone attack",
+                "A decision by Moscow to stop using drones in the war",
+                "The construction of bridges across the city of Kyiv",
+                "A peace agreement signed between Russia and Ukraine"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'major' mean in the text?",
+              "opts": [
+                "Broken or useless",
+                "Hidden or secret",
+                "Tiny or minor",
+                "Important or large"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "How did Moscow describe Ukraine's drone attack?",
+              "opts": [
+                "As an attack using only two drones",
+                "As a failed attempt",
+                "As a small military test",
+                "As the largest recorded drone attack since the war started"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is FALSE based on the text?",
+              "opts": [
+                "The bridge strikes happened one day after the drone attack.",
+                "The drone attack was the smallest since the war began.",
+                "Moscow reported the drone attack.",
+                "Two bridges in Kyiv were reportedly hit."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "Russian forces have targeted and hit two major bridges in Kyiv, according to statements made by the city's mayor. The reported strikes on this critical infrastructure occurred just a single day after Ukraine carried out what Moscow described as the largest recorded Ukrainian drone attack on Russian territory since the conflict began. Russian authorities confirmed that the previous day's assault involved an unprecedented scale of drone activity targeting various areas. This rapid sequence of events highlights a sharp escalation in strikes between the two countries. While the full extent of the damage to the Kyiv bridges remains under evaluation, the strikes follow directly on the heels of the massive aerial offensive reported by Moscow officials.",
+          "quiz": [
+            {
+              "q": "What is the primary focus of the article?",
+              "opts": [
+                "International reactions to the use of drones in conflict",
+                "Kyiv bridge strikes following Ukraine's largest reported drone attack on Russia",
+                "New traffic rules on the major bridges in Kyiv",
+                "The destruction of all military bases in Moscow"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'occurred' mean in this context?",
+              "opts": [
+                "Happened",
+                "Disappeared",
+                "Failed",
+                "Stopped"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What happened one day before the reported strikes on the Kyiv bridges?",
+              "opts": [
+                "Kyiv mayor visited Moscow for talks",
+                "Russia rebuilt two bridges in Kyiv",
+                "Ukraine launched its largest recorded drone attack on Russia",
+                "Ukraine stopped all military operations"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "The drone attack took place three days after the bridge strikes.",
+                "Moscow claimed the drone attack was the largest by Ukraine since the war began.",
+                "Russia reported that no drones were used in the attack on its territory.",
+                "The mayor of Kyiv denied that any bridges were hit."
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwkazvf8350x",
+      "date": "2026-11-17",
+      "category": "World",
+      "title": "Ukraine Accuses Russia of Targeting Rescue Operation",
+      "src": "https://www.bbc.co.uk/news/articles/c30rk8x5g80qo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/ba46/live/5efa38d0-df84-11f1-a701-fddedf244c16.png",
+      "levels": {
+        "1": {
+          "text": "A bad attack happened in southern Ukraine. The attack is called a 'double-tap' strike. It killed 72 people. Now, rescuers want to find and recover the bodies. But this work is very hard and slow. Officials say Russian strikes are still happening. These continuing strikes hamper the rescue operation. This means the strikes make the rescue work difficult and stop progress. Ukraine accuses Russia of targeting the rescue team on purpose. The rescuers are trying to do their job, but the strikes do not stop. The situation remains very dangerous for everyone in the area.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "A double-tap strike was prevented in Ukraine.",
+                "Rescuers are stopping their work forever.",
+                "Russian strikes make body recovery difficult in Ukraine.",
+                "Ukraine is sending rescuers to Russia."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does 'hamper' mean in the text?",
+              "opts": [
+                "To make something difficult or slow",
+                "To end a war peacefully",
+                "To count bodies quickly",
+                "To help someone complete a job"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "How many people were killed in the 'double-tap' attack?",
+              "opts": [
+                "50",
+                "72",
+                "12",
+                "100"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "True or False: Officials say Russian strikes have stopped during the rescue operation.",
+              "opts": [
+                "The text does not say",
+                "False",
+                "True",
+                "Only on weekends"
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "2": {
+          "text": "Ukrainian officials say that efforts to recover bodies after a deadly attack are facing major problems. The incident was a 'double-tap' strike in southern Ukraine that tragically killed 72 people. Rescue teams are trying to search the area and collect the victims, but continuing Russian strikes hamper their important work. To hamper means to prevent progress or make an action hard to complete. Ukraine accuses Russia of deliberately targeting the rescue operation with these ongoing attacks. Because the strikes have not stopped, the recovery mission remains extremely dangerous for the workers. Officials report that the situation in the south is very serious as rescuers struggle to perform their duties safely under fire.",
+          "quiz": [
+            {
+              "q": "What is the main point of this news article?",
+              "opts": [
+                "Continuing strikes complicate body recovery after a deadly attack.",
+                "Ukraine launched a double-tap attack in the south.",
+                "Rescue workers are accused of stopping their duties.",
+                "Officials have successfully finished the rescue mission."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In the text, what is the meaning of 'hamper'?",
+              "opts": [
+                "To build a strong structure",
+                "To clean an area completely",
+                "To move very quickly",
+                "To make an action hard to complete"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Where did the 'double-tap' strike happen?",
+              "opts": [
+                "In southern Ukraine",
+                "In northern Ukraine",
+                "In eastern Russia",
+                "In western Russia"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE according to the passage?",
+              "opts": [
+                "Rescue teams can work safely without danger.",
+                "Russia is helping Ukraine recover the bodies.",
+                "Ukraine accuses Russia of targeting the rescue operation.",
+                "The double-tap strike killed 12 people."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "3": {
+          "text": "Official sources in Ukraine report that ongoing efforts to recover bodies following a devastating 'double-tap' attack in the southern part of the country are being severely hampered. The initial attack resulted in the deaths of 72 people. Now, rescue workers attempting to retrieve the victims are facing extreme hazards due to persistent Russian strikes in the area. In this context, the word 'hamper' means to obstruct or impede the progress of an operation. Ukrainian officials explicitly accuse Russia of intentionally targeting the rescue operation itself, making it nearly impossible for teams to clear the site safely. As continuous bombardment plagues the region, emergency crews are forced to navigate ongoing military strikes while attempting to carry out their critical recovery duties. The situation highlights the severe risks faced by emergency responders in active conflict zones.",
+          "quiz": [
+            {
+              "q": "What is the primary focus of the report?",
+              "opts": [
+                "A diplomatic meeting between Ukraine and Russia",
+                "Efforts to retrieve bodies after a deadly strike are hindered by ongoing attacks",
+                "A successful evacuation of civilians from southern Ukraine",
+                "The end of military operations in southern Ukraine"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which word has the same meaning as 'hamper' as used in the passage?",
+              "opts": [
+                "Accelerate",
+                "Assist",
+                "Impede",
+                "Organize"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "How many casualties were caused by the initial 'double-tap' strike?",
+              "opts": [
+                "27 people",
+                "72 people",
+                "100 people",
+                "An unknown number"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Is the following statement TRUE or FALSE? Ukraine claims Russia is purposely targeting the rescue operation.",
+              "opts": [
+                "False, because Russia is assisting",
+                "True",
+                "False",
+                "Not mentioned in the text"
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwkazsaw4zt8",
+      "date": "2026-11-17",
+      "category": "World",
+      "title": "Imran Khan Seeks Urgent Medical Care in Prison",
+      "src": "https://www.bbc.co.uk/news/articles/cr894xq5yeyko?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/34cb/live/06da8400-e224-11f1-91de-bf87f3de9484.jpg",
+      "levels": {
+        "1": {
+          "text": "Imran Khan is the former prime minister of Pakistan. He has been in prison since August 2023. Now, he wants urgent medical care. Khan says he has been denied justice. He is afraid that he may not return alive from prison. His medical needs are very important to him right now. He hopes to get the help he needs soon. His time in prison has been very hard. People are watching his situation closely. He continues to ask for fair treatment and help.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Imran Khan has just left the country.",
+                "Imran Khan is winning a new election in Pakistan.",
+                "Imran Khan is starting a new hospital.",
+                "Imran Khan is asking for urgent medical care in prison."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does 'urgent' mean in this text?",
+              "opts": [
+                "Not important",
+                "Needing quick action",
+                "Happy and fun",
+                "Very slow"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "How long has Imran Khan been in prison?",
+              "opts": [
+                "Since January 2023",
+                "Since August 2024",
+                "Since August 2023",
+                "Since yesterday"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "True or False: Imran Khan fears he may not return alive.",
+              "opts": [
+                "False",
+                "The text says he is healthy",
+                "True",
+                "The text says he is outside"
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "2": {
+          "text": "Former Pakistani Prime Minister Imran Khan is requesting urgent medical treatment while in prison. Khan has been detained since August 2023. He recently stated that he has been denied justice during his time behind bars. Because of his worsening situation and lack of care, he fears that he may not return alive from prison. Khan wants immediate medical attention to address his health concerns. His supporters and observers are monitoring his health and legal status. The former leader continues to speak out about his treatment, demanding fair access to justice and proper medical care before his condition gets worse.",
+          "quiz": [
+            {
+              "q": "What is this story mostly about?",
+              "opts": [
+                "Imran Khan's plan to travel abroad",
+                "A doctor visiting Pakistan",
+                "A legal change in Pakistan's government",
+                "Imran Khan demanding medical care in prison"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "In the text, what does 'detained' mean?",
+              "opts": [
+                "Allowed to go home",
+                "Elected to office",
+                "Kept in confinement or prison",
+                "Given a medical reward"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "When was Imran Khan first put in prison?",
+              "opts": [
+                "August 2024",
+                "December 2023",
+                "August 2023",
+                "August 2022"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which of the following statements is TRUE according to the text?",
+              "opts": [
+                "Imran Khan fears he may not return alive from prison.",
+                "Imran Khan refuses to accept any medical treatment.",
+                "Imran Khan has been free since August 2023.",
+                "Imran Khan says he has received full justice."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "Former Prime Minister of Pakistan Imran Khan is seeking urgent medical care while remaining incarcerated. Khan, who has been held in prison since August 2023, has voiced deep concerns regarding his health and treatment. He stated that he has been continuously denied justice throughout his imprisonment. The former leader expressed severe fear over his current circumstances, warning that he 'may not return alive' if he does not receive immediate and proper attention. As his detention continues, Khan's demands for adequate medical care and fair legal treatment highlight his ongoing struggles behind bars. Observers continue to follow the situation as he appeals for basic rights and medical intervention.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the article?",
+              "opts": [
+                "A detailed medical report on Pakistani prisons",
+                "Imran Khan's release from detention in August 2023",
+                "Imran Khan's call for urgent medical care amidst fears for his life in prison",
+                "The election of a new prime minister in Pakistan"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'incarcerated' mean in the text?",
+              "opts": [
+                "Living in freedom",
+                "Working as a doctor",
+                "Kept in prison",
+                "Traveling to another country"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "According to the summary, what has Imran Khan been denied since his imprisonment?",
+              "opts": [
+                "A lawyer",
+                "Food",
+                "A television",
+                "Justice"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is FALSE according to the text?",
+              "opts": [
+                "Imran Khan has been in prison since August 2023.",
+                "Imran Khan stated that he has received complete justice in prison.",
+                "Imran Khan is a former prime minister of Pakistan.",
+                "Imran Khan fears he may not return alive."
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mwivjneusae8",
       "date": "2026-11-16",
@@ -3942,444 +4380,6 @@
         }
       },
       "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/b0d1/live/49c24750-d9d0-11f1-9e5a-c30c5e3d8c85.jpg"
-    },
-    {
-      "id": "mw4l57gn6ysj",
-      "date": "2026-11-06",
-      "category": "World",
-      "title": "Trump signs order on Oval Office decor",
-      "src": "https://www.bbc.co.uk/news/articles/cmy0eeg101djo?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "Donald Trump signed a new order. This order stops future presidents from changing the Oval Office. The Oval Office is a famous room in the White House. Trump made this decision after he made many big changes to the room's decor. He also tore down the White House East Wing. Now, future leaders cannot change the Oval Office decor like he did. Trump wants the room to stay the way it is now.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "Trump signed an order to stop future presidents from changing the Oval Office.",
-                "Trump built a new East Wing for the White House.",
-                "Future presidents will change the Oval Office every year.",
-                "The Oval Office was closed to all visitors."
-              ],
-              "ans": 0
-            },
-            {
-              "q": "In the text, what does the word 'decor' relate to?",
-              "opts": [
-                "The name of a leader",
-                "The price of a building",
-                "The decoration and style of a room",
-                "The rules of a sport"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What part of the White House did Trump tear down?",
-              "opts": [
-                "The Oval Office",
-                "The East Wing",
-                "The North Portico",
-                "The West Wing"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "Which statement is TRUE according to the story?",
-              "opts": [
-                "The order allows future presidents to tear down the Oval Office.",
-                "Trump made many big changes to the Oval Office decor.",
-                "Future presidents are required to change the Oval Office.",
-                "Trump did not change anything in the White House."
-              ],
-              "ans": 1
-            }
-          ]
-        },
-        "2": {
-          "text": "Donald Trump has signed a new executive order regarding the White House. This order prevents future presidents from changing the decor of the Oval Office. The decision was made after Trump introduced a series of major changes to the famous room's interior design. Along with altering the Oval Office decor, Trump also tore down the East Wing of the White House. Because of his new order, future leaders will not have the power to undo his changes or redecorate the Oval Office according to their own tastes. The order ensures that the current look of the Oval Office remains protected from any future modifications by coming presidents.",
-          "quiz": [
-            {
-              "q": "What is the main topic of this news report?",
-              "opts": [
-                "An order by Trump preventing future changes to the Oval Office",
-                "A plan to rebuild the White House East Wing",
-                "New rules for visiting the President's office",
-                "A history of interior design in the White House"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What does the word 'prevents' mean in the text?",
-              "opts": [
-                "Stops something from happening",
-                "Encourages someone to act",
-                "Asks for permission",
-                "Explains a difficult idea"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What did Trump do to the White House decor before signing the order?",
-              "opts": [
-                "He allowed future presidents to choose the design.",
-                "He left it completely untouched.",
-                "He painted it red.",
-                "He made a series of big changes to the Oval Office."
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which statement is TRUE based on the text?",
-              "opts": [
-                "The order was signed by a future president.",
-                "Trump tore down the East Wing of the White House.",
-                "Future presidents can easily change the Oval Office.",
-                "Trump preserved the East Wing without any changes."
-              ],
-              "ans": 1
-            }
-          ]
-        },
-        "3": {
-          "text": "Donald Trump has signed an official order designed to block future presidents from altering the decor of the Oval Office. This action comes directly after Trump completed a series of substantial modifications to the iconic room's interior aesthetic. In addition to these major changes inside the Oval Office, Trump also tore down the White House East Wing. By signing this order, Trump aims to protect the current state of the room, ensuring that subsequent commanders-in-chief cannot redecorate or reverse the design choices he has implemented. The order effectively freezes the Oval Office decor, preventing future administrations from putting their own personal stamp on the famous workspace.",
-          "quiz": [
-            {
-              "q": "What main action did Trump take according to the report?",
-              "opts": [
-                "He ordered the total reconstruction of the East Wing.",
-                "He signed an order to stop future leaders from altering Oval Office decor.",
-                "He restored the original historical look of the White House.",
-                "He invited future presidents to redecorate the Oval Office."
-              ],
-              "ans": 1
-            },
-            {
-              "q": "As used in the text, what does the word 'altering' mean?",
-              "opts": [
-                "Destroying completely",
-                "Protecting legally",
-                "Cleaning thoroughly",
-                "Changing or modifying"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What physical structure did Trump demolish according to the summary?",
-              "opts": [
-                "The West Wing",
-                "The Oval Office",
-                "The Rose Garden",
-                "The White House East Wing"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which statement is TRUE according to the article?",
-              "opts": [
-                "The order follows Trump's series of big changes to the Oval Office decor.",
-                "The East Wing was expanded rather than torn down.",
-                "Trump made no major changes to the Oval Office prior to the order.",
-                "Future administrations are encouraged to redecorate the room."
-              ],
-              "ans": 0
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/97ff/live/e5957760-d9b2-11f1-93e1-3b657b665bcf.jpg"
-    },
-    {
-      "id": "mw4l5a04s2y3",
-      "date": "2026-11-06",
-      "category": "World",
-      "title": "White House denies Hegseth and Rubio to leave jobs after Republican election losses",
-      "src": "https://www.bbc.co.uk/news/articles/cqg7xxg4jdv5o?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "US media reports say some people want to replace Pete Hegseth. He may also face an impeachment vote. At the same time, rumors say Mark Rubio wants to run for president. These reports came after Republicans lost elections. However, the White House denies that Pete Hegseth and Mark Rubio will leave their jobs. The White House says both men are staying in their positions. They will continue their work despite the rumors and the election results.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "Pete Hegseth won a major election.",
-                "Mark Rubio was voted out of office.",
-                "The White House denies Hegseth and Rubio are leaving their jobs.",
-                "The US media elected a new president."
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What does the word 'denies' mean in the text?",
-              "opts": [
-                "Writes a news story",
-                "Asks a question",
-                "Agrees with the reports",
-                "Says something is not true"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What might Pete Hegseth face according to reports?",
-              "opts": [
-                "A new media job",
-                "A promotion",
-                "An impeachment vote",
-                "A presidential run"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "True or False: Mark Rubio is rumored to be looking at a presidential run.",
-              "opts": [
-                "True",
-                "The White House confirmed it",
-                "False",
-                "The text says he already won"
-              ],
-              "ans": 0
-            }
-          ]
-        },
-        "2": {
-          "text": "Following recent Republican election losses, US media reports claim there are growing calls to replace Pete Hegseth. Reports also state that Hegseth could face a possible impeachment vote. Meanwhile, other rumors suggest that Mark Rubio is eyeing a future presidential run. Despite these media claims, the White House has officially denied that either man will be leaving his position. Officials state that Hegseth and Rubio will remain in their current roles. The White House pushback comes as commentators discuss the fallout from the recent election results and speculate about potential changes in government leadership.",
-          "quiz": [
-            {
-              "q": "What is the main focus of the article?",
-              "opts": [
-                "The results of a recent presidential vote",
-                "Mark Rubio starting his campaign for president",
-                "Pete Hegseth resigning from his position",
-                "The White House denying that Hegseth and Rubio are leaving"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "In the text, what does the word 'eyeing' mean?",
-              "opts": [
-                "Ignoring completely",
-                "Rejecting firmly",
-                "Failing to see",
-                "Looking at or considering"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What political event happened before these reports emerged?",
-              "opts": [
-                "Pete Hegseth was impeached.",
-                "Mark Rubio became president.",
-                "The White House hired new staff.",
-                "Republicans suffered election losses."
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which statement is TRUE according to the text?",
-              "opts": [
-                "Republicans won the recent elections.",
-                "Pete Hegseth faces a potential impeachment vote according to media reports.",
-                "Mark Rubio has officially left his job.",
-                "The White House confirmed Hegseth will be replaced."
-              ],
-              "ans": 1
-            }
-          ]
-        },
-        "3": {
-          "text": "The White House has firmly rejected claims that Pete Hegseth and Mark Rubio will be stepping down from their positions in the wake of recent Republican election losses. US media reports had previously indicated that there were mounting calls to replace Hegseth, who is additionally facing the prospect of a potential impeachment vote. Simultaneously, separate reports surfaced speculating that Rubio is eyeing a potential presidential run. Despite these widespread media reports and political rumors, White House representatives insist that both officials will remain in their posts, dismissing speculation about impending staff departures following the unfavorable election outcomes.",
-          "quiz": [
-            {
-              "q": "What main message is the White House conveying?",
-              "opts": [
-                "Reports about Hegseth and Rubio leaving their jobs are untrue.",
-                "An impeachment vote against Hegseth has passed.",
-                "The recent election results were a success for Republicans.",
-                "Hegseth and Rubio are retiring immediately."
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What does 'surfaced' mean in this context?",
-              "opts": [
-                "Disappeared completely",
-                "Sank to the bottom",
-                "Was proven false",
-                "Became known or appeared"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What is Mark Rubio rumored to be considering?",
-              "opts": [
-                "Running for president",
-                "Leading an impeachment vote",
-                "Replacing Pete Hegseth",
-                "Joining the US media"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Which of the following is FALSE based on the text?",
-              "opts": [
-                "Republicans recently experienced election losses.",
-                "The White House confirmed that Pete Hegseth will be replaced.",
-                "The White House denies that Rubio and Hegseth will leave.",
-                "Pete Hegseth faces a possible impeachment vote according to reports."
-              ],
-              "ans": 1
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/69dd/live/60312250-d9ca-11f1-93e1-3b657b665bcf.jpg"
-    },
-    {
-      "id": "mw3h7vgo6rm5",
-      "date": "2026-11-05",
-      "category": "World",
-      "title": "Vance Criticizes Republican Defeat and Points to Iran War",
-      "src": "https://www.bbc.co.uk/news/articles/crz98zqkz7z0o?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "Vice President Vance gave a very blunt assessment of a recent Republican election defeat. His strong critique was one of the sharpest breaks with a sitting president in recent memory. Vance blamed the election loss on a war with Iran. He spoke directly about why the Republicans lost. This event showed a big difference in opinion between the vice president and the sitting president. People were surprised by his honest words about the political situation and the war.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "Republicans celebrated a big victory.",
-                "Vance strongly criticized a Republican election loss and blamed a war.",
-                "The president ended the war with Iran.",
-                "Vance won a new election."
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What does the word 'blunt' mean in the text?",
-              "opts": [
-                "Direct and honest",
-                "Quiet and shy",
-                "Slow to move",
-                "Very polite"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What did Vance blame for the election defeat?",
-              "opts": [
-                "A war with Iran",
-                "New voting laws",
-                "High taxes",
-                "Bad weather"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "True or False: Vance's actions showed a sharp break with a sitting president.",
-              "opts": [
-                "False",
-                "Not mentioned",
-                "Only partly true",
-                "True"
-              ],
-              "ans": 3
-            }
-          ]
-        },
-        "2": {
-          "text": "Vice President Vance recently shared a blunt assessment regarding a Republican election defeat. His scathing critique marked one of the sharpest breaks with a sitting president in recent memory. During his comments, Vance directly blamed a war with Iran for the political loss. By speaking out so strongly, Vance highlighted a major rift between himself and the current president. It is rare for a sitting vice president to criticize political outcomes and presidential context so openly. This sudden public split has drawn significant attention because it shows deep disagreement at the highest level of government over the impact of foreign conflict on domestic elections.",
-          "quiz": [
-            {
-              "q": "What is the main focus of Level 2?",
-              "opts": [
-                "A speech about future election plans",
-                "A new agreement between Vance and the president",
-                "Vance's open critique of an election loss linked to an Iran war",
-                "The end of the conflict with Iran"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "In the text, what does 'scathing' mean?",
-              "opts": [
-                "Confused and weak",
-                "Gentle and kind",
-                "Severe and harsh",
-                "Short and quiet"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What specific cause did Vance give for the Republican loss?",
-              "opts": [
-                "Economic inflation",
-                "Low voter turnout",
-                "Media bias",
-                "A war with Iran"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which statement is TRUE according to the text?",
-              "opts": [
-                "The Republicans won the recent election.",
-                "Vance's critique was a very rare break with a sitting president.",
-                "Vance avoided talking about the election defeat.",
-                "Vance agreed completely with the president."
-              ],
-              "ans": 1
-            }
-          ]
-        },
-        "3": {
-          "text": "In a remarkable political development, Vice President Vance delivered a blunt assessment of a recent Republican election defeat, attributing the loss to an ongoing war with Iran. His scathing critique represents one of the sharpest public breaks with a sitting president in recent memory. By explicitly linking the electoral setback to the foreign conflict, Vance created a visible divide between his perspective and that of the current administration. Such an open disagreement from a serving vice president is exceptionally rare, shedding light on internal tensions regarding the political fallout of international military actions. Observers noted that Vance did not hold back in his evaluation, marking a memorable moment of public discord within top political ranks.",
-          "quiz": [
-            {
-              "q": "What is the main idea of this report?",
-              "opts": [
-                "Republicans gained many seats despite a foreign conflict.",
-                "Iran influenced the outcome of a presidential primary.",
-                "Vance offered a sharp critique of an election defeat, blaming an Iran war and breaking with the president.",
-                "The president fired the vice president over foreign policy."
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What does the word 'assessment' mean in this context?",
-              "opts": [
-                "A financial payment",
-                "A physical movement",
-                "An evaluation or judgment",
-                "A secret agreement"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Who did Vance break with in his recent assessment?",
-              "opts": [
-                "The opposition party leaders",
-                "A sitting president",
-                "Election officials",
-                "Foreign diplomats"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "Which of the following is FALSE based on the text?",
-              "opts": [
-                "The event is one of the sharpest breaks with a president in recent memory.",
-                "Vance blamed the election defeat on a war with Iran.",
-                "Vance's critique was subtle and supportive of the president.",
-                "Vance delivered a blunt assessment of the Republican defeat."
-              ],
-              "ans": 2
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/3c74/live/1d4cf850-d8e5-11f1-a701-fddedf244c16.jpg"
     }
   ]
 }
