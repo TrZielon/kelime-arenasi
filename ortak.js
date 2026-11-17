@@ -73,19 +73,22 @@ KA.addUnknown=(en,tr,extra)=>{
 };
 
 /* ---------- Yapay zekâ ---------- */
-const SRV={server_config:'Sunucuda API anahtarı tanımlı değil.',rate:'Çok fazla istek gönderildi, biraz bekle.',upstream:'Yapay zekâ servisine şu an ulaşılamadı.',prompt:'İstek geçersiz.',origin:'Bu adres sunucuda izinli değil.',image:'Fotoğraf gönderilemedi (çok büyük ya da desteklenmeyen biçim).'};
+const SRV={busy:'Yapay zekâ şu an yoğun, biraz sonra tekrar dene.',server_config:'Sunucuda API anahtarı tanımlı değil.',rate:'Çok fazla istek gönderildi, biraz bekle.',upstream:'Yapay zekâ servisine şu an ulaşılamadı.',prompt:'İstek geçersiz.',origin:'Bu adres sunucuda izinli değil.',image:'Fotoğraf gönderilemedi (çok büyük ya da desteklenmeyen biçim).'};
 const gate={n:0,q:[],max:2};
 const gIn=()=>gate.n<gate.max?(gate.n++,Promise.resolve()):new Promise(r=>gate.q.push(r));
 const gOut=()=>{const r=gate.q.shift();if(r)r();else gate.n--};
+// Safari "Load failed", Chrome "Failed to fetch": ağ seviyesinde kopma; kısa bekleyip iki kez daha dene
+const isNet=e=>e&&e.name!=='AbortError'&&(e instanceof TypeError||/load failed|failed to fetch|networkerror|network connection/i.test(e.message||''));
+async function netRetry(f,ac){for(let i=0;;i++){try{return await f()}catch(e){if(!isNet(e)||i>=2||ac.signal.aborted)throw e;await new Promise(r=>setTimeout(r,1500*(i+1)))}}}
 KA.ai=async(prompt,o={})=>{
   if(location.protocol==='file:')throw new Error('Yapay zekâ için siteyi https adresinden aç.');
   await gIn();
-  const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),o.ms||55000);
+  const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),o.ms||62000);
   try{
-    const r=await fetch('api/claude',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(Object.assign({prompt,tier:o.tier||'default'},o.image?{image:o.image}:{},o.mode?{mode:o.mode}:{},o.json?{json:true}:{})),signal:ac.signal});
+    const r=await netRetry(()=>fetch('api/claude',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(Object.assign({prompt,tier:o.tier||'default'},o.image?{image:o.image}:{},o.mode?{mode:o.mode}:{},o.json?{json:true}:{})),signal:ac.signal}),ac);
     if(!r.ok){let j={};try{j=await r.json()}catch(e){}throw new Error(SRV[j.error]?SRV[j.error]+(j.detail?' ['+String(j.detail).slice(0,140)+']':''):(j.detail||('Sunucu hatası '+r.status)))}
     const j=await r.json();return String(j.text||'');
-  }catch(e){if(e.name==='AbortError')throw new Error('Zaman aşımı, tekrar dene.');throw e}
+  }catch(e){if(e.name==='AbortError')throw new Error('Zaman aşımı, tekrar dene.');if(isNet(e))throw new Error('Bağlantı koptu. İnternetini kontrol edip tekrar dene.');throw e}
   finally{clearTimeout(tm);gOut()}
 };
 /* ---------- Fotoğraftan yazı okuma (OCR) ---------- */
@@ -137,7 +140,7 @@ KA.ocrLayout=async(img,o={})=>{
   return {lines:[],err:err||'Yazı bulunamadı'};
 };
 KA.parseJSON=t=>{const m=String(t||'').match(/[\[{][\s\S]*[\]}]/);if(!m)return null;try{return JSON.parse(m[0])}catch(e){return null}};
-KA.askJ=async(sys,input,o={})=>{try{const t=await KA.ai(sys+'\n\nGİRDİ:\n'+input,o);const j=KA.parseJSON(t);return {json:j,err:j?'':'Geçersiz yanıt'}}catch(e){return {json:null,err:e.message}}};
+KA.askJ=async(sys,input,o={})=>{try{const t=await KA.ai(sys+'\n\nGİRDİ:\n'+input,Object.assign({json:true},o));const j=KA.parseJSON(t);return {json:j,err:j?'':'Geçersiz yanıt'}}catch(e){return {json:null,err:e.message}}};
 
 /* ---------- Ses: Amerikan İngilizcesi ---------- */
 let muted=S.raw('ka_mute','0')==='1',voice=null,audio=null,seq=0;

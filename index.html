@@ -16,7 +16,7 @@
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=5">
+<link rel="stylesheet" href="ortak.css?v=6">
 <style>
 .hero{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:center;padding:30px 32px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%)}
 .hero h1{font-size:clamp(28px,4vw,40px);margin:8px 0 10px}
@@ -156,7 +156,7 @@
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="home"></div><section id="act" class="act" hidden></section></main>
-<script src="ortak.js?v=5"></script>
+<script src="ortak.js?v=6"></script>
 <script>
 (function(){
 'use strict';
@@ -274,8 +274,8 @@ YALNIZCA geçerli JSON döndür:
 
 /* ---------- Modlar ---------- */
 const MIC={
-  kart:'<rect x="3" y="6" width="13" height="15" rx="2"/><path d="M8 3h11a2 2 0 0 1 2 2v13"/>',
-  esle:'<path d="M9 3H4v5h2a2 2 0 1 1 0 4H4v8h5v-2a2 2 0 1 1 4 0v2h7v-7h-2a2 2 0 1 1 0-4h2V3h-7v2a2 2 0 1 1-4 0z"/>',
+  kart:'<path d="M4.5 21V10.5a7.5 7.5 0 0 1 15 0V21"/><path d="M2.5 21h19"/><path d="M8 21V10.8l6.5-2.3V21"/><circle cx="12.6" cy="15" r=".9" fill="currentColor" stroke="none"/>',
+  esle:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M12 15v6M3 12h6M15 12h6M5.6 5.6l4.3 4.3M14.1 14.1l4.3 4.3M18.4 5.6l-4.3 4.3M9.9 14.1l-4.3 4.3"/>',
   sec:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
   yaz:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
   boss:'<path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6z"/><path d="m9 10 6 4M15 10l-6 4"/>',
@@ -440,12 +440,12 @@ function drawKart(){
   if(!K.q.length){const m=KA.meta();m.kart=(m.kart||0)+K.total;KA.saveMeta(m);return finish(0,'Bütün kapıları açtın','Kapı ringi')}
   const x=K.q[0];prog(K.known,K.total);
   const open=K.stage==='open',cf=K.conf;
-  const inside=open?`<div class="tr">${esc(x.tr)}</div>${x.syn&&x.syn.length?`<div class="syns">${x.syn.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>`:''}${x.s?`<div class="sentbox" data-stop>${KA.tokens(x.s)}${x.st?`<div class="st">${esc(x.st)}</div>`:''}</div>`:''}`:'';
-  ST().innerHTML=`<div class="card qcard gk ${open?'open':'ask'}" id="gk"><span class="hint">${open?(cf===2?'Emindin':cf===1?'Tahmin ettin':'Bilmiyordun')+' · kapı açıldı':'Anlamı kapının ardında. Ne kadar eminsin? (Kapıya dokunmak = Sanırım)'}</span><div class="qword">${esc(x.en)}</div><div class="row" style="justify-content:center;gap:8px"><span class="tag">Kat ${bx(x)}</span><button class="btn btn-ghost btn-sm" data-say="${esc(x.en)}">${ic('sound')}Dinle</button></div>
-    <div class="arch"><div class="inside">${inside}</div><i class="leaf l"></i><i class="leaf r"></i></div></div>
-  <div class="cardbtns gkb">${!open?`<button class="btn btn-ok btn-lg" data-conf="2">Eminim <kbd>1</kbd></button><button class="btn btn-acc btn-lg" data-conf="1">Sanırım <kbd>2</kbd></button><button class="btn btn-ghost btn-lg" data-conf="0">Bilmiyorum <kbd>3</kbd></button>`
+  const extra=open?`${x.syn&&x.syn.length?`<div class="syns"><span class="slab">Eş anlamlılar</span>${x.syn.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>`:''}${x.s?`<div class="sentbox" data-stop><div class="row" style="justify-content:space-between;gap:8px;margin-bottom:4px"><span class="slab">Örnek cümle</span><button class="ka-icon-btn" data-say="${esc(x.s)}" aria-label="Cümleyi dinle">${ic('sound')}</button></div>${KA.tokens(x.s)}${x.st?`<div class="st">${esc(x.st)}</div>`:''}</div>`:''}`:'';
+  ST().innerHTML=`<div class="card qcard gk ${open?'open':'ask'}" id="gk"><span class="hint">${open?(cf===2?'Emindin':cf===1?'Tahmin ettin':'Bilmiyordun')+' · kapı açıldı':'Anlamı kapının ardında. Ne kadar eminsin?'}</span><div class="qword">${esc(x.en)}</div><div class="row" style="justify-content:center;gap:8px"><span class="tag">Kat ${bx(x)}</span><button class="btn btn-ghost btn-sm" data-say="${esc(x.en)}">${ic('sound')}Dinle</button></div>
+    <div class="arch"><div class="inside"><span class="slab">Türkçe anlamı</span><div class="tr">${open?esc(x.tr):''}</div></div><i class="leaf l"><u></u><u></u></i><i class="leaf r"><u></u><u></u></i><span class="lintel"></span></div>${extra}</div>
+  <div class="cardbtns gkb">${!open?`<button class="btn btn-ok btn-lg" data-conf="2">Eminim</button><button class="btn btn-acc btn-lg" data-conf="1">Sanırım</button><button class="btn btn-ghost btn-lg" data-conf="0">Bilmiyorum</button>`
     :cf===0?`<button class="btn btn-p btn-lg" data-k="0" style="grid-column:1/-1">Öğrendim, sonra tekrar sor${ic('arrow')}</button>`
-    :`<button class="btn btn-bad btn-lg" data-k="0">Yanılmışım <kbd>1</kbd></button><button class="btn btn-ok btn-lg" data-k="1" style="grid-column:span 2">Doğru bildim <kbd>2</kbd></button>`}</div>`;
+    :`<button class="btn btn-bad btn-lg" data-k="0">Yanılmışım</button><button class="btn btn-ok btn-lg" data-k="1" style="grid-column:span 2">Doğru bildim</button>`}</div>`;
 }
 function answerKart(ok){
   const x=K.q.shift();
@@ -771,11 +771,15 @@ async function prepare(){
     let todo=p.items.filter(x=>!x.tr),done=0;
     await pool(chunks(todo,40),async c=>{const r=await KA.askJ(TR_SYS,c.map((x,i)=>`${i+1}. ${x.en}`).join('\n'),{tier:'quick'});if(!r.json){LASTERR=r.err;return}(r.json.items||[]).forEach(o=>{const x=c[Number(o&&o.i)-1];if(x&&!x.tr&&o.tr&&String(o.tr).toLowerCase()!==x.en.toLowerCase())x.tr=String(o.tr).trim()});done+=c.length;prepMsg(`Anlamlar hazırlanıyor · ${done}/${todo.length}`);KA.savePack(p)},2);
     todo=p.items.filter(x=>x.tr&&!x.s);done=0;
-    await pool(chunks(todo,6),async c=>{const r=await KA.askJ(BATCH,c.map(w=>w.en+' - '+w.tr).join('\n'),{tier:'quick',ms:58000});if(!r.json){LASTERR=r.err;return}(r.json.items||[]).forEach(g=>{const it=c.find(x=>x.en.toLowerCase()===String(g&&g.en).toLowerCase());if(it&&g.s)Object.assign(it,{s:String(g.s),st:String(g.st||''),d:Array.isArray(g.d)?g.d.map(String):[],dv:Array.isArray(g.d)&&g.d.length>=3?2:0,dn:String(g.dn||''),gl:lowerKeys(g.gl),mo:g.mo&&typeof g.mo==='object'?g.mo:{},syn:(Array.isArray(g.syn)?g.syn:[]).map(v=>String(v).toLowerCase()).slice(0,4)})});done+=c.length;prepMsg(`Örnek cümleler hazırlanıyor · ${Math.min(done,todo.length)}/${todo.length}`);KA.savePack(p)},3);
+    const sentOne=async c=>{const r=await KA.askJ(BATCH,c.map(w=>w.en+' - '+w.tr).join('\n'),{tier:'quick',ms:65000});if(!r.json){LASTERR=r.err;return}(r.json.items||[]).forEach(g=>{const it=c.find(x=>x.en.toLowerCase()===String(g&&g.en).toLowerCase());if(it&&g.s)Object.assign(it,{s:String(g.s),st:String(g.st||''),d:Array.isArray(g.d)?g.d.map(String):[],dv:Array.isArray(g.d)&&g.d.length>=3?2:0,dn:String(g.dn||''),gl:lowerKeys(g.gl),mo:g.mo&&typeof g.mo==='object'?g.mo:{},syn:(Array.isArray(g.syn)?g.syn:[]).map(v=>String(v).toLowerCase()).slice(0,4)})});done+=c.length;prepMsg(`Örnek cümleler hazırlanıyor · ${Math.min(done,todo.length)}/${todo.length}`);KA.savePack(p)};
+    await pool(chunks(todo,4),sentOne,2);
+    {const again=p.items.filter(x=>x.tr&&!x.s);if(again.length){prepMsg('Eksik kalan cümleler yeniden deneniyor…');await pool(chunks(again,3),sentOne,2)}}
     const have=new Set(p.groups.flatMap(g=>g.w)),left=p.items.filter(x=>x.tr&&!have.has(x.en)).map(x=>x.en);
     for(let i=0;i<left.length;i+=10)p.groups.push({w:left.slice(i,i+10),text:'',ana:'',gl:{},ok:false});
     const gs=p.groups.filter(g=>!g.text);done=0;
-    await pool(gs,async g=>{const ws=g.w.map(en=>p.items.find(x=>x.en===en)).filter(Boolean);const r=await KA.askJ(PARA_G,'KALIPLAR: '+ws.map(x=>x.en+(x.tr?` (${x.tr})`:'')).join(' | '),{ms:58000});if(r.json&&r.json.par){Object.assign(g,{text:String(r.json.par).trim(),ana:String(r.json.ana_fikir||'').trim(),gl:lowerKeys(r.json.gl)})}else LASTERR=r.err;done++;prepMsg(`Paragraflar hazırlanıyor · ${done}/${gs.length}`);KA.savePack(p)},3);
+    const paraOne=async g=>{const ws=g.w.map(en=>p.items.find(x=>x.en===en)).filter(Boolean);const r=await KA.askJ(PARA_G,'KALIPLAR: '+ws.map(x=>x.en+(x.tr?` (${x.tr})`:'')).join(' | '),{ms:65000});if(r.json&&r.json.par){Object.assign(g,{text:String(r.json.par).trim(),ana:String(r.json.ana_fikir||'').trim(),gl:lowerKeys(r.json.gl)})}else LASTERR=r.err;done++;prepMsg(`Paragraflar hazırlanıyor · ${Math.min(done,gs.length)}/${gs.length}`);KA.savePack(p)};
+    await pool(gs,paraOne,2);
+    {const again=p.groups.filter(g=>!g.text);if(again.length){prepMsg('Eksik kalan paragraflar yeniden deneniyor…');await pool(again,paraOne,1)}}
     const lexs=new Set(p.items.flatMap(x=>forms(x.en)));
     const txt=[...p.items.map(x=>x.s||''),...p.groups.map(g=>g.text||'')].join(' ');
     const need=[...new Set(txt.toLowerCase().match(/[a-z][a-z'-]*/g)||[])].filter(w=>w.length>2&&!lexs.has(w)&&!p.dict[w]);
@@ -783,7 +787,7 @@ async function prepare(){
   }catch(e){LASTERR=e.message}
   BUSY=false;KA.savePack(p,true);
   const ms=missing(p);
-  if(ms.tr+ms.s+ms.g)KA.toast(LASTERR?'Bazı içerikler hazırlanamadı: '+LASTERR:'Bazı içerikler eksik kaldı, Hazırla düğmesine tekrar bas.',4200);else KA.toast('Liste hazır. İyi çalışmalar!');
+  if(ms.tr+ms.s+ms.g)KA.toast(LASTERR?'Bazı içerikler hazırlanamadı ('+LASTERR+'). Hazırla düğmesine tekrar basınca kalanlar tamamlanır.':'Bazı içerikler eksik kaldı, Hazırla düğmesine tekrar bas.',4200);else KA.toast('Liste hazır. İyi çalışmalar!');
   if(mode<0)renderHome();
 }
 

@@ -29,34 +29,48 @@ function limited(ip) {
   return arr.length > 40;
 }
 
-async function gemini(model, key, prompt, maxTokens, image, ocr, wantJson, plain) {
+// Vercel fonksiyonu 60 sn'de kesilir; tarayıcı (özellikle Safari) bağlantıyı "Load failed" diye düşürür.
+// Bu yüzden toplam süreyi 50 sn'de tutuyoruz ve süre kalmadıysa yeni deneme başlatmıyoruz.
+const BUDGET_MS = 50000;
+async function gemini(model, key, prompt, maxTokens, image, ocr, wantJson, plain, deadline) {
   const gen = { temperature: ocr ? 0 : 0.7, maxOutputTokens: maxTokens };
   const tb = process.env.GEMINI_THINKING_BUDGET;
   if (!plain) {
+    // Düşünme süresini kısa tut: cümle ve paragraf üretimi çok daha hızlı biter
     if (tb !== undefined && tb !== '') gen.thinkingConfig = { thinkingBudget: Number(tb) };
-    else if (ocr && /gemini-3/.test(model)) gen.thinkingConfig = { thinkingLevel: 'low' };
-    else if (ocr && /2\.5-flash/.test(model)) gen.thinkingConfig = { thinkingBudget: 0 };
+    else if (/gemini-3/.test(model)) gen.thinkingConfig = { thinkingLevel: 'low' };
+    else if (/2\.5-flash/.test(model)) gen.thinkingConfig = { thinkingBudget: 0 };
     if (ocr && image) gen.mediaResolution = 'MEDIA_RESOLUTION_HIGH';
     if (wantJson) gen.responseMimeType = 'application/json';
   }
   const parts = image ? [{ inline_data: { mime_type: image.mime, data: image.data } }, { text: prompt }] : [{ text: prompt }];
   const body = { contents: [{ role: 'user', parts }], generationConfig: gen };
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
-  let r, j = {};
+  let status = 0, j = {};
   for (let attempt = 0; attempt < 3; attempt++) {
-    r = await fetch(url, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
-      body: JSON.stringify(body),
-    });
-    j = await r.json().catch(() => ({}));
-    if ((r.status === 429 || r.status >= 500) && attempt < 2) {
-      await new Promise(res => setTimeout(res, 1500 * (attempt + 1)));
+    const left = deadline - Date.now();
+    if (left < 4000) return { status: status || 504, json: j, timeout: true };
+    const ac = new AbortController();
+    const tm = setTimeout(() => ac.abort(), left - 1500);
+    try {
+      const r = await fetch(url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
+        body: JSON.stringify(body),
+        signal: ac.signal,
+      });
+      status = r.status;
+      j = await r.json().catch(() => ({}));
+    } catch (e) {
+      status = 504; j = {}; // zaman aşımı ya da bağlantı hatası
+    } finally { clearTimeout(tm); }
+    if ((status === 429 || status >= 500) && attempt < 2 && deadline - Date.now() > 15000) {
+      await new Promise(res => setTimeout(res, 1200 * (attempt + 1)));
       continue;
     }
     break;
   }
-  return { status: r.status, json: j };
+  return { status, json: j };
 }
 
 export default async function handler(req, res) {
@@ -92,13 +106,15 @@ export default async function handler(req, res) {
     ? [MODEL_FAST, MODEL_QUALITY, ...FALLBACK_MODELS]
     : [MODEL_QUALITY, MODEL_FAST, ...FALLBACK_MODELS])];
 
+  const deadline = Date.now() + BUDGET_MS;
   let last = null, usedModel = '';
   for (const model of models) {
-    let { status, json } = await gemini(model, key, prompt, maxTokens, image, ocr, wantJson, false);
+    if (last && deadline - Date.now() < 8000) break;
+    let { status, json } = await gemini(model, key, prompt, maxTokens, image, ocr, wantJson, false, deadline);
     let msg = (json && json.error && json.error.message) || '';
     // Model ek ayarları (çözünürlük, düşünme, JSON) desteklemiyorsa sade istekle tekrar dene
     if (status === 400 && (ocr || wantJson) && !/model/i.test(msg)) {
-      ({ status, json } = await gemini(model, key, prompt, maxTokens, image, ocr, false, true));
+      ({ status, json } = await gemini(model, key, prompt, maxTokens, image, ocr, false, true, deadline));
       msg = (json && json.error && json.error.message) || '';
     }
     usedModel = model;
@@ -111,6 +127,7 @@ export default async function handler(req, res) {
 
   const { status, json } = last;
   if (status === 429) return send(res, 429, { error: 'rate' });
+  if (status === 504) return send(res, 503, { error: 'busy', detail: `${usedModel}: süre doldu` });
   if (status !== 200) {
     const emsg = String((json && json.error && json.error.message) || 'bilinmeyen hata').slice(0, 300);
     return send(res, 502, { error: 'upstream', detail: `${usedModel} (${status}): ${emsg}` });
