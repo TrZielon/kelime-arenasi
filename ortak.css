@@ -496,4 +496,16 @@ body .podium>div{animation:kaPodium .7s var(--spring) backwards}
 body .podium>div:nth-child(1){animation-delay:.25s}body .podium>div:nth-child(3){animation-delay:.4s}
 @keyframes kaPodium{from{transform:translateY(60px);opacity:0}}
 body .word h2,body .rtop h2{animation:kaDrop .6s var(--spring) backwards}
+/* Kapı: Sanırım → kapı aralanır, ipucu görünür */
+.gk .arch.ajar .inside{visibility:visible}
+.arch.ajar .leaf.l{animation:kaAjarL .6s var(--spring) forwards}
+.arch.ajar .leaf.r{animation:kaAjarR .6s var(--spring) forwards}
+@keyframes kaAjarL{to{transform:perspective(600px) rotateY(38deg) translateX(-14%)}}
+@keyframes kaAjarR{to{transform:perspective(600px) rotateY(-38deg) translateX(14%)}}
+.arch.ajar::before{background:radial-gradient(60% 90% at 50% 100%,color-mix(in srgb,var(--acc) 55%,var(--card2)),var(--card2) 75%);animation:kaGlow 2s ease-in-out infinite}
+@keyframes kaGlow{50%{filter:brightness(1.08)}}
+.arch.ajar .inside>*{animation:kaRise .45s .25s var(--out) backwards}
+.arch .hintw{letter-spacing:.06em;color:var(--acc2)!important}
+.arch .hsyn{font-size:13px;color:var(--ink2);font-weight:600}
+.arch .hsyn b{color:var(--ink)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}

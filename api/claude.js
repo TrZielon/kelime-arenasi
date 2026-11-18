@@ -5,12 +5,39 @@
 //   GEMINI_MODEL_FAST       (isteğe bağlı; varsayılan: gemini-3.5-flash-lite)
 //   GEMINI_THINKING_BUDGET  (isteğe bağlı; yalnızca model destekliyorsa, ör. 0)
 //   ALLOWED_ORIGINS         (isteğe bağlı, virgülle ayrılmış; boşsa herkes kullanabilir)
+//   GROQ_API_KEY            (isteğe bağlı ama önerilir: metin istekleri çok daha hızlı Groq'ta çalışır,
+//                            Groq dolarsa ya da hata verirse otomatik Gemini'ye geçilir; fotoğraflar hep Gemini'de)
+//   GROQ_MODEL              (isteğe bağlı; varsayılan: openai/gpt-oss-120b)
+//   GROQ_MODEL_FAST         (isteğe bağlı; varsayılan: openai/gpt-oss-20b)
 
 const MODEL_QUALITY = process.env.GEMINI_MODEL_QUALITY || 'gemini-3.5-flash-lite';
 const MODEL_FAST = process.env.GEMINI_MODEL_FAST || 'gemini-3.5-flash-lite';
 const FALLBACK_MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 const MAX_PROMPT = 60000;
 const hits = new Map();
+const GROQ_MODEL = process.env.GROQ_MODEL || 'openai/gpt-oss-120b';
+const GROQ_MODEL_FAST = process.env.GROQ_MODEL_FAST || 'openai/gpt-oss-20b';
+
+// Groq (OpenAI uyumlu). Düşünmeyi düşük tutar, JSON istenirse JSON modunu açar.
+async function groq(model, key, prompt, maxTokens, wantJson, deadline) {
+  const left = deadline - Date.now();
+  if (left < 4000) return { status: 504, text: '' };
+  const body = { model, messages: [{ role: 'user', content: prompt }], temperature: 0.7, max_completion_tokens: Math.min(maxTokens, 8192), reasoning_effort: 'low' };
+  if (wantJson && /json/i.test(prompt)) body.response_format = { type: 'json_object' };
+  const go = async b => {
+    const ac = new AbortController(); const tm = setTimeout(() => ac.abort(), Math.min(left - 1500, 30000));
+    try {
+      const r = await fetch('https://api.groq.com/openai/v1/chat/completions', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer ' + key }, body: JSON.stringify(b), signal: ac.signal });
+      const j = await r.json().catch(() => ({}));
+      const text = (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || '';
+      return { status: r.status, text, msg: (j.error && j.error.message) || '', trunc: !!(j.choices && j.choices[0] && j.choices[0].finish_reason === 'length') };
+    } catch (e) { return { status: 504, text: '' }; } finally { clearTimeout(tm); }
+  };
+  let r = await go(body);
+  // JSON modu ya da düşünme ayarı reddedilirse sade istekle bir kez daha
+  if (r.status === 400) { delete body.response_format; delete body.reasoning_effort; r = await go(body); }
+  return r;
+}
 
 function send(res, code, obj) { res.status(code).json(obj); }
 
@@ -107,6 +134,16 @@ export default async function handler(req, res) {
     : [MODEL_QUALITY, MODEL_FAST, ...FALLBACK_MODELS])];
 
   const deadline = Date.now() + BUDGET_MS;
+  // 1) Hızlı yol: Groq (fotoğraf yoksa)
+  const gk = process.env.GROQ_API_KEY;
+  if (gk && !image) {
+    for (const gm of [...new Set(quick ? [GROQ_MODEL_FAST, GROQ_MODEL] : [GROQ_MODEL, GROQ_MODEL_FAST])]) {
+      const r = await groq(gm, gk, prompt, maxTokens, wantJson, deadline);
+      if (r.status === 200 && r.text.trim()) return send(res, 200, { text: r.text, truncated: r.trunc, via: 'groq' });
+      if (deadline - Date.now() < 12000) break;
+    }
+  }
+  // 2) Gemini (fotoğraflar ve Groq yedeği)
   let last = null, usedModel = '';
   for (const model of models) {
     if (last && deadline - Date.now() < 8000) break;

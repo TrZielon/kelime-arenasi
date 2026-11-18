@@ -16,7 +16,7 @@
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=6">
+<link rel="stylesheet" href="ortak.css?v=8">
 <style>
 .hero{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:center;padding:30px 32px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%)}
 .hero h1{font-size:clamp(28px,4vw,40px);margin:8px 0 10px}
@@ -156,7 +156,7 @@
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="home"></div><section id="act" class="act" hidden></section></main>
-<script src="ortak.js?v=6"></script>
+<script src="ortak.js?v=8"></script>
 <script>
 (function(){
 'use strict';
@@ -439,11 +439,14 @@ function startKart(){
 function drawKart(){
   if(!K.q.length){const m=KA.meta();m.kart=(m.kart||0)+K.total;KA.saveMeta(m);return finish(0,'Bütün kapıları açtın','Kapı ringi')}
   const x=K.q[0];prog(K.known,K.total);
-  const open=K.stage==='open',cf=K.conf;
+  const open=K.stage==='open',ajar=K.stage==='hint',cf=K.conf;
+  // ipucu: Türkçe anlamın her kelimesinin ilk harfi görünür, gerisi gizli; varsa bir eş anlamlı
+  const mask=t=>String(t).split(/(\s+|,|\/)/).map(w=>/^[\wçğıöşüÇĞİÖŞÜ]+$/i.test(w)&&w.length>1?w[0]+'·'.repeat(w.length-1):w).join('');
+  const hint=ajar?`<span class="slab">İpucu</span><div class="tr hintw">${esc(mask(x.tr))}</div>${x.syn&&x.syn[0]?`<span class="hsyn">eş anlamlısı: <b>${esc(x.syn[0])}</b></span>`:''}`:'';
   const extra=open?`${x.syn&&x.syn.length?`<div class="syns"><span class="slab">Eş anlamlılar</span>${x.syn.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>`:''}${x.s?`<div class="sentbox" data-stop><div class="row" style="justify-content:space-between;gap:8px;margin-bottom:4px"><span class="slab">Örnek cümle</span><button class="ka-icon-btn" data-say="${esc(x.s)}" aria-label="Cümleyi dinle">${ic('sound')}</button></div>${KA.tokens(x.s)}${x.st?`<div class="st">${esc(x.st)}</div>`:''}</div>`:''}`:'';
-  ST().innerHTML=`<div class="card qcard gk ${open?'open':'ask'}" id="gk"><span class="hint">${open?(cf===2?'Emindin':cf===1?'Tahmin ettin':'Bilmiyordun')+' · kapı açıldı':'Anlamı kapının ardında. Ne kadar eminsin?'}</span><div class="qword">${esc(x.en)}</div><div class="row" style="justify-content:center;gap:8px"><span class="tag">Kat ${bx(x)}</span><button class="btn btn-ghost btn-sm" data-say="${esc(x.en)}">${ic('sound')}Dinle</button></div>
-    <div class="arch"><div class="inside"><span class="slab">Türkçe anlamı</span><div class="tr">${open?esc(x.tr):''}</div></div><i class="leaf l"><u></u><u></u></i><i class="leaf r"><u></u><u></u></i><span class="lintel"></span></div>${extra}</div>
-  <div class="cardbtns gkb">${!open?`<button class="btn btn-ok btn-lg" data-conf="2">Eminim</button><button class="btn btn-acc btn-lg" data-conf="1">Sanırım</button><button class="btn btn-ghost btn-lg" data-conf="0">Bilmiyorum</button>`
+  ST().innerHTML=`<div class="card qcard gk ${open?'open':'ask'}" id="gk"><span class="hint">${open?(cf===2?'Emindin':cf===1?'Tahmin ettin':'Bilmiyordun')+' · kapı açıldı':(ajar?'Kapı aralandı. İpucu yetti mi?':'Anlamı kapının ardında. Ne kadar eminsin?')}</span><div class="qword">${esc(x.en)}</div><div class="row" style="justify-content:center;gap:8px"><span class="tag">Kat ${bx(x)}</span><button class="btn btn-ghost btn-sm" data-say="${esc(x.en)}">${ic('sound')}Dinle</button></div>
+    <div class="arch ${ajar?'ajar':''}"><div class="inside">${ajar?hint:`<span class="slab">Türkçe anlamı</span><div class="tr">${open?esc(x.tr):''}</div>`}</div><i class="leaf l"><u></u><u></u></i><i class="leaf r"><u></u><u></u></i><span class="lintel"></span></div>${extra}</div>
+  <div class="cardbtns gkb">${ajar?`<button class="btn btn-ok btn-lg" data-conf="1" data-go="1" style="grid-column:span 2">Hatırladım, kapıyı aç</button><button class="btn btn-ghost btn-lg" data-conf="0">Yine de bilmiyorum</button>`:!open?`<button class="btn btn-ok btn-lg" data-conf="2">Eminim</button><button class="btn btn-acc btn-lg" data-conf="1">Sanırım</button><button class="btn btn-ghost btn-lg" data-conf="0">Bilmiyorum</button>`
     :cf===0?`<button class="btn btn-p btn-lg" data-k="0" style="grid-column:1/-1">Öğrendim, sonra tekrar sor${ic('arrow')}</button>`
     :`<button class="btn btn-bad btn-lg" data-k="0">Yanılmışım</button><button class="btn btn-ok btn-lg" data-k="1" style="grid-column:span 2">Doğru bildim</button>`}</div>`;
 }
@@ -912,8 +915,8 @@ document.addEventListener('click',e=>{
   const sy=t.closest('[data-say]');if(sy){KA.speak(sy.dataset.say);return}
   const mb=t.closest('[data-m]');if(mb&&!mb.closest('.ka-mode')){openMode(+mb.dataset.m);return}
   const pkb=t.closest('[data-pack]');if(pkb){KA.activeId(pkb.dataset.pack);renderHome();return}
-  if(K&&mode===0&&K.stage!=='open'&&t.closest('#gk .arch')){K.conf=1;K.stage='open';if(K.q[0])KA.speak(K.q[0].en);drawKart();return}
-  const cfb=t.closest('[data-conf]');if(cfb&&K){K.conf=+cfb.dataset.conf;K.stage='open';if(K.q[0])KA.speak(K.q[0].en);drawKart();return}
+  if(K&&mode===0&&(K.stage!=='open'&&K.stage!=='hint')&&t.closest('#gk .arch')){K.stage='hint';drawKart();return}
+  const cfb=t.closest('[data-conf]');if(cfb&&K){const c=+cfb.dataset.conf;if(c===1&&(K.stage!=='open'&&K.stage!=='hint')&&!cfb.dataset.go){K.stage='hint';K.hinted=1;drawKart();return}K.conf=c;K.stage='open';if(K.q[0])KA.speak(K.q[0].en);drawKart();return}
   const kb=t.closest('[data-k]');if(kb){answerKart(kb.dataset.k==='1');return}
   const mw=t.closest('[data-mw]');if(mw){pickEsle(+mw.dataset.mw,mw);return}
   const o=t.closest('[data-o]');if(o){const i=+o.dataset.o;if(mode===4)bossMC(i);else if(mode===5)answerCumle(i);else answerMC(i);return}
@@ -935,7 +938,7 @@ document.addEventListener('keydown',e=>{
   const inInput=e.target.matches&&e.target.matches('input,textarea,select');
   if(e.key==='Enter'&&e.target.id==='yin'){e.preventDefault();if($('#nextBtn'))$('#nextBtn').click();else if(mode===4)bossYaz();else yazCheck(false);return}
   if(inInput)return;
-  if(mode===0&&K&&K.q.length){const op=K.stage==='open';if(!op){const c={'1':2,'2':1,'3':0,' ':1}[e.key];if(c!==undefined){e.preventDefault();K.conf=c;K.stage='open';drawKart()}}else if(K.conf===0){if(e.key==='Enter'||e.key===' '||e.key==='1'){e.preventDefault();answerKart(false)}}else if(e.key==='1')answerKart(false);else if(e.key==='2')answerKart(true);return}
+  if(mode===0&&K&&K.q.length){const op=K.stage==='open';if(!op){const c={'1':2,'2':1,'3':0,' ':1}[e.key];if(c!==undefined){e.preventDefault();if(c===1&&(K.stage!=='open'&&K.stage!=='hint')){K.stage='hint';drawKart()}else{K.conf=c;K.stage='open';drawKart()}}}else if(K.conf===0){if(e.key==='Enter'||e.key===' '||e.key==='1'){e.preventDefault();answerKart(false)}}else if(e.key==='1')answerKart(false);else if(e.key==='2')answerKart(true);return}
   const nb=$('#nextBtn');if(nb&&(e.key==='Enter'||e.key===' ')){e.preventDefault();nb.click();return}
   if(/^[1-4]$/.test(e.key)){const b=document.querySelector(`.opt[data-o="${e.key-1}"]`);if(b&&!b.disabled){e.preventDefault();b.click()}}
 });

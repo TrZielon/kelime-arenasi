@@ -74,7 +74,7 @@ KA.addUnknown=(en,tr,extra)=>{
 
 /* ---------- Yapay zekâ ---------- */
 const SRV={busy:'Yapay zekâ şu an yoğun, biraz sonra tekrar dene.',server_config:'Sunucuda API anahtarı tanımlı değil.',rate:'Çok fazla istek gönderildi, biraz bekle.',upstream:'Yapay zekâ servisine şu an ulaşılamadı.',prompt:'İstek geçersiz.',origin:'Bu adres sunucuda izinli değil.',image:'Fotoğraf gönderilemedi (çok büyük ya da desteklenmeyen biçim).'};
-const gate={n:0,q:[],max:2};
+const gate={n:0,q:[],max:3};
 const gIn=()=>gate.n<gate.max?(gate.n++,Promise.resolve()):new Promise(r=>gate.q.push(r));
 const gOut=()=>{const r=gate.q.shift();if(r)r();else gate.n--};
 // Safari "Load failed", Chrome "Failed to fetch": ağ seviyesinde kopma; kısa bekleyip iki kez daha dene
@@ -236,7 +236,7 @@ const IC={
 KA.ic=(n,cls)=>`<svg class="${cls||''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||''}</svg>`;
 
 /* ---------- Gezinme çubuğu (tek kaynak) ---------- */
-const LINKS=[['index.html','Ana sayfa','home'],['haber.html','Haber','news'],['fetih.html','Arena Fethi','sword'],['sinav.html','Sınav','exam'],['sozluk.html','Sözlük','book'],['dinle.html','Dinle','ear']];
+const LINKS=[['index.html','Ana sayfa','home'],['haber.html','Haber','news'],['oyunlar.html','Oyunlar','sword'],['sinav.html','Sınav','exam'],['sozluk.html','Sözlük','book'],['dinle.html','Dinle','ear']];
 KA.nav=(active,o={})=>{
   const links=LINKS.map(([h,t,i])=>`<a href="${h==='index.html'?'./':h}" class="${h===active?'on':''}">${KA.ic(i)}<span>${t}</span></a>`).join('');
   const m=KA.mode();

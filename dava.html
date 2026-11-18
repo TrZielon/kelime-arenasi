@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="tr" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kayıp Harita Davası · Kelime Arenası</title>
+<meta name="theme-color" content="#0f766e">
+<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Special+Elite&display=swap">
+<link rel="stylesheet" href="ortak.css?v=8">
+<style>
+:root{--cork:color-mix(in srgb,#b7834a 55%,var(--card));--paper:#fbf7ee;--pink:#e11d48;--type:"Special Elite",ui-monospace,Menlo,monospace}
+:root[data-mode=dark]{--cork:color-mix(in srgb,#7a5530 55%,var(--card));--paper:#f3ecdc}
+.paperink{color:#2a2418}
+/* HUD */
+.hud{position:sticky;top:64px;z-index:30;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-radius:18px;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(8px);box-shadow:0 0 0 1.5px var(--line) inset,var(--sh1);margin-bottom:14px}
+.hud .clk{display:flex;align-items:center;gap:8px;font-weight:800}
+.hud .clk b{font-family:Fraunces,serif;font-size:22px;font-variant-numeric:tabular-nums}
+.hud .clk.warn b{color:var(--bad);animation:kaShake .6s}
+.hud .tbar{flex:1;min-width:90px;height:8px;border-radius:5px;background:var(--soft);overflow:hidden}
+.hud .tbar i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--acc));transition:width .6s var(--out)}
+.hud .pill{font-size:12.5px;font-weight:800;padding:6px 10px;border-radius:999px;background:var(--soft);color:var(--ink2);border:0}
+.hud .pill b{color:var(--ink)}
+.cost{position:fixed;z-index:90;font-family:Fraunces,serif;font-weight:800;font-size:26px;color:var(--bad);pointer-events:none;animation:costUp 1.2s var(--out) forwards}
+@keyframes costUp{0%{opacity:0;transform:translateY(10px)}20%{opacity:1}100%{opacity:0;transform:translateY(-40px)}}
+/* INTRO */
+.cover{position:relative;max-width:720px;margin:10px auto;padding:34px 30px 30px;border-radius:10px 26px 26px 26px;background:linear-gradient(180deg,#d9b77a,#c9a464);color:#3a2a10;box-shadow:var(--sh2);overflow:hidden}
+.cover::before{content:"";position:absolute;left:0;top:-18px;width:170px;height:30px;border-radius:12px 12px 0 0;background:#d9b77a}
+.cover .tabl{position:absolute;left:22px;top:10px;font:800 11px "Plus Jakarta Sans";letter-spacing:.14em;opacity:.7}
+.cover h1{font-family:Fraunces,serif;font-size:clamp(32px,6vw,52px);line-height:1;margin:18px 0 6px;color:#2a1b05}
+.cover .sub{font-family:var(--type);font-size:15px;opacity:.85}
+.cover .sec{position:absolute;right:18px;top:26px;rotate:12deg;font-family:Fraunces,serif;font-weight:800;font-size:22px;letter-spacing:.12em;color:#b91c1c;border:4px double #b91c1c;border-radius:8px;padding:2px 12px;opacity:.85}
+.brief{background:var(--paper);color:#2a2418;border-radius:6px;padding:18px 20px;margin-top:18px;box-shadow:0 2px 0 rgba(0,0,0,.08);font-size:15.5px;line-height:1.6;rotate:-.6deg}
+.brief b{color:#000}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.rules div{background:rgba(255,255,255,.45);border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.4}
+.rules b{display:block;font-size:13.5px}
+.cover .btn{margin-top:18px}
+/* BOARD */
+.board{border-radius:26px;padding:18px;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.12) 0 2px,transparent 3px) 0 0/22px 22px,radial-gradient(circle at 70% 60%,rgba(0,0,0,.06) 0 2px,transparent 3px) 0 0/18px 18px,var(--cork);box-shadow:inset 0 0 0 10px color-mix(in srgb,#5b3a17 60%,var(--card)),var(--sh2)}
+.bsec{margin-bottom:18px}
+.bsec h3{display:inline-block;font:800 12px "Plus Jakarta Sans",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#2a1b05;background:var(--paper);padding:5px 10px;border-radius:6px;margin:0 0 10px;rotate:-1deg}
+.docs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.doc{position:relative;border:0;text-align:left;padding:16px 12px 12px;min-height:118px;background:var(--paper);color:#2a2418;border-radius:4px;box-shadow:0 6px 14px rgba(0,0,0,.18);transition:transform .25s var(--spring);font-family:inherit}
+.doc:nth-child(odd){rotate:-1.6deg}.doc:nth-child(even){rotate:1.3deg}
+.doc:hover:not(:disabled){transform:translateY(-4px) rotate(0)}
+.doc::before{content:"";position:absolute;left:50%;top:-6px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fda4af,var(--pink));box-shadow:0 2px 3px rgba(0,0,0,.3)}
+.doc .dt{font:800 10.5px "Plus Jakarta Sans",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#7a6a4a}
+.doc b{display:block;font-family:Fraunces,serif;font-size:16px;line-height:1.2;margin:4px 0}
+.doc .ds{font-size:12px;color:#7a6a4a;font-weight:700}
+.doc.locked{background:color-mix(in srgb,var(--paper) 55%,#8b7b5b);cursor:not-allowed}
+.doc.locked b,.doc.locked .dt{opacity:.45}
+.doc.solved::after{content:"ÇÖZÜLDÜ";position:absolute;right:6px;bottom:8px;font:800 11px Fraunces,serif;letter-spacing:.1em;color:#15803d;border:2px solid #15803d;border-radius:5px;padding:1px 5px;rotate:-10deg}
+.doc.new{animation:docNew 1.6s ease-in-out infinite}
+@keyframes docNew{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--acc) 55%,transparent),0 6px 14px rgba(0,0,0,.18)}}
+.sus{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.sp{position:relative;background:var(--paper);color:#2a2418;padding:10px 10px 12px;border-radius:4px;box-shadow:0 6px 14px rgba(0,0,0,.18);text-align:center;border:0;font-family:inherit}
+.sp:nth-child(odd){rotate:1.2deg}.sp:nth-child(even){rotate:-1.4deg}
+.sp svg{width:100%;height:auto;border-radius:3px;display:block;background:#e8e1d0}
+.sp b{display:block;font-family:Fraunces,serif;font-size:15px;margin-top:6px}
+.sp small{display:block;font-size:11.5px;color:#7a6a4a;font-weight:700}
+.sp .int{margin-top:8px;font-size:12px;padding:6px 10px}
+.sp .tagx{position:absolute;left:8px;top:8px;font:800 10px "Plus Jakarta Sans";background:var(--acc);color:#1f1300;border-radius:5px;padding:2px 6px}
+.evs{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.ev{position:relative;background:#fff8c5;color:#2a2418;padding:12px 12px 10px;border-radius:3px;box-shadow:0 5px 10px rgba(0,0,0,.16);font-size:13px;line-height:1.4}
+:root[data-mode=dark] .ev{background:#f6eeb4}
+.ev:nth-child(3n){rotate:1.5deg}.ev:nth-child(3n+1){rotate:-1.2deg}
+.ev::before{content:"";position:absolute;left:50%;top:-5px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#93c5fd,#2563eb)}
+.ev b{display:block;font-size:13.5px;margin-bottom:2px}
+.ev.fresh{animation:kaStamp .6s var(--spring)}
+.ev.empty{background:transparent;border:2px dashed rgba(0,0,0,.25);box-shadow:none;color:rgba(0,0,0,.45);display:grid;place-items:center;min-height:70px;font-weight:800;rotate:0deg}
+.tline{position:relative;background:var(--paper);color:#2a2418;border-radius:6px;padding:16px 14px 12px;box-shadow:0 6px 14px rgba(0,0,0,.16);overflow-x:auto}
+.tline .ax{position:relative;height:74px;min-width:560px}
+.tline .ax::before{content:"";position:absolute;left:0;right:0;top:34px;height:3px;background:#2a2418;opacity:.3;border-radius:2px}
+.tline .tk{position:absolute;top:0;translate:-50% 0;text-align:center;width:92px}
+.tline .tk i{display:block;width:13px;height:13px;border-radius:50%;margin:28px auto 4px;background:var(--p);box-shadow:0 0 0 3px var(--paper)}
+.tline .tk.red i{background:var(--bad)}
+.tline .tk.q i{background:#bbb}
+.tline .tk em{position:absolute;top:2px;left:0;right:0;font-style:normal;font:800 12px "Plus Jakarta Sans";font-variant-numeric:tabular-nums}
+.tline .tk span{display:block;font-size:11px;line-height:1.2;font-weight:700;color:#5c4f35}
+.acc{display:flex;justify-content:center;margin-top:8px}
+/* DOC READER */
+.reader{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start}
+.paper{position:relative;background:var(--paper);color:#2a2418;border-radius:6px;padding:26px 24px;box-shadow:var(--sh2);font-size:16.5px;line-height:1.8}
+.paper.report{font-family:var(--type);font-size:15.5px}
+.paper.report .hd{display:flex;justify-content:space-between;border-bottom:2px solid #2a2418;padding-bottom:8px;margin-bottom:12px;font-size:13px;letter-spacing:.06em}
+.paper.log{font-family:var(--type);background:repeating-linear-gradient(var(--paper) 0 31px,#cfd8e6 31px 32px);line-height:32px;padding-top:30px;font-size:15px}
+.paper.log::before{content:"";position:absolute;left:58px;top:0;bottom:0;width:2px;background:#f2a3a3}
+.paper.log .sn{display:block;padding-left:48px;text-indent:-48px}
+.paper.mail .mh{font-size:13px;background:#eef1f5;border-radius:8px;padding:10px 12px;margin-bottom:14px;line-height:1.6;color:#3d4757}
+.paper.letter .lh{display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--p);padding-bottom:10px;margin-bottom:14px;font-family:Fraunces,serif;font-weight:800;font-size:18px;color:var(--p)}
+.paper.letter .lh i{width:30px;height:30px;border-radius:8px;background:var(--p);display:grid;place-items:center;color:#fff;font-style:normal}
+.phone{max-width:340px;margin:0 auto;border-radius:34px;padding:14px;background:#111;box-shadow:var(--sh2)}
+.phone .scr{border-radius:24px;background:#ece5dd;padding:16px 12px 20px;min-height:360px}
+.phone .ph{display:flex;align-items:center;gap:8px;font:700 13px "Plus Jakarta Sans";color:#333;border-bottom:1px solid rgba(0,0,0,.1);padding-bottom:10px;margin-bottom:12px}
+.phone .ph i{width:30px;height:30px;border-radius:50%;background:#999;display:grid;place-items:center;color:#fff;font-style:normal;font-weight:800}
+.phone .sn{display:block;background:#fff;color:#222;border-radius:4px 16px 16px 16px;padding:9px 12px;margin:0 30px 8px 0;font-size:15px;line-height:1.45;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.phone .sn.meta{background:none;box-shadow:none;text-align:center;font-size:11.5px;color:#777;margin:0 0 8px}
+.sn{border-radius:4px;transition:background .3s}
+.sn.hl{background:color-mix(in srgb,var(--acc) 45%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 30%,transparent)}
+.gl{border-bottom:2px dotted #b45309;cursor:pointer}
+.gl.got{border-bottom-style:solid;border-color:var(--p)}
+.gpop{position:fixed;z-index:95;max-width:240px;padding:9px 12px;border-radius:12px;background:#1f2937;color:#fff;font-size:13.5px;line-height:1.35;box-shadow:var(--sh2);animation:kaPop .25s var(--spring);pointer-events:none}
+.gpop b{display:block;font-size:15px}
+.qs{padding:20px 22px;position:sticky;top:132px}
+.qtype{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px;background:color-mix(in srgb,var(--p) 12%,var(--card));color:var(--p)}
+.qs h3{margin:10px 0 12px;font-size:19px;line-height:1.35}
+.qo{display:grid;gap:8px}
+.qo button{--d:var(--line2);display:flex;gap:10px;align-items:flex-start;text-align:left;border:0;border-radius:13px;padding:11px 13px;font-size:15px;font-weight:700;background:var(--card);color:var(--ink);box-shadow:0 0 0 1.5px var(--line2) inset,0 4px 0 var(--d);transition:transform .08s,box-shadow .08s}
+.qo button:active:not(:disabled){transform:translateY(3px);box-shadow:0 0 0 1.5px var(--line2) inset,0 1px 0 var(--d)}
+.qo button kbd{flex:0 0 22px;height:22px;border-radius:7px;background:var(--soft);display:grid;place-items:center;font:800 12px "Plus Jakarta Sans"}
+.qo button.ok{--d:color-mix(in srgb,var(--ok) 66%,#000);box-shadow:0 0 0 2px var(--ok) inset,0 4px 0 var(--d);background:var(--ok-soft)}
+.qo button.no{opacity:.55;box-shadow:0 0 0 2px var(--bad) inset,0 2px 0 var(--bad);background:var(--bad-soft);animation:kaShake .45s}
+.qo button:disabled{cursor:default}
+.why{margin-top:12px;padding:12px 14px;border-radius:13px;background:var(--soft);font-size:14.5px;line-height:1.5;animation:kaRise .4s var(--out)}
+.got{animation:kaRise .5s var(--out)}
+.earn{display:flex;gap:10px;align-items:center;margin-top:12px;padding:12px;border-radius:12px;background:#fff8c5;color:#2a2418;font-size:13.5px;animation:earn .7s var(--spring)}
+.earn i{flex:0 0 34px;height:34px;border-radius:10px;background:#2563eb;color:#fff;display:grid;place-items:center}
+.earn i svg{width:18px;height:18px}
+@keyframes earn{0%{transform:scale(.6) rotate(-6deg);opacity:0}100%{transform:none;opacity:1}}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+/* INTERROGATION */
+.room{display:grid;grid-template-columns:260px minmax(0,1fr);gap:16px;align-items:start}
+.port{padding:14px;text-align:center;position:sticky;top:132px}
+.port svg{width:100%;height:auto;border-radius:16px;background:linear-gradient(180deg,color-mix(in srgb,var(--p) 18%,var(--card)),var(--card));display:block}
+.port.shake{animation:kaShake .5s}
+.port b{display:block;font-family:Fraunces,serif;font-size:21px;margin-top:8px}
+.port small{color:var(--mut);font-weight:700}
+.mood{margin-top:8px;height:8px;border-radius:5px;background:var(--soft);overflow:hidden}
+.mood i{display:block;height:100%;background:linear-gradient(90deg,var(--ok),var(--acc),var(--bad));transition:width .6s var(--out)}
+.moodl{display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:var(--mut);margin-top:3px}
+.talk{padding:20px 22px}
+.tip{font-size:13.5px;color:var(--ink2);background:var(--acc-soft);border-radius:12px;padding:10px 12px;line-height:1.45}
+.bubble{position:relative;margin:16px 0 12px;padding:18px 20px;border-radius:20px;background:var(--card2,var(--soft));box-shadow:0 0 0 1.5px var(--line) inset}
+.bubble .no{font-size:12px;font-weight:800;color:var(--mut);letter-spacing:.06em}
+.bubble .say{font-family:Fraunces,serif;font-size:clamp(20px,2.8vw,25px);line-height:1.45;margin-top:6px;animation:kaRise .35s var(--out)}
+.bubble .tr{margin-top:8px;font-size:14.5px;color:var(--ink2);font-style:italic}
+.bubble .pr{margin-top:10px;padding-top:10px;border-top:1.5px dashed var(--line2);font-size:15.5px;color:var(--ink2);animation:kaRise .35s var(--out)}
+.bubble .pr b{color:var(--ink)}
+.snav{display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.snav .dots{display:flex;gap:5px}
+.snav .dots i{width:22px;height:7px;border-radius:4px;background:var(--soft)}.snav .dots i.c{background:var(--p)}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.acts .btn{justify-content:center}
+.btn-obj{background:var(--bad)!important;color:#fff!important;box-shadow:0 4px 0 color-mix(in srgb,var(--bad) 60%,#000)!important}
+.sheet{position:fixed;inset:0;z-index:85;background:rgba(10,15,20,.55);display:grid;align-items:end;justify-items:center;animation:kaFade .2s}
+.sheet .in{width:min(760px,100%);max-height:82vh;overflow:auto;background:var(--bg);border-radius:24px 24px 0 0;padding:18px 18px 28px;animation:sheetUp .35s var(--out)}
+@keyframes sheetUp{from{transform:translateY(40px);opacity:.4}}
+@keyframes kaFade{from{opacity:0}}
+.sheet .evs .ev{cursor:pointer;border:0;text-align:left;font-family:inherit}
+.sheet .evs .ev:hover{transform:translateY(-3px) rotate(0)}
+.slam{position:fixed;inset:0;z-index:99;display:grid;place-items:center;pointer-events:none;background:radial-gradient(circle,rgba(225,29,72,.25),transparent 60%);animation:kaFade .15s}
+.slam span{font-family:Fraunces,serif;font-weight:800;font-size:clamp(54px,12vw,120px);letter-spacing:.04em;color:#fff;background:var(--bad);padding:6px 28px;border-radius:16px;rotate:-6deg;box-shadow:0 10px 0 color-mix(in srgb,var(--bad) 55%,#000),0 20px 50px rgba(0,0,0,.4);animation:kaSlam .45s var(--spring)}
+body.quake .ka-wrap{animation:quake .5s}
+@keyframes quake{20%{transform:translate(-8px,4px)}40%{transform:translate(7px,-5px)}60%{transform:translate(-5px,3px)}80%{transform:translate(4px,-2px)}}
+.brk{margin-top:14px;padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--bad) 8%,var(--card));box-shadow:0 0 0 1.5px color-mix(in srgb,var(--bad) 35%,transparent) inset;animation:kaRise .45s var(--out)}
+.brk .say{font-family:Fraunces,serif;font-size:19px;line-height:1.45}
+.brk .lesson{margin-top:10px;font-size:14px;color:var(--ink2);background:var(--card);border-radius:10px;padding:10px 12px}
+.brk .lesson b{color:var(--ink)}
+/* ACCUSE */
+.acc-s{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.acc-s button{border:0;background:var(--card);border-radius:16px;padding:10px;box-shadow:0 0 0 1.5px var(--line2) inset,0 4px 0 var(--line2);font-family:inherit;color:var(--ink)}
+.acc-s button svg{width:100%;height:auto;border-radius:10px;display:block;background:var(--soft)}
+.acc-s button b{display:block;margin-top:6px;font-size:14px}
+.acc-s button.on{box-shadow:0 0 0 3px var(--bad) inset,0 4px 0 color-mix(in srgb,var(--bad) 60%,#000);background:color-mix(in srgb,var(--bad) 6%,var(--card))}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.slot{border:2px dashed var(--line2);border-radius:16px;padding:12px;min-height:130px;background:var(--card);text-align:left;font-family:inherit;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;gap:6px;transition:border-color .2s}
+.slot:hover{border-color:var(--p)}
+.slot h4{margin:0;font:800 12px "Plus Jakarta Sans";letter-spacing:.1em;text-transform:uppercase;color:var(--p)}
+.slot p{margin:0;font-size:12.5px;color:var(--mut)}
+.slot .ev{rotate:0deg;margin-top:auto}
+.slot.ok{border:2px solid var(--ok)}.slot.bad{border:2px solid var(--bad);animation:kaShake .45s}
+/* END */
+.verdict{max-width:760px;margin:0 auto;text-align:center;padding:30px 24px;position:relative;overflow:hidden}
+.verdict .stamp{display:inline-block;font-family:Fraunces,serif;font-weight:800;font-size:clamp(30px,6vw,46px);letter-spacing:.1em;color:var(--ok);border:6px double var(--ok);border-radius:14px;padding:4px 20px;rotate:-8deg;animation:kaSlam .6s var(--spring)}
+.verdict .stamp.bad{color:var(--bad);border-color:var(--bad)}
+.epi{text-align:left;background:var(--paper);color:#2a2418;border-radius:8px;padding:18px 20px;margin:18px 0;font-size:16px;line-height:1.7;box-shadow:var(--sh1)}
+.epi .ttr{margin-top:10px;font-size:14px;color:#5c4f35;font-style:italic}
+.rankb{display:inline-flex;flex-direction:column;align-items:center;gap:4px;margin:4px 0 10px}
+.rankb i{width:80px;height:80px;border-radius:26px;background:var(--p);color:var(--p-ink);display:grid;place-items:center;animation:kaStamp .6s var(--spring) .3s backwards}
+.rankb i svg{width:44px;height:44px}
+.rankb b{font-family:Fraunces,serif;font-size:26px}
+.stat{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.stat div{background:var(--soft);border-radius:14px;padding:12px}
+.stat b{display:block;font-family:Fraunces,serif;font-size:26px}
+.stat span{font-size:12px;font-weight:800;color:var(--mut)}
+.skills{text-align:left;display:grid;gap:8px;margin:12px 0}
+.skills div{display:grid;grid-template-columns:150px 1fr 54px;gap:10px;align-items:center;font-size:14px;font-weight:700}
+.skills .bar{height:10px;border-radius:6px;background:var(--soft);overflow:hidden}
+.skills .bar i{display:block;height:100%;background:var(--p);border-radius:6px}
+.skills .bar i.lo{background:var(--bad)}
+.skills span{text-align:right;color:var(--mut)}
+.words{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+.words span{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:5px 11px;font-size:13.5px;font-weight:700}
+.words span em{font-style:normal;color:var(--mut);font-weight:600}
+.secT{font:800 12px "Plus Jakarta Sans";letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin:18px 0 6px;text-align:left}
+@media (max-width:980px){.docs{grid-template-columns:repeat(3,1fr)}.reader,.room{grid-template-columns:1fr}.qs,.port{position:static}.port{display:grid;grid-template-columns:110px 1fr;gap:12px;text-align:left;align-items:center}.port b{margin-top:0}}
+@media (max-width:620px){.docs{grid-template-columns:1fr 1fr}.sus,.acc-s{grid-template-columns:1fr 1fr}.rules,.slots,.stat{grid-template-columns:1fr 1fr}.slots .slot:last-child{grid-column:1/-1}.paper{padding:20px 16px;font-size:15.5px}.paper.log{font-size:14px}.board{padding:12px;box-shadow:inset 0 0 0 6px color-mix(in srgb,#5b3a17 60%,var(--card)),var(--sh2)}.cover{padding:30px 18px 22px}.skills div{grid-template-columns:110px 1fr 44px;font-size:13px}.hud{top:58px}.qs{padding:16px}.talk{padding:16px}.acts{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<main class="ka-wrap" id="main"><div id="view"></div></main>
+<script src="ortak.js?v=8"></script>
+<script>
+(function(){
+'use strict';
+const {$,esc}=KA,ic=KA.ic;
+const SV=(p,a)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ${a||''}>${p}</svg>`;
+const I={pin:SV('<path d="M9 4h6l-1 6 3 3H7l3-3z"/><path d="M12 16v5"/>'),badge:SV('<path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>'),clock:SV('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),book:SV('<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>'),x:SV('<path d="M6 6l12 12M18 6 6 18"/>')};
+/* ================= VAKA VERİSİ ================= */
+const START=8*60,LIMIT=6*60;
+const COST={doc:30,talk:20,wrong:20,hint:15,tr:10,badEv:30,badAcc:45};
+const EV={
+ e1:{t:'Anahtarla açıldı',d:'Vitrin zorlanmadan anahtarla açılmış. Yalnızca iki anahtar var: küratörde ve güvenlik ofisinde.',s:'ke'},
+ e2:{t:'Son görülme 22:30',d:'Harita en son 22:30\'da, bekçinin son turunda görüldü.',s:'ke'},
+ e3:{t:'Ellison 22:45–22:55',d:'Bekçinin kaydı: Ellison 22:45\'te geldi, 22:55\'te çıktı, ön kapı kilitlendi.',s:'el'},
+ e4:{t:'Kör nokta',d:'23:00–23:20 elektrik yok, kameralar kapalı. Güvenlik ofisinin kapısı açık bulundu.',s:'ke'},
+ e5:{t:'Satın alma teklifi',d:'Ellison haritayı Londra\'daki R. Vance için almak istedi; küratör reddetti.',s:'el'},
+ e6:{t:'Ellison vazgeçmedi',d:'E-posta: "I remain hopeful that an alternative arrangement can be found."',s:'el'},
+ e7:{t:'Şalter elle indirildi',d:'Şehir şebekesinde arıza yok. Doğu kanadın şalteri bina içinden, elle kapatılmış.',s:'ke'},
+ e8:{t:'Gizli şalter',d:'Şalter personel mutfağının arkasında; ziyaretçiler göremez, yerini ancak çalışanlar bilir.',s:'ke'},
+ e9:{t:'Ellison habersiz',d:'Mesaj: "Don\'t contact Ellison. He knows nothing about this."',s:'el'},
+ e10:{t:'Paranın geri kalanı',d:'Vance\'in Kerem\'e mesajı: "you will receive the rest of the money". Kerem\'e önceden ödeme yapılmış.',s:'ke'}
+};
+const DOCS=[
+ {id:'d1',k:'report',t:'Polis tutanağı',sub:'15 Mart, 08:00',unlock:[],
+  head:['POLICE REPORT · No. 0315','GALATA MARITIME MUSEUM'],
+  s:['At 07:15 this morning, the curator, Dr. Elif Aydın, discovered that the display case in Room 4 was empty.','The stolen object is a rare 16th-century sea map.','According to the night guard, Kerem Şahin, the map was last seen at 22:30 during his final round.','There were no signs of forced entry: the glass was not broken and the lock was undamaged.','The case can only be opened with a key, and only two keys exist.','One belongs to the curator; the other is kept in the security office.'],
+  g:{'discovered':'fark etti, keşfetti','display case':'vitrin, sergi dolabı','according to':'-e göre','signs':'izler, belirtiler','forced entry':'zorla giriş','undamaged':'hasarsız','belongs to':'-e ait'},
+  q:[{ty:'Çıkarım',q:'What can be inferred about the thief?',o:['They broke the glass of the case.','They had access to one of the two keys.','They entered through a window.','They were seen by the guard.'],a:1,ev:4,e:'e1',why:'Cam kırılmamış, kilit sağlam ve vitrin sadece anahtarla açılıyor. Parça bunu açıkça söylemiyor ama sonuç tek: hırsız anahtarlardan birine ulaşabilen biri. Çıkarım soruları böyle çalışır: iki bilgiyi birleştirirsin.'},
+      {ty:'Detay',q:'When was the map last seen, and by whom?',o:['At 07:15, by the curator','At 22:30, by the night guard','At 23:00, by a visitor','At 22:45, by Mr. Ellison'],a:1,ev:2,e:'e2',why:'"last seen at 22:30 during his final round" — "his" bekçiyi gösteriyor. 07:15 haritanın kaybolduğunun fark edildiği saat; tuzak şık.'}]},
+ {id:'d2',k:'log',t:'Bekçinin kayıt defteri',sub:'14 Mart gecesi',unlock:['d1'],
+  s:['21:00 — Shift started. All visitors have left.','22:30 — Final round complete. All cases secure.','22:45 — Mr. Ellison returned. He said he had left his umbrella in the lecture hall, so I let him in.','22:55 — Mr. Ellison left with his umbrella. Front door locked.','23:00 — Power cut in the east wing. Cameras offline.','23:20 — Power restored. I found the security office door open, although I am certain I had locked it.'],
+  g:{'shift':'vardiya, nöbet','round':'devriye turu','secure':'güvende, sağlam','lecture hall':'konferans salonu','offline':'devre dışı','restored':'geri geldi, onarıldı','certain':'emin'},
+  q:[{ty:'Gönderme',q:'"He said he had left his umbrella" — who does "He" refer to?',o:['The night guard','Mr. Ellison','The curator','A police officer'],a:1,ev:2,e:'e3',why:'Zamir, kendinden önceki en uygun isme döner: aynı satırdaki "Mr. Ellison". Defteri bekçi yazıyor, o yüzden bekçi kendinden "I" diye bahseder.'},
+      {ty:'Doğru / Yanlış / Yok',q:'"The cameras recorded everything that happened that night."',o:['True','False','Not given'],a:1,ev:4,e:'e4',why:'23:00\'te "Cameras offline" yazıyor: 20 dakika boyunca kayıt yok. Parça ifadenin tersini söylediği için cevap "False". "Not given" ancak parça konuyla ilgili hiçbir şey söylemiyorsa doğru olur.'}]},
+ {id:'d3',k:'mail',t:'Ellison\'ın e-postası',sub:'13 Mart, 21:14',unlock:['d1'],
+  mh:'<b>From:</b> M. Ellison &lt;m.ellison@ellison-antiques.co.uk&gt;<br><b>To:</b> R. Vance<br><b>Subject:</b> Istanbul — update',
+  s:['Dear Mr. Vance,','I regret to inform you that I will not be able to bring the item to London as planned.','The curator has refused my offer once again; she insists that the map belongs in Istanbul.','Nevertheless, I remain hopeful that an alternative arrangement can be found before my flight on the 16th.','Kind regards, M.E.'],
+  g:{'regret to inform':'üzülerek bildirmek','as planned':'planlandığı gibi','refused':'reddetti','insists':'ısrar ediyor','nevertheless':'yine de','remain hopeful':'umudunu korumak','arrangement':'düzenleme, anlaşma'},
+  q:[{ty:'Gönderme',q:'What does "the item" in the second sentence most likely refer to?',o:['An umbrella','The sea map','A plane ticket','A painting in London'],a:1,ev:2,e:'e5',why:'Bir sonraki cümle konuyu açıyor: "she insists that the map belongs in Istanbul". "The item" o haritanın daha belirsiz adı. Gönderme sorularında cevap bazen sonraki cümlededir.'},
+      {ty:'Çıkarım',q:'What is Ellison\'s attitude at the end of the email?',o:['He has completely given up.','He is angry with Mr. Vance.','He still hopes to get the map somehow.','He wants to stay in Istanbul.'],a:2,ev:3,e:'e6',why:'"Nevertheless" (yine de) bir dönüş sinyali: reddedildi AMA "remain hopeful" ve "alternative arrangement" diyor. Tutum soruları sinyal kelimelerden çözülür.'}]},
+ {id:'d4',k:'letter',t:'Elektrik şirketi yazısı',sub:'15 Mart, 11:40',unlock:['i_el'],
+  s:['In response to your request, we have checked our records for the night of 14 March.','No faults or interruptions were recorded in the Galata area between 20:00 and 02:00.','Therefore, the power cut in the museum\'s east wing could not have been caused by our network.','Our technician found that the main switch for the east wing had been turned off manually, from inside the building.','The switch is located behind the staff kitchen and is not visible to visitors.'],
+  g:{'in response to':'yanıt olarak','records':'kayıtlar','faults':'arızalar','interruptions':'kesintiler','network':'şebeke','main switch':'ana şalter','manually':'elle','is located':'bulunuyor, yer alıyor','staff':'personel','visible':'görünür'},
+  q:[{ty:'Çıkarım',q:'What caused the power cut?',o:['A storm damaged the city network.','Someone inside the building turned off the switch.','The cameras used too much electricity.','A visitor touched the switch by accident.'],a:1,ev:3,e:'e7',why:'"turned off manually, from inside the building". Ziyaretçi şıkkı tuzak: son cümle şalterin ziyaretçilere görünmediğini söylüyor.'},
+      {ty:'Bağlamda anlam',q:'In the text, the word "manually" is closest in meaning to…',o:['automatically','by hand','quickly','secretly'],a:1,ev:3,e:'e8',why:'"manual" el ile ilgili: manually = by hand. Önceki cümle otomatik bir arızanın olmadığını söyleyerek ipucu veriyor; "automatically" bu yüzden tam tersi.'}]},
+ {id:'d5',k:'phone',t:'Kerem\'in telefonu',sub:'14 Mart, 18:02',unlock:['i_ke'],
+  s:['Tonight is the night. The switch for the east wing is behind the staff kitchen.','You already know where the spare key is kept.','Once the item is in my hands, you will receive the rest of the money.','Don\'t contact Ellison. He knows nothing about this. — V.'],
+  g:{'spare key':'yedek anahtar','once':'-dığı anda, -ınca','in my hands':'elime geçince','receive':'almak, teslim almak','the rest of':'-in geri kalanı','contact':'iletişime geçmek'},
+  q:[{ty:'Gönderme',q:'"He knows nothing about this." Who is "He"?',o:['Kerem','Vance','Ellison','The technician'],a:2,ev:3,e:'e9',why:'Hemen önceki cümlede tek erkek isim "Ellison". Mesajı Vance yazıyor (imza "V."), alıcı Kerem ("you").'},
+      {ty:'Çıkarım',q:'What does "the rest of the money" suggest?',o:['Kerem has already been paid part of the money.','Kerem will never be paid.','Ellison owes money to Vance.','The museum will pay a reward.'],a:0,ev:2,e:'e10',why:'"The rest" (geri kalanı) demek için bir kısmının ödenmiş olması gerekir. Tek kelimeden çıkarım: BUEPT\'in en sevdiği soru tipi.'}]}
+];
+const SUS={
+ el:{n:'Mark Ellison',r:'İngiliz koleksiyoncu',c:'#7c3aed'},
+ ke:{n:'Kerem Şahin',r:'Gece bekçisi',c:'#0f766e'},
+ ay:{n:'Dr. Elif Aydın',r:'Müze küratörü',c:'#b45309'},
+ va:{n:'R. Vance',r:'Londra\'daki alıcı',c:'#475569'}
+};
+const TALK={
+ i_el:{who:'el',unlock:['d2','d3'],tip:'Ellison\'ın bir ifadesi, panodaki kanıtlardan biriyle çelişiyor. İfadeler arasında gezin, gerekirse "Bastır" ile ayrıntı iste. Çelişkiyi bulunca o ifadedeyken kanıtı sun.',
+  st:[{en:'I came back to the museum only because I had forgotten my umbrella.',tr:'Müzeye yalnızca şemsiyemi unuttuğum için geri döndüm.',pr:'It was raining heavily that night. Ask anyone in Galata.'},
+      {en:'I stayed for ten minutes at most, and then the guard locked the door behind me.',tr:'En fazla on dakika kaldım, sonra bekçi kapıyı arkamdan kilitledi.',pr:'I was back at my hotel by 23:15. The receptionist will remember me.'},
+      {en:'After the curator said no, I lost all interest in the map.',tr:'Küratör hayır dedikten sonra haritaya bütün ilgimi kaybettim.',pr:'There are other maps, detective. I am a collector, not a thief.',c:'e6',
+       br:'…Fine. Yes, I still hoped to buy it — legally! But I did not steal it. Think about it, detective: a power cut on exactly that night? Power cuts don\'t happen by themselves. Ask the electricity company.',
+       lesson:'<b>"lost all interest"</b> ↔ <b>"I remain hopeful"</b>. İfade, e-postadakinin tam tersini söylüyor. Paraphrase sorularında da bunu ararsın: aynı anlam mı, ters anlam mı?'},
+      {en:'I have never even seen the security office.',tr:'Güvenlik ofisini hiç görmedim bile.',pr:'Why would a collector go to a security office?'}],
+  done:['d4']},
+ i_ke:{who:'ke',unlock:['d4'],tip:'Kerem iki kez çelişkiye düşecek. İlkini bulunca yeni ifadeler gelecek; ikincisini de yakala.',
+  st:[{en:'My final round ended at 22:30. Every case was secure.',tr:'Son turum 22:30\'da bitti. Bütün vitrinler sağlamdı.',pr:'I check every room, every night. Eleven years, detective.'},
+      {en:'When the lights went out, I went straight to the east wing with my torch.',tr:'Işıklar sönünce fenerimle doğrudan doğu kanadına gittim.',pr:'I saw nothing. Nobody. Just darkness.'},
+      {en:'It was probably a problem with the city\'s electricity. It happens all the time.',tr:'Muhtemelen şehrin elektriğiyle ilgili bir sorundu. Hep oluyor.',pr:'Old buildings, old cables. You know how it is.',c:'e7',
+       br:'Inside the building? Then… then it must have been Ellison! He was here that night!',
+       lesson:'<b>"a problem with the city\'s electricity"</b> ↔ <b>"could not have been caused by our network"</b>. "Network" burada şehir şebekesi demek: farklı kelimeler, aynı şey.'},
+      {stage:2,en:'Ellison must have hidden somewhere inside instead of leaving.',tr:'Ellison çıkmak yerine içeride bir yere saklanmış olmalı.',pr:'This museum is big. There are many places to hide.',c:'e3',
+       br:'I… That is what I wrote, yes. He left at 22:55. I… I want to make a phone call.',
+       lesson:'Kerem kendi yazdığı kayıtla çelişti: <b>"22:55 — Mr. Ellison left… Front door locked."</b> Detay soruları da böyle: saat ve sıra önemlidir.'},
+      {stage:2,en:'Anyway, I don\'t even know where the main switch is.',tr:'Zaten ana şalterin nerede olduğunu bile bilmiyorum.',pr:'I am a guard, not an electrician.'}],
+  done:['d5']}
+};
+const TL=[['18:02','Gizli mesaj','e10','red'],['21:00','Nöbet başlar',null],['22:30','Son görülme','e2'],['22:45','Ellison gelir','e3'],['22:55','Ellison çıkar','e3'],['23:00','Kesinti başlar','e4','red'],['23:20','Ofis kapısı açık','e4','red'],['07:15','Vitrin boş',null]];
+const TLX=[4,16,34,46,56,66,80,96];
+/* ================= DURUM ================= */
+const KEY='ka_dava1';
+const fresh=()=>({phase:'intro',used:0,docs:{},ev:[],words:{},talks:{},first:{},wrongs:0,acc:null,end:null,newEv:null});
+let S;try{S=JSON.parse(localStorage.getItem(KEY))||fresh()}catch(e){S=fresh()}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const left=()=>Math.max(0,LIMIT-S.used);
+const clock=()=>{const m=START+S.used;return String(Math.floor(m/60)%24).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
+function spend(min,el,why){S.used+=min;save();
+  if(el){const r=el.getBoundingClientRect(),d=document.createElement('div');d.className='cost';d.textContent='−'+min+' dk';d.style.left=(r.left+r.width/2-30)+'px';d.style.top=(r.top-10)+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),1200)}
+  hud();if(left()<=0){S.end='time';S.phase='end';save();setTimeout(render,700)}}
+const solved=id=>{const d=S.docs[id];return d&&d.solved};
+const talkDone=id=>{const t=S.talks[id];return t&&t.done};
+const isOpen=id=>{const unl=(DOCS.find(d=>d.id===id)||TALK[id]).unlock;return unl.every(u=>u.startsWith('i_')?talkDone(u):solved(u))};
+/* ================= PORTRELER ================= */
+function face(k,big){
+  const c=SUS[k].c,hair={el:'#3f3f46',ke:'#1c1917',ay:'#7c2d12',va:'#111'}[k];
+  const acc={el:`<path d="M58 44h84l-8-20H66z" fill="#1f2937"/><rect x="48" y="42" width="104" height="8" rx="4" fill="#111827"/>`,ke:`<path d="M56 52c0-18 20-28 44-28s44 10 44 28z" fill="#1e3a5f"/><rect x="50" y="50" width="100" height="8" rx="4" fill="#0f2742"/><circle cx="100" cy="38" r="6" fill="#fbbf24"/>`,ay:`<circle cx="100" cy="30" r="15" fill="${hair}"/><g fill="none" stroke="#111" stroke-width="3"><circle cx="86" cy="80" r="9"/><circle cx="114" cy="80" r="9"/><path d="M95 80h10"/></g>`,va:''}[k];
+  const skin=k==='va'?'#334155':'#e8b98f';
+  return `<svg viewBox="0 0 200 200" aria-hidden="true"><rect width="200" height="200" fill="${k==='va'?'#1e293b':'transparent'}"/>
+  <path d="M30 200c6-40 34-62 70-62s64 22 70 62z" fill="${c}"/><path d="M84 140l16 22 16-22" fill="#fff" opacity=".85"/>
+  <rect x="88" y="112" width="24" height="30" fill="${skin}"/>
+  <ellipse cx="100" cy="82" rx="38" ry="44" fill="${skin}"/>
+  ${k!=='va'?`<path d="M62 76c0-30 16-44 38-44s38 14 38 44c-8-12-20-18-38-18s-30 6-38 18z" fill="${hair}"/>`:''}
+  ${k==='va'?`<text x="100" y="100" text-anchor="middle" font-family="Fraunces,serif" font-weight="800" font-size="56" fill="#94a3b8">?</text>`:`<circle cx="86" cy="82" r="4" fill="#1f2937"/><circle cx="114" cy="82" r="4" fill="#1f2937"/><path d="M90 104q10 6 20 0" stroke="#7f1d1d" stroke-width="3" fill="none" stroke-linecap="round"/>`}
+  ${acc}</svg>`;
+}
+/* ================= HUD ================= */
+function hudHtml(){const l=left();return `<div class="hud" id="hud"><div class="clk ${l<=60?'warn':''}">${I.clock.replace('<svg','<svg width="20" height="20"')}<b>${clock()}</b></div><div class="tbar" title="14:00'a kalan süre"><i style="width:${l/LIMIT*100}%"></i></div><span class="pill">Kanıt <b>${S.ev.length}/10</b></span><button class="pill" id="defter">Defter <b>${Object.keys(S.words).length}</b></button>${S.phase!=='board'?'<button class="pill" data-go="board">← Pano</button>':''}</div>`}
+function hud(){const h=$('#hud');if(h)h.outerHTML=hudHtml()}
+/* ================= EKRANLAR ================= */
+function render(){
+  const v=$('#view');
+  if(S.phase==='intro')return intro();
+  if(S.phase==='end')return ending();
+  if(S.phase==='board')v.innerHTML=hudHtml()+board();
+  else if(S.phase.startsWith('d'))v.innerHTML=hudHtml()+reader(S.phase);
+  else if(S.phase.startsWith('i_'))v.innerHTML=hudHtml()+room(S.phase);
+  else if(S.phase==='accuse')v.innerHTML=hudHtml()+accuse();
+  S.newEv=null;save();
+}
+function intro(){
+  $('#view').innerHTML=`<div class="cover"><span class="tabl">DOSYA NO. 0315</span><span class="sec">GİZLİ</span>
+   <h1>Kayıp Harita Davası</h1><div class="sub">Galata Maritime Museum · İstanbul</div>
+   <div class="brief">Dün gece müzeden 16. yüzyıldan kalma eşsiz bir deniz haritası çalındı. Elimizdeki bilgiye göre harita <b>bugün saat 14:00'te</b> yurt dışına çıkarılacak.<br><br>Sen davanın dedektifisin. Belgeler, e-postalar ve ifadeler İngilizce. Onları okuyacak, çelişkileri yakalayacak ve suçluyu kanıtlarıyla göstereceksin.</div>
+   <div class="rules"><div><b>Belgeleri oku</b>Her belgede 2 sorgu sorusu var. Doğru cevap panoya kanıt ekler.</div><div><b>Sorgula</b>Şüphelinin yalanını, doğru kanıtı sunarak çürüt.</div><div><b>Saat işliyor</b>Her belge, her hata ve her ipucu zaman yer. 14:00'ü geçirme.</div></div>
+   <div class="row" style="gap:10px;flex-wrap:wrap"><a class="btn btn-ghost" href="oyunlar.html">← Oyun Salonu</a><button class="btn btn-p" id="begin">${S.used?'Davaya devam et':'Davayı aç'} ${ic('arrow')}</button>${S.used?'<button class="btn btn-ghost" id="restart">Baştan başla</button>':''}</div></div>`;
+}
+function board(){
+  const docs=DOCS.map(d=>{const op=isOpen(d.id),sv=solved(d.id),seen=S.docs[d.id];return `<button class="doc ${op?'':'locked'} ${sv?'solved':''} ${op&&!seen?'new':''}" ${op&&!sv?`data-open="${d.id}"`:sv?`data-open="${d.id}"`:'disabled'}><span class="dt">${op?esc(d.sub):'kilitli'}</span><b>${esc(d.t)}</b><span class="ds">${sv?'2 kanıt':op?(seen?'okunuyor':`aç · ${COST.doc} dk`):lockWhy(d)}</span></button>`}).join('');
+  const sus=['el','ke','ay','va'].map(k=>{const tid=k==='el'?'i_el':k==='ke'?'i_ke':null,op=tid&&isOpen(tid),dn=tid&&talkDone(tid);const n=S.ev.filter(e=>EV[e].s===k).length;
+    return `<div class="sp">${op&&!dn?'<span class="tagx">SORGU</span>':''}${face(k)}<b>${SUS[k].n}</b><small>${SUS[k].r}${n?` · ${n} kanıt`:''}</small>${tid?`<button class="btn btn-sm ${op&&!dn?'btn-p':'btn-ghost'} int" ${op?`data-talk="${tid}"`:'disabled'}>${dn?'Sorgu bitti':op?'Sorgula':'Henüz değil'}</button>`:''}</div>`}).join('');
+  const evs=S.ev.map(e=>`<div class="ev ${S.newEv===e?'fresh':''}"><b>${esc(EV[e].t)}</b>${esc(EV[e].d)}</div>`).join('')+(S.ev.length<10?`<div class="ev empty">${10-S.ev.length} kanıt daha</div>`:'');
+  const tl=TL.map(([h,n,e,c],i)=>{const known=!e||S.ev.includes(e);return `<div class="tk ${known?(c||''):'q'}" style="left:${TLX[i]}%"><em>${known?h:'??:??'}</em><i></i><span>${known?esc(n):'?'}</span></div>`}).join('');
+  const ready=solved('d5');
+  return `<section class="board"><div class="bsec"><h3>Belgeler</h3><div class="docs">${docs}</div></div>
+   <div class="bsec"><h3>Şüpheliler</h3><div class="sus">${sus}</div></div>
+   <div class="bsec"><h3>Zaman çizelgesi · 14–15 Mart</h3><div class="tline"><div class="ax">${tl}</div></div></div>
+   <div class="bsec"><h3>Kanıtlar</h3><div class="evs">${evs}</div></div>
+   <div class="acc"><button class="btn ${ready?'btn-obj':'btn-ghost'}" ${ready?'data-go="accuse"':'disabled'}>${ready?'Suçluyu göster':'Suçlama için bütün belgeleri çöz'}</button></div></section>`;
+}
+function lockWhy(d){const u=d.unlock[0];if(!u)return'';if(u==='i_el')return'Ellison\'ı sorgula';if(u==='i_ke')return'Kerem\'i sorgula';return'önce tutanağı çöz'}
+function markText(d,st){
+  const keys=Object.keys(d.g).sort((a,b)=>b.length-a.length);
+  return d.s.map((s,i)=>{let h=esc(s);keys.forEach(k=>{const re=new RegExp('(^|[^A-Za-z>])('+k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')(?![A-Za-z])','i');h=h.replace(re,(m,p,w)=>`${p}<span class="gl ${S.words[k]?'got':''}" data-gl="${esc(k)}" data-d="${d.id}">${w}</span>`)});
+    return `<span class="sn ${st.hl===i?'hl':''} ${d.k==='phone'&&i===-1?'meta':''}" data-s="${i}">${h}</span>`}).join(d.k==='log'||d.k==='phone'?'':' ');
+}
+function reader(id){
+  const d=DOCS.find(x=>x.id===id),st=S.docs[id];
+  const body=markText(d,st);
+  let paper;
+  if(d.k==='report')paper=`<div class="paper report"><div class="hd"><span>${d.head[0]}</span><span>${d.head[1]}</span></div>${body}</div>`;
+  else if(d.k==='log')paper=`<div class="paper log"><div style="font-family:Fraunces,serif;font-weight:800;line-height:32px">NIGHT LOG · 14 March</div>${body}</div>`;
+  else if(d.k==='mail')paper=`<div class="paper mail"><div class="mh">${d.mh}</div>${body}</div>`;
+  else if(d.k==='letter')paper=`<div class="paper letter"><div class="lh"><i>⚡</i>Boğaz Energy · Technical Department</div>${body}</div>`;
+  else paper=`<div class="phone"><div class="scr"><div class="ph"><i>?</i>Unknown number</div><span class="sn meta">14 March · 18:02</span>${body}</div></div>`;
+  const qi=st.qi,q=d.q[Math.min(qi,1)];
+  let qs;
+  if(st.solved){qs=`<section class="card qs"><span class="qtype">Belge çözüldü</span><h3>Bu belgeden 2 kanıt çıktı</h3>${d.q.map(x=>`<div class="ev" style="rotate:0deg;margin-bottom:8px"><b>${esc(EV[x.e].t)}</b>${esc(EV[x.e].d)}</div>`).join('')}<div class="tools"><button class="btn btn-p" data-go="board">Panoya dön ${ic('arrow')}</button></div></section>`}
+  else{
+    const ans=st.ans,ok=ans===q.a;
+    qs=`<section class="card qs"><div class="row" style="justify-content:space-between"><span class="qtype">${esc(q.ty)}</span><span class="mut" style="font-size:13px;font-weight:800">Sorgu ${qi+1} / 2</span></div><h3>${esc(q.q)}</h3>
+    <div class="qo">${q.o.map((o,i)=>`<button data-qa="${i}" class="${(st.wr||[]).includes(i)?'no':ok&&i===q.a?'ok':''}" ${ok||(st.wr||[]).includes(i)?'disabled':''}><kbd>${'ABCD'[i]}</kbd><span>${esc(o)}</span></button>`).join('')}</div>
+    ${ok?`<div class="why"><b>Doğru.</b> ${esc(q.why)}</div><div class="earn"><i>${I.pin}</i><div><b>Kanıt panoya eklendi: ${esc(EV[q.e].t)}</b>${esc(EV[q.e].d)}</div></div><div class="tools"><button class="btn btn-p" id="qnext">${qi===0?'Sıradaki sorgu':'Belgeyi kapat'} ${ic('arrow')}</button></div>`
+      :`${(st.wr||[]).length?`<div class="why"><b>Olmadı, ${COST.wrong} dakika gitti.</b> Metne tekrar bak; cevap tek bir cümlede.</div>`:''}<div class="tools"><button class="btn btn-ghost btn-sm" id="qhint" ${st.hl!=null?'disabled':''}>${ic('spark')}Cümleyi göster · ${COST.hint} dk</button></div>`}
+    </section>`}
+  return `<div class="reader"><div>${paper}<p class="mut" style="font-size:13px;margin:10px 4px 0">Noktalı çizgili kelimelere dokun: anlamı açılır ve Defter'e eklenir.</p></div>${qs}</div>`;
+}
+function room(id){
+  const T=TALK[id],st=S.talks[id],who=SUS[T.who];
+  const list=T.st.filter(x=>(x.stage||1)===st.stage),cur=list[st.i]||list[0];
+  const mood=Math.min(100,25+st.stage*30+(st.done?30:0)+st.bad*5);
+  return `<div class="room"><section class="card port" id="port">${face(T.who,1)}<div><b>${who.n}</b><small>${who.r}</small><div class="mood"><i style="width:${mood}%"></i></div><div class="moodl"><span>sakin</span><span>gergin</span></div></div></section>
+   <section class="card talk">${st.done?`<div class="brk"><div class="say">"${esc(st.br)}"</div><div class="lesson">${st.lesson}</div></div><div class="tools"><button class="btn btn-p" data-go="board">Panoya dön · yeni belge açıldı ${ic('arrow')}</button></div>`:`
+    <div class="tip">${esc(T.tip)}</div>
+    ${st.brk?`<div class="brk"><div class="say">"${esc(st.brk.br)}"</div><div class="lesson">${st.brk.lesson}</div></div>`:''}
+    <div class="bubble"><div class="no">İFADE ${st.i+1} / ${list.length}</div><div class="say">"${esc(cur.en)}"</div>${st.trs&&st.trs.includes(cur.en)?`<div class="tr">${esc(cur.tr)}</div>`:''}${st.pr&&st.pr.includes(cur.en)?`<div class="pr"><b>${who.n.split(' ')[0]}:</b> "${esc(cur.pr)}"</div>`:''}</div>
+    <div class="snav"><button class="btn btn-ghost btn-sm" id="sp" ${st.i===0?'disabled':''}>← Önceki</button><div class="dots">${list.map((_,k)=>`<i class="${k===st.i?'c':''}"></i>`).join('')}</div><button class="btn btn-ghost btn-sm" id="sn" ${st.i>=list.length-1?'disabled':''}>Sonraki →</button></div>
+    <div class="acts"><button class="btn btn-ghost" id="press">Bastır</button><button class="btn btn-obj" id="present">Kanıt sun</button></div>
+    <div class="tools" style="justify-content:center"><button class="btn btn-ghost btn-sm" id="trn" ${st.trs&&st.trs.includes(cur.en)?'disabled':''}>Türkçesi · ${COST.tr} dk</button></div>`}
+   </section></div>`;
+}
+function accuse(){
+  const a=S.acc||(S.acc={who:null,slots:[null,null,null],res:null});
+  const SL=[['Sebep','Neden yaptı? Arkasında ne var?'],['Araç','Vitrini nasıl açtı?'],['Fırsat','Kameralar nasıl kör oldu?']];
+  return `<section class="card" style="padding:20px 22px"><span class="eyebrow">Son adım</span><h2 style="margin:4px 0 6px;font-size:28px">Suçlu kim?</h2><p class="mut" style="margin:0 0 14px">Şüpheliyi seç, sonra iddianı üç kanıtla kur. Yanlış suçlama ${COST.badAcc} dakikaya mal olur.</p>
+   <div class="acc-s">${['el','ke','ay','va'].map(k=>`<button data-who="${k}" class="${a.who===k?'on':''}">${face(k)}<b>${SUS[k].n}</b></button>`).join('')}</div>
+   <div class="slots">${SL.map(([n,d],i)=>{const e=a.slots[i];return `<button class="slot ${a.res?(a.res[i]?'ok':'bad'):''}" data-slot="${i}"><h4>${n}</h4><p>${d}</p>${e?`<div class="ev"><b>${esc(EV[e].t)}</b></div>`:'<p style="margin-top:auto;font-weight:800;color:var(--p)">+ kanıt seç</p>'}</button>`}).join('')}</div>
+   ${a.msg?`<div class="why" style="margin-top:14px">${a.msg}</div>`:''}
+   <div class="row" style="justify-content:center;margin-top:16px"><button class="btn btn-obj" id="doacc" ${a.who&&a.slots.every(Boolean)?'':'disabled'}>Suçla</button></div></section>`;
+}
+function ending(){
+  const win=S.end==='win',l=left();
+  const firsts=Object.values(S.first),fc=firsts.filter(Boolean).length;
+  const by={};DOCS.forEach(d=>d.q.forEach((q,j)=>{const k=d.id+j;by[q.ty]=by[q.ty]||[0,0];by[q.ty][1]++;if(S.first[k])by[q.ty][0]++}));
+  const score=win?Math.round(l/LIMIT*50+fc/10*50):0;
+  const rank=!win?['Dava düştü','Harita yurt dışına çıktı.']:score>=85?['Başmüfettiş','Neredeyse kusursuz bir soruşturma.']:score>=65?['Komiser','Sağlam bir dava, birkaç gereksiz adım.']:['Dedektif','Davayı çözdün; hız ve isabet artacak.'];
+  const words=Object.entries(S.words);
+  $('#view').innerHTML=`<section class="card verdict"><span class="stamp ${win?'':'bad'}">${win?'DAVA KAPANDI':'SÜRE DOLDU'}</span>
+   ${win?`<div class="epi">At 13:20, police officers stopped a courier at Istanbul Airport. Inside a hidden compartment of his suitcase was the missing sea map. Kerem Şahin confessed that R. Vance had offered him a large sum of money. Mark Ellison, who knew nothing about the plan, said he was relieved — and that he would buy his maps "the old-fashioned way" from now on.<div class="ttr">13:20'de polis, havalimanında bir kuryeyi durdurdu; bavulunun gizli bölmesinde kayıp harita vardı. Kerem Şahin, Vance'in kendisine büyük bir para teklif ettiğini itiraf etti. Plandan habersiz olan Ellison rahatladığını ve bundan sonra haritalarını "eski usul" alacağını söyledi.</div></div>`:`<div class="epi">The plane took off at 14:00. Somewhere above Europe, a rare map left Istanbul — perhaps forever.<div class="ttr">Uçak 14:00'te kalktı. Avrupa'nın üzerinde bir yerde, eşsiz bir harita belki de sonsuza dek İstanbul'dan ayrıldı.</div></div>`}
+   <div class="rankb"><i>${I.badge}</i><b>${rank[0]}</b><span class="mut">${rank[1]}</span></div>
+   <div class="stat"><div><b>${win?clock():'14:00'}</b><span>bitiş saati</span></div><div><b>${fc}/10</b><span>ilk denemede doğru</span></div><div><b>${S.wrongs}</b><span>hata</span></div><div><b>${words.length}</b><span>yeni kelime</span></div></div>
+   <div class="secT">Reading becerilerin</div><div class="skills">${Object.entries(by).map(([k,[o,t]])=>`<div>${esc(k)}<div class="bar"><i class="${o/t<.5?'lo':''}" style="width:${o/t*100}%"></i></div><span>${o}/${t}</span></div>`).join('')}</div>
+   ${words.length?`<div class="secT">Defterine girenler</div><div class="words">${words.map(([w,t])=>`<span>${esc(w)} <em>· ${esc(t)}</em></span>`).join('')}</div>`:''}
+   <div class="row" style="justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap">${words.length?'<button class="btn btn-ghost" id="addw">Kelimeleri listeme ekle</button>':''}<button class="btn btn-p" id="restart">Davayı yeniden aç</button></div></section>`;
+  if(win)setTimeout(()=>{const s=document.querySelector('.stamp');if(s&&KA.confetti){const r=s.getBoundingClientRect();KA.confetti(r.left+r.width/2,r.top+r.height/2,40,Math.PI*1.2)}},350);
+}
+/* ================= ETKİLEŞİM ================= */
+function go(p){S.phase=p;save();render();window.scrollTo({top:0,behavior:'smooth'})}
+function openDoc(id,el){if(!S.docs[id]){S.docs[id]={qi:0,ans:null,wr:[],hl:null,solved:false};S.phase=id;spend(COST.doc,el)}go(id)}
+function openTalk(id,el){if(!S.talks[id]){S.talks[id]={stage:1,i:0,bad:0,pr:[],trs:[],done:false};S.phase=id;spend(COST.talk,el)}go(id)}
+let pop;
+function gloss(el){const k=el.dataset.gl,d=DOCS.find(x=>x.id===el.dataset.d),t=d.g[k];if(pop)pop.remove();
+  pop=document.createElement('div');pop.className='gpop';pop.innerHTML=`<b>${esc(el.textContent)}</b>${esc(t)}`;document.body.appendChild(pop);const r=el.getBoundingClientRect(),w=pop.offsetWidth;
+  pop.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left+r.width/2-w/2))+'px';pop.style.top=(r.top-pop.offsetHeight-8<8?r.bottom+8:r.top-pop.offsetHeight-8)+'px';
+  KA.speak&&KA.speak(el.textContent);if(!S.words[k]){S.words[k]=t;save();document.querySelectorAll(`[data-gl="${CSS.escape(k)}"]`).forEach(x=>x.classList.add('got'));const h=$('#defter b');if(h)h.textContent=Object.keys(S.words).length}
+  clearTimeout(gloss.t);gloss.t=setTimeout(()=>{if(pop){pop.remove();pop=null}},2400)}
+function answer(i,el){
+  const id=S.phase,d=DOCS.find(x=>x.id===id),st=S.docs[id],q=d.q[st.qi],k=id+st.qi;
+  if(i===q.a){st.ans=i;st.hl=q.ev;if(S.first[k]==null)S.first[k]=!(st.wr||[]).length&&!st.hinted;if(!S.ev.includes(q.e)){S.ev.push(q.e);S.newEv=q.e}KA.sfx.ok();save();render();const e=document.querySelector('.earn');if(e&&KA.confetti){const r=e.getBoundingClientRect();KA.confetti(r.left+30,r.top,16,Math.PI*.8)}}
+  else{st.wr=st.wr||[];st.wr.push(i);S.first[k]=false;S.wrongs++;KA.sfx.bad();save();spend(COST.wrong,el);if(S.phase===id)render()}
+}
+function presentEv(){
+  const T=TALK[S.phase],st=S.talks[S.phase];
+  const sh=document.createElement('div');sh.className='sheet';sh.innerHTML=`<div class="in"><div class="row" style="justify-content:space-between;margin-bottom:12px"><b style="font-size:18px">Hangi kanıt bu ifadeyle çelişiyor?</b><button class="btn btn-ghost btn-sm" data-close>Kapat</button></div><div class="evs">${S.ev.map(e=>`<button class="ev" data-pe="${e}"><b>${esc(EV[e].t)}</b>${esc(EV[e].d)}</button>`).join('')}</div></div>`;
+  document.body.appendChild(sh);
+}
+function pickEv(e,el){
+  document.querySelector('.sheet')?.remove();
+  const id=S.phase,T=TALK[id],st=S.talks[id],list=T.st.filter(x=>(x.stage||1)===st.stage),cur=list[st.i];
+  if(cur.c===e){
+    const sl=document.createElement('div');sl.className='slam';sl.innerHTML='<span>ÇELİŞKİ!</span>';document.body.appendChild(sl);document.body.classList.add('quake');KA.sfx.ok();
+    setTimeout(()=>{sl.remove();document.body.classList.remove('quake')},900);
+    const hasStage2=T.st.some(x=>x.stage===2);
+    if(st.stage===1&&hasStage2){st.stage=2;st.i=0;st.brk={br:cur.br,lesson:cur.lesson}}
+    else{st.done=true;st.br=cur.br;st.lesson=cur.lesson}
+    save();setTimeout(render,500);
+  }else{
+    st.bad++;S.wrongs++;KA.sfx.bad();const p=$('#port');p&&(p.classList.remove('shake'),void p.offsetWidth,p.classList.add('shake'));
+    KA.toast(`${SUS[T.who].n.split(' ')[0]}: "That proves nothing, detective." Bu kanıt bu ifadeyle çelişmiyor.`);
+    save();spend(COST.badEv,$('#present'));if(S.phase===id)render();
+  }
+}
+function doAccuse(el){
+  const a=S.acc,sebep=['e10'],arac=['e1','e4'],firs=['e7','e8','e4'];
+  if(a.who!=='ke'){
+    const msg={el:'Ellison kesintiden önce, 22:55\'te çıkmıştı (bekçinin kendi kaydı). Mesaj da onun habersiz olduğunu söylüyor. Kim içeride kaldı?',ay:'Küratör haritanın İstanbul\'da kalmasında ısrar ediyordu. Neden çalsın? Şalterin yerini bilip o gece içeride olan kim?',va:'Vance plancı olabilir ama o gece Londra\'daydı; vitrini kendi eliyle açamazdı. Haritayı içeriden kim aldı?'}[a.who];
+    a.msg='<b>Suçlama çöktü.</b> '+msg;a.res=null;S.wrongs++;KA.sfx.bad();save();spend(COST.badAcc,el);if(S.phase==='accuse')render();return}
+  const r=[sebep.includes(a.slots[0]),arac.includes(a.slots[1]),firs.includes(a.slots[2])];a.res=r;
+  if(r.every(Boolean)){S.end='win';save();try{KA.addXp(60,'dava')}catch(e){}const sl=document.createElement('div');sl.className='slam';sl.innerHTML='<span>SUÇLU!</span>';document.body.appendChild(sl);document.body.classList.add('quake');KA.sfx.ok();setTimeout(()=>{sl.remove();document.body.classList.remove('quake');go('end')},1100);return}
+  const names=['Sebep','Araç','Fırsat'];a.msg=`<b>Doğru kişi, ama iddian zayıf.</b> ${r.map((x,i)=>x?'':names[i]).filter(Boolean).join(' ve ')} kanıtı bunu desteklemiyor. İpucu: Sebep için para, Araç için anahtar, Fırsat için elektrik kesintisi.`;
+  S.wrongs++;KA.sfx.bad();save();spend(20,el);if(S.phase==='accuse')render();
+}
+function slotPick(i){
+  const sh=document.createElement('div');sh.className='sheet';sh.innerHTML=`<div class="in"><div class="row" style="justify-content:space-between;margin-bottom:12px"><b style="font-size:18px">${['Sebep','Araç','Fırsat'][i]} için kanıt seç</b><button class="btn btn-ghost btn-sm" data-close>Kapat</button></div><div class="evs">${S.ev.map(e=>`<button class="ev" data-se="${e}" data-si="${i}"><b>${esc(EV[e].t)}</b>${esc(EV[e].d)}</button>`).join('')}</div></div>`;document.body.appendChild(sh)}
+function defter(){const w=Object.entries(S.words);const sh=document.createElement('div');sh.className='sheet';sh.innerHTML=`<div class="in"><div class="row" style="justify-content:space-between;margin-bottom:12px"><b style="font-size:18px">Dedektif defteri · ${w.length} kelime</b><button class="btn btn-ghost btn-sm" data-close>Kapat</button></div>${w.length?`<div class="words" style="justify-content:flex-start">${w.map(([a,b])=>`<span>${esc(a)} <em>· ${esc(b)}</em></span>`).join('')}</div>`:'<p class="mut">Belgelerdeki noktalı kelimelere dokundukça burası dolacak.</p>'}</div>`;document.body.appendChild(sh)}
+document.addEventListener('click',e=>{
+  const t=e.target,q=s=>t.closest(s);let b;
+  if(q('[data-close]')||t.classList.contains('sheet')){document.querySelector('.sheet')?.remove();return}
+  if(q('#begin')){go(S.phase==='intro'?'board':S.phase);return}
+  if(q('#restart')){S=fresh();S.phase='board';save();render();return}
+  if(b=q('[data-go]')){if(b.dataset.go==='accuse')S.acc=S.acc||null;go(b.dataset.go);return}
+  if(q('#defter')){defter();return}
+  if(b=q('[data-open]')){openDoc(b.dataset.open,b);return}
+  if(b=q('[data-talk]')){openTalk(b.dataset.talk,b);return}
+  if(b=q('[data-gl]')){gloss(b);return}
+  if(b=q('[data-qa]')){answer(+b.dataset.qa,b);return}
+  if(q('#qhint')){const st=S.docs[S.phase],d=DOCS.find(x=>x.id===S.phase);st.hl=d.q[st.qi].ev;st.hinted=true;S.first[S.phase+st.qi]=false;save();spend(COST.hint,q('#qhint'));render();setTimeout(()=>document.querySelector('.sn.hl')?.scrollIntoView({behavior:'smooth',block:'center'}),80);return}
+  if(q('#qnext')){const st=S.docs[S.phase];if(st.qi===0){st.qi=1;st.ans=null;st.wr=[];st.hl=null;st.hinted=false;save();render()}else{st.solved=true;save();go('board')}return}
+  const T=S.phase&&S.phase.startsWith('i_')?S.talks[S.phase]:null;
+  if(T){const list=TALK[S.phase].st.filter(x=>(x.stage||1)===T.stage),cur=list[T.i];
+    if(q('#sp')){T.i--;save();render();return}
+    if(q('#sn')){T.i++;save();render();return}
+    if(q('#press')){if(!T.pr.includes(cur.en))T.pr.push(cur.en);save();render();return}
+    if(q('#trn')){T.trs.push(cur.en);save();spend(COST.tr,q('#trn'));render();return}
+    if(q('#present')){presentEv();return}
+    if(b=q('[data-pe]')){pickEv(b.dataset.pe,b);return}
+  }
+  if(b=q('[data-who]')){S.acc.who=b.dataset.who;S.acc.res=null;S.acc.msg=null;save();render();return}
+  if(b=q('[data-slot]')){slotPick(+b.dataset.slot);return}
+  if(b=q('[data-se]')){S.acc.slots[+b.dataset.si]=b.dataset.se;S.acc.res=null;S.acc.msg=null;document.querySelector('.sheet')?.remove();save();render();return}
+  if(q('#doacc')){doAccuse(q('#doacc'));return}
+  if(q('#addw')){Object.entries(S.words).forEach(([w,t])=>KA.addUnknown(w,t));KA.toast('Kelimeler Bilmediklerim listesine eklendi.');q('#addw').disabled=true;return}
+});
+KA.nav('oyunlar.html');
+render();
+})();
+</script>
+</body>
+</html>

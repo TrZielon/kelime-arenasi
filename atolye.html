@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="tr" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reading Atölyesi · Kelime Arenası</title>
+<meta name="theme-color" content="#0f766e">
+<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="ortak.css?v=8">
+<style>
+.intro{padding:22px 24px}
+.intro h1{font-size:clamp(26px,4vw,38px);margin:6px 0}
+.intro p{margin:0;color:var(--ink2);max-width:70ch}
+.ftabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px}
+.ftab{--d:var(--line2);display:flex;gap:10px;align-items:center;text-align:left;border:0;border-radius:16px;padding:12px 13px;background:var(--card);color:var(--ink);box-shadow:0 0 0 1.5px var(--line2) inset,0 4px 0 var(--d);transition:transform .08s,box-shadow .08s}
+.ftab:active{transform:translateY(3px);box-shadow:0 0 0 1.5px var(--line2) inset,0 1px 0 var(--d)}
+.ftab.on{--d:color-mix(in srgb,var(--p) 68%,#000);box-shadow:0 0 0 2px var(--p) inset,0 4px 0 var(--d);background:color-mix(in srgb,var(--p) 6%,var(--card))}
+.ftab i{flex:0 0 40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--soft);color:var(--p)}
+.ftab.on i{background:var(--p);color:var(--p-ink)}
+.ftab i svg{width:22px;height:22px}
+.ftab b{display:block;font-size:15px;line-height:1.2}
+.ftab small{display:block;font-size:12px;color:var(--mut);font-weight:700;margin-top:2px}
+.ftab em{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.05em;color:var(--acc2);background:var(--acc-soft);border-radius:6px;padding:1px 5px;margin-left:4px;vertical-align:2px}
+.why{display:flex;gap:10px;align-items:flex-start;margin:14px 0 0;padding:12px 14px;border-radius:14px;background:var(--acc-soft);font-size:14px;color:var(--ink2);line-height:1.5}
+.why svg{width:18px;height:18px;color:var(--acc2);flex:0 0 auto;margin-top:2px}
+.pane{margin-top:16px;max-width:820px;margin-left:auto;margin-right:auto}
+.box{padding:22px 24px;position:relative;overflow:hidden}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.steps{display:flex;gap:6px;margin:14px 0 4px;flex-wrap:wrap}
+.steps span{font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px;background:var(--soft);color:var(--mut)}
+.steps span.on{background:var(--p);color:var(--p-ink)}
+.steps span.ok{background:var(--ok-soft);color:var(--ok)}
+.task{font-size:15px;font-weight:700;margin:12px 0;color:var(--ink2)}
+.task b{color:var(--ink)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts.one{grid-template-columns:1fr}
+.opts button,.chip{--d:var(--line2);border:0;border-radius:14px;padding:12px 14px;text-align:left;font-weight:700;font-size:15px;background:var(--card);color:var(--ink);box-shadow:0 0 0 1.5px var(--line2) inset,0 4px 0 var(--d);transition:transform .08s,box-shadow .08s}
+.opts button:active:not(:disabled),.chip:active{transform:translateY(3px);box-shadow:0 0 0 1.5px var(--line2) inset,0 1px 0 var(--d)}
+.opts button.ok{--d:color-mix(in srgb,var(--ok) 66%,#000);box-shadow:0 0 0 2px var(--ok) inset,0 4px 0 var(--d);background:var(--ok-soft)}
+.opts button.no{--d:color-mix(in srgb,var(--bad) 66%,#000);box-shadow:0 0 0 2px var(--bad) inset,0 4px 0 var(--d);background:var(--bad-soft);animation:kaShake .45s}
+.opts button:disabled{cursor:default}
+.opts button small{display:block;font-size:12px;color:var(--mut);font-weight:600;margin-top:2px}
+.rep{margin-top:14px;padding:14px 16px;border-radius:14px;background:var(--soft);font-size:15px;line-height:1.55;animation:kaRise .45s var(--out)}
+.rep b{color:var(--ink)}
+.nx{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.dots{display:flex;gap:6px;margin-top:14px;justify-content:center}
+.dots i{width:28px;height:8px;border-radius:5px;background:var(--soft)}.dots i.d{background:var(--ok)}.dots i.x{background:var(--bad)}.dots i.c{background:var(--line2)}
+.stars{display:inline-flex;gap:2px;vertical-align:-3px}
+.stars svg{width:18px;height:18px;color:var(--line2)}.stars svg.on{color:var(--acc)}
+.stamp{position:absolute;right:20px;top:54px;font-family:Fraunces,serif;font-weight:800;font-size:20px;letter-spacing:.08em;color:var(--ok);border:4px double var(--ok);border-radius:10px;padding:2px 12px;rotate:-12deg;animation:kaSlam .5s var(--spring) backwards;background:var(--card);z-index:2}
+.stamp.bad{color:var(--bad);border-color:var(--bad)}
+/* Dedektif */
+.csent{font-family:Fraunces,serif;font-size:clamp(20px,3vw,26px);line-height:1.6;margin:14px 0 6px}
+.cw{border-radius:6px;padding:0 2px;transition:background .2s}
+.clue-on .cw{cursor:pointer}
+.clue-on .cw:hover{background:var(--soft)}
+.cw.clue{background:color-mix(in srgb,#7c3aed 16%,transparent);box-shadow:0 2px 0 #7c3aed}
+.cw.clue::after{content:attr(data-k);font:800 10px "Plus Jakarta Sans",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#7c3aed;vertical-align:super;margin-left:3px}
+:root[data-mode=dark] .cw.clue::after{color:#c4b5fd}
+.cw.no{animation:kaShake .45s;background:var(--bad-soft)}
+.myst{font-style:italic;color:var(--acc2);border-bottom:3px dotted var(--acc);padding:0 3px}
+.myst small{font:800 10px "Plus Jakarta Sans",sans-serif;font-style:normal;letter-spacing:.04em;text-transform:uppercase;color:var(--p);vertical-align:super;margin-left:3px}
+.myst.real{font-style:normal;color:var(--ok);border-bottom-style:solid;border-color:var(--ok);animation:kaStamp .5s var(--spring)}
+.lens{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.lens .slot{width:34px;height:34px;border-radius:50%;border:2px dashed var(--line2);display:grid;place-items:center;color:var(--mut)}
+.lens .slot.got{border:0;background:#7c3aed;color:#fff;animation:kaStamp .4s var(--spring)}
+.lens .slot svg{width:17px;height:17px}
+.ctypes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.ctypes div{border-radius:12px;padding:8px 10px;background:var(--card);border:1.5px solid var(--line);font-size:12.5px;color:var(--mut)}
+.ctypes div b{display:block;font-size:13.5px;color:var(--ink)}
+.ctypes div.on{border-color:#7c3aed;background:color-mix(in srgb,#7c3aed 8%,var(--card))}
+.ctypes div.on b{color:#7c3aed}
+:root[data-mode=dark] .ctypes div.on b{color:#c4b5fd}
+.rank{display:grid;place-items:center;text-align:center;padding:30px 20px}
+.rank .badge{width:96px;height:96px;border-radius:30px;background:var(--p);color:var(--p-ink);display:grid;place-items:center;animation:kaStamp .6s var(--spring)}
+.rank .badge svg{width:52px;height:52px}
+.rank h2{margin:14px 0 4px;font-size:28px}
+.mini{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+.mini span{background:var(--soft);border-radius:10px;padding:6px 10px;font-size:13px;font-weight:700}
+/* Parça (Paraphrase + İz) */
+.psg{font-size:16.5px;line-height:1.85}
+.psg .sn{border-radius:6px;transition:background .3s,box-shadow .3s}
+.tapsent .sn{cursor:pointer}
+.tapsent .sn:hover{background:var(--soft)}
+.sn.ev{background:color-mix(in srgb,var(--ok) 20%,transparent);box-shadow:0 0 0 2px color-mix(in srgb,var(--ok) 40%,transparent)}
+.sn.wrong{background:var(--bad-soft);animation:kaShake .45s}
+.sn mark{background:color-mix(in srgb,var(--acc) 40%,transparent);color:inherit;border-radius:4px;padding:0 1px}
+.stmt{font-family:Fraunces,serif;font-size:clamp(19px,2.6vw,23px);line-height:1.5;padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--p) 7%,var(--card));border:1.5px solid color-mix(in srgb,var(--p) 30%,transparent);margin:12px 0}
+.stmt mark{background:color-mix(in srgb,var(--acc) 40%,transparent);color:inherit;border-radius:4px;padding:0 2px}
+.tfn{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tfn button{text-align:center}
+.tfn button small{display:block}
+.pairs{display:grid;gap:8px;margin-top:10px}
+.pairs div{display:grid;grid-template-columns:1fr 26px 1fr;align-items:center;gap:6px;font-size:14.5px;animation:kaRise .4s var(--out) backwards}
+.pairs span{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:6px 10px;font-weight:700}
+.pairs i{font-style:normal;text-align:center;color:var(--mut);font-weight:800}
+.pairs div.trap span{border-color:var(--bad);background:var(--bad-soft)}
+.pairs div.trap i{color:var(--bad)}
+.izwrap{position:relative}
+.iz .tk{border-radius:5px;padding:0 1px;cursor:pointer;transition:background .2s}
+.iz .tk:hover{background:var(--soft)}
+.iz .tk.pro{background:var(--acc);color:#1f1300;font-weight:800;padding:1px 5px;box-shadow:0 0 0 4px color-mix(in srgb,var(--acc) 30%,transparent);animation:proP 1.6s ease-in-out infinite}
+@keyframes proP{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--acc) 12%,transparent)}}
+.iz .tk.done{background:color-mix(in srgb,var(--acc) 25%,transparent);font-weight:700}
+.iz .tk.ref{background:color-mix(in srgb,var(--ok) 22%,transparent);box-shadow:0 2px 0 var(--ok)}
+.iz .tk.wrong{background:var(--bad-soft);animation:kaShake .45s}
+.arrow{position:absolute;inset:0;pointer-events:none;overflow:visible}
+.arrow path{fill:none;stroke:var(--ok);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:600;stroke-dashoffset:600;animation:draw .8s var(--out) forwards}
+.arrow circle{fill:var(--ok)}
+@keyframes draw{to{stroke-dashoffset:0}}
+.izq{display:flex;gap:10px;align-items:center;margin:12px 0;font-size:15px;font-weight:700;color:var(--ink2)}
+.izq .pw{font-family:Fraunces,serif;font-size:22px;color:var(--acc2)}
+.ptypes{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.ptypes span{font-size:12px;font-weight:800;padding:4px 9px;border-radius:999px;background:var(--card);border:1.5px solid var(--line)}
+/* Aile */
+.tree{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:6px 0 16px}
+.leaf2{border-radius:16px;padding:12px 10px;text-align:center;border:2px dashed var(--line2);min-height:86px;display:grid;align-content:center;gap:4px;transition:all .3s}
+.leaf2 small{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.leaf2 b{font-family:Fraunces,serif;font-size:18px;color:var(--mut)}
+.leaf2.got{border:2px solid var(--p);background:color-mix(in srgb,var(--p) 8%,var(--card));animation:kaStamp .5s var(--spring)}
+.leaf2.got b{color:var(--ink)}
+.leaf2 b u{text-decoration:none;color:var(--acc2);border-bottom:2px solid var(--acc)}
+.root{display:flex;justify-content:center;margin-bottom:6px}
+.root span{font-family:Fraunces,serif;font-weight:800;font-size:24px;padding:4px 16px;border-radius:12px;background:var(--p);color:var(--p-ink)}
+.fsent{font-family:Fraunces,serif;font-size:clamp(20px,3vw,25px);line-height:1.55;margin:8px 0 14px}
+.fsent .gap{display:inline-block;min-width:110px;border-bottom:3px solid var(--acc);text-align:center;color:var(--acc2)}
+.fsent .gap.ok{color:var(--ok);border-color:var(--ok);animation:kaStamp .45s var(--spring)}
+.fsent .sig{background:color-mix(in srgb,var(--p) 16%,transparent);border-radius:5px;padding:0 3px;box-shadow:0 2px 0 var(--p)}
+.sufx{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;font-size:12.5px}
+.sufx div{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;color:var(--ink2)}
+.sufx b{display:block;color:var(--ink);font-size:13px}
+@media (max-width:900px){.ftabs{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.intro{padding:18px}.box{padding:18px}.opts{grid-template-columns:1fr}.ctypes,.sufx{grid-template-columns:1fr 1fr}.tree{grid-template-columns:1fr 1fr}.stamp{top:auto;bottom:14px;right:12px;font-size:17px}.tfn button small{display:none}.ftab small{display:none}}
+</style>
+</head>
+<body>
+<main class="ka-wrap" id="main">
+  <section class="card intro">
+    <span class="eyebrow">Reading Atölyesi</span>
+    <h1>Sınavda puan getiren dört beceri</h1>
+    <p style="margin-bottom:8px"><a href="oyunlar.html" style="font-weight:800;color:var(--p)">← Oyun Salonu</a></p><p>Her biri BUEPT reading bölümündeki gerçek bir soru tipine karşılık geliyor. Yapay zekâ beklemeden, anında çalışır.</p>
+    <div class="ftabs" id="ftabs"></div>
+    <div class="why" id="why"></div>
+  </section>
+  <div class="pane" id="pane"></div>
+</main>
+<script src="ortak.js?v=8"></script>
+<script>
+(function(){
+'use strict';
+const {$,esc}=KA,ic=KA.ic;
+const SV=(p,f)=>`<svg viewBox="0 0 24 24" fill="${f?'currentColor':'none'}" stroke="${f?'none':'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const I={
+ det:SV('<circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 6 6"/><path d="M8 10.5a2.5 2.5 0 0 1 2.5-2.5"/>'),
+ par:SV('<path d="M4 7h7M4 11h5M13 13h7M15 17h5"/><path d="M11 7c3 0 4 2 4 6"/><path d="m13 11 2 2 2-2"/>'),
+ iz:SV('<path d="M5 19c0-6 4-10 10-10"/><path d="m12 6 3 3-3 3"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="9" r="2"/>'),
+ fam:SV('<circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="18" r="2.5"/><circle cx="12" cy="18" r="2.5"/><circle cx="19" cy="18" r="2.5"/><path d="M12 7.5V15.5M12 11H5v4.5M12 11h7v4.5"/>'),
+ bulb:SV('<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/>'),
+ star:SV('<path d="m12 3 2.8 5.8 6.2.9-4.5 4.4 1.1 6.3L12 17.5l-5.6 2.9 1.1-6.3L3 9.7l6.2-.9z"/>',1),
+ mag:SV('<circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5"/>'),
+ badge:SV('<path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>')
+};
+const stars=n=>`<span class="stars">${[1,2,3].map(k=>`<svg class="${k<=n?'on':''}" viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 2.8 5.8 6.2.9-4.5 4.4 1.1 6.3L12 17.5l-5.6 2.9 1.1-6.3L3 9.7l6.2-.9z"/></svg>`).join('')}</span>`;
+const TABS=[
+ ['det','Bağlam Dedektifi','geliştirildi',I.det,'Bilmediğin kelimeyi cümleden çözme becerisi. Yeni hâli sınavdaki doğru stratejiyi adım adım öğretiyor: önce kelimenin türünü bul (isim mi, sıfat mı?), sonra ipucu kelimeleri topla, sonra anlamı seç. Sonunda hangi ipucu türünü kullandığın gösteriliyor; bu dört tür (tanım, zıtlık, örnek, sebep-sonuç) BUEPT parçalarında sürekli tekrar ediyor.'],
+ ['par','Paraphrase Avı','yeni',I.par,'Reading sorularının çoğu parçadaki cümleyi başka kelimelerle sorar. "Dropped considerably" ile "fallen sharply"nin aynı şey olduğunu göremeyen kişi doğru cevabı kaçırır. Burada önce ifadenin Doğru, Yanlış ya da Parçada Yok olduğuna karar veriyorsun, sonra parçada kanıt cümlesine dokunuyorsun. Ardından eşleşen kelimeler yan yana çıkıyor, "only" gibi tuzak kelimeler kırmızıyla işaretleniyor.'],
+ ['iz','İz Sürücü','yeni',I.iz,'"What does \'this\' refer to?" BUEPT\'in klasik sorularından. Parçada bir zamir (it, they, this, which) parlıyor; sen onun yerini tuttuğu kelimeye dokunuyorsun ve aradaki bağ bir okla çiziliyor. Uzun parçalarda "kim, neyi yaptı?" takibini kaybetmemeyi öğretiyor.'],
+ ['fam','Kelime Ailesi','yeni',I.fam,'Bir kelimeyi bilmek sınavda yetmiyor; analyse, analysis, analytical, analytically arasından cümleye uyanı seçmen gerekiyor. Her doğru cevap ailenin ağacına bir dal ekliyor. Cevaptan sonra cümlede seni doğru türe götüren işaret (the, very, to) yanıyor ve ek kuralı (-tion isim, -al sıfat, -ly zarf) gösteriliyor.']
+];
+let TAB=(location.hash.slice(1))||KA.store.raw('ka_feat2','det');if(!TABS.some(t=>t[0]===TAB))TAB='det';
+function drawTabs(){
+  $('#ftabs').innerHTML=TABS.map(([k,n,tag,svg])=>`<button class="ftab ${TAB===k?'on':''}" data-tab="${k}"><i>${svg}</i><div><b>${n}</b><small>${tag==='yeni'?'<em>YENİ</em>':'<em>GELİŞTİRİLDİ</em>'}</small></div></button>`).join('');
+  const t=TABS.find(x=>x[0]===TAB);$('#why').innerHTML=`${I.bulb}<div><b>Neden işe yarar?</b> ${esc(t[4])}</div>`;
+}
+/* ============ BAĞLAM DEDEKTİFİ (v2) ============ */
+const CT={tanim:['Tanım','cümle kelimeyi açıklıyor'],zitlik:['Zıtlık','unlike, but, while'],ornek:['Örnek','such as, for example'],sebep:['Sebep-sonuç','so, because, as a result']};
+const POS=['isim','fiil','sıfat','zarf'];
+const CASES=[
+ {s:'Unlike her talkative brother, Maya was quite {X} and rarely spoke in class.',x:'blorvy',real:'reticent',pos:2,posWhy:'"quite" ve "was" sonrasında gelen kelime, Maya\'yı niteleyen bir sıfattır.',clues:{Unlike:'zıtlık',talkative:'karşıtı',rarely:'tanım',spoke:'tanım'},ct:'zitlik',o:['konuşkan','az konuşan, içine kapanık','öfkeli','çalışkan'],a:1,how:'"Unlike" zıtlık sinyali: kardeşi konuşkan, Maya tersi. "rarely spoke" da bunu açıkça tarif ediyor.'},
+ {s:'Clean water is {X} in the region, so families often walk for hours to find it.',x:'trembish',real:'scarce',pos:2,posWhy:'"is" sonrasında suyun durumunu anlatıyor: sıfat.',clues:{so:'sonuç',walk:'kanıt',hours:'kanıt',find:'kanıt'},ct:'sebep',o:['bol','kirli','kıt, az bulunan','ücretsiz'],a:2,how:'"so" sonuç bildirir: insanlar suyu bulmak için saatlerce yürüyorsa su az bulunuyordur.'},
+ {s:'Some {X}, such as hurricanes, floods and earthquakes, can destroy a city in a few hours.',x:'glimmocks',real:'catastrophes',pos:0,posWhy:'"Some" sonrasında ve "-s" çoğul ekiyle gelmiş: isim.',clues:{such:'örnek',hurricanes:'örnek',floods:'örnek',earthquakes:'örnek',destroy:'sonuç'},ct:'ornek',o:['felaketler','binalar','bilim insanları','tatil yerleri'],a:0,how:'"such as" örnek sinyali: kasırga, sel ve deprem hepsi doğal felaket. Örneklerin ortak noktası anlamı veriyor.'},
+ {s:'The museum decided to {X} the old painting, which means to repair it carefully and make it look new again.',x:'franell',real:'restore',pos:1,posWhy:'"to" sonrası yalın hâlde gelen kelime: fiil.',clues:{means:'tanım',repair:'tanım',new:'tanım',again:'tanım'},ct:'tanim',o:['satmak','onarmak, eski hâline getirmek','kopyalamak','sergilemek'],a:1,how:'"which means" doğrudan tanım verir: dikkatle onarıp yeniymiş gibi göstermek.'},
+ {s:'The new law was {X} by most citizens; as a result, the government had to cancel it within a month.',x:'drovished',real:'opposed',pos:1,posWhy:'"was ... by" yapısı edilgen bir fiildir (V3).',clues:{result:'sonuç',cancel:'sonuç',had:'sonuç'},ct:'sebep',o:['desteklendi','karşı çıkıldı','unutuldu','tercüme edildi'],a:1,how:'"as a result" sonuç bildirir: hükümet yasayı iptal etmek zorunda kaldıysa halk ona karşı çıkmıştır.'}
+];
+let D={i:0,st:'pos',posA:null,got:[],miss:0,ans:null,hist:[],hint:false};
+function dReset(){Object.assign(D,{st:'pos',posA:null,got:[],miss:0,ans:null,hint:false})}
+function drawDet(){
+  if(D.i>=CASES.length)return drawRank();
+  const c=CASES[D.i],need=2,done=D.st==='done',solved=done&&D.ans===c.a;
+  const sent=c.s.split(/(\{X\}|\s+)/).filter(x=>x!=='').map(t=>{
+    if(t==='{X}')return `<span class="myst ${done?'real':''}">${esc(done?c.real:c.x)}${D.posA!=null&&D.st!=='pos'?`<small>${POS[c.pos]}</small>`:''}</span>`;
+    if(/^\s+$/.test(t))return t;const m=t.match(/^([A-Za-z'-]+)(.*)$/);if(!m)return esc(t);
+    const w=m[1],g=D.got.includes(w);return `<span class="cw ${g?'clue':''}" data-cw="${esc(w)}" ${g?`data-k="${esc(c.clues[w])}"`:''}>${esc(w)}</span>${esc(m[2])}`}).join('');
+  const stp=[['pos','1 · Tür'],['clue','2 · İpucu'],['guess','3 · Anlam']];const order=['pos','clue','guess','done'];
+  let body='';
+  if(D.st==='pos')body=`<p class="task">Önce kelimenin türünü bul: <b>${esc(c.x)}</b> cümlede ne görevi görüyor?</p><div class="opts" style="grid-template-columns:repeat(4,1fr)">${POS.map((p,i)=>`<button data-pos="${i}" class="${D.posA===i&&i!==c.pos?'no':''}">${p}</button>`).join('')}</div>`;
+  else if(D.st==='clue')body=`<p class="task"><span class="tag" style="margin-right:6px">${POS[c.pos]}</span>${esc(c.posWhy)}</p><div class="lens">${Array.from({length:need},(_,k)=>`<span class="slot ${D.got[k]?'got':''}">${I.mag}</span>`).join('')}<span class="mut" style="font-size:14px;font-weight:700">Anlamı ele veren ${need} kelimeye dokun.</span><button class="btn btn-ghost btn-sm" id="hint" style="margin-left:auto" ${D.hint?'disabled':''}>${ic('spark')}Büyüteç (−1 yıldız)</button></div>`;
+  else if(D.st==='guess')body=`<p class="task">İpuçları toplandı. <b>${esc(c.x)}</b> ne demek?</p><div class="opts">${c.o.map((o,i)=>`<button data-do="${i}">${esc(o)}</button>`).join('')}</div>`;
+  else{const st=solved?Math.max(1,3-D.miss-(D.hint?1:0)):0;
+    body=`<div class="opts">${c.o.map((o,i)=>`<button disabled class="${i===c.a?'ok':i===D.ans?'no':''}">${esc(o)}</button>`).join('')}</div>
+    <div class="rep"><b>${solved?'Dosya kapandı.':'Bu sefer olmadı.'}</b> Gerçek kelime <b>${esc(c.real)}</b> (${POS[c.pos]}). ${esc(c.how)}
+    <div style="margin-top:10px;font-size:13px;font-weight:800;color:var(--mut)">KULLANDIĞIN İPUCU TÜRÜ</div><div class="ctypes">${Object.entries(CT).map(([k,[n,d]])=>`<div class="${k===c.ct?'on':''}"><b>${n}</b>${d}</div>`).join('')}</div>
+    <div class="nx"><span>Puan: ${stars(st)}</span><div class="row" style="gap:8px"><button class="btn btn-ghost btn-sm" id="save" data-w="${esc(c.real)}" data-t="${esc(c.o[c.a])}">${ic('plus')}Listeme ekle</button><button class="btn btn-p" id="dn">${D.i<CASES.length-1?'Sıradaki dosya':'Rütbeni gör'} ${ic('arrow')}</button></div></div></div>`}
+  $('#pane').innerHTML=`<section class="card box"><div class="top"><span class="eyebrow">Dosya ${D.i+1} / ${CASES.length}</span><span class="tag">${{pos:'Tür tespiti',clue:'İpucu ara',guess:'Tahmin',done:solved?'Çözüldü':'Kapandı'}[D.st]}</span></div>
+   ${done?`<span class="stamp ${solved?'':'bad'}">${solved?'ÇÖZÜLDÜ':'KAÇTI'}</span>`:''}
+   <div class="steps">${stp.map(([k,n])=>`<span class="${D.st===k?'on':order.indexOf(D.st)>order.indexOf(k)?'ok':''}">${n}</span>`).join('')}</div>
+   <div class="csent ${D.st==='clue'?'clue-on':''}">${sent}</div>${body}</section>
+   <div class="dots">${CASES.map((_,k)=>`<i class="${k<D.hist.length?(D.hist[k]?'d':'x'):k===D.i?'c':''}"></i>`).join('')}</div>`;
+}
+function drawRank(){
+  const tot=D.hist.reduce((s,x)=>s+x,0),max=CASES.length*3;
+  const r=tot>=max-2?['Başmüfettiş','Neredeyse hiç ipucu kaçırmadın.']:tot>=max/2?['Komiser','Stratejiyi oturttun, biraz daha hız.']:['Çaylak dedektif','Önce tür, sonra ipucu: sırayı koru.'];
+  $('#pane').innerHTML=`<section class="card box rank"><div class="badge">${I.badge}</div><span class="eyebrow" style="margin-top:14px">Rütben</span><h2>${r[0]}</h2><p class="mut" style="margin:0">${r[1]}</p>
+   <div class="mini"><span>${tot} / ${max} yıldız</span><span>${D.hist.filter(Boolean).length} / ${CASES.length} dosya çözüldü</span></div><button class="btn btn-p" id="drs">Yeni dosyalar ${ic('arrow')}</button></section>`;
+}
+/* ============ ORTAK PARÇA ============ */
+const PS=["Many cities are now trying to bring bees back to urban areas.","Bees are essential for farming, because they carry pollen from one flower to another.","However, their numbers have fallen sharply over the last thirty years.","Scientists believe this is mainly caused by pesticides and the loss of wild flowers.","In London, for example, volunteers have placed hives on the roofs of office buildings, which gives the insects a safe place to live.","These projects are popular with the public, but some experts warn that too many hives may harm wild bee species.","They argue that cities should plant more flowers instead."];
+const TITLE='Bringing bees back to the city';
+/* ============ PARAPHRASE AVI ============ */
+const PQ=[
+ {t:'Bee <mark>populations</mark> have <mark>dropped considerably</mark> in <mark>recent decades</mark>.',a:'T',ev:2,hl:['numbers','fallen sharply','last thirty years'],pairs:[['their numbers','populations'],['fallen sharply','dropped considerably'],['the last thirty years','recent decades']],why:'Aynı bilgi, farklı kelimelerle.'},
+ {t:'Pesticides are the <mark>only</mark> reason for the decline of bees.',a:'F',ev:3,hl:['mainly'],pairs:[['mainly caused by','the only reason'],['pesticides and the loss of wild flowers','pesticides']],trap:0,why:'Parça "mainly" (çoğunlukla) diyor ve ikinci bir sebep de sayıyor. "only" kesinlik bildiren tuzak kelime: parça bunu söylemiyor, tersini söylüyor.'},
+ {t:'London\'s rooftop hives produce <mark>large amounts of honey</mark>.',a:'N',ev:4,hl:[],pairs:[],why:'Parça çatılardaki kovanlardan bahsediyor ama bal üretimi hakkında hiçbir şey söylemiyor. Konu tanıdık diye "Doğru" demek en yaygın hata.'},
+ {t:'Some <mark>specialists</mark> think rooftop hives <mark>could be bad for</mark> <mark>other bees</mark>.',a:'T',ev:5,hl:['experts','may harm','wild bee species'],pairs:[['some experts','some specialists'],['may harm','could be bad for'],['wild bee species','other bees']],why:'Üç eşleşme var; "may" ile "could" ikisi de olasılık bildiriyor, anlam aynı.'},
+ {t:'The writer believes cities should <mark>stop</mark> keeping bees <mark>completely</mark>.',a:'F',ev:6,hl:['plant more flowers instead'],pairs:[['too many hives may harm','stop completely'],['plant more flowers instead','stop keeping bees']],trap:0,why:'Uzmanlar "çok fazla kovan" zarar verebilir diyor ve çiçek ekilmesini öneriyor. Arıcılığı tamamen bırakmak gibi aşırı bir iddia yok; üstelik bu yazarın değil uzmanların görüşü.'}
+];
+let P={i:0,st:'tfn',pick:null,evOk:false,wrongS:-1,score:0,res:[]};
+const TFN={T:['Doğru','parça aynısını söylüyor'],F:['Yanlış','parça tersini söylüyor'],N:['Parçada yok','hiç bahsedilmiyor']};
+function markSent(si,hl){let s=esc(PS[si]);(hl||[]).forEach(h=>{s=s.replace(new RegExp('('+h.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','i'),'<mark>$1</mark>')});return s}
+function drawPar(){
+  const q=PQ[P.i];if(!q){$('#pane').innerHTML=`<section class="card box rank"><div class="badge">${I.par}</div><h2>${P.score} / ${PQ.length*2}</h2><p class="mut" style="margin:0">Her soruda karar + kanıt ayrı puanlanıyor. Sınavda ikisi birlikte doğru olmalı.</p><div class="mini">${P.res.map((r,k)=>`<span>${k+1}. ${r}</span>`).join('')}</div><button class="btn btn-p" id="prs">Baştan ${ic('arrow')}</button></section>`;return}
+  const showEv=P.st==='done'||P.st==='ev';
+  const psg=PS.map((s,si)=>`<span class="sn ${P.st==='done'&&q.a!=='N'&&si===q.ev?'ev':''} ${P.wrongS===si?'wrong':''}" data-sn="${si}">${P.st==='done'&&si===q.ev?markSent(si,q.hl):esc(s)}</span>`).join(' ');
+  let body='';
+  if(P.st==='tfn')body=`<p class="task">Bu ifade parçaya göre nedir?</p><div class="opts tfn">${Object.entries(TFN).map(([k,[n,d]])=>`<button data-tf="${k}">${n}<small>${d}</small></button>`).join('')}</div>`;
+  else if(P.st==='ev')body=`<p class="task">Kararın: <b>${TFN[P.pick][0]}</b>. Şimdi parçada bunu gösteren cümleye dokun.</p>`;
+  else{const ok=P.pick===q.a;
+    body=`<div class="opts tfn">${Object.entries(TFN).map(([k,[n]])=>`<button disabled class="${k===q.a?'ok':k===P.pick?'no':''}">${n}</button>`).join('')}</div>
+    <div class="rep"><b>${ok?'Doğru karar.':'Doğrusu: '+TFN[q.a][0]+'.'}</b> ${esc(q.why)}
+    ${q.pairs.length?`<div style="margin-top:10px;font-size:13px;font-weight:800;color:var(--mut)">PARÇA ↔ SORU</div><div class="pairs">${q.pairs.map((p,k)=>`<div class="${q.trap===k?'trap':''}" style="animation-delay:${k*.12}s"><span>${esc(p[0])}</span><i>${q.trap===k?'≠':'='}</i><span>${esc(p[1])}</span></div>`).join('')}</div>`:''}
+    <div class="nx"><span class="mut" style="font-weight:700">Karar ${ok?'✓':'✗'} · Kanıt ${q.a==='N'?'—':P.evOk?'✓':'✗'}</span><button class="btn btn-p" id="pn">${P.i<PQ.length-1?'Sıradaki ifade':'Sonucu gör'} ${ic('arrow')}</button></div></div>`}
+  $('#pane').innerHTML=`<section class="card box"><div class="top"><span class="eyebrow">İfade ${P.i+1} / ${PQ.length}</span><span class="tag">${{tfn:'Karar ver',ev:'Kanıtı bul',done:'Sonuç'}[P.st]}</span></div>
+   <div class="stmt">${q.t}</div>${body}</section>
+   <section class="card box" style="margin-top:14px"><span class="eyebrow">Parça</span><h3 style="margin:4px 0 10px;font-size:19px">${TITLE}</h3><div class="psg ${P.st==='ev'?'tapsent':''}">${psg}</div></section>
+   <div class="dots">${PQ.map((_,k)=>`<i class="${k<P.i?'d':k===P.i?'c':''}"></i>`).join('')}</div>`;
+  if(P.st==='ev'&&innerWidth<700)setTimeout(()=>document.querySelector('.psg').scrollIntoView({behavior:'smooth',block:'center'}),150);
+}
+/* ============ İZ SÜRÜCÜ ============ */
+const TOK=[];PS.forEach((s,si)=>s.split(/(\s+)/).forEach(w=>{if(!w.trim())return;TOK.push({w,si})}));
+function findT(si,phrase){const ws=phrase.split(' ');for(let i=0;i<TOK.length;i++){if(TOK[i].si!==si)continue;let ok=true;for(let j=0;j<ws.length;j++){const t=TOK[i+j];if(!t||t.w.replace(/[.,;]/g,'').toLowerCase()!==ws[j].toLowerCase()){ok=false;break}}if(ok)return ws.map((_,j)=>i+j)}return[]}
+const ZQ=[
+ {p:[1,'they'],r:[1,'Bees'],kind:'kişi zamiri',why:'Polen taşıyan şey arılar: "they" bir önceki özneyi, "Bees" kelimesini gösteriyor.'},
+ {p:[2,'their'],r:[1,'Bees'],kind:'iyelik',why:'Sayısı düşen şey yine arılar. "their numbers" = arıların sayısı.'},
+ {p:[3,'this'],r:[2,'their numbers have fallen sharply'],kind:'işaret zamiri',why:'"this" çoğu zaman tek bir kelimeyi değil, önceki cümlenin tamamını gösterir: arı sayısının hızla düşmesi.'},
+ {p:[4,'which'],r:[4,'placed hives on the roofs of office buildings'],kind:'ilgi zamiri',why:'Böceklere güvenli yer sağlayan şey, çatılara kovan yerleştirilmesi. Virgülden sonraki "which" önceki eylemin tamamını gösterebilir.'},
+ {p:[5,'These projects'],r:[4,'placed hives on the roofs of office buildings'],kind:'işaret + isim',why:'"These projects" yeni bir şey değil, az önce anlatılan çatı kovanı uygulamasının özet adı.'},
+ {p:[6,'They'],r:[5,'some experts'],kind:'kişi zamiri',why:'Çiçek ekilmesini savunanlar, bir önceki cümlede uyaran uzmanlar. En yakın çoğul isim "hives" olsa da kovanlar bir şey savunamaz: anlam kontrolü önemli.'}
+];
+let Z={i:0,st:'tap',wrong:-1,miss:0,ok:0};
+function drawIz(){
+  const q=ZQ[Z.i];if(!q){$('#pane').innerHTML=`<section class="card box rank"><div class="badge">${I.iz}</div><h2>${Z.ok} / ${ZQ.length}</h2><p class="mut" style="margin:0">ilk denemede bulunan iz. ${Z.miss?Z.miss+' yanlış dokunuş.':'Hiç yanlış dokunuş yok.'}</p><button class="btn btn-p" id="zrs" style="margin-top:14px">Baştan ${ic('arrow')}</button></section>`;return}
+  const pro=findT(q.p[0],q.p[1]),ref=findT(q.r[0],q.r[1]),done=Z.st==='done';
+  const prevPro=ZQ.slice(0,Z.i).flatMap(x=>findT(x.p[0],x.p[1]));
+  let html='';TOK.forEach((t,i)=>{const c=pro.includes(i)?'pro':done&&ref.includes(i)?'ref':Z.wrong===i?'wrong':prevPro.includes(i)?'done':'';html+=`<span class="tk ${c}" data-tk="${i}">${esc(t.w)}</span> `});
+  $('#pane').innerHTML=`<section class="card box"><div class="top"><span class="eyebrow">İz ${Z.i+1} / ${ZQ.length}</span><span class="tag">${q.kind}</span></div>
+   <div class="izq">Parlayan <span class="pw">${esc(q.p[1])}</span> neyi gösteriyor? Parçada o kelimeye dokun.</div>
+   <div class="izwrap"><div class="psg iz">${html}</div><svg class="arrow" id="arw"></svg></div>
+   ${done?`<div class="rep"><b>${esc(q.p[1])} → ${esc(q.r[1])}</b>. ${esc(q.why)}<div class="nx"><div class="ptypes"><span>it / they</span><span>this / that</span><span>which / who</span><span>these + isim</span></div><button class="btn btn-p" id="zn">${Z.i<ZQ.length-1?'Sıradaki iz':'Sonucu gör'} ${ic('arrow')}</button></div></div>`:''}</section>
+   <div class="dots">${ZQ.map((_,k)=>`<i class="${k<Z.i?'d':k===Z.i?'c':''}"></i>`).join('')}</div>`;
+  if(done)requestAnimationFrame(()=>arrow(pro,ref));
+}
+function arrow(pro,ref){
+  const w=document.querySelector('.izwrap'),svg=$('#arw');if(!w||!svg)return;const W=w.getBoundingClientRect();
+  const r=i=>document.querySelector(`[data-tk="${i}"]`).getBoundingClientRect();
+  const a=r(pro[0]),b=r(ref[Math.floor(ref.length/2)]);
+  const x1=a.left+a.width/2-W.left,y1=a.top-W.top,x2=b.left+b.width/2-W.left,y2=b.top-W.top;
+  const lift=Math.max(28,Math.abs(x1-x2)*.25);
+  svg.setAttribute('viewBox',`0 0 ${W.width} ${W.height}`);svg.setAttribute('width',W.width);svg.setAttribute('height',W.height);
+  svg.innerHTML=`<path d="M${x1} ${y1} C ${x1} ${Math.min(y1,y2)-lift}, ${x2} ${Math.min(y1,y2)-lift}, ${x2} ${y2}"/><circle cx="${x2}" cy="${y2}" r="4"/>`;
+}
+/* ============ KELİME AİLESİ ============ */
+const FAM=[
+ {root:'analyse',f:[['fiil','analy','se'],['isim','analy','sis'],['sıfat','analyt','ical'],['zarf','analytical','ly']],q:[
+  {s:'Students must learn to {_} a text before they answer the questions.',sig:'to',a:0,why:'"to" sonrasında fiilin yalın hâli gelir.'},
+  {s:'The {_} of the results took almost two weeks.',sig:'The',a:1,why:'"The ... of" arasında isim olur. -sis, -tion, -ment isim ekleridir.'},
+  {s:'She has a very {_} mind and notices every detail.',sig:'very',a:2,why:'"very" ve ardından gelen "mind" ismi: araya isim niteleyen sıfat girer. -al, -ive, -ous sıfat ekidir.'},
+  {s:'He studied the problem {_} and found the mistake.',sig:'studied',a:3,why:'Fiili (studied) nasıl yaptığını anlatıyor: zarf. -ly zarf ekidir.'}]},
+ {root:'decide',f:[['fiil','deci','de'],['isim','deci','sion'],['sıfat','deci','sive'],['zarf','decisive','ly']],q:[
+  {s:'The team acted {_} and won the match in the first ten minutes.',sig:'acted',a:3,why:'"acted" fiilini niteliyor: nasıl davrandılar? Zarf, -ly.'},
+  {s:'It was a {_} moment in the history of the country.',sig:'a',a:2,why:'"a ... moment": isimden önce sıfat gelir. -ive sıfat ekidir.'},
+  {s:'Nobody could {_} which university to choose.',sig:'could',a:0,why:'"could" gibi modal fiillerden sonra fiil yalın gelir.'},
+  {s:'Making a {_} quickly is not always a good idea.',sig:'a',a:1,why:'"Making a ..." sonrasında isim gelir: -sion isim eki.'}]}
+];
+let F={fi:0,qi:0,ans:null,got:[],ok:0};
+const fword=x=>x[1]+x[2];
+function drawFam(){
+  const fam=FAM[F.fi];if(!fam){$('#pane').innerHTML=`<section class="card box rank"><div class="badge">${I.fam}</div><h2>${F.ok} / ${FAM.length*4}</h2><p class="mut" style="margin:0">İki aile tamamlandı. Gerçek sitede aileler senin listenden kuruluyor.</p><button class="btn btn-p" id="frs" style="margin-top:14px">Baştan ${ic('arrow')}</button></section>`;return}
+  const q=fam.q[F.qi],a=F.ans,done=a!=null;
+  const parts=q.s.split(/(\{_\})/);
+  const sent=parts.map(p=>p==='{_}'?`<span class="gap ${done&&a===q.a?'ok':''}">${done?esc(fword(fam.f[q.a])):'?'}</span>`:p.split(/(\s+)/).map(w=>w.replace(/[.,]/g,'')===q.sig&&done?`<span class="sig">${esc(w)}</span>`:esc(w)).join('')).join('');
+  $('#pane').innerHTML=`<section class="card box"><div class="top"><span class="eyebrow">Aile ${F.fi+1} / ${FAM.length} · cümle ${F.qi+1} / 4</span><span class="tag">${F.got.length} / 4 dal</span></div>
+   <div class="root" style="margin-top:12px"><span>${esc(fam.root)}</span></div>
+   <div class="tree">${fam.f.map((x,i)=>`<div class="leaf2 ${F.got.includes(i)?'got':''}"><small>${x[0]}</small><b>${F.got.includes(i)?`${esc(x[1])}<u>${esc(x[2])}</u>`:'?'}</b></div>`).join('')}</div>
+   <div class="fsent">${sent}</div>
+   <div class="opts" style="grid-template-columns:repeat(2,1fr)">${fam.f.map((x,i)=>`<button data-fa="${i}" ${done?'disabled':''} class="${!done?'':i===q.a?'ok':i===a?'no':''}">${esc(fword(x))}<small>${x[0]}</small></button>`).join('')}</div>
+   ${done?`<div class="rep"><b>${a===q.a?'Doğru.':'Doğrusu: '+esc(fword(fam.f[q.a]))+'.'}</b> ${esc(q.why)}
+   <div class="sufx"><div><b>İsim</b>-tion, -sion, -sis, -ment, -ness</div><div><b>Fiil</b>-ise, -ify, -en, -ate</div><div><b>Sıfat</b>-al, -ive, -ous, -ful, -able</div><div><b>Zarf</b>-ly</div></div>
+   <div class="nx"><span></span><button class="btn btn-p" id="fn">${F.qi<3?'Sıradaki cümle':F.fi<FAM.length-1?'Sıradaki aile':'Sonucu gör'} ${ic('arrow')}</button></div></div>`:''}</section>`;
+}
+/* ============ OLAYLAR ============ */
+function draw(){drawTabs();({det:drawDet,par:drawPar,iz:drawIz,fam:drawFam})[TAB]()}
+function conf(el){if(!el||!KA.confetti)return;const r=el.getBoundingClientRect();KA.confetti(r.left+r.width/2,r.top+r.height/2,22,Math.PI)}
+document.addEventListener('click',e=>{
+  const t=e.target,q=s=>t.closest(s);
+  let b;
+  if(b=q('[data-tab]')){TAB=b.dataset.tab;KA.store.set('ka_feat2',TAB);draw();window.scrollTo({top:document.querySelector('#pane').offsetTop-80,behavior:'smooth'});return}
+  /* dedektif */
+  if(b=q('[data-pos]')){const c=CASES[D.i],i=+b.dataset.pos;D.posA=i;if(i===c.pos){KA.sfx.ok();D.st='clue'}else{D.miss++;KA.sfx.bad()}drawDet();return}
+  if(b=q('.clue-on [data-cw]')){const c=CASES[D.i],w=b.dataset.cw;if(D.got.includes(w))return;if(c.clues[w]){D.got.push(w);KA.sfx.ok();if(D.got.length>=2)D.st='guess';drawDet()}else{D.miss++;KA.sfx.bad();b.classList.remove('no');void b.offsetWidth;b.classList.add('no')}return}
+  if(q('#hint')){const c=CASES[D.i];const w=Object.keys(c.clues).find(k=>!D.got.includes(k));if(w){D.hint=true;D.got.push(w);if(D.got.length>=2)D.st='guess';drawDet()}return}
+  if(b=q('[data-do]')){const c=CASES[D.i];D.ans=+b.dataset.do;D.st='done';const ok=D.ans===c.a;D.hist.push(ok?Math.max(1,3-D.miss-(D.hint?1:0)):0);if(ok)KA.addXp(5,'atolye');ok?KA.sfx.ok():KA.sfx.bad();drawDet();if(ok)conf(document.querySelector('.stamp'));return}
+  if(b=q('#save')){const r=KA.addUnknown(b.dataset.w,b.dataset.t);KA.toast(r==='var'?`"${b.dataset.w}" zaten listende.`:`"${b.dataset.w}" Bilmediklerim listesine eklendi.`);b.disabled=true;return}
+  if(q('#dn')){D.i++;dReset();drawDet();return}
+  if(q('#drs')){D.i=0;D.hist=[];dReset();drawDet();return}
+  /* paraphrase */
+  if(b=q('[data-tf]')){const qq=PQ[P.i];P.pick=b.dataset.tf;P.wrongS=-1;if(qq.a==='N'||P.pick==='N'){P.st='done';P.evOk=false;finishP()}else{P.st='ev'}drawPar();return}
+  if(b=q('.tapsent [data-sn]')){const qq=PQ[P.i],si=+b.dataset.sn;if(si===qq.ev){P.evOk=P.wrongS<0;P.st='done';finishP();drawPar()}else{P.wrongS=si;KA.sfx.bad();drawPar()}return}
+  if(q('#pn')){P.i++;P.st='tfn';P.pick=null;P.wrongS=-1;P.evOk=false;drawPar();return}
+  if(q('#prs')){P={i:0,st:'tfn',pick:null,evOk:false,wrongS:-1,score:0,res:[]};drawPar();return}
+  /* iz */
+  if(b=q('[data-tk]')){if(Z.st==='done'||!ZQ[Z.i])return;const qq=ZQ[Z.i],i=+b.dataset.tk;if(findT(qq.p[0],qq.p[1]).includes(i))return;if(findT(qq.r[0],qq.r[1]).includes(i)){if(Z.wrong<0){Z.ok++;KA.addXp(3,'atolye')}Z.st='done';KA.sfx.ok();drawIz()}else{Z.miss++;Z.wrong=i;KA.sfx.bad();drawIz()}return}
+  if(q('#zn')){Z.i++;Z.st='tap';Z.wrong=-1;drawIz();return}
+  if(q('#zrs')){Z={i:0,st:'tap',wrong:-1,miss:0,ok:0};drawIz();return}
+  /* aile */
+  if(b=q('[data-fa]')){const qq=FAM[F.fi].q[F.qi];F.ans=+b.dataset.fa;if(F.ans===qq.a){F.ok++;KA.addXp(2,'atolye');if(!F.got.includes(qq.a))F.got.push(qq.a);KA.sfx.ok();KA.speak&&KA.speak(fword(FAM[F.fi].f[qq.a]))}else KA.sfx.bad();drawFam();if(F.got.length===4&&F.ans===qq.a)conf(document.querySelector('.root span'));return}
+  if(q('#fn')){F.ans=null;if(F.qi<3)F.qi++;else{F.fi++;F.qi=0;F.got=[]}drawFam();return}
+  if(q('#frs')){F={fi:0,qi:0,ans:null,got:[],ok:0};drawFam();return}
+});
+function finishP(){const qq=PQ[P.i],ok=P.pick===qq.a;let s=(ok?1:0)+(qq.a==='N'?(ok?1:0):(P.evOk?1:0));P.score+=s;if(s)KA.addXp(s*2,'atolye');P.res.push(s+'/2');ok?KA.sfx.ok():KA.sfx.bad()}
+addEventListener('resize',()=>{if(TAB==='iz'&&Z.st==='done')drawIz()});
+KA.nav('oyunlar.html');
+draw();
+})();
+</script>
+</body>
+</html>
