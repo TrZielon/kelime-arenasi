@@ -594,3 +594,13 @@ body .word h2,body .rtop h2{animation:kaDrop .6s var(--spring) backwards}
 .acc-del{color:var(--bad)!important}
 @media (max-width:420px){.ka-acc b{display:none}}
 @media (max-width:480px){.ka-brand{font-size:0;gap:0}.ka-tools{gap:6px}}
+
+/* Üst çubuk: hiçbir genişlikte taşmasın */
+.ka-nav-in{max-width:1360px}
+.ka-brand,.ka-tools{flex-shrink:0}
+.ka-links{min-width:0;overflow-x:auto;scrollbar-width:none}.ka-links::-webkit-scrollbar{display:none}
+.ka-mode button span{display:none}.ka-mode button{padding:0 9px}
+@media (max-width:1440px){.ka-links svg{display:none}.ka-chip small{display:none}.ka-links a{padding:8px 10px}}
+@media (max-width:1240px){.ka-brand{font-size:0;gap:0}}
+.ka-acc.on{border-color:var(--p);background:var(--p-soft)}
+body:has(.ka-modal) .aiw-ban,body:has(.aiw) .aiw-ban{display:none}
