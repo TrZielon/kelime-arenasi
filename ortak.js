@@ -631,6 +631,157 @@ document.addEventListener('input',e=>{if(e.target.id==='aiwKey'){const v=e.targe
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelector('.aiw')?.remove()});
 })();
 
+/* ---------- Google ile giriş ve bulut eşitleme (isteğe bağlı) ---------- */
+(function(){
+const CFG=window.KA_FIREBASE;
+if(!CFG||!CFG.apiKey||!CFG.projectId)return; // ayar yoksa hiçbir şey görünmez
+const V='10.12.2',BASE='https://www.gstatic.com/firebasejs/'+V+'/';
+const FLAG='ka_fb',SYNC='ka_fb_sync';
+const NOSYNC=new Set(['ka_ai','ka_aiq','ka_aiban','ka_gate','ka_uid','ka_mute',FLAG,SYNC]);
+const MAX=800000;
+let FB=null,loading=null,user=null,dirty=new Set(),timer=null,applying=false;
+const ls={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{Storage.prototype._kaSet.call(localStorage,k,v)}catch(e){}},del:k=>{try{Storage.prototype._kaDel.call(localStorage,k)}catch(e){}},keys:()=>{try{return Object.keys(localStorage)}catch(e){return[]}}};
+const syncable=k=>(k.startsWith('ka_')||k.startsWith('db:'))&&!NOSYNC.has(k);
+/* kelime listeleri cihaza özel kimlik içeriyor; bulutta ortak bir biçime çevrilir */
+const upre=()=>'db:data/users/'+KA.uid()+'/';
+const toCloud=k=>k.startsWith(upre())?'db:data/users/@/'+k.slice(upre().length):k;
+const toLocal=k=>k.startsWith('db:data/users/@/')?upre()+k.slice('db:data/users/@/'.length):k;
+const enc=k=>encodeURIComponent(k).replace(/\./g,'%2E');
+const dec=id=>decodeURIComponent(id);
+async function load(){
+  if(FB)return FB;if(loading)return loading;
+  loading=(async()=>{
+    const [a,au,fs]=await Promise.all([import(BASE+'firebase-app.js'),import(BASE+'firebase-auth.js'),import(BASE+'firebase-firestore.js')]);
+    const app=a.initializeApp(CFG);const auth=au.getAuth(app);const db=fs.getFirestore(app);
+    try{auth.languageCode='tr'}catch(e){}
+    FB={au,fs,auth,db};
+    au.onAuthStateChanged(auth,u=>{const was=user;user=u||null;if(u){ls.set(FLAG,'1');if(!was){if(ls.get(SYNC))pullNew();else firstSync()}}else ls.del(FLAG);chip();if(document.querySelector('.acc'))drawAcc()});
+    try{await au.getRedirectResult(auth)}catch(e){}
+    return FB;
+  })();
+  return loading;
+}
+const kv=()=>FB.fs.collection(FB.db,'users',user.uid,'kv');
+/* ---------- eşitleme ---------- */
+async function pullAll(){const s=await FB.fs.getDocs(kv());const out={};s.forEach(d=>{out[dec(d.id)]=d.data()});return out}
+function localAll(){const o={};ls.keys().filter(syncable).forEach(k=>{const v=ls.get(k);if(v!=null&&v.length<MAX)o[toCloud(k)]=v});return o}
+async function pushKeys(keys){
+  if(!user||!keys.length)return;
+  const now=Date.now();
+  for(let i=0;i<keys.length;i+=400){
+    const b=FB.fs.writeBatch(FB.db);
+    keys.slice(i,i+400).forEach(ck=>{const lk=toLocal(ck),v=ls.get(lk),ref=FB.fs.doc(kv(),enc(ck));if(v==null)b.delete(ref);else if(v.length<MAX)b.set(ref,{v,t:now})});
+    await b.commit();
+  }
+  ls.set(SYNC,String(now));chip();
+}
+async function firstSync(){
+  try{
+    setState('Eşitleniyor…');
+    const cloud=await pullAll(),local=localAll();
+    const ck=Object.keys(cloud),lk=Object.keys(local);
+    let up=[],down=0;
+    if(!ck.length){up=lk}
+    else{
+      applying=true;
+      ck.forEach(k=>{const c=cloud[k];if(!(k in local)){ls.set(toLocal(k),c.v);down++}else if(local[k]!==c.v){if(String(c.v).length>=String(local[k]).length){ls.set(toLocal(k),c.v);down++}else up.push(k)}});
+      lk.forEach(k=>{if(!(k in cloud))up.push(k)});
+      applying=false;
+    }
+    await pushKeys(up);
+    const t=Number(ls.get(SYNC)||0);ls.set('ka_fb_pull',String(t));
+    setState('');
+    if(down){KA.toast&&KA.toast('Hesabındaki veriler bu cihaza aktarıldı.');setTimeout(()=>{try{sessionStorage.setItem('ka_fb_rl','1')}catch(e){}location.reload()},900)}
+    else KA.toast&&KA.toast('Hesabın bağlandı. Verilerin artık bulutta da güvende.');
+  }catch(e){applying=false;setState('Eşitlenemedi: '+(e.code||e.message||''))}
+}
+async function pullNew(){
+  if(!user)return;
+  try{
+    const since=Number(ls.get('ka_fb_pull')||0);
+    const q=FB.fs.query(kv(),FB.fs.where('t','>',since));
+    const s=await FB.fs.getDocs(q);let n=0,max=since;
+    applying=true;
+    s.forEach(d=>{const x=d.data(),k=toLocal(dec(d.id));if(x.t>max)max=x.t;if(ls.get(k)!==x.v){ls.set(k,x.v);n++}});
+    applying=false;
+    ls.set('ka_fb_pull',String(Math.max(max,Number(ls.get(SYNC)||0))));
+    let rl=false;try{rl=sessionStorage.getItem('ka_fb_rl')==='1';sessionStorage.removeItem('ka_fb_rl')}catch(e){}
+    if(n&&!rl){KA.toast&&KA.toast('Diğer cihazındaki değişiklikler alındı.');setTimeout(()=>{try{sessionStorage.setItem('ka_fb_rl','1')}catch(e){}location.reload()},900)}
+  }catch(e){applying=false}
+}
+function mark(k){if(applying||!user||!syncable(k))return;dirty.add(toCloud(k));clearTimeout(timer);timer=setTimeout(flush,4000)}
+async function flush(){const ks=[...dirty];dirty.clear();try{await pushKeys(ks)}catch(e){ks.forEach(k=>dirty.add(k))}}
+addEventListener('pagehide',()=>{if(dirty.size)flush()});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&dirty.size)flush();if(document.visibilityState==='visible'&&user)pullNew()});
+/* yerel kayıtlardaki her değişikliği yakala */
+if(!Storage.prototype._kaSet){
+  Storage.prototype._kaSet=Storage.prototype.setItem;Storage.prototype._kaDel=Storage.prototype.removeItem;
+  Storage.prototype.setItem=function(k,v){Storage.prototype._kaSet.call(this,k,v);if(this===window.localStorage)mark(String(k))};
+  Storage.prototype.removeItem=function(k){Storage.prototype._kaDel.call(this,k);if(this===window.localStorage)mark(String(k))};
+}
+/* ---------- giriş / çıkış / silme ---------- */
+let state='';function setState(t){state=t;if(document.querySelector('.acc'))drawAcc()}
+async function signIn(){
+  try{
+    const f=FB||await load();const p=new f.au.GoogleAuthProvider();p.setCustomParameters({prompt:'select_account'});
+    try{await f.au.signInWithPopup(f.auth,p)}
+    catch(e){if(/popup-blocked|operation-not-supported/.test(e.code||''))await f.au.signInWithRedirect(f.auth,p);else throw e}
+  }catch(e){
+    const c=e.code||'';
+    setState(/popup-closed|cancelled-popup/.test(c)?'Giriş penceresi kapatıldı.':/unauthorized-domain/.test(c)?'Bu adres Firebase\'de yetkili değil. (Yönetici: Authentication → Settings → Authorized domains)':/network/.test(c)?'İnternet bağlantısı yok gibi görünüyor.':/disallowed|web-storage|internal/.test(c)?'Bu tarayıcı Google girişine izin vermiyor. Siteyi Safari ya da Chrome\'da açıp tekrar dene (Instagram gibi uygulamaların içindeki tarayıcılar engelleniyor).':'Giriş yapılamadı: '+(c||e.message||''));
+  }
+}
+async function signOutNow(){if(dirty.size)await flush();await FB.au.signOut(FB.auth);ls.del(SYNC);ls.del('ka_fb_pull');setState('Çıkış yapıldı. Verilerin bu cihazda kalmaya devam ediyor.')}
+async function deleteAll(){
+  if(!confirm('Hesabın ve buluttaki bütün verilerin kalıcı olarak silinecek. Bu cihazdaki veriler silinmez. Emin misin?'))return;
+  try{
+    setState('Siliniyor…');
+    const s=await FB.fs.getDocs(kv());const refs=[];s.forEach(d=>refs.push(d.ref));
+    for(let i=0;i<refs.length;i+=400){const b=FB.fs.writeBatch(FB.db);refs.slice(i,i+400).forEach(r=>b.delete(r));await b.commit()}
+    try{await FB.fs.deleteDoc(FB.fs.doc(FB.db,'users',user.uid))}catch(e){}
+    try{await FB.au.deleteUser(user)}catch(e){if(/requires-recent-login/.test(e.code||'')){await FB.au.reauthenticateWithPopup(user,new FB.au.GoogleAuthProvider());await FB.au.deleteUser(FB.auth.currentUser)}else throw e}
+    ls.del(SYNC);ls.del('ka_fb_pull');setState('Hesabın ve buluttaki verilerin silindi.');
+  }catch(e){setState('Silinemedi: '+(e.code||e.message||''))}
+}
+/* ---------- arayüz ---------- */
+function chip(){
+  const t=document.querySelector('.ka-tools');if(!t)return;
+  let b=document.getElementById('kaAcc');
+  if(!b){b=document.createElement('button');b.id='kaAcc';b.type='button';b.className='ka-chip ka-acc';const ai=document.getElementById('kaAi');ai?ai.after(b):t.prepend(b)}
+  if(user){const n=(user.displayName||user.email||'?').trim();b.classList.add('on');b.title='Hesabım: '+(user.email||'');b.innerHTML=user.photoURL?`<img src="${KA.esc(user.photoURL)}" alt="" referrerpolicy="no-referrer">`:`<span class="ini">${KA.esc(n[0].toUpperCase())}</span>`}
+  else{b.classList.remove('on');b.title='Google ile giriş yap';b.innerHTML=`<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><b>Giriş</b>`}
+}
+const GLOGO='<svg viewBox="0 0 48 48" width="20" height="20"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>';
+function openAcc(){if(document.querySelector('.acc'))return;const d=document.createElement('div');d.className='acc aiw';d.innerHTML='<div class="aiw-in" role="dialog" aria-modal="true" aria-label="Hesabım"></div>';document.body.appendChild(d);drawAcc();load().catch(()=>setState('Giriş sistemi yüklenemedi. İnternetini kontrol et.'))}
+function drawAcc(){
+  const box=document.querySelector('.acc .aiw-in');if(!box)return;
+  const last=Number(ls.get(SYNC)||0);
+  box.innerHTML=`<button class="aiw-x" data-acc="close" aria-label="Kapat">×</button>
+   <div class="aiw-hd"><span class="aiw-ic">${user&&user.photoURL?`<img src="${KA.esc(user.photoURL)}" alt="" referrerpolicy="no-referrer" style="width:100%;height:100%;border-radius:15px">`:'☁'}</span><div><h2>${user?KA.esc(user.displayName||'Hesabım'):'Hesabınla giriş yap'}</h2><p>${user?KA.esc(user.email||''):'İsteğe bağlı · verilerin bütün cihazlarında'}</p></div></div>
+   ${user?`<div class="acc-box"><div><b>Eşitleme açık</b><span>${last?'Son eşitleme: '+new Date(last).toLocaleString('tr-TR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'Henüz eşitlenmedi'}</span></div><button class="btn btn-ghost btn-sm" data-acc="sync">Şimdi eşitle</button></div>
+     <p class="acc-p">Kelime listelerin, ilerlemen, XP'n, oyun ve dava kayıtların bu hesapla bütün cihazlarında aynı kalır. Yapay zekâ bağlantı kodun güvenlik için buluta gönderilmez; her cihazda ayrı eklenir.</p>
+     <div class="acc-row"><button class="btn btn-ghost" data-acc="out">Çıkış yap</button><button class="btn btn-ghost acc-del" data-acc="del">Hesabımı ve buluttaki verilerimi sil</button></div>`
+   :`<ul class="acc-list"><li><b>Telefon değişse de kaybolmaz.</b> Listelerin ve ilerlemen hesabında saklanır.</li><li><b>Bilgisayar ve telefon aynı.</b> Birinde eklediğin kelime diğerinde de olur.</li><li><b>Zorunlu değil.</b> Giriş yapmadan da her şey şimdiki gibi çalışır.</li></ul>
+     <button class="acc-g" data-acc="in">${GLOGO}<span>Google ile giriş yap</span></button>
+     <p class="acc-small">Sadece adın, e-posta adresin ve profil fotoğrafın alınır; şifren hiçbir zaman bize ulaşmaz. Bu cihazdaki verilerin hesabınla birleştirilir. <a href="gizlilik.html">Gizlilik politikası</a></p>`}
+   ${state?`<div class="aiw-msg ${/Eşitleniyor|Siliniyor/.test(state)?'test':/silindi|Çıkış yapıldı/.test(state)?'':'err'}" style="margin-top:12px">${/Eşitleniyor|Siliniyor/.test(state)?'<span class="spin"></span> ':''}${KA.esc(state)}</div>`:''}`;
+}
+document.addEventListener('click',e=>{
+  if(e.target.closest('#kaAcc')){openAcc();return}
+  const a=e.target.closest('[data-acc]');
+  if(e.target.classList&&e.target.classList.contains('acc')){document.querySelector('.acc')?.remove();return}
+  if(!a)return;const k=a.dataset.acc;
+  if(k==='close'){document.querySelector('.acc')?.remove();state='';return}
+  if(k==='in'){setState('');signIn();return}
+  if(k==='out'){signOutNow();return}
+  if(k==='sync'){setState('Eşitleniyor…');pushKeys(Object.keys(localAll())).then(()=>pullNew()).then(()=>setState('')).catch(err=>setState('Eşitlenemedi: '+(err.code||err.message||'')));return}
+  if(k==='del'){deleteAll();return}
+});
+const nav1=KA.nav;KA.nav=function(){const r=nav1.apply(this,arguments);chip();return r};
+const boot=()=>{chip();if(ls.get(FLAG)==='1')load().catch(()=>{})};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else setTimeout(boot,0);
+})();
+
 /* ---------- Başlangıç ---------- */
 document.addEventListener('click',e=>{
   const mb=e.target.closest('.ka-mode button');if(mb){KA.fxMode?KA.fxMode(mb,mb.dataset.m):KA.mode(mb.dataset.m);return}

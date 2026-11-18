@@ -575,3 +575,22 @@ body .word h2,body .rtop h2{animation:kaDrop .6s var(--spring) backwards}
 .aiw-ban div{flex:1;min-width:0}.aiw-ban b{display:block;font-size:14.5px}.aiw-ban small{display:block;font-size:12.5px;color:var(--mut);line-height:1.35}
 .aiw-bx{border:0;background:var(--soft);width:30px;height:30px;border-radius:50%;font-size:17px;color:var(--ink2);flex:0 0 auto}
 @media (min-width:900px){.aiw-ban{bottom:22px}}
+
+.ka-acc{cursor:pointer;font-family:inherit;padding:0 10px}
+.ka-acc.on{padding:0 3px;width:36px;justify-content:center}
+.ka-acc img{width:28px;height:28px;border-radius:50%;display:block}
+.ka-acc .ini{width:28px;height:28px;border-radius:50%;background:var(--p);color:var(--p-ink);display:grid;place-items:center;font-weight:800}
+.acc-list{margin:14px 0;padding:0;list-style:none;display:grid;gap:8px}
+.acc-list li{padding:10px 12px;border-radius:12px;background:var(--soft);font-size:14px;line-height:1.45;color:var(--ink2)}
+.acc-list b{color:var(--ink)}
+.acc-g{display:flex;gap:10px;align-items:center;justify-content:center;width:100%;border:1.5px solid #dadce0;border-radius:999px;padding:12px 16px;background:#fff;color:#3c4043;font:700 15.5px "Plus Jakarta Sans",sans-serif;box-shadow:0 1px 2px rgba(0,0,0,.08);transition:box-shadow .15s}
+.acc-g:hover{box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.acc-small{font-size:12.5px;color:var(--mut);line-height:1.45;margin:10px 0 0;text-align:center}
+.acc-small a{color:var(--p)}
+.acc-box{margin-top:14px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 14px;border-radius:14px;background:var(--ok-soft)}
+.acc-box b{display:block}.acc-box span{font-size:13px;color:var(--ink2)}
+.acc-p{font-size:14px;line-height:1.5;color:var(--ink2);margin:12px 0}
+.acc-row{display:flex;gap:8px;flex-wrap:wrap}
+.acc-del{color:var(--bad)!important}
+@media (max-width:420px){.ka-acc b{display:none}}
+@media (max-width:480px){.ka-brand{font-size:0;gap:0}.ka-tools{gap:6px}}
