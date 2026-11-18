@@ -1,6 +1,10 @@
 /* Kelime Arenası · ortak kod (bütün sayfalar kullanır) */
 (function(){
 'use strict';
+/* Vercel'in her yüklemede verdiği geçici adresler (…-xxxx-hasan-2037.vercel.app) ana adrese yönlendirilir.
+   Böylece Google girişi her zaman yetkili adreste çalışır. İsim değişirse burayı güncelle. */
+const KA_HOST='kelime-arenasi-d8zm.vercel.app';
+if(location.hostname!==KA_HOST&&/^kelime-arenasi-d8zm-.+\.vercel\.app$/.test(location.hostname)){location.replace('https://'+KA_HOST+location.pathname+location.search+location.hash);return}
 const KA=window.KA={};
 const $=KA.$=(s,r)=>(r||document).querySelector(s);
 const esc=KA.esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -728,7 +732,7 @@ async function signIn(){
     catch(e){if(/popup-blocked|operation-not-supported/.test(e.code||''))await f.au.signInWithRedirect(f.auth,p);else throw e}
   }catch(e){
     const c=e.code||'';
-    setState(/popup-closed|cancelled-popup/.test(c)?'Giriş penceresi kapatıldı.':/unauthorized-domain/.test(c)?'Bu adres Firebase\'de yetkili değil. (Yönetici: Authentication → Settings → Authorized domains)':/network/.test(c)?'İnternet bağlantısı yok gibi görünüyor.':/disallowed|web-storage|internal/.test(c)?'Bu tarayıcı Google girişine izin vermiyor. Siteyi Safari ya da Chrome\'da açıp tekrar dene (Instagram gibi uygulamaların içindeki tarayıcılar engelleniyor).':'Giriş yapılamadı: '+(c||e.message||''));
+    setState(/popup-closed|cancelled-popup/.test(c)?'Giriş penceresi kapatıldı.':/unauthorized-domain/.test(c)?'Bu adres ('+location.hostname+') Firebase\'de yetkili değil. Firebase → Authentication → Settings → Authorized domains listesine tam olarak bu adresi ekle.':/network/.test(c)?'İnternet bağlantısı yok gibi görünüyor.':/disallowed|web-storage|internal/.test(c)?'Bu tarayıcı Google girişine izin vermiyor. Siteyi Safari ya da Chrome\'da açıp tekrar dene (Instagram gibi uygulamaların içindeki tarayıcılar engelleniyor).':'Giriş yapılamadı: '+(c||e.message||''));
   }
 }
 async function signOutNow(){if(dirty.size)await flush();await FB.au.signOut(FB.auth);ls.del(SYNC);ls.del('ka_fb_pull');setState('Çıkış yapıldı. Verilerin bu cihazda kalmaya devam ediyor.')}
