@@ -1,20 +1,11 @@
-// Google ile giriş ayarları (isteğe bağlı)
-// Bu dosya boş (null) kaldıkça sitede giriş düğmesi görünmez; her şey şimdiki gibi çalışır.
-// Firebase'de projeni açtıktan sonra "firebaseConfig" kutusundaki değerleri aşağıya yapıştır.
-// Bu değerler gizli değildir; güvenliği Firestore kuralları ve yetkili alan adları sağlar.
+/* Kelime Arenası — Google ile giriş ayarı.
+   Bu değerler gizli değildir; güvenliği Firestore kuralları ve
+   Authentication > Authorized domains ayarı sağlar. */
 window.KA_FIREBASE = {
-  apiKey: "AIzaSy...",
-  authDomain: "kelime-arenasi-xxxx.firebaseapp.com",
-  projectId: "kelime-arenasi-xxxx",
-  storageBucket: "...",
-  messagingSenderId: "...",
-  appId: "1:...:web:..."
+  apiKey: "AIzaSyBDPREJZQzhjoTbGghbxSUy77cX7pWwrBQ",
+  authDomain: "kelime-arenasi-d15cb.firebaseapp.com",
+  projectId: "kelime-arenasi-d15cb",
+  storageBucket: "kelime-arenasi-d15cb.firebasestorage.app",
+  messagingSenderId: "435899196018",
+  appId: "1:435899196018:web:1e2f986d2504dca97a98eb"
 };
-/* ÖRNEK (kendi değerlerinle değiştir, başındaki // işaretlerini değil, yukarıdaki null satırını sil):
-window.KA_FIREBASE = {
-  apiKey: "AIza...",
-  authDomain: "proje-adin.firebaseapp.com",
-  projectId: "proje-adin",
-  appId: "1:123456789:web:abc123"
-};
-*/
