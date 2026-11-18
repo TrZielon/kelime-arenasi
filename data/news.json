@@ -1,6 +1,444 @@
 {
-  "updated": "2026-11-17T06:20:38.228Z",
+  "updated": "2026-11-18T06:20:43.727Z",
   "items": [
+    {
+      "id": "mwlqfubzyvfq",
+      "date": "2026-11-18",
+      "category": "World",
+      "title": "How the attack on Crimean Bridge unfolded",
+      "src": "https://www.bbc.co.uk/news/articles/crz9dgz28zwdo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/82dd/live/f7995500-e29d-11f1-99a1-253766e7ad8b.jpg",
+      "levels": {
+        "1": {
+          "text": "The Crimean Bridge is very important for Russia's occupation of Ukraine. It is a key symbol of this occupation. Recently, Kyiv planned and carried out a big attack on this bridge. The attack had seven stages. Because of these seven stages, the bridge suffered major damage. Kyiv wanted to hit this key symbol. The bridge is now badly damaged after the attack. This was a very important event in the war between Russia and Ukraine.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Russia built a new bridge in Ukraine.",
+                "The Crimean Bridge was repaired quickly.",
+                "Kyiv damaged the Crimean Bridge in a seven-stage attack.",
+                "Kyiv stopped all attacks on Russia."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'major' mean in the text?",
+              "opts": [
+                "Cheap",
+                "Big and important",
+                "Small",
+                "Fast"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "How many stages were in the attack by Kyiv?",
+              "opts": [
+                "Seven",
+                "Three",
+                "Five",
+                "Ten"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Russia attacked its own bridge.",
+                "The bridge received no damage.",
+                "The Crimean Bridge is a key symbol of Russia's occupation.",
+                "The attack had only one stage."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "2": {
+          "text": "The Crimean Bridge stands as one of the main symbols of Russia's occupation of Ukraine. Recently, Kyiv executed a major operation against this important structure. The careful attack was carried out in seven different stages. As a result of this multi-step action by Kyiv, the bridge suffered major damage. The event is significant because the bridge represents Russian control in the region. The successful seven-stage attack severely impacted this key symbol, showing a major development in the ongoing conflict between Ukraine and Russia.",
+          "quiz": [
+            {
+              "q": "What is the text mostly about?",
+              "opts": [
+                "How Ukraine repaired a key bridge",
+                "A major seven-stage attack that damaged the Crimean Bridge",
+                "A new peace agreement between Kyiv and Russia",
+                "The history of bridge building in Russia"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'symbol' mean in this text?",
+              "opts": [
+                "A sign or representation of something",
+                "A type of weapon",
+                "A vehicle used in war",
+                "A financial cost"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What caused the major damage to the bridge?",
+              "opts": [
+                "A severe storm",
+                "An explosion from inside Russia",
+                "A seven-stage attack by Kyiv",
+                "An accident by Russian drivers"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE based on the text?",
+              "opts": [
+                "The attack consisted of seven stages.",
+                "Kyiv failed to hit the Crimean Bridge.",
+                "Russia destroyed the bridge itself.",
+                "The bridge suffered no real damage."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "The Crimean Bridge, widely recognized as one of the key symbols of Russia's occupation of Ukraine, has suffered major damage following a sophisticated military action. According to reports, Kyiv launched a targeted attack that unfolded in seven distinct stages. This multi-phase operation successfully inflicted severe structural harm on the crossing, striking a direct blow against an iconic representation of Russian presence in the area. The strategic operation highlights Kyiv's ongoing effort to target critical infrastructure linked to the occupation. By executing this complex, seven-stage plan, Ukraine managed to significantly impair a crucial asset that represents Russia's ongoing military control over the region.",
+          "quiz": [
+            {
+              "q": "What is the primary focus of the news article?",
+              "opts": [
+                "Plans to build a new crossing between Russia and Kyiv",
+                "A seven-stage attack by Kyiv that severely damaged the Crimean Bridge",
+                "The economic impact of bridge closures in Russia",
+                "The construction process of the Crimean Bridge"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'inflicted' mean in the context of the passage?",
+              "opts": [
+                "Prevented from happening",
+                "Observed from a distance",
+                "Repaired or fixed",
+                "Caused or brought about"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "How is the Crimean Bridge described in relation to Russia?",
+              "opts": [
+                "As an unused transport line",
+                "As a joint project with Kyiv",
+                "As a key symbol of Russia's occupation of Ukraine",
+                "As a symbol of peace"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement accurately reflects the text?",
+              "opts": [
+                "The Crimean Bridge sustained only minor cosmetic damage.",
+                "The bridge has no symbolic value in the conflict.",
+                "Kyiv denied any involvement in the bridge attack.",
+                "The attack was carried out in seven stages."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwlqfoy27vgy",
+      "date": "2026-11-18",
+      "category": "World",
+      "title": "Nvidia reports strong results after CEO exit",
+      "src": "https://www.bbc.co.uk/news/articles/cm2kl50vkwkdo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/2e48/live/58880030-e2d7-11f1-99a1-253766e7ad8b.jpg",
+      "levels": {
+        "1": {
+          "text": "Nvidia is a famous company that makes AI chips. On Tuesday, the firm reported very strong quarterly earnings. This was good news for the business. However, something big happened before this news. Jensen Huang left the company in a dramatic way. He is no longer working as the boss. Many people wondered if he would come back to his old job. Nvidia spoke about this situation clearly. The company said it will not reinstate Huang. Nvidia will move forward without him despite the great financial results.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this story?",
+              "opts": [
+                "Nvidia lost money after its boss left the firm",
+                "Jensen Huang decided to return to Nvidia on Tuesday",
+                "Jensen Huang bought new AI chips for his company",
+                "Nvidia made strong profits but will not bring back its former boss"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does 'earnings' mean in the text?",
+              "opts": [
+                "A plan to hire workers",
+                "Money a company makes",
+                "A new computer game",
+                "A type of AI chip"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "When did Nvidia report its strong quarterly results?",
+              "opts": [
+                "On Tuesday",
+                "On Friday",
+                "On Monday",
+                "On Wednesday"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Nvidia will not give Huang his job back",
+                "Nvidia stopped making AI chips",
+                "Nvidia had weak financial results",
+                "Huang is still the boss of Nvidia"
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "Nvidia, the major AI chip giant, reported strong quarterly earnings on Tuesday. These bumper financial results showed that the company is doing very well in the technology market. However, the report came right after the dramatic exit of Jensen Huang. Huang was the key leader of the firm before his sudden departure. After he left, some people speculated that he might return to his position. Nvidia officially addressed these rumors and stated that it will not reinstate Huang. Even though the company achieved impressive profits during the quarter, it is firmly moving ahead without its former chief executive.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the article?",
+              "opts": [
+                "How Nvidia lost money following a leadership change",
+                "The failure of Nvidia's new artificial intelligence chips",
+                "Nvidia's strong financial earnings and its decision not to bring back Huang",
+                "Jensen Huang's new career at a rival technology company"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'reinstate' mean in this text?",
+              "opts": [
+                "To sell a company",
+                "To create a new product",
+                "To give someone their job back",
+                "To make a quick profit"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What kind of products does Nvidia make?",
+              "opts": [
+                "Electric cars",
+                "Mobile phones",
+                "Computer screens",
+                "AI chips"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE based on the text?",
+              "opts": [
+                "Jensen Huang left the firm in a dramatic way",
+                "Jensen Huang was fired for losing money",
+                "Nvidia reported bad earnings on Tuesday",
+                "Nvidia plans to reinstate Jensen Huang soon"
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "Artificial intelligence chip giant Nvidia reported strong quarterly earnings on Tuesday, demonstrating continued commercial success. The impressive financial results arrived shortly after the dramatic exit of Jensen Huang, the company's former leader. Huang's abrupt departure caused significant surprise throughout the technology sector. Following the release of the bumper earnings report, questions arose regarding whether the company might invite its former chief back. However, Nvidia explicitly clarified its stance, stating that it will not reinstate Huang despite the excellent financial performance. The firm is set to maintain its current strategic direction under new leadership, leaving Huang's exit permanent as it capitalizes on the strong demand for AI hardware.",
+          "quiz": [
+            {
+              "q": "Which sentence best summarizes the news?",
+              "opts": [
+                "Nvidia reported strong earnings but confirmed it will not reinstate Huang",
+                "Nvidia shut down its AI department due to dramatic executive exits",
+                "Nvidia announced a fall in chip sales after Huang returned",
+                "Jensen Huang bought Nvidia after leaving his leadership role"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In the text, what does the word 'bumper' mean?",
+              "opts": [
+                "Very large or successful",
+                "Extremely slow or weak",
+                "Difficult to understand",
+                "Damaged in an accident"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What caused surprise in the technology sector before the financial report?",
+              "opts": [
+                "The closure of Nvidia",
+                "A sudden drop in earnings",
+                "The dramatic exit of Jensen Huang",
+                "The failure of AI chips"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "The company suffered terrible financial losses",
+                "Nvidia stated that it will not bring Huang back",
+                "Nvidia's quarterly results were released on Monday",
+                "Jensen Huang is currently working as Nvidia's leader"
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwlqfo9vw7rx",
+      "date": "2026-11-18",
+      "category": "World",
+      "title": "Police Ask Prosecutors to Charge Thomas Markle",
+      "src": "https://www.bbc.co.uk/news/articles/ckg5ry8m49ggo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/5b0e/live/040fc640-dd79-11f1-93e1-3b657b665bcf.jpg",
+      "levels": {
+        "1": {
+          "text": "Police in the Philippines asked prosecutors to charge Thomas Markle. The charges are about child sex abuse material. Right now, Markle is in the US. He is in custody there. He faces one charge in the US. Markle said before that he did not do any of these things. He denied all of the allegations. Police are taking more steps with prosecutors now. People are watching what happens next in the case. The process is moving forward in court.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this story?",
+              "opts": [
+                "Prosecutors decided to drop all charges against Markle.",
+                "Thomas Markle started a new job in the US.",
+                "Thomas Markle is moving to the Philippines.",
+                "Philippines police want prosecutors to charge Thomas Markle."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does the word 'custody' mean in this story?",
+              "opts": [
+                "Working as a prosecutor",
+                "Being held by law officers",
+                "Living in a foreign country",
+                "Writing a news story"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Where is Thomas Markle currently being held?",
+              "opts": [
+                "In the UK",
+                "In the Philippines",
+                "In the US",
+                "In Canada"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE according to the story?",
+              "opts": [
+                "Police in the US asked Philippines prosecutors for help.",
+                "Markle faces ten charges in the US.",
+                "Markle previously denied all of the allegations.",
+                "Markle admitted to all the allegations."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "2": {
+          "text": "Police officers in the Philippines have asked prosecutors to formally charge Thomas Markle. The requested charges relate to child sex abuse material. Currently, Markle is being held in custody inside the United States after facing one charge there. In the past, he has denied all of the allegations made against him. The request from the police in the Philippines marks a new development in his legal situation. Prosecutors will now need to review the case to decide if they will move forward with the charges. Meanwhile, Markle remains detained in the US as legal proceedings continue.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the news text?",
+              "opts": [
+                "An investigation into US police officers",
+                "Thomas Markle winning a legal case in court",
+                "Philippines police requesting charges against Thomas Markle",
+                "A new law about child safety in the US"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "In this text, what does 'denied' mean?",
+              "opts": [
+                "Paid money to the court",
+                "Asked police for protection",
+                "Said that something is not true",
+                "Accepted guilt for a crime"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "How many charges is Markle currently facing in the US?",
+              "opts": [
+                "None",
+                "One charge",
+                "Many charges",
+                "Two charges"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE based on the text?",
+              "opts": [
+                "Prosecutors have already finished the trial.",
+                "Markle has confessed to using abuse material.",
+                "Markle is currently living freely in the Philippines.",
+                "Markle is being held in custody in the United States."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "3": {
+          "text": "Police in the Philippines have officially requested that prosecutors file charges against Thomas Markle in connection with child sex abuse material. Markle is currently being held in custody in the United States following a single charge there. Throughout the process, he has previously denied all of the allegations raised against him. This action by the Philippine authorities represents a significant legal step as prosecutors consider whether to proceed with formal charges. As the investigation progresses, Markle remains detained under US custody while international attention focuses on the upcoming decisions by the prosecutors in the Philippines.",
+          "quiz": [
+            {
+              "q": "What is the main focus of this article?",
+              "opts": [
+                "New regulations on internet safety created by prosecutors",
+                "The release of Thomas Markle from a US prison",
+                "A request by Philippine police to charge Thomas Markle over abuse material",
+                "A defense statement delivered by Thomas Markle in court"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What is the meaning of 'allegations' as used in the text?",
+              "opts": [
+                "Statements of forgiveness from victims",
+                "Claims that someone has done something wrong",
+                "Official legal punishments given by a judge",
+                "Written contracts signed by lawyers"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What action did Markle take regarding the claims against him?",
+              "opts": [
+                "He admitted to them immediately.",
+                "He paid a fine to clear his name.",
+                "He previously denied all of them.",
+                "He refused to speak to his lawyers."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE according to the article?",
+              "opts": [
+                "Philippine prosecutors have already completed the trial.",
+                "Markle is being held in custody in the US after one charge.",
+                "Markle is facing multiple charges in the United States.",
+                "Philippine police decided to drop the case entirely."
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mwkazpbuicss",
       "date": "2026-11-17",
@@ -3942,444 +4380,6 @@
         }
       },
       "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/fdde/live/9036f7e0-da01-11f1-93e1-3b657b665bcf.jpg"
-    },
-    {
-      "id": "mw60l7tty2r1",
-      "date": "2026-11-07",
-      "category": "World",
-      "title": "Four midterms takeaways for 2028 White House race",
-      "src": "https://www.bbc.co.uk/news/articles/cq1m41n3v7mmo?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "The midterm elections are over, but people are already talking about the 2028 White House race. The buzz about the presidential election is under way. We learned four important things this week. First, early news helps us see who might run for president. Second, voters are watching leaders closely. Third, both political parties want to plan early for the future. Fourth, the political news will not stop soon. People are excited to see what happens next in American politics.",
-          "quiz": [
-            {
-              "q": "What is the main idea of this story?",
-              "opts": [
-                "There will be no more elections in the White House.",
-                "The midterm elections learned four things about the 2028 presidential race.",
-                "Voters do not care about political news anymore.",
-                "The presidential election happened this week."
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What does the word 'buzz' mean in this text?",
-              "opts": [
-                "A quiet room",
-                "Excited talk or interest",
-                "A fast car",
-                "A loud bee"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "How many takeaways or things were learned this week?",
-              "opts": [
-                "Four",
-                "Three",
-                "Two",
-                "One"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Which statement is TRUE according to the text?",
-              "opts": [
-                "Leaders are ignoring the voters.",
-                "The 2028 election ended this week.",
-                "Nobody is interested in American politics.",
-                "Talk about the 2028 election has already started."
-              ],
-              "ans": 3
-            }
-          ]
-        },
-        "2": {
-          "text": "Even though the midterm elections just finished, attention is already turning to the future. The buzz about the 2028 presidential election for the White House is already under way. This week provided four important takeaways for the upcoming race. Experts and voters are examining the results to see which politicians gained strength and which ones lost support. Both major political parties are looking ahead to prepare their future strategies. Early discussions help us understand potential candidates and key issues. The news shows that the competition for the White House never really stops, and political excitement will continue as the 2028 race begins to take shape.",
-          "quiz": [
-            {
-              "q": "What is the main topic of the article?",
-              "opts": [
-                "A history of past elections",
-                "Why midterms are held every year",
-                "Four takeaways from this week regarding the 2028 White House race",
-                "The results of a local city vote"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What does 'takeaways' mean in the text?",
-              "opts": [
-                "Physical movements",
-                "Stolen property",
-                "Fast food meals",
-                "Key lessons or facts learned"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which election is already generating buzz?",
-              "opts": [
-                "The 2024 election",
-                "The 2020 election",
-                "The 2030 midterm election",
-                "The 2028 presidential election"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which statement is FALSE according to the text?",
-              "opts": [
-                "Attention is turning to the 2028 White House race.",
-                "Political parties are ignoring future strategies.",
-                "We learned four things this week about the 2028 race.",
-                "The buzz about the presidential election is under way."
-              ],
-              "ans": 1
-            }
-          ]
-        },
-        "3": {
-          "text": "Although recent midterms have concluded, political analysts are immediately shifting their focus toward the next major contest. The buzz surrounding the 2028 presidential election for the White House is already well under way, with discussions beginning far in advance. Observations from this week have highlighted four distinct takeaways regarding the future race. These key insights offer a clearer picture of how potential contenders are positioned and how political strategies are evolving. Both political parties are analyzing recent voter behavior to lay the groundwork for their upcoming campaigns. By paying close attention to these early developments, observers can better anticipate the dynamics that will shape the battle for the White House over the next several years.",
-          "quiz": [
-            {
-              "q": "What primary subject does the text cover?",
-              "opts": [
-                "Lessons learned this week concerning the 2028 presidential election",
-                "New laws passed after the midterm elections",
-                "The cancellation of future White House races",
-                "A complete list of confirmed candidates for 2028"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "In this context, what does the phrase 'under way' mean?",
-              "opts": [
-                "Delayed indefinitely",
-                "Finished",
-                "Already happening or started",
-                "Moving underneath"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What did we learn this week according to the summary?",
-              "opts": [
-                "Five final election scores",
-                "Four takeaways about the 2028 White House race",
-                "Two new voting rules",
-                "The exact winner of the 2028 election"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "Which statement is TRUE based on the text?",
-              "opts": [
-                "The White House race will not happen in 2028.",
-                "There were zero takeaways from this week's events.",
-                "Political analysts are ignoring the midterm results.",
-                "Discussion about the 2028 presidential election has already begun."
-              ],
-              "ans": 3
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/613a/live/900577b0-d9ed-11f1-b441-2b33b063138f.png"
-    },
-    {
-      "id": "mw60lgty4dnj",
-      "date": "2026-11-07",
-      "category": "World",
-      "title": "Two dead after bus crashes in France, officials say",
-      "src": "https://www.bbc.co.uk/news/articles/cmly00l4p3lwo?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "Local authorities say a sad accident happened in France. A bus crashed. Two people died in the crash. One person was a child. The other person was a young adult. The crash also hurt more people. Officials shared these facts after the accident. Local authorities are looking into what happened. People are sad about the child and the young adult.",
-          "quiz": [
-            {
-              "q": "What is the main idea of this news story?",
-              "opts": [
-                "A bus crashed in France and killed two people.",
-                "A bus arrived safely at a school in France.",
-                "Two adults bought a new bus in France.",
-                "A train crashed in France with many people."
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What does the word 'crash' mean in this story?",
-              "opts": [
-                "To fix a broken engine",
-                "To drive very slowly",
-                "To buy a new vehicle",
-                "To hit something violently"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Who died in the bus crash?",
-              "opts": [
-                "One teacher and one driver",
-                "One child and one young adult",
-                "Two drivers",
-                "Two old adults"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "Which statement is TRUE according to the story?",
-              "opts": [
-                "More people were injured in the crash.",
-                "Only one person was on the bus.",
-                "Nobody was hurt in the crash.",
-                "The crash happened in a different country, not France."
-              ],
-              "ans": 0
-            }
-          ]
-        },
-        "2": {
-          "text": "According to local authorities, a serious bus crash has taken place in France. Officials reported that two people were killed in the tragic incident. The victims were identified as one child and one young adult. In addition to the two deaths, more people sustained injuries during the crash. Local authorities confirmed these details after the event. Rescuers and officials worked at the site to help the people who were hurt. The news has saddened the local community after the loss of two young lives.",
-          "quiz": [
-            {
-              "q": "What is the main topic of the article?",
-              "opts": [
-                "A celebration in France",
-                "A train accident in Europe",
-                "A fatal bus crash in France",
-                "A new travel safety rule in France"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What does the word 'authorities' mean in the text?",
-              "opts": [
-                "Passengers on the bus",
-                "Drivers of other cars",
-                "Official people in charge",
-                "Children at a school"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "How many people died in the bus crash?",
-              "opts": [
-                "Three people",
-                "Four people",
-                "One person",
-                "Two people"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which statement is TRUE based on the text?",
-              "opts": [
-                "More people were injured besides the two who died.",
-                "Only one person was injured in the crash.",
-                "Local authorities said nobody died.",
-                "No children were involved in the accident."
-              ],
-              "ans": 0
-            }
-          ]
-        },
-        "3": {
-          "text": "A tragic bus accident in France has resulted in two fatalities, according to local authorities. Officials confirmed that one child and one young adult lost their lives in the crash. In addition to the two deaths, several other individuals were injured when the bus crashed. Local authorities provided the initial details regarding the casualties following the incident. Emergency services responded to the scene to assist those who suffered injuries. The local community is mourning the loss of the young victims, while authorities continue to handle the situation surrounding the deadly crash.",
-          "quiz": [
-            {
-              "q": "What is the primary subject of this news report?",
-              "opts": [
-                "A safety inspection of public buses in Europe",
-                "A delay in public transport across France",
-                "A fatal bus crash in France resulting in two deaths",
-                "A road construction project in France"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What does the word 'fatalities' mean as used in the text?",
-              "opts": [
-                "Deaths",
-                "Injuries",
-                "Passengers",
-                "Vehicles"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Which two people were killed in the crash?",
-              "opts": [
-                "Two elderly passengers",
-                "One child and one young adult",
-                "Two bus drivers",
-                "One teenager and one senior citizen"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "Which statement is TRUE according to the report?",
-              "opts": [
-                "Local authorities reported that two people died in the crash.",
-                "The crash occurred on a train in France.",
-                "The crash resulted in no injuries to other people.",
-                "Only adults were involved in the accident."
-              ],
-              "ans": 0
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/5740/live/92c81290-d9cb-11f1-bb8e-efaa31738708.jpg"
-    },
-    {
-      "id": "mw4l59wb7me0",
-      "date": "2026-11-06",
-      "category": "World",
-      "title": "Global tech stocks plunge as US midterms add to AI slowdown fears",
-      "src": "https://www.bbc.co.uk/news/articles/cmn04705rd8jo?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "Tech stocks around the world went down. Investors are worried about the AI industry. They fear that AI growth is slowing down. The US midterms are also making investors nervous. People think the government might look more closely at how companies build data centres. They also think there could be tougher rules for the AI industry. Because of these fears, many people sold their shares in tech companies. Investors are watching the US midterms carefully now. They want to see what will happen to data centres and AI companies in the future.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "Investors are buying more AI shares than ever.",
-                "Data centres are closing all over the world.",
-                "Tech stocks dropped due to fears about AI and US midterms.",
-                "The US midterms were cancelled by tech companies."
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What does the word 'plunge' mean in the headline?",
-              "opts": [
-                "To move slowly",
-                "To fall quickly",
-                "To stay the same",
-                "To grow bigger"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What might receive tougher scrutiny from the government?",
-              "opts": [
-                "Farm lands",
-                "Data centre construction",
-                "Car factories",
-                "Social media users"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "True or False: Investors are worried about possible tougher rules for the AI industry.",
-              "opts": [
-                "True",
-                "Only in the US",
-                "Not mentioned",
-                "False"
-              ],
-              "ans": 0
-            }
-          ]
-        },
-        "2": {
-          "text": "Global tech stocks have dropped sharply as investors worry about a slowdown in the artificial intelligence industry. The upcoming US midterms are adding to these concerns. Investors react to the possibility of tougher scrutiny regarding the construction of new data centres, which are essential for AI technology. Furthermore, there are growing fears that the government may introduce stricter regulations for the entire AI sector. Because of these combined factors, confidence in technology companies has fallen, leading to widespread selling in global markets. Investors remain cautious as they monitor how political changes in the United States might impact the future growth and regulation of AI businesses and their infrastructure.",
-          "quiz": [
-            {
-              "q": "What is the main cause of the drop in global tech stocks?",
-              "opts": [
-                "Fears of an AI slowdown and US midterm concerns",
-                "The closing of all tech businesses in the US",
-                "A sudden rise in the price of data centres",
-                "A lack of electricity for data centres"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "In the text, what does the word 'scrutiny' mean?",
-              "opts": [
-                "Financial support",
-                "Fast building",
-                "Careful examination or examination",
-                "Public celebration"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What kind of construction might face tougher scrutiny?",
-              "opts": [
-                "Housing projects",
-                "Shopping malls",
-                "Data centres",
-                "Highway bridges"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "True or False: The text states that investors are unconcerned about the US midterms.",
-              "opts": [
-                "True",
-                "Only tech workers are concerned",
-                "False",
-                "It is unknown"
-              ],
-              "ans": 2
-            }
-          ]
-        },
-        "3": {
-          "text": "Global technology stocks have experienced a sharp decline as investors grapple with heightened fears of a slowdown in the artificial intelligence sector. Adding to the market instability are the upcoming US midterm elections, which have raised concerns over future policy directions. Investors have reacted strongly to the possibility of tougher government scrutiny surrounding the construction of data centres, which are critical to supporting AI workloads. Additionally, there is anxiety over potential increases in regulation targeting the broader AI industry. These combined worries have prompted a wave of selling across international markets, reflecting diminished confidence among shareholders. As the US midterms approach, financial markets are keeping a close watch on political developments that could lead to stricter oversight, potentially impacting the expansion plans and valuation of major technology firms involved in AI infrastructure.",
-          "quiz": [
-            {
-              "q": "Which statement best summarizes the main focus of the article?",
-              "opts": [
-                "Data centre construction has been banned across the United States.",
-                "Investors are ignoring political events to focus entirely on AI technology.",
-                "Tech stocks fell as US midterms heightened fears over AI growth and regulation.",
-                "The AI industry has stopped all future building projects worldwide."
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What does the word 'heightened' mean as used in the text?",
-              "opts": [
-                "Reduced to a lower level",
-                "Ended permanently",
-                "Made completely invisible",
-                "Increased or made stronger"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What specific infrastructure is mentioned as facing potential tougher scrutiny?",
-              "opts": [
-                "Satellite networks",
-                "Data centre construction",
-                "Undersea communication cables",
-                "Solar panel farms"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "True or False: Possible tougher scrutiny of data centre construction contributed to the market reaction.",
-              "opts": [
-                "The text says this is impossible",
-                "True",
-                "Only outside the US",
-                "False"
-              ],
-              "ans": 1
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/b0d1/live/49c24750-d9d0-11f1-9e5a-c30c5e3d8c85.jpg"
     }
   ]
 }
