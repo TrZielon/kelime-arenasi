@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="tr" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ARI'yı Eğit · Kelime Arenası</title>
+<meta name="theme-color" content="#0f766e">
+<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="ortak.css?v=8">
+<style>
+:root{--bot:#0f766e;--scr:#0b1f24;--glow:#5eead4;--warm:#f59e0b}
+.lab{position:relative;border-radius:26px;overflow:hidden;padding:26px 24px;color:#e7fbf7;background:linear-gradient(160deg,#08262b,#0f3d40 60%,#0b2e31);box-shadow:var(--sh2)}
+.lab::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(94,234,212,.06) 1px,transparent 1px) 0 0/100% 22px,linear-gradient(90deg,rgba(94,234,212,.06) 1px,transparent 1px) 0 0/22px 100%;pointer-events:none}
+.lab h1{font-family:Fraunces,serif;font-size:clamp(32px,5.6vw,52px);margin:6px 0 4px;line-height:1.02}
+.lab .sub{color:#a7d8d0;max-width:60ch}
+.lab .hero{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:center;position:relative}
+.lab .rules{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;position:relative}
+.lab .rules div{background:rgba(255,255,255,.06);border:1px solid rgba(94,234,212,.18);border-radius:14px;padding:12px;font-size:13.5px;line-height:1.45;color:#cdeee8}
+.lab .rules b{display:block;color:#fff;margin-bottom:2px}
+.bot{width:100%;height:auto;display:block}
+.bot .eye{transition:all .3s}
+.bot.think .scrn{animation:scan 1.2s linear infinite}
+@keyframes scan{50%{opacity:.75}}
+.bot.happy{animation:bounce .6s var(--spring)}
+@keyframes bounce{40%{transform:translateY(-8px)}}
+.bot.sad{animation:kaShake .5s}
+.ahud{position:sticky;top:64px;z-index:30;display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 14px;border-radius:18px;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(8px);box-shadow:0 0 0 1.5px var(--line) inset,var(--sh1);margin-bottom:14px}
+.ahud .les{display:flex;gap:5px;align-items:center}
+.ahud .les i{width:26px;height:8px;border-radius:5px;background:var(--soft)}
+.ahud .les i.d2{background:var(--p)}.ahud .les i.d1{background:var(--warm)}.ahud .les i.d0{background:var(--bad)}.ahud .les i.c{background:var(--line2);box-shadow:0 0 0 2px var(--p)}
+.ahud .pill{font-size:12.5px;font-weight:800;padding:6px 10px;border-radius:999px;background:var(--soft);color:var(--ink2);border:0}
+.ahud .sp{flex:1}
+/* ders */
+.room{display:grid;grid-template-columns:260px minmax(0,1fr);gap:16px;align-items:start}
+.botcard{position:sticky;top:132px;padding:14px;text-align:center;background:linear-gradient(180deg,color-mix(in srgb,var(--p) 10%,var(--card)),var(--card))}
+.botcard b{display:block;font-family:Fraunces,serif;font-size:20px}
+.botcard small{color:var(--mut);font-weight:700}
+.mood{margin-top:8px;font-size:12.5px;font-weight:800;color:var(--p)}
+.bubble{position:relative;padding:16px 18px;border-radius:20px;background:var(--scr);color:#d1fae5;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:15px;line-height:1.6;box-shadow:0 0 0 1.5px rgba(94,234,212,.25) inset,0 10px 24px rgba(0,0,0,.15)}
+.bubble::before{content:"ARI >";display:block;font-size:11px;letter-spacing:.12em;color:var(--glow);margin-bottom:6px;font-weight:700}
+.bubble .ch{border-radius:6px;padding:1px 4px;transition:background .2s}
+.pick .bubble .ch{cursor:pointer;box-shadow:0 0 0 1px rgba(94,234,212,.25)}
+.pick .bubble .ch:hover{background:rgba(94,234,212,.15)}
+.bubble .ch.x{background:#be123c;color:#fff}
+.bubble .ch.no{animation:kaShake .4s;background:rgba(190,18,60,.25)}
+.bubble .cur{display:inline-block;width:8px;height:16px;background:var(--glow);vertical-align:-3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.passage{margin-top:14px;padding:18px 20px;border-radius:16px;background:var(--card);box-shadow:0 0 0 1.5px var(--line) inset;font-family:Georgia,serif;font-size:18px;line-height:1.7}
+.passage small{display:block;font:800 11px "Plus Jakarta Sans";letter-spacing:.12em;color:var(--mut);margin-bottom:6px}
+.passage .tk{border-radius:4px;transition:background .15s}
+.pickw .passage .tk{cursor:pointer}
+.pickw .passage .tk:hover{background:color-mix(in srgb,var(--warm) 30%,transparent)}
+.passage .tk.x{background:var(--warm);color:#1f1300;padding:0 3px;font-weight:700}
+.passage .tk.no{background:var(--bad-soft);animation:kaShake .4s}
+.step{margin-top:14px;padding:16px 18px;border-radius:16px;background:var(--card);box-shadow:0 0 0 1.5px var(--line) inset;animation:kaRise .4s var(--out)}
+.step .n{font-size:11.5px;font-weight:800;letter-spacing:.1em;color:var(--p)}
+.step h3{margin:4px 0 8px;font-size:17px}
+.step p{margin:0;font-size:14.5px;line-height:1.5;color:var(--ink2)}
+.rules2{display:grid;gap:10px;margin-top:10px}
+.rule{--d:var(--line2);border:0;border-radius:14px;padding:12px 14px;text-align:left;font-size:15px;font-weight:600;line-height:1.5;background:var(--card);color:var(--ink);box-shadow:0 0 0 1.5px var(--line2) inset,0 4px 0 var(--d);font-family:inherit;transition:transform .08s,box-shadow .08s}
+.rule:active:not(:disabled){transform:translateY(3px);box-shadow:0 0 0 1.5px var(--line2) inset,0 1px 0 var(--d)}
+.rule.on{box-shadow:0 0 0 2px var(--p) inset,0 4px 0 color-mix(in srgb,var(--p) 60%,#000);background:color-mix(in srgb,var(--p) 6%,var(--card))}
+.rule.no{opacity:.55;box-shadow:0 0 0 2px var(--bad) inset}
+.rule:disabled{cursor:default}
+.judge{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.judge .btn{justify-content:center;padding:13px}
+.prac{margin-top:10px;padding:12px 14px;border-radius:14px;background:var(--soft);font-family:Georgia,serif;font-size:17px;line-height:1.6}
+.out{margin-top:12px;padding:12px 14px;border-radius:14px;font-size:14.5px;line-height:1.5;animation:kaRise .4s var(--out)}
+.out.ok{background:color-mix(in srgb,var(--ok) 10%,var(--card));box-shadow:0 0 0 1.5px color-mix(in srgb,var(--ok) 35%,transparent) inset}
+.out.bad{background:color-mix(in srgb,var(--bad) 8%,var(--card));box-shadow:0 0 0 1.5px color-mix(in srgb,var(--bad) 35%,transparent) inset}
+.out b{color:var(--ink)}
+/* beyin */
+.brain{padding:14px;border-radius:20px;background:var(--scr);box-shadow:0 0 0 1.5px rgba(94,234,212,.2) inset}
+.brain svg{width:100%;height:auto;display:block}
+.brain .nd circle{transition:fill .5s,r .4s}
+.brain .nd text{font:700 10.5px "JetBrains Mono",monospace;fill:#a7f3d0;text-anchor:middle}
+.brain .ln{stroke:rgba(94,234,212,.25);stroke-width:2}
+.brain .ln.on{stroke:var(--glow);stroke-dasharray:4 4;animation:flow 1.2s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-16}}
+.blab{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px;font-size:11.5px;font-weight:700;color:#a7d8d0}
+.blab i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:-1px}
+.hubg{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.lessons{display:grid;gap:10px}
+.lesson{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;border:0;text-align:left;font-family:inherit;padding:12px 14px;border-radius:16px;background:var(--card);color:var(--ink);box-shadow:0 0 0 1.5px var(--line) inset;transition:transform .2s var(--spring)}
+.lesson:hover:not(:disabled){transform:translateX(4px)}
+.lesson:disabled{opacity:.5;cursor:not-allowed}
+.lesson .num{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-family:Fraunces,serif;font-weight:800;font-size:18px;background:var(--soft)}
+.lesson.d2 .num{background:var(--p);color:var(--p-ink)}.lesson.d1 .num{background:var(--warm);color:#1f1300}.lesson.d0 .num{background:var(--bad);color:#fff}
+.lesson b{display:block;font-size:15.5px}.lesson small{color:var(--mut);font-weight:700;font-size:12.5px}
+.lesson .tag{font-size:11.5px}
+/* sınav */
+.exam{padding:20px 22px}
+.eq{margin-top:12px;padding:14px 16px;border-radius:16px;background:var(--card);box-shadow:0 0 0 1.5px var(--line) inset;animation:kaRise .4s var(--out)}
+.eq .qq{font-family:Georgia,serif;font-size:16.5px;line-height:1.55}
+.eq .aa{margin-top:10px;display:flex;gap:10px;align-items:flex-start;font-family:"JetBrains Mono",monospace;font-size:14px;line-height:1.5;padding:10px 12px;border-radius:12px;background:var(--scr);color:#d1fae5}
+.eq .aa .mk{flex:0 0 26px;height:26px;border-radius:8px;display:grid;place-items:center;font-family:"Plus Jakarta Sans";font-weight:800}
+.eq .aa .mk.ok{background:var(--ok);color:#fff}.eq .aa .mk.no{background:var(--bad);color:#fff}
+.eq .why{margin-top:8px;font-size:13.5px;color:var(--ink2)}
+.result{text-align:center;padding:26px 22px}
+.result .big{font-family:Fraunces,serif;font-weight:900;font-size:clamp(34px,6vw,54px);margin:6px 0}
+.result .stat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.result .stat div{background:var(--soft);border-radius:14px;padding:12px;text-align:left}
+.result .stat b{display:block;font-family:Fraunces,serif;font-size:24px}
+.result .stat span{font-size:12px;font-weight:800;color:var(--mut)}
+.rulebook{text-align:left;display:grid;gap:8px;margin-top:12px}
+.rulebook div{padding:10px 12px;border-radius:12px;background:var(--card);border:1.5px solid var(--line);font-size:14px;line-height:1.45}
+.rulebook b{display:block;font-size:13px;color:var(--p);letter-spacing:.04em}
+@media (max-width:900px){.room,.hubg{grid-template-columns:1fr}.botcard{position:static;display:grid;grid-template-columns:110px 1fr;text-align:left;gap:12px;align-items:center}.lab .hero{grid-template-columns:120px 1fr}}
+@media (max-width:620px){.lab{padding:20px 16px}.lab .rules{grid-template-columns:1fr}.lab .hero{grid-template-columns:90px 1fr;gap:12px}.passage{font-size:16.5px}.result .stat{grid-template-columns:1fr 1fr}.ahud{top:58px}}
+</style>
+</head>
+<body>
+<main class="ka-wrap" id="main"><div id="view"></div></main>
+<script src="ortak.js?v=8"></script>
+<script>
+(function(){
+'use strict';
+const {$,esc}=KA,ic=KA.ic;
+function bot(mood,cls){
+  const eyes={happy:'<path d="M58 70q8-10 16 0M98 70q8-10 16 0" stroke="#5eead4" stroke-width="6" fill="none" stroke-linecap="round"/>',
+   think:'<rect x="56" y="62" width="18" height="6" rx="3" fill="#5eead4"/><rect x="98" y="62" width="18" height="6" rx="3" fill="#5eead4"/>',
+   confused:'<circle cx="66" cy="66" r="9" fill="#5eead4"/><path d="M98 60l16 12M114 60l-16 12" stroke="#fda4af" stroke-width="5" stroke-linecap="round"/>',
+   sad:'<path d="M58 72q8-8 16 0M98 72q8-8 16 0" stroke="#5eead4" stroke-width="6" fill="none" stroke-linecap="round" transform="rotate(180 86 70)"/>',
+   neutral:'<circle cx="66" cy="66" r="9" fill="#5eead4"/><circle cx="106" cy="66" r="9" fill="#5eead4"/>',
+   proud:'<path d="M56 66l10 8 10-14M96 66l10 8 10-14" stroke="#fde68a" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'}[mood]||'';
+  const mouth={happy:'<path d="M70 92q16 12 32 0" stroke="#5eead4" stroke-width="5" fill="none" stroke-linecap="round"/>',sad:'<path d="M72 98q14-10 28 0" stroke="#5eead4" stroke-width="5" fill="none" stroke-linecap="round"/>',confused:'<path d="M72 94q7-6 14 0t14 0" stroke="#5eead4" stroke-width="4" fill="none"/>',think:'<rect x="76" y="92" width="20" height="4" rx="2" fill="#5eead4"/>',neutral:'<rect x="74" y="92" width="24" height="5" rx="2.5" fill="#5eead4"/>',proud:'<path d="M68 90q18 16 36 0" stroke="#fde68a" stroke-width="5" fill="none" stroke-linecap="round"/>'}[mood]||'';
+  return `<svg class="bot ${cls||''}" viewBox="0 0 172 200"><path d="M86 6v18" stroke="#94a3b8" stroke-width="4"/><circle cx="86" cy="8" r="7" fill="${mood==='think'?'#f59e0b':'#5eead4'}"/><rect x="22" y="24" width="128" height="100" rx="30" fill="#e2e8f0"/><rect x="34" y="36" width="104" height="76" rx="20" fill="#0b1f24" class="scrn"/>${eyes}${mouth}<rect x="12" y="58" width="12" height="30" rx="6" fill="#94a3b8"/><rect x="148" y="58" width="12" height="30" rx="6" fill="#94a3b8"/><rect x="50" y="128" width="72" height="56" rx="18" fill="#0f766e"/><circle cx="86" cy="150" r="9" fill="#5eead4"/><rect x="64" y="168" width="44" height="6" rx="3" fill="#134e4a"/><rect x="30" y="134" width="16" height="40" rx="8" fill="#94a3b8"/><rect x="126" y="134" width="16" height="40" rx="8" fill="#94a3b8"/></svg>`;
+}
+/* ================= DERSLER ================= */
+const L=[
+ {k:'false',n:'Sahte Arkadaşlar',sub:'sympathetic ≠ sempatik',intro:'Yeni bir metin okudum! Bazı kelimeler Türkçeye çok benziyor, bu yüzden çok kolay oldu… sanırım.',
+  p:'My new neighbour is very sympathetic. When my cat was ill, she listened to me for an hour and helped me take it to the vet.',
+  ch:['Yeni komşum','çok sempatik, herkesi güldüren eğlenceli biri.','Kedim hastayken bana yardım etti.'],wch:[1],tg:['sympathetic'],
+  r:[['"sympathetic" = anlayışlı, derdini paylaşan. Türkçedeki "sempatik" (sevimli) İngilizcede "likeable" ya da "nice" olur.',1],['"sympathetic" Türkçedeki "sempatik" ile aynıdır: sevimli, güler yüzlü.',0],['"sympathetic" = sinirli, sabırsız biri.',0]],
+  rule:'Türkçeye benzeyen kelimelere güvenme: sympathetic = anlayışlı, actual = gerçek, eventually = sonunda, sensible = mantıklı.',
+  pr:[{s:'Actually, the meeting is on Tuesday, not Monday.',a:'"Actually" burada "aslında" demek: toplantı aslında salı günü.',ok:true,mis:'"Actually" = aktüel, güncel. Yani güncel toplantı salı günüymüş!'},
+      {s:'Be sensible and take an umbrella; it is going to rain.',a:'"Sensible" = hassas, duygusal. Yani: hassas ol ve şemsiye al.',ok:false,fix:['mantıklı, makul davran','hassas, duygusal ol'],fa:0,fw:'"sensible" = mantıklı, makul. "Hassas" İngilizcede "sensitive" olur. İkisi de sahte arkadaş!'}]},
+ {k:'few',n:'Az mı, birkaç mı?',sub:'few ≠ a few',intro:'Bu metindeki tek bir kelime çok küçüktü, o yüzden pek dikkat etmedim. Önemli değildir herhalde!',
+  p:'Few students passed the exam because it was extremely difficult.',
+  ch:['Sınav çok zordu,','ama birkaç öğrenci geçti,','bu da güzel bir haber.'],wch:[1,2],tg:['Few'],
+  r:[['"few" (başında a olmadan) = çok az, neredeyse hiç: olumsuz bir vurgu. "a few" = birkaç: olumlu.',1],['"few" ile "a few" aynıdır; ikisi de "birkaç" demek.',0],['"few" = çok sayıda, birçok.',0]],
+  rule:'few / little = çok az, neredeyse hiç (olumsuz). a few / a little = birkaç, biraz (olumlu). Tek bir "a" anlamı tersine çevirir.',
+  pr:[{s:'I have a little money, so we can buy some bread.',a:'"a little" = biraz: ekmek alacak kadar param var.',ok:true,mis:'"a little" = neredeyse hiç: o yüzden ekmek alamayız.'},
+      {s:'There is little hope that the lost ship will be found.',a:'Kayıp geminin bulunacağına dair biraz umut var.',ok:false,fix:['çok az umut var, neredeyse hiç','biraz umut var'],fa:0,fw:'"little" (a olmadan) = çok az. Cümle karamsar: gemi büyük ihtimalle bulunamayacak.'}]},
+ {k:'ref',n:'Kim, kimi?',sub:'they, it, this',intro:'Bu metinde "They" diye biri var. Cümlenin başında bilim insanları vardı, demek ki onlar! Kolay.',
+  p:'The scientists tested the new vaccine on mice. They reacted well, and no serious side effects were found.',
+  ch:['Bilim insanları aşıyı farelerde denedi.','Bilim insanları aşıya çok iyi tepki verdi,','ciddi bir yan etki bulunmadı.'],wch:[1],tg:['They'],
+  r:[['Zamir, anlamca uyan isme döner: aşıya "tepki veren" fareler, onu deneyen bilim insanları değil.',1],['"They" her zaman cümlenin ilk öznesini gösterir.',0],['"They" sadece insanları gösterebilir.',0]],
+  rule:'Zamiri, kendinden önceki isimlerden anlamca uyanına bağla. İlk özne ya da en yakın isim her zaman doğru değildir.',
+  pr:[{s:'The company hired two engineers. It wanted to build a new app.',a:'"It" = şirket: uygulamayı yapmak isteyen şirket.',ok:true},
+      {s:'The dog chased the cat until it climbed a tree.',a:'"it" = köpek: köpek ağaca tırmandı.',ok:false,mis:'"it" = köpek, çünkü cümlenin ilk öznesi köpek.',fix:['kedi: ağaca tırmanan kedi','köpek: ağaca tırmanan köpek'],fa:0,fw:'Kovalanan ve kaçan kedi; ağaca tırmanan da odur. Anlam kontrolü: köpekler ağaca tırmanmaz.'}]},
+ {k:'phr',n:'Parça parça çevirme',sub:'give up ≠ yukarı vermek',intro:'"Gave" vermek, "up" yukarı demek. Kelimeleri tek tek çevirdim, mükemmel bir çeviri oldu bence!',
+  p:'After three years, Kemal finally gave up smoking. His doctor was very happy.',
+  ch:['Üç yıl sonra','Kemal sigarasını sonunda birine verdi,','doktoru da çok mutlu oldu.'],wch:[1],tg:['gave','up'],
+  r:[['Phrasal verb\'ler bir bütündür, parça parça çevrilmez: "give up" = bırakmak, vazgeçmek.',1],['Kelimeleri tek tek çevirmek her zaman en güvenli yoldur.',0],['"give up" = hediye etmek.',0]],
+  rule:'Fiil + edat birlikte yeni bir anlam taşır: give up = bırakmak, look into = araştırmak, turn down = reddetmek, call off = iptal etmek.',
+  pr:[{s:'The police are looking into the robbery.',a:'Polis soyguna içeriden bakıyor.',ok:false,fix:['soygunu araştırıyor, inceliyor','soyguna içeriden bakıyor'],fa:0,fw:'"look into" = araştırmak, incelemek. Parça parça çevirince anlamsız bir cümle çıkıyor.'},
+      {s:'She turned down the job offer because the salary was low.',a:'Maaş düşük olduğu için iş teklifini reddetti.',ok:true,mis:'Maaş düşük olduğu için iş teklifini aşağı çevirdi.'}]},
+ {k:'hedge',n:'Ne kadar emin?',sub:'unlikely, may, not necessarily',intro:'Bu metinde ilaç anlatılıyor. Bazı küçük kelimeleri atladım, nasılsa ana fikir aynı!',
+  p:'The new drug is unlikely to cure the disease, but it may reduce the pain.',
+  ch:['Yeni ilaç hastalığı','kesinlikle tedavi edecek','ve ağrıyı da kesin azaltacak.'],wch:[1,2],tg:['unlikely','may'],
+  r:[['Kesinlik kelimeleri anlamın parçasıdır: "unlikely" = muhtemelen … değil, "may" = -ebilir. Atlanamazlar.',1],['"unlikely" = kesinlikle, "may" = -ecek.',0],['Bu küçük kelimeler önemsizdir, ana fikri değiştirmez.',0]],
+  rule:'may / might = olabilir · unlikely = muhtemelen değil · not necessarily = her zaman değil. Yazarın emin olma derecesi, reading sorularının favori tuzağıdır.',
+  pr:[{s:'The results do not necessarily mean that the method works.',a:'Sonuçlar yöntemin işe yaradığını mutlaka göstermiyor.',ok:true,mis:'Sonuçlar yöntemin kesinlikle işe yaradığını gösteriyor.'},
+      {s:'Prices might rise next year.',a:'Fiyatlar gelecek yıl kesin artacak.',ok:false,fix:['artabilir, kesin değil','kesin artacak'],fa:0,fw:'"might" bir olasılık bildirir. Yazar bir şey öngörüyor ama söz vermiyor.'}]},
+ {k:'inf',n:'Satır arası',sub:'çıkarım yapmak',intro:'Elif kapıyı açınca herkes bağırmış. Bağırmak kızgınlık demek, değil mi? Ben her şeyi kelimesi kelimesine okurum!',
+  p:'When Elif opened the door, the room was dark, a cake with candles was on the table, and twenty of her friends suddenly shouted "Surprise!"',
+  ch:['Elif kapıyı açtı,','odada elektrik kesilmişti','ve arkadaşları kızgın oldukları için ona bağırdı.'],wch:[1,2],tg:['Surprise','cake','candles'],
+  r:[['Metin her şeyi açıkça söylemez; ipuçlarını birleştir: karanlık oda + mumlu pasta + "Surprise!" = sürpriz doğum günü partisi.',1],['Sadece açıkça yazanı oku; asla çıkarım yapma.',0],['Bağırmak her zaman kızgınlık demektir.',0]],
+  rule:'İpuçlarını birleştir: yazar söylemediğini gösterir. Ama çıkarım metne dayanmalı; hayal gücüne değil.',
+  pr:[{s:'Ahmet looked at his watch again and again and kept walking up and down the platform.',a:'Ahmet muhtemelen treni bekliyor ve sabırsızlanıyor.',ok:true,mis:'Ahmet saatine bakıyor ve yürüyor. Bundan başka bir şey bilemeyiz.'},
+      {s:'The streets were wet, and people were closing their umbrellas.',a:'Şu anda çok şiddetli yağmur yağıyor.',ok:false,fix:['Yağmur yeni dinmiş','Şu anda şiddetli yağmur yağıyor'],fa:0,fw:'İnsanlar şemsiyelerini kapatıyorsa yağmur durmuştur; ıslak sokaklar da az önce yağdığını gösteriyor.'}]}
+];
+const EXAM=[
+ {k:'false',q:'"The professor was very sympathetic when I explained my problem." What does this tell us about the professor?',ok:'The professor was understanding and kind.',no:'The professor was funny and charming!',why:'sympathetic = anlayışlı'},
+ {k:'few',q:'"Few people came to the concert." Was the concert popular?',ok:'No. Hardly anyone came.',no:'Yes, some people came, so it was popular!',why:'few = çok az'},
+ {k:'ref',q:'"The farmers saved the horses from the burning barn. They had been trapped inside for an hour." Who had been trapped?',ok:'The horses.',no:'The farmers, because they come first in the sentence!',why:'Mahsur kalan, kurtarılan atlardır.'},
+ {k:'phr',q:'"The meeting was called off because of the storm." What happened to the meeting?',ok:'It was cancelled.',no:'Someone called the meeting on the phone.',why:'call off = iptal etmek'},
+ {k:'hedge',q:'"This method may help some students." Does the writer say the method helps all students?',ok:'No. It only might help some of them.',no:'Yes, the method definitely helps students.',why:'may + some: sınırlı ve olası'},
+ {k:'inf',q:'"Murat put on his coat, took his keys and switched off the lights." What is Murat probably doing?',ok:'He is probably leaving home.',no:'The text does not say, so we cannot know anything.',why:'İpuçları: mont, anahtar, ışıkları kapatmak.'}
+];
+const NODES=[[60,48],[150,30],[240,52],[70,118],[160,108],[250,122]];
+/* ================= DURUM ================= */
+const KEY='ka_ari1';
+let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+const fresh=()=>({li:0,st:{},stage:'intro',cur:null,exam:null});
+if(!S)S=fresh();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const strength=k=>{const s=S.st[k];return s?s.str:null};
+function brain(){
+  const lines=[[0,1],[1,2],[0,3],[1,4],[2,5],[3,4],[4,5]];
+  const col=k=>{const s=strength(k);return s==null?'#1f3b40':s===2?'#5eead4':s===1?'#f59e0b':'#f43f5e'};
+  return `<div class="brain"><svg viewBox="0 0 310 160"><path d="M40 90C20 40 80 6 155 10s140 30 118 84-60 60-120 58S56 140 40 90z" fill="none" stroke="rgba(94,234,212,.25)" stroke-width="2" stroke-dasharray="3 5"/>${lines.map(([a,b])=>`<line class="ln ${strength(L[a].k)!=null&&strength(L[b].k)!=null?'on':''}" x1="${NODES[a][0]}" y1="${NODES[a][1]}" x2="${NODES[b][0]}" y2="${NODES[b][1]}"/>`).join('')}${L.map((l,i)=>`<g class="nd"><circle cx="${NODES[i][0]}" cy="${NODES[i][1]}" r="${strength(l.k)==null?9:13}" fill="${col(l.k)}"/><text x="${NODES[i][0]}" y="${NODES[i][1]+28}">${esc(l.n.split(' ')[0])}</text></g>`).join('')}</svg><div class="blab"><span><i style="background:#5eead4"></i>sağlam</span><span><i style="background:#f59e0b"></i>öğrendi</span><span><i style="background:#f43f5e"></i>yanlış öğrendi</span><span><i style="background:#1f3b40"></i>henüz yok</span></div></div>`;
+}
+function hud(){return `<div class="ahud"><div class="les">${L.map((l,i)=>{const s=strength(l.k);return `<i class="${s==null?(i===S.li&&S.stage==='lesson'?'c':''):'d'+s}"></i>`}).join('')}</div><div class="sp"></div><button class="pill" id="tohub">Ders planı</button></div>`}
+/* ================= EKRANLAR ================= */
+function intro(){
+  $('#view').innerHTML=`<div class="lab"><a href="oyunlar.html" style="color:#a7d8d0;font-weight:800;font-size:13px;text-decoration:none;position:relative">← Oyun Salonu</a>
+   <div class="hero" style="margin-top:12px">${bot('happy')}<div><span class="eyebrow" style="color:#5eead4">ARI'yı Eğit</span><h1>Öğretmen sensin</h1><div class="sub">ARI, İngilizce okumayı öğrenen bir robot. Altı ders sonra Büyük Okuma Sınavı'na girecek. Çok hızlı öğreniyor ama her şeyi harfiyen alıyor ve tam da Türk öğrencilerin düştüğü tuzaklara düşüyor. Hatasını bul, doğru kuralı öğret. Sınavda ne kadar başarılı olacağı, ne kadar iyi öğrettiğine bağlı.</div></div></div>
+   <div class="rules"><div><b>1 · Hatayı bul</b>ARI metni okuyup anladığını anlatır. Yanlış kısmı işaretle, sonra metinde onu yanıltan kelimeyi göster.</div><div><b>2 · Kuralı öğret</b>Doğru açıklamayı seç. Yanlış bir kural öğretirsen ARI onu da öğrenir!</div><div><b>3 · Sına</b>ARI yeni cümlelerde kuralı dener. Haklı mı, yanılıyor mu? Sen karar ver.</div></div>
+   <div class="row" style="gap:10px;margin-top:18px;flex-wrap:wrap;position:relative">${S.stage!=='intro'?`<button class="btn btn-acc" id="tohub">Derslere devam ${ic('arrow')}</button><button class="btn btn-ghost" id="reset" style="color:#fff;background:rgba(255,255,255,.1)">Baştan başla</button>`:`<button class="btn btn-acc" id="begin">ARI ile tanış ${ic('arrow')}</button>`}</div></div>`;
+}
+function hub(){
+  S.stage='hub';save();
+  const all=L.every(l=>strength(l.k)!=null);
+  const next=L.findIndex(l=>strength(l.k)==null);
+  $('#view').innerHTML=hud()+`<div class="hubg"><section class="card" style="padding:18px 20px"><span class="eyebrow">Ders planı</span><h2 style="margin:4px 0 12px;font-size:26px">${all?'ARI sınava hazır':'Altı ders, bir sınav'}</h2>
+   <div class="lessons">${L.map((l,i)=>{const s=strength(l.k);const lock=i>0&&strength(L[i-1].k)==null;return `<button class="lesson ${s==null?'':'d'+s}" data-les="${i}" ${lock?'disabled':''}><span class="num">${i+1}</span><span><b>${esc(l.n)}</b><small>${esc(l.sub)}</small></span><span class="tag">${s==null?(lock?'kilitli':'başla'):s===2?'sağlam':s===1?'öğrendi':'yanlış öğrendi'}</span></button>`}).join('')}</div>
+   <div class="row" style="justify-content:flex-end;margin-top:14px;gap:8px;flex-wrap:wrap">${all?`<button class="btn btn-acc" id="exam">ARI'yı sınava gönder ${ic('arrow')}</button>`:`<button class="btn btn-p" data-les="${next}">${next+1}. derse başla ${ic('arrow')}</button>`}</div></section>
+   <aside><div class="card botcard">${bot(all?'proud':'neutral')}<div><b>ARI</b><small>Beyin haritası</small></div></div><div style="margin-top:12px">${brain()}</div></aside></div>`;
+}
+function lesson(){
+  const l=L[S.li],c=S.cur;S.stage='lesson';save();
+  const ph=c.ph;
+  const moods={1:'think',2:'confused',3:'think',4:'neutral',5:'happy'};
+  const chs=l.ch.map((t,i)=>`<span class="ch ${ph>1&&l.wch.includes(i)?'x':''} ${c.chw.includes(i)?'no':''}" data-ch="${i}">${esc(t)}</span>`).join(' ');
+  const toks=l.p.split(/(\s+)/).map((w,i)=>{if(!w.trim())return w;const cl=w.replace(/[.,;:"!']/g,'');const hit=ph>2&&l.tg.includes(cl);return `<span class="tk ${hit?'x':''} ${c.tkw.includes(i)?'no':''}" data-tk="${i}">${esc(w)}</span>`}).join('');
+  let step='',bub='';
+  if(ph===1){bub=`${esc(l.intro)}<br><br>Metni şöyle anladım:<br>${chs}`;step=`<div class="step"><span class="n">ADIM 1 / 3</span><h3>ARI nerede yanılıyor?</h3><p>ARI'nın anlattıklarından yanlış olan parçaya dokun.</p></div>`}
+  else if(ph===2){bub=`Ah, orası mı yanlış? Ama metinde öyle yazıyordu sanki… Hangi kelime beni şaşırttı?<br><br>${chs}`;step=`<div class="step"><span class="n">ADIM 1 / 3</span><h3>Onu hangi kelime yanılttı?</h3><p>Aşağıdaki metinde ARI'nın yanlış anladığı kelimeye dokun.</p></div>`}
+  else if(ph===3){bub=`Demek "${esc(l.tg[0])}"! Bana kuralı öğret, bir daha hiç yanılmayayım.<span class="cur"></span>`;step=`<div class="step"><span class="n">ADIM 2 / 3</span><h3>ARI'ya hangi kuralı öğretiyorsun?</h3><p>Dikkat: ARI seçtiğin kuralı olduğu gibi öğrenecek.</p><div class="rules2">${c.rord.map(i=>`<button class="rule ${c.rw.includes(i)?'no':''}" data-rule="${i}" ${c.rw.includes(i)?'disabled':''}>${esc(l.r[i][0])}</button>`).join('')}</div></div>`}
+  else if(ph===4){const pi=c.pi,p=l.pr[pi],showMis=c.bad&&p.mis,ans=showMis?p.mis:p.a,ariOk=showMis?false:p.ok;c.ariOk=ariOk;
+    bub=pi===0&&!c.pres?`Anladım! Kuralı kaydettim. Şimdi kendi kendime deneyeyim:`:`Bir tane daha deneyeyim:`;
+    let res='';
+    if(c.pres){const r=c.pres;res=`<div class="out ${r.good?'ok':'bad'}">${r.msg}</div>${r.fix?`<div class="rules2">${r.fixOpts.map((f,i)=>`<button class="rule ${r.fw&&r.fw.includes(i)?'no':''}" data-fix="${i}" ${r.fw&&r.fw.includes(i)?'disabled':''}>${esc(f)}</button>`).join('')}</div>`:''}${r.reteach?`<div class="rules2">${c.rord.map(i=>`<button class="rule ${c.rw.includes(i)?'no':''}" data-reteach="${i}" ${c.rw.includes(i)?'disabled':''}>${esc(l.r[i][0])}</button>`).join('')}</div>`:''}${r.next?`<div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn btn-p" id="pnext">${pi<l.pr.length-1?'Sıradaki deneme':'Dersi bitir'} ${ic('arrow')}</button></div>`:''}`}
+    step=`<div class="step"><span class="n">ADIM 3 / 3 · DENEME ${pi+1} / ${l.pr.length}</span><h3>ARI haklı mı?</h3><div class="prac">${esc(p.s)}</div><div class="bubble" style="margin-top:10px">${esc(ans)}</div>${c.pres?res:`<div class="judge"><button class="btn btn-p" data-jg="1">ARI haklı</button><button class="btn btn-obj" style="background:var(--bad);color:#fff" data-jg="0">ARI yanılıyor</button></div>`}</div>`}
+  else{const s=S.st[l.k].str;bub=s===2?'Bu kuralı çok iyi öğrendim! Teşekkürler öğretmenim.':s===1?'Öğrendim ama biraz kafam karıştı. Sınavda dikkat edeceğim.':'Hmm, bence her şeyi doğru öğrendim… değil mi?';
+    step=`<div class="step"><span class="n">DERS TAMAMLANDI</span><h3>${esc(l.n)}: ${s===2?'sağlam öğrendi':s===1?'öğrendi':'yanlış öğrendi'}</h3><p><b>Kural:</b> ${esc(l.rule)}</p>${s===0?'<div class="out bad">ARI yanlış kuralla devam ediyor; sınavda bu konuda hata yapacak. Bu dersi tekrar alabilirsin.</div>':''}<div class="row" style="justify-content:flex-end;margin-top:12px;gap:8px;flex-wrap:wrap">${s===0?`<button class="btn btn-ghost" data-les="${S.li}">Dersi tekrarla</button>`:''}<button class="btn btn-p" id="tohub">Ders planına dön ${ic('arrow')}</button></div></div>`}
+  const mood=ph===5?(S.st[l.k].str===2?'proud':S.st[l.k].str===1?'happy':'neutral'):(c.pres&&!c.pres.good?'sad':moods[ph]);
+  $('#view').innerHTML=hud()+`<div class="room"><aside class="card botcard">${bot(mood,c.anim||'')}<div><b>ARI</b><small>Ders ${S.li+1} · ${esc(l.n)}</small><div class="mood">${{think:'düşünüyor…',confused:'kafası karıştı',neutral:'dinliyor',happy:'mutlu',sad:'üzgün',proud:'gururlu'}[mood]}</div></div></aside>
+   <div class="${ph===1?'pick':''} ${ph===2?'pickw':''}"><div class="bubble">${bub}</div><div class="passage"><small>ARI'NIN OKUDUĞU METİN</small>${toks}</div>${step}</div></div>`;
+  c.anim='';
+}
+function startLesson(i){S.li=i;const l=L[i];S.cur={ph:1,chw:[],tkw:[],rw:[],rord:[0,1,2].sort(()=>Math.random()-.5),bad:false,firstRule:null,pi:0,pres:null,jw:0};delete S.st[l.k];save();lesson();scrollTo({top:0,behavior:'smooth'})}
+function finishLesson(){const l=L[S.li],c=S.cur;let str;if(c.bad)str=0;else if(c.firstRule&&c.jw===0)str=2;else str=1;S.st[l.k]={str};c.ph=5;save();try{KA.addXp(str*8+4,'ari')}catch(e){}lesson();if(str===2){const b=document.querySelector('.botcard');b&&KA.confetti&&(r=>KA.confetti(r.left+r.width/2,r.top+40,24,Math.PI))(b.getBoundingClientRect())}}
+function examView(){
+  S.stage='exam';const E=S.exam;save();
+  const shown=EXAM.slice(0,E.i);
+  const cnt=shown.filter(q=>(strength(q.k)||0)>=1).length;
+  $('#view').innerHTML=hud()+`<div class="room"><aside class="card botcard">${bot(E.i<EXAM.length?'think':cnt>=5?'proud':cnt>=4?'happy':'sad')}<div><b>ARI</b><small>Büyük Okuma Sınavı</small><div class="mood">${E.i<EXAM.length?'cevaplıyor…':cnt+' / 6 doğru'}</div></div></aside>
+   <section class="card exam"><span class="eyebrow">Büyük Okuma Sınavı</span><h2 style="margin:4px 0 4px;font-size:26px">ARI sınavda</h2><p class="mut" style="margin:0">Artık müdahale edemezsin. ARI senin öğrettiklerinle cevaplıyor.</p>
+   ${shown.map(q=>{const s=strength(q.k)||0,ok=s>=1;return `<div class="eq"><div class="qq">${esc(q.q)}</div><div class="aa"><span class="mk ${ok?'ok':'no'}">${ok?'✓':'✗'}</span><span>${esc(ok?q.ok:q.no)}${ok&&s===2?' Bunu derste öğrenmiştim!':''}</span></div><div class="why">${esc(q.why)}${ok?'':' · Bu kuralı ARI\'ya doğru öğretemedin.'}</div></div>`}).join('')}
+   ${E.i<EXAM.length?`<div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn btn-p" id="enext">${E.i===0?'Sınavı başlat':'Sıradaki soru'} ${ic('arrow')}</button></div>`:`<div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn btn-acc" id="eres">Sonucu gör ${ic('arrow')}</button></div>`}</section></div>`;
+  const last=document.querySelectorAll('.eq');last.length&&last[last.length-1].scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function result(){
+  const cnt=EXAM.filter(q=>(strength(q.k)||0)>=1).length,strong=L.filter(l=>strength(l.k)===2).length;
+  try{KA.addXp(cnt*10,'ari')}catch(e){}
+  const out=cnt===6?['ARI fakülteye geçti!','Tam puan. ARI mezuniyet töreninde senin adını anacak.','proud']:cnt>=4?['ARI sınavı geçti','Birkaç konuda takıldı ama başardı.','happy']:['ARI hazırlığa kaldı','Üzülme: ARI de hazırlık sınıfında, seninle aynı sınıfta. Yanlış öğrettiğin dersleri tekrarla.','sad'];
+  $('#view').innerHTML=`<section class="card result"><div style="width:150px;margin:0 auto">${bot(out[2],'happy')}</div><span class="eyebrow">Sınav sonucu</span><div class="big">${out[0]}</div><p class="mut" style="max-width:52ch;margin:0 auto">${out[1]}</p>
+   <div class="stat"><div><b>${cnt}/6</b><span>sınavda doğru</span></div><div><b>${strong}/6</b><span>sağlam öğretilen kural</span></div><div><b>${L.filter(l=>strength(l.k)===0).length}</b><span>yanlış öğretilen</span></div></div>
+   <div style="max-width:420px;margin:0 auto">${brain()}</div>
+   <div class="secT" style="font:800 12px 'Plus Jakarta Sans';letter-spacing:.1em;color:var(--mut);margin:16px 0 6px;text-align:left">ARI'YA ÖĞRETTİĞİN KURALLAR, AYNI ZAMANDA SENİN KURALLARIN</div>
+   <div class="rulebook">${L.map(l=>`<div><b>${esc(l.n.toUpperCase())}</b>${esc(l.rule)}</div>`).join('')}</div>
+   <div class="row" style="justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap"><button class="btn btn-ghost" id="tohub">Dersleri tekrarla</button><a class="btn btn-ghost" href="oyunlar.html">Oyun Salonu</a><button class="btn btn-p" id="reset">Yeni öğrenci ${ic('arrow')}</button></div></section>`;
+  if(cnt>=4)setTimeout(()=>{const b=document.querySelector('.big');b&&KA.confetti&&(r=>KA.confetti(r.left+r.width/2,r.top,40,Math.PI*1.2))(b.getBoundingClientRect())},300);
+}
+/* ================= OLAYLAR ================= */
+document.addEventListener('click',e=>{
+  const t=e.target,q=s=>t.closest(s);let b;
+  if(q('#begin')){S.stage='hub';save();hub();scrollTo({top:0,behavior:'smooth'});return}
+  if(q('#tohub')){hub();scrollTo({top:0,behavior:'smooth'});return}
+  if(q('#reset')){S=fresh();save();intro();return}
+  if(b=q('[data-les]')){startLesson(+b.dataset.les);return}
+  const c=S.cur,l=L[S.li];
+  if(S.stage==='lesson'&&c){
+   if(b=q('.pick [data-ch]')){const i=+b.dataset.ch;if(l.wch.includes(i)){c.ph=2;c.anim='sad';KA.sfx.ok()}else{c.chw.push(i);c.jw+=0;KA.sfx.bad()}save();lesson();return}
+   if(b=q('.pickw [data-tk]')){const w=b.textContent.replace(/[.,;:"!']/g,'');if(l.tg.includes(w)){c.ph=3;KA.sfx.ok()}else{c.tkw.push(+b.dataset.tk);KA.sfx.bad()}save();lesson();return}
+   if(b=q('[data-rule]')){const i=+b.dataset.rule,good=l.r[i][1];if(c.firstRule==null)c.firstRule=!!good;if(good){c.bad=false}else{c.bad=true}c.ph=4;c.pi=0;c.pres=null;c.anim='happy';KA.sfx.ok();save();lesson();return}
+   if(b=q('[data-jg]')){const says=b.dataset.jg==='1',p=l.pr[c.pi],ariOk=c.ariOk,showMis=c.bad&&p.mis;
+     if(says===ariOk){if(ariOk){c.pres={good:true,msg:'<b>Doğru tespit.</b> ARI kuralı doğru uyguladı.',next:true};KA.sfx.ok()}
+       else{const fix=p.fix||[ (showMis?'Kural yanlış':'') ];c.pres={good:true,msg:'<b>Yakaladın, ARI yanılıyor.</b> Doğrusu ne?',fix:!!p.fix,fixOpts:p.fix||[],fw:[]};
+         if(!p.fix){c.pres={good:true,msg:'<b>Yakaladın!</b> ARI yanlış kuralı uyguladı. Ona kuralı yeniden öğret:',reteach:true};}
+         KA.sfx.ok()}}
+     else{c.jw++;KA.sfx.bad();
+       if(ariOk)c.pres={good:false,msg:'<b>Aslında ARI haklıydı.</b> '+esc(p.a)+' Doğru bir cevabı yanlış saymak da ARI\'nın kafasını karıştırır.',next:true};
+       else{c.pres={good:false,msg:'<b>ARI yanılıyordu ve bunu kaçırdın.</b> '+(p.fw?esc(p.fw):'')+(showMis?' ARI hâlâ yanlış kuralı kullanıyor.':''),next:true}}}
+     save();lesson();return}
+   if(b=q('[data-fix]')){const p=l.pr[c.pi],i=+b.dataset.fix;if(i===p.fa){const mis=c.bad;c.pres={good:true,msg:'<b>ARI düzeltti.</b> '+esc(p.fw)+(mis?' Ama ARI\'nın kuralı hâlâ yanlış; ona kuralı yeniden öğret:':''),reteach:mis,next:!mis};KA.sfx.ok()}else{c.pres.fw.push(i);c.jw++;KA.sfx.bad()}save();lesson();return}
+   if(b=q('[data-reteach]')){const i=+b.dataset.reteach;if(l.r[i][1]){c.bad=false;c.pres={good:true,msg:'<b>Kural güncellendi.</b> '+esc(l.rule),next:true};c.anim='happy';KA.sfx.ok()}else{c.rw.push(i);KA.sfx.bad()}save();lesson();return}
+   if(q('#pnext')){if(c.pi<l.pr.length-1){c.pi++;c.pres=null;save();lesson()}else finishLesson();return}
+  }
+  if(q('#exam')){S.exam={i:0};save();examView();scrollTo({top:0,behavior:'smooth'});return}
+  if(q('#enext')){S.exam.i++;save();examView();return}
+  if(q('#eres')){result();scrollTo({top:0,behavior:'smooth'});return}
+});
+KA.nav('oyunlar.html');
+if(S.stage==='intro')intro();else if(S.stage==='lesson'&&S.cur)lesson();else if(S.stage==='exam'&&S.exam)examView();else hub();
+})();
+</script>
+</body>
+</html>
