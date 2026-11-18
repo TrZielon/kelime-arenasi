@@ -451,6 +451,186 @@ document.addEventListener('pointerover',pre,{passive:true});document.addEventLis
 })();
 if('serviceWorker' in navigator&&location.protocol==='https:'&&!/claude\.ai|claudeusercontent/.test(location.host))addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 
+/* ---------- Kendi yapay zekân (kullanıcı anahtarı) ---------- */
+(function(){
+const K='ka_ai',QK='ka_aiq',LIM=20;
+const rd=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+const wr=(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
+const quota=()=>{let o=rd(QK);if(!o||o.d!==today())o={d:today(),n:0};return o};
+const conf=()=>{const c=rd(K);return c&&c.key?c:null};
+KA.aiConf=conf;
+KA.aiLeft=()=>Math.max(0,LIM-quota().n);
+KA.aiLimit=LIM;
+const detect=k=>{k=String(k||'').trim();if(/^AIza[0-9A-Za-z_\-]{30,}$/.test(k))return 'gemini';if(/^gsk_[0-9A-Za-z]{20,}$/.test(k))return 'groq';return null};
+KA.aiDetect=detect;
+class KeyErr extends Error{}
+/* Gemini, doğrudan tarayıcıdan */
+async function gemini(key,prompt,o,signal){
+  const quick=o.tier==='quick',ocr=o.mode==='ocr';
+  const models=quick?['gemini-2.5-flash-lite','gemini-2.5-flash','gemini-flash-lite-latest','gemini-flash-latest']:['gemini-2.5-flash','gemini-2.5-flash-lite','gemini-flash-latest','gemini-flash-lite-latest'];
+  const parts=o.image?[{inline_data:{mime_type:o.image.mime,data:o.image.data}},{text:prompt}]:[{text:prompt}];
+  let last='';
+  for(const m of models){
+    for(const plain of [false,true]){
+      const gen={temperature:ocr?0:0.7,maxOutputTokens:ocr?24000:quick?4096:8192};
+      if(!plain){if(/2\.5-flash/.test(m))gen.thinkingConfig={thinkingBudget:0};if(o.json)gen.responseMimeType='application/json'}
+      let r,j={};
+      try{r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`,{method:'POST',headers:{'content-type':'application/json','x-goog-api-key':key},body:JSON.stringify({contents:[{role:'user',parts}],generationConfig:gen}),signal});j=await r.json().catch(()=>({}))}
+      catch(e){if(e.name==='AbortError')throw e;throw new Error('Bağlantı koptu. İnternetini kontrol edip tekrar dene.')}
+      const msg=(j.error&&j.error.message)||'';
+      if(r.ok){const c=j.candidates&&j.candidates[0];const t=c&&c.content&&Array.isArray(c.content.parts)?c.content.parts.filter(p=>!p.thought).map(p=>p.text||'').join(''):'';if(t.trim())return t;last='boş yanıt';break}
+      if(r.status===400&&/api key|API_KEY/i.test(msg)||r.status===401||r.status===403)throw new KeyErr('Bağlantı kodun geçersiz ya da kapatılmış.');
+      if(r.status===400&&!plain&&!/model/i.test(msg))continue;
+      last=m+' ('+r.status+'): '+msg.slice(0,120);
+      if(r.status===429){await new Promise(x=>setTimeout(x,1500));break}
+      break;
+    }
+  }
+  if(/429/.test(last))throw new Error('Kendi yapay zekânın dakikalık kotası doldu; birkaç saniye bekleyip tekrar dene.');
+  throw new Error('Yapay zekâ yanıt vermedi. '+(last?'['+last+']':''));
+}
+/* Groq, doğrudan tarayıcıdan */
+async function groq(key,prompt,o,signal){
+  const models=o.tier==='quick'?['openai/gpt-oss-20b','openai/gpt-oss-120b','llama-3.3-70b-versatile']:['openai/gpt-oss-120b','openai/gpt-oss-20b','llama-3.3-70b-versatile'];
+  let last='';
+  for(const m of models){
+    const body={model:m,messages:[{role:'user',content:prompt}],temperature:0.7,max_completion_tokens:o.tier==='quick'?4096:8192};
+    if(/gpt-oss/.test(m))body.reasoning_effort='low';
+    if(o.json&&/json/i.test(prompt))body.response_format={type:'json_object'};
+    for(let k=0;k<2;k++){
+      let r,j={};
+      try{r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+key},body:JSON.stringify(body),signal});j=await r.json().catch(()=>({}))}
+      catch(e){if(e.name==='AbortError')throw e;throw new Error('Bağlantı koptu. İnternetini kontrol edip tekrar dene.')}
+      if(r.ok){const t=j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content||'';if(t.trim())return t;last='boş yanıt';break}
+      if(r.status===401||r.status===403)throw new KeyErr('Bağlantı kodun geçersiz ya da kapatılmış.');
+      last=m+' ('+r.status+'): '+((j.error&&j.error.message)||'').slice(0,120);
+      if(r.status===400&&k===0){delete body.response_format;delete body.reasoning_effort;continue}
+      break;
+    }
+  }
+  if(/429/.test(last))throw new Error('Kendi yapay zekânın dakikalık kotası doldu; birkaç saniye bekleyip tekrar dene.');
+  throw new Error('Yapay zekâ yanıt vermedi. '+(last?'['+last+']':''));
+}
+const slots={n:0,q:[]};
+const take=()=>slots.n<4?(slots.n++,Promise.resolve()):new Promise(r=>slots.q.push(r));
+const give=()=>{const r=slots.q.shift();if(r)r();else slots.n--};
+async function direct(c,p,o){
+  await take();const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),o.ms||90000);
+  try{return c.prov==='groq'?await groq(c.key,p,o,ac.signal):await gemini(c.key,p,o,ac.signal)}
+  catch(e){if(e.name==='AbortError')throw new Error('Zaman aşımı, tekrar dene.');throw e}
+  finally{clearTimeout(tm);give()}
+}
+KA.aiTest=async(prov,key)=>{const c={prov,key};const t=await direct(c,'Reply with exactly one word: OK',{tier:'quick',ms:25000});return /ok/i.test(t)};
+const base=KA.ai;
+KA.ai=async(p,o={})=>{
+  const c=conf();
+  if(c&&(!o.image||c.prov==='gemini')){
+    try{return await direct(c,p,o)}
+    catch(e){if(e instanceof KeyErr){KA.aiWizard('bad');throw new Error(e.message+' Yeni bir kod ekle.')}throw e}
+  }
+  const Q=quota();
+  if(Q.n>=LIM){KA.aiWizard('limit');throw new Error('Bugünkü ücretsiz deneme hakların bitti. Kendi yapay zekânı bağlarsan sınırsız devam edersin.')}
+  const r=await base(p,o);
+  const Q2=quota();Q2.n++;wr(QK,Q2);chip();
+  const left=LIM-Q2.n;
+  if(left===5)KA.toast&&KA.toast('5 deneme hakkın kaldı. Kendi yapay zekânı bağlarsan sınırsız olur.');
+  return r;
+};
+/* ---------- üst çubuktaki gösterge ---------- */
+function chip(){
+  const t=document.querySelector('.ka-tools');if(!t)return;
+  let b=document.getElementById('kaAi');
+  if(!b){b=document.createElement('button');b.id='kaAi';b.className='ka-chip ka-ai';b.type='button';t.prepend(b)}
+  const c=conf(),l=KA.aiLeft();
+  b.classList.toggle('on',!!c);b.classList.toggle('low',!c&&l<=5);
+  b.title=c?'Kendi yapay zekân bağlı':'Bugün kalan ücretsiz yapay zekâ hakkı';
+  b.innerHTML=c?`<span class="dot"></span><b>YZ bağlı</b>`:`<span class="spk">✦</span><b>${l}</b><small>hak</small>`;
+}
+const nav0=KA.nav;KA.nav=function(){const r=nav0.apply(this,arguments);chip();return r};
+/* ilk ziyarette ve birkaç günde bir: göze çarpan davet */
+function banner(){
+  if(conf()||document.querySelector('.aiw,.aiw-ban'))return;
+  const st=rd('ka_aiban')||{};if(st.until&&Date.now()<st.until)return;
+  const l=KA.aiLeft(),d=document.createElement('div');d.className='aiw-ban';
+  d.innerHTML=`<span class="aiw-ic sm">✦</span><div><b>Kendi yapay zekânı bağla</b><small>Ücretsiz, 1 dakika. Bağlayınca her şey daha hızlı ve sınırsız. Bugün ${l} deneme hakkın var.</small></div><button class="btn btn-p btn-sm" data-aiban="go">Bağla</button><button class="aiw-bx" data-aiban="later" aria-label="Sonra">×</button>`;
+  document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('in'));
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-aiban]');if(!b)return;const d=document.querySelector('.aiw-ban');if(b.dataset.aiban==='go'){d&&d.remove();KA.aiWizard('')}else{wr('ka_aiban',{until:Date.now()+3*864e5});d&&d.remove()}});
+const boot=()=>{chip();if(/^#(yz|yapay-zeka)$/i.test(location.hash))KA.aiWizard('');else setTimeout(banner,1800)};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else setTimeout(boot,0);
+/* ---------- bağlama sihirbazı ---------- */
+const MOCK={
+ g1:`<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span>aistudio.google.com/apikey</span></div><div class="mk-body"><div class="mk-g"><b style="color:#4285f4">G</b><b style="color:#ea4335">o</b><b style="color:#fbbc05">o</b><b style="color:#4285f4">g</b><b style="color:#34a853">l</b><b style="color:#ea4335">e</b></div><div class="mk-line">Oturum açın</div><div class="mk-in">ornek@gmail.com</div><div class="mk-btn">İleri</div></div></div>`,
+ g2:`<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span>Google AI Studio</span></div><div class="mk-body"><div class="mk-line" style="font-weight:800">API Keys</div><div class="mk-row"><span>Henüz anahtar yok</span><span class="mk-btn hot">Create API key</span></div><div class="mk-hand">☝</div></div></div>`,
+ g3:`<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span>Google AI Studio</span></div><div class="mk-body"><div class="mk-row key"><code>AIzaSyB•••••••••••••••Xk4</code><span class="mk-copy hot">⧉ Copy</span></div><div class="mk-hand">☝</div></div></div>`,
+ r1:`<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span>console.groq.com/keys</span></div><div class="mk-body"><div class="mk-line" style="font-weight:800">groq</div><div class="mk-btn" style="background:#fff;color:#111;border:1px solid #ddd">Continue with Google</div></div></div>`,
+ r2:`<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span>GroqCloud · API Keys</span></div><div class="mk-body"><div class="mk-row"><span>API Keys</span><span class="mk-btn hot" style="background:#f55036">Create API Key</span></div><div class="mk-hand">☝</div></div></div>`,
+ r3:`<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span>GroqCloud</span></div><div class="mk-body"><div class="mk-row key"><code>gsk_8Fq•••••••••••••••2mZ</code><span class="mk-copy hot">⧉ Copy</span></div><div class="mk-hand">☝</div></div></div>`
+};
+const STEPS={
+ gemini:{n:'Google Gemini',tag:'Önerilen',url:'https://aistudio.google.com/apikey',steps:[
+  ['Google sayfasını aç','Aşağıdaki düğmeye bas. Sayfa yeni sekmede açılır; bu sekme açık kalır.','g1','Google hesabınla giriş yap. İlk seferde şartları onaylamanı isterse kutucukları işaretleyip devam et.'],
+  ['"Create API key" düğmesine bas','Sayfadaki mavi düğme. Proje sorarsa varsayılanı bırak ve oluştur.','g2',''],
+  ['Kodu kopyala','"AIza" ile başlayan uzun kodun yanındaki kopyala simgesine bas, sonra bu sekmeye geri dön.','g3','']]},
+ groq:{n:'Groq',tag:'Çok hızlı',url:'https://console.groq.com/keys',steps:[
+  ['Groq sayfasını aç','Aşağıdaki düğmeye bas ve "Continue with Google" ile giriş yap.','r1',''],
+  ['"Create API Key" düğmesine bas','Bir isim ister: "kelime" yazman yeterli, sonra "Submit".','r2',''],
+  ['Kodu kopyala','"gsk_" ile başlayan kodu kopyala; bu kod bir daha gösterilmez. Sonra bu sekmeye dön.','r3','Groq fotoğraftan okuma yapmaz; fotoğraf istekleri deneme hakkından kullanılır.']]}
+};
+let W=null;
+KA.aiWizard=(reason)=>{
+  if(document.querySelector('.aiw'))return;
+  const c=conf();
+  W={prov:(c&&c.prov)||'gemini',reason,st:'idle',msg:''};
+  const el=document.createElement('div');el.className='aiw';el.innerHTML='<div class="aiw-in" role="dialog" aria-modal="true" aria-label="Kendi yapay zekânı bağla"></div>';
+  document.body.appendChild(el);drawW();
+  setTimeout(()=>{const i=document.getElementById('aiwKey');i&&!matchMedia('(pointer:coarse)').matches&&i.focus()},200);
+};
+function drawW(){
+  const box=document.querySelector('.aiw-in');if(!box)return;
+  const c=conf(),S=STEPS[W.prov],l=KA.aiLeft();
+  const why=W.reason==='limit'?`<div class="aiw-why">Bugünkü ${LIM} ücretsiz deneme hakkın bitti. Oyunlar ve kayıtlı içerikler çalışmaya devam ediyor; yapay zekâ özellikleri için kendi bağlantını ekle.</div>`:W.reason==='bad'?`<div class="aiw-why">Kayıtlı bağlantı kodun artık çalışmıyor. Yeni bir kod alıp buraya yapıştır.</div>`:'';
+  box.innerHTML=`<button class="aiw-x" data-aiw="close" aria-label="Kapat">×</button>
+   <div class="aiw-hd"><span class="aiw-ic">✦</span><div><h2>Kendi yapay zekânı bağla</h2><p>Ücretsiz · kart bilgisi istemez · yaklaşık 1 dakika</p></div></div>
+   ${why}
+   ${c&&W.st!=='ok'?`<div class="aiw-done"><b>Şu an bağlı: ${STEPS[c.prov].n}</b><span>Kod: ${KA.esc(c.key.slice(0,6))}••••${KA.esc(c.key.slice(-4))}</span><button class="btn btn-ghost btn-sm" data-aiw="remove">Bağlantıyı kaldır</button></div>`:''}
+   ${W.st==='ok'?`<div class="aiw-ok"><div class="big">✓</div><h3>Bağlandı!</h3><p>Artık yapay zekâ isteklerin kendi ${STEPS[W.prov].n} hesabından ve sınırsız çalışıyor. Bağlantı kodun sadece bu cihazda, bu tarayıcıda saklanıyor.</p><button class="btn btn-p" data-aiw="close">Harika, devam et</button></div>`:`
+   <div class="aiw-tabs">${Object.entries(STEPS).map(([k,v])=>`<button class="${W.prov===k?'on':''}" data-aiw-prov="${k}"><b>${v.n}</b><small>${v.tag}</small></button>`).join('')}</div>
+   <ol class="aiw-steps">${S.steps.map(([t,d,mk,note],i)=>`<li><div class="aiw-n">${i+1}</div><div class="aiw-st"><b>${t}</b><p>${d}</p>${i===0?`<a class="btn btn-p" href="${S.url}" target="_blank" rel="noopener">${S.n} sayfasını aç ↗</a>`:''}${MOCK[mk]}${note?`<p class="aiw-note">${note}</p>`:''}</div></li>`).join('')}
+    <li><div class="aiw-n">4</div><div class="aiw-st"><b>Kodu buraya yapıştır</b><p>Kodu yapıştırdığın an otomatik olarak denenir.</p>
+     <div class="aiw-paste"><input id="aiwKey" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${W.prov==='groq'?'gsk_…':'AIza…'}"><button class="btn btn-ghost btn-sm" data-aiw="clip">Panodan yapıştır</button></div>
+     <div class="aiw-msg ${W.st}">${W.st==='test'?'<span class="spin"></span> Deneniyor…':esc(W.msg)}</div>
+     <button class="btn btn-p" data-aiw="save" ${W.st==='test'?'disabled':''}>Bağla ve dene</button></div></li></ol>
+   <div class="aiw-trust"><div><b>Neden?</b>Herkes kendi ücretsiz kotasını kullanınca site daha hızlı çalışır ve bekleme olmaz.</div><div><b>Güvenli mi?</b>Kod sadece senin cihazında saklanır, sunucumuza gönderilmez. İstediğin an Google'dan silebilirsin.</div><div><b>Ücretli mi?</b>Hayır. Kart bilgisi girmezsen hiçbir ücret çıkmaz.</div></div>
+   ${c?'':`<p class="aiw-left">Şimdilik bugün ${l} / ${LIM} ücretsiz deneme hakkın var.${l?' <a href="#" data-aiw="close">Sonra bağlarım</a>':''}</p>`}`}`;
+}
+async function trySave(v){
+  v=String(v||'').trim().replace(/\s+/g,'');
+  const p=detect(v);
+  if(!v){W.st='err';W.msg='Önce kodu yapıştır.';return drawW()}
+  if(!p){W.st='err';W.msg=/^AIza|^gsk_/.test(v)?'Kod eksik görünüyor; tamamını kopyaladığından emin ol.':'Bu bir bağlantı kodu gibi görünmüyor. Gemini kodları "AIza", Groq kodları "gsk_" ile başlar.';return drawW()}
+  W.prov=p;W.st='test';drawW();const i=document.getElementById('aiwKey');if(i)i.value=v;
+  try{const ok=await KA.aiTest(p,v);if(!ok)throw new Error('Beklenmedik bir yanıt geldi; yine de kaydedildi.');wr(K,{prov:p,key:v,at:Date.now()});W.st='ok';drawW();chip();KA.sfx&&KA.sfx.ok&&KA.sfx.ok();const b=document.querySelector('.aiw-ok .big');if(b&&KA.confetti){const r=b.getBoundingClientRect();KA.confetti(r.left+r.width/2,r.top+r.height/2,30,Math.PI)}}
+  catch(e){W.st='err';W.msg=e.message||'Denenemedi.';drawW();const j=document.getElementById('aiwKey');if(j)j.value=v}
+}
+document.addEventListener('click',async e=>{
+  const t=e.target;
+  if(t.closest('#kaAi')){KA.aiWizard('');return}
+  const a=t.closest('[data-aiw]');const pv=t.closest('[data-aiw-prov]');
+  if(pv){W.prov=pv.dataset.aiwProv;W.st='idle';W.msg='';drawW();return}
+  if(t.classList&&t.classList.contains('aiw')){document.querySelector('.aiw')?.remove();return}
+  if(!a)return;
+  const k=a.dataset.aiw;if(a.tagName==='A')e.preventDefault();
+  if(k==='close'){document.querySelector('.aiw')?.remove();return}
+  if(k==='remove'){wr(K,null);chip();W.st='idle';W.msg='Bağlantı kaldırıldı.';drawW();return}
+  if(k==='clip'){try{const v=await navigator.clipboard.readText();const i=document.getElementById('aiwKey');if(i)i.value=v;trySave(v)}catch(err){W.st='err';W.msg='Pano okunamadı. Kutuya uzun basıp "Yapıştır"ı seç.';drawW()}return}
+  if(k==='save'){trySave((document.getElementById('aiwKey')||{}).value);return}
+});
+document.addEventListener('input',e=>{if(e.target.id==='aiwKey'){const v=e.target.value.trim();if(detect(v)&&W.st!=='test')trySave(v)}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelector('.aiw')?.remove()});
+})();
+
 /* ---------- Başlangıç ---------- */
 document.addEventListener('click',e=>{
   const mb=e.target.closest('.ka-mode button');if(mb){KA.fxMode?KA.fxMode(mb,mb.dataset.m):KA.mode(mb.dataset.m);return}
