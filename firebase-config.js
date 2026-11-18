@@ -2,7 +2,14 @@
 // Bu dosya boş (null) kaldıkça sitede giriş düğmesi görünmez; her şey şimdiki gibi çalışır.
 // Firebase'de projeni açtıktan sonra "firebaseConfig" kutusundaki değerleri aşağıya yapıştır.
 // Bu değerler gizli değildir; güvenliği Firestore kuralları ve yetkili alan adları sağlar.
-window.KA_FIREBASE = null;
+window.KA_FIREBASE = {
+  apiKey: "AIzaSy...",
+  authDomain: "kelime-arenasi-xxxx.firebaseapp.com",
+  projectId: "kelime-arenasi-xxxx",
+  storageBucket: "...",
+  messagingSenderId: "...",
+  appId: "1:...:web:..."
+};
 /* ÖRNEK (kendi değerlerinle değiştir, başındaki // işaretlerini değil, yukarıdaki null satırını sil):
 window.KA_FIREBASE = {
   apiKey: "AIza...",
