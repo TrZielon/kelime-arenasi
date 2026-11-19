@@ -370,9 +370,9 @@ Kurallar: gövde+ek birleşince tam biçimi verir (ör. ["isim","analy","sis"]).
     if(!out.length)throw new Error('kelime ailesi kurulamadı');return out;
   });
 }
-function useDet(d){CASES=d;D={i:0,st:'pos',posA:null,got:[],miss:0,ans:null,hist:[],hint:false};if(TAB==='det')drawDet()}
-function useRead(d){TITLE=d.title;PS=d.ps;PQ=d.pq;ZQ=d.zq;mkTok();P={i:0,st:'tfn',pick:null,evOk:false,wrongS:-1,score:0,res:[]};Z={i:0,st:'tap',wrong:-1,miss:0,ok:0};if(TAB==='par')drawPar();if(TAB==='iz')drawIz()}
-function useFam(d){FAM=d;F={fi:0,qi:0,ans:null,got:[],ok:0};if(TAB==='fam')drawFam()}
+function useDet(d){CASES=d;D={i:0,st:'pos',posA:null,got:[],miss:0,ans:null,hist:[],hint:false};aRestore('det');if(TAB==='det')drawDet()}
+function useRead(d){TITLE=d.title;PS=d.ps;PQ=d.pq;ZQ=d.zq;mkTok();P={i:0,st:'tfn',pick:null,evOk:false,wrongS:-1,score:0,res:[]};Z={i:0,st:'tap',wrong:-1,miss:0,ok:0};aRestore('par');aRestore('iz');if(TAB==='par')drawPar();if(TAB==='iz')drawIz()}
+function useFam(d){FAM=d;F={fi:0,qi:0,ans:null,got:[],ok:0};aRestore('fam');if(TAB==='fam')drawFam()}
 const SRC={
   det:{game:'atolye_det',need:6,min:4,title:'bağlam dosyaları',gen:genDet,onData:useDet,onDemo:()=>{if(CASES!==DEMO.CASES)useDet(DEMO.CASES)}},
   par:{game:'atolye_read',need:8,min:5,title:'bir okuma parçası ve sorular',hint:'Paraphrase Avı ile İz Sürücü aynı parçayı kullanır.',gen:genRead,onData:useRead,onDemo:()=>{if(PS!==DEMO.PS)useRead({title:DEMO.TITLE,ps:DEMO.PS,pq:DEMO.PQ,zq:DEMO.ZQ})}},
@@ -381,9 +381,21 @@ const SRC={
 SRC.iz=SRC.par;
 let barTab='';
 function srcBar(){if(barTab===TAB)return;barTab=TAB;const old=$('#wsrc'),n=old.cloneNode(false);old.replaceWith(n);KA.src.bar(n,SRC[TAB])}
+
+/* ============ KALDIĞIN YERDEN ============ */
+const AK='ka_atolye_st';
+const hid=d=>{const t=JSON.stringify(d);let h=0;for(let i=0;i<t.length;i+=7)h=(h*31+t.charCodeAt(i))|0;return t.length+':'+h};
+const cid={det:()=>hid(CASES),par:()=>hid(PQ),iz:()=>hid(ZQ),fam:()=>hid(FAM)};
+const stOf={det:()=>D,par:()=>P,iz:()=>Z,fam:()=>F};
+function aLoad(){try{return JSON.parse(localStorage.getItem(AK))||{}}catch(e){return {}}}
+function aSave(){const o=aLoad();['det','par','iz','fam'].forEach(k=>{const st=stOf[k]();const fresh=k==='det'?(st.i===0&&st.st==='pos'&&!st.hist.length):k==='par'?(st.i===0&&st.st==='tfn'&&!st.res.length):k==='iz'?(st.i===0&&st.st==='tap'&&!st.ok&&!st.miss):(st.fi===0&&st.qi===0&&st.ans==null&&!st.ok);
+  if(fresh)delete o[k];else o[k]={id:cid[k](),st:JSON.parse(JSON.stringify(st)),t:Date.now()}});try{localStorage.setItem(AK,JSON.stringify(o))}catch(e){}}
+function aRestore(k){const o=aLoad()[k];if(!o||o.id!==cid[k]())return;const st=o.st;
+  if(k==='det')D=Object.assign(D,st);else if(k==='par')P=Object.assign(P,st);else if(k==='iz')Z=Object.assign(Z,st);else F=Object.assign(F,st)}
 /* ============ OLAYLAR ============ */
 function draw(){drawTabs();srcBar();({det:drawDet,par:drawPar,iz:drawIz,fam:drawFam})[TAB]()}
 function conf(el){if(!el||!KA.confetti)return;const r=el.getBoundingClientRect();KA.confetti(r.left+r.width/2,r.top+r.height/2,22,Math.PI)}
+document.addEventListener('click',()=>setTimeout(aSave,0));
 document.addEventListener('click',e=>{
   const t=e.target,q=s=>t.closest(s);
   let b;
@@ -413,6 +425,7 @@ document.addEventListener('click',e=>{
 function finishP(){const qq=PQ[P.i],ok=P.pick===qq.a;let s=(ok?1:0)+(qq.a==='N'?(ok?1:0):(P.evOk?1:0));P.score+=s;if(s)KA.addXp(s*2,'atolye');P.res.push(s+'/2');ok?KA.sfx.ok():KA.sfx.bad()}
 addEventListener('resize',()=>{if(TAB==='iz'&&Z.st==='done')drawIz()});
 KA.nav('oyunlar.html');
+['det','par','iz','fam'].forEach(aRestore);
 draw();
 })();
 </script>

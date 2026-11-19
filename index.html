@@ -387,7 +387,7 @@ function renderHome(){
       <div class="row" style="gap:8px"><span class="eyebrow">Aktif liste</span><span class="rank">${ic('crown')}${rankOf(cur.prog.xp||0)}</span></div>
       <h1>${esc(cur.name)}</h1>
       <p class="sub">${cur.items.length} kelime · ${done===7?'Bütün ringler tamamlandı. Tekrar turu için istediğin ringe gir.':`Sıradaki ring: <b>${MODES[nx].n}</b>. ${MODES[nx].d}`}</p>
-      <div class="row"><button class="btn btn-p btn-lg" data-m="${nx}">${ic('play')}${done?'Devam et':'Başla'} · ${MODES[nx].n}</button>${packs.length>1?`<select class="select" id="pk" style="width:auto;min-height:52px" aria-label="Liste seç">${packs.map(p=>`<option value="${esc(p.id)}" ${p.id===cur.id?'selected':''}>${esc(p.name)} (${p.items.length})</option>`).join('')}</select>`:''}</div>
+      <div class="row">${(()=>{const r=sessLabel();return r?`<button class="btn btn-acc btn-lg" data-m="${r.i}">${ic('play')}Kaldığın yerden · ${esc(r.txt)}</button>`:''})()}<button class="btn ${sessLabel()?'btn-ghost':'btn-p'} btn-lg" data-m="${nx}">${ic('play')}${done?'Devam et':'Başla'} · ${MODES[nx].n}</button>${packs.length>1?`<select class="select" id="pk" style="width:auto;min-height:52px" aria-label="Liste seç">${packs.map(p=>`<option value="${esc(p.id)}" ${p.id===cur.id?'selected':''}>${esc(p.name)} (${p.items.length})</option>`).join('')}</select>`:''}</div>
     </div>
     <div class="arena-vis">${arenaSvg(st)}</div>
   </section>
@@ -444,16 +444,46 @@ function pwaHtml(){
 }
 
 /* ---------- Etkinlik çerçevesi ---------- */
-function openMode(i){
+function openMode(i,fresh){
   if(!cur)return;
   mode=i;COMBO=0;$('#home').hidden=true;const A=$('#act');A.hidden=false;KA.closeLookup();scrollTo(0,0);
   A.innerHTML=`<div class="actbar"><button class="ka-icon-btn" data-a="home" aria-label="Ana sayfaya dön">${ic('x')}</button><span class="t">${MODES[i].n}</span><div class="pbar"><i id="pb" style="width:0"></i></div><span class="combo" id="combo" hidden></span><span id="hearts" class="hearts" hidden></span><span id="cnt" class="mut" style="font-weight:800;font-size:13px"></span></div><div id="st"></div>`;
+  if(!fresh&&sessResume(i))return;
   [startKart,startEsle,()=>startQuiz('sec'),()=>startQuiz('yaz'),startBoss,startCumle,startPara][i]();
 }
+
+/* ---------- Kaldığın yerden devam: Kapı, Nişan, Kalem, Bekçi ve Kürsü ---------- */
+const SSK=()=>'ka_sess_'+(cur&&cur.id);
+const sessAll=()=>{try{return JSON.parse(localStorage.getItem(SSK()))||{}}catch(e){return {}}};
+const sessPut=o=>{try{localStorage.setItem(SSK(),JSON.stringify(o))}catch(e){}};
+function sessClear(i){const o=sessAll();if(o[i]){delete o[i];sessPut(o)}}
+function sessSnap(){
+  if(!cur||mode<0)return;const o=sessAll(),t=Date.now();let d=null;
+  if(mode===0&&K&&K.q.length)d={q:K.q.map(x=>x.en),total:K.total,known:K.known};
+  else if((mode===2||mode===3)&&Q&&Q.q.length)d={q:Q.q.map(x=>x.en),total:Q.total,solved:Q.solved};
+  else if(mode===4&&B&&B.q.length&&B.lives>0)d={q:B.q.map(m=>({en:m.x.en,t:m.t,key:m.key||0,again:m.again||0})),total:B.total,ord:B.ord,lives:B.lives,hits:B.hits,miss:B.miss.map(x=>x.en),fell:B.fell};
+  else if(mode===6)d={gi:P.gi};
+  if(d){o[mode]=Object.assign(d,{t});sessPut(o)}else if(o[mode]&&mode!==6){delete o[mode];sessPut(o)}
+}
+const byEn=en=>cur.items.find(x=>x.en===en&&x.tr);
+function sessLoad(i){const d=sessAll()[i];if(!d||Date.now()-(d.t||0)>30*864e5)return null;return d}
+function sessResume(i){
+  const d=sessLoad(i);if(!d)return false;
+  if(i===0){const q=d.q.map(byEn).filter(Boolean);if(!q.length)return false;K={q,total:d.total,known:d.known,flip:false};drawKart()}
+  else if(i===2||i===3){const q=d.q.map(byEn).filter(Boolean);if(!q.length)return false;Q={m:i===2?'sec':'yaz',q,total:d.total,solved:d.solved,cur:null,tries:0,locked:false};nextQ()}
+  else if(i===4){const q=d.q.map(m=>({x:byEn(m.en),t:m.t,key:m.key,again:m.again})).filter(m=>m.x);if(!q.length)return false;B={q,total:d.total,ord:d.ord,lives:d.lives,hits:d.hits,miss:d.miss.map(byEn).filter(Boolean),locked:false,fell:d.fell};$('#hearts').hidden=false;drawHearts();nextBoss()}
+  else if(i===6){if(cur.groups[d.gi]&&cur.groups[d.gi].text)P.gi=d.gi;return false}
+  else return false;
+  const c=$('#cnt');KA.toast('Kaldığın yerden devam ediyorsun.');
+  const bar=document.querySelector('.actbar');if(bar&&!bar.querySelector('[data-a="restart"]'))bar.insertAdjacentHTML('beforeend',`<button class="btn btn-ghost btn-sm" data-a="restart" title="Bu etkinliğe baştan başla">${ic('reset')}Baştan</button>`);
+  return true;
+}
+function restartMode(){if(mode<0)return;const i=mode;sessClear(i);openMode(i,true)}
+function sessLabel(){if(!cur)return null;const o=sessAll();let best=null;Object.keys(o).forEach(k=>{const i=+k;if(i===6)return;const d=o[k];if(!d||!d.q||!d.q.length)return;if(!best||d.t>best.d.t)best={i,d}});if(!best)return null;const {i,d}=best,done=i===0?d.known:i===4?d.hits:d.solved;return {i,txt:`${MODES[i].n} · ${done}/${d.total}`}}
 const ST=()=>$('#st');
-const prog=(a,b)=>{const p=$('#pb');if(p)p.style.width=(b?Math.min(100,a/b*100):0)+'%';const c=$('#cnt');if(c)c.textContent=b?`${Math.min(a,b)}/${b}`:''};
+const prog=(a,b)=>{setTimeout(sessSnap,0);const p=$('#pb');if(p)p.style.width=(b?Math.min(100,a/b*100):0)+'%';const c=$('#cnt');if(c)c.textContent=b?`${Math.min(a,b)}/${b}`:''};
 function finish(i,title,sub){
-  const first=!cur.prog.steps[i];cur.prog.steps[i]=1;addXp(MODES[i].x);save(true);KA.sfx.win();
+  sessClear(i);const first=!cur.prog.steps[i];cur.prog.steps[i]=1;addXp(MODES[i].x);save(true);KA.sfx.win();
   const nx=cur.prog.steps.findIndex(v=>!v);
   ST().innerHTML=`<div class="card done-card"><div class="bigic">${ic('check')}</div><h2>${title}</h2><p class="mut">${sub} · +${MODES[i].x} XP${first?' · Ring tamamlandı':''}</p><div class="endb"><div class="eb" style="--r:-8deg;--dl:.45s"><b>+${MODES[i].x}</b><span>XP</span></div><div class="eb" style="--r:5deg;--dl:.62s"><b>${cur.prog.steps.filter(Boolean).length}/7</b><span>ring</span></div><div class="eb" style="--r:-3deg;--dl:.79s"><b>${KA.streak(KA.meta())}</b><span>gün seri</span></div></div><div class="row" style="justify-content:center;margin-top:18px"><button class="btn btn-ghost" data-m="${i}">${ic('reset')}Tekrar oyna</button>${nx>=0?`<button class="btn btn-p" data-m="${nx}">${MODES[nx].n} ringine geç${ic('arrow')}</button>`:`<button class="btn btn-p" data-a="home">Ana sayfa</button>`}</div></div>`;
   prog(1,1);
@@ -699,7 +729,7 @@ function bossResolve(ok,shown){
 function bossMC(i){const q=B.cur;if(!q||B.locked||!q.opts)return;const ok=q.opts[i]===q.ans;document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(q.opts[k]===q.ans)b.classList.add('ok');else if(k===i)b.classList.add('no')});bossResolve(ok,q.ans)}
 async function bossYaz(){const q=B.cur;if(!q||B.locked||B.busy)return;const inp=$('#yin'),v=String(inp&&inp.value||'').trim();if(!v)return;B.busy=true;inp.disabled=true;let r={ok:false};try{r=await judgeEn(v,q.x,q.m,$('#fb'))}finally{B.busy=false}if(B.cur!==q)return;bossResolve(r.ok,q.x.en);if(r.ok&&r.how!=='exact'){const s2=document.querySelector('#fb .msg span');if(s2)s2.innerHTML=`${esc(HOW[r.how])} · listendeki kelime: <b>${esc(q.x.en)}</b>`}}
 function bossEnd(won){
-  $('#hearts').hidden=true;
+  sessClear(4);$('#hearts').hidden=true;
   const rev=B.miss.length?`<div class="brev"><span class="eyebrow">Bekçinin seni yakaladığı kelimeler</span>${B.miss.map(x=>`<div><button class="ka-icon-btn" data-say="${esc(x.en)}" aria-label="Dinle">${ic('sound')}</button><b>${esc(x.en)}</b><span>${esc(x.tr)}</span></div>`).join('')}</div>`:'';
   if(won){finish(4,'Kemerden geçtin!',`${B.total} taş · ${B.lives} can kaldı${B.miss.length?'':' · kusursuz'}`);if(rev)ST().querySelector('.done-card').insertAdjacentHTML('beforeend',rev);return}
   KA.sfx.bad();prog(B.hits,B.total);
@@ -1004,10 +1034,10 @@ document.addEventListener('click',e=>{
   const mw=t.closest('[data-mw]');if(mw){pickEsle(+mw.dataset.mw,mw);return}
   const o=t.closest('[data-o]');if(o){const i=+o.dataset.o;if(mode===4)bossMC(i);else if(mode===5)answerCumle(i);else answerMC(i);return}
   const cg=t.closest('[data-cg]');if(cg){C.gi=+cg.dataset.cg;groupCumle();return}
-  const pg=t.closest('[data-pg]');if(pg){P.gi=+pg.dataset.pg;drawPara();scrollTo({top:0,behavior:'smooth'});return}
+  const pg=t.closest('[data-pg]');if(pg){P.gi=+pg.dataset.pg;setTimeout(sessSnap,0);drawPara();scrollTo({top:0,behavior:'smooth'});return}
   const tr=t.closest('[data-tier]');if(tr){modalTier(+tr.dataset.tier);return}
   const a=t.closest('[data-a]');if(!a)return;
-  ({home:renderHome,new:modalNew,prep:prepare,explore:modalExplore,sents:modalSents,pwa:modalPwa,export:exportPack,grade,regen,
+  ({home:renderHome,restart:restartMode,new:modalNew,prep:prepare,explore:modalExplore,sents:modalSents,pwa:modalPwa,export:exportPack,grade,regen,
     sample:()=>{const p=mkPack('def','BUEPT Akademik Örnek Liste',parse(DEF));KA.savePack(p,true);KA.activeId('def');renderHome();KA.toast('Örnek liste yüklendi.')},
     reset:()=>{if(!confirm('Bu listedeki bütün ilerleme sıfırlansın mı? Kelimeler ve cümleler silinmez.'))return;cur.prog={box:{},steps:[0,0,0,0,0,0,0],xp:0,mdone:[],cdone:[]};cur.groups.forEach(g=>{g.ok=false;g.last=null});save(true);renderHome()},
     del:()=>{if(!confirm('“'+cur.name+'” listesi tamamen silinsin mi?'))return;KA.deletePack(cur.id);KA.activeId('');renderHome()},
