@@ -1,6 +1,444 @@
 {
-  "updated": "2026-11-18T06:20:43.727Z",
+  "updated": "2026-11-19T06:20:33.950Z",
   "items": [
+    {
+      "id": "mwn5vgsbildp",
+      "date": "2026-11-19",
+      "category": "World",
+      "title": "A Diplomatic Moment for Xi Jinping",
+      "src": "https://www.bbc.co.uk/news/articles/cr9d75we51j1o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/07ac/live/bcaff6a0-e3cf-11f1-a266-6b47da5e73cc.jpg",
+      "levels": {
+        "1": {
+          "text": "Xi Jinping has a big diplomatic moment. He meets with Vladimir Putin and Donald Trump. This meeting is very important for China. But it also has some hard problems. Xi does not want to talk about everything with them. There are some topics that he does not appear keen to discuss. It is a special time, but it also brings challenges for Xi.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this story?",
+              "opts": [
+                "Vladimir Putin and Donald Trump are visiting a school.",
+                "Xi Jinping faces a big diplomatic moment with some challenges.",
+                "China is ending all foreign diplomacy.",
+                "Xi Jinping is going on a long holiday."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does 'keen' mean in this text?",
+              "opts": [
+                "Very angry",
+                "Slow and tired",
+                "Scared of something",
+                "Wanting or eager to do something"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Who is Xi Jinping meeting with?",
+              "opts": [
+                "No one at all",
+                "European business leaders",
+                "Only local news reporters",
+                "Vladimir Putin and Donald Trump"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "True or False: Xi wants to talk about every topic with Putin and Trump.",
+              "opts": [
+                "The text says he only talks to Trump",
+                "True",
+                "The text says he already talked about everything",
+                "False"
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "2": {
+          "text": "China's leader Xi Jinping is facing a remarkable diplomatic moment as he engages with Vladimir Putin and Donald Trump. While this situation gives China a strong position on the world stage, it also presents distinct challenges. There are certain sensitive topics that Xi does not appear keen to discuss with either leader. Navigating these meetings requires careful management because the conversations come with hidden risks, or pitfalls. Although the occasion is important for Xi, he must balance the opportunities with the difficult issues he prefers to avoid during these high-level discussions.",
+          "quiz": [
+            {
+              "q": "What is the main point of the article?",
+              "opts": [
+                "Xi Jinping has solved all international problems.",
+                "Xi Jinping's important meeting comes with difficult challenges.",
+                "Donald Trump and Vladimir Putin are planning a trip to China.",
+                "China is avoiding all diplomatic relationships this year."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "In the context of the story, what does 'pitfalls' mean?",
+              "opts": [
+                "Hidden dangers or difficulties",
+                "New economic treaties",
+                "Large deep holes in the ground",
+                "Great diplomatic successes"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "How does Xi feel about some of the topics for discussion?",
+              "opts": [
+                "He wants Putin and Trump to decide everything.",
+                "He does not appear keen to discuss them.",
+                "He has already discussed them completely.",
+                "He is excited to debate them publicly."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "True or False: The meeting with Putin and Trump has no challenges for Xi.",
+              "opts": [
+                "True",
+                "The text mentions challenges are only for Trump",
+                "False",
+                "The text says Putin refused to meet"
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "3": {
+          "text": "Chinese President Xi Jinping is experiencing a remarkable diplomatic moment involving key leaders, namely Vladimir Putin and Donald Trump. While this high-stakes engagement highlights China's growing global influence, it is simultaneously fraught with potential pitfalls. The upcoming interactions present a complex challenge for Beijing, primarily because there are specific issues that Xi does not appear keen to discuss with either Putin or Trump. Balancing diplomatic ties while steering clear of unwanted or sensitive subjects creates a delicate situation for the Chinese leader. Consequently, this pivotal moment requires careful strategic maneuvering to avoid complications while dealing with both leaders.",
+          "quiz": [
+            {
+              "q": "What is the primary theme of the text?",
+              "opts": [
+                "China is cutting off trade agreements with Russia and the United States.",
+                "Xi Jinping's significant diplomatic opportunity is accompanied by notable challenges.",
+                "Xi Jinping intends to host a global conference on trade.",
+                "Donald Trump and Vladimir Putin have formed a new diplomatic alliance without China."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the phrase 'steering clear of' mean in this context?",
+              "opts": [
+                "Avoiding something intentionally",
+                "Driving a vehicle fast",
+                "Accepting a difficult offer",
+                "Focusing entirely on a problem"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which leaders are involved in this diplomatic moment with Xi Jinping?",
+              "opts": [
+                "Vladimir Putin and Donald Trump",
+                "United Nations representatives",
+                "Leaders from South America",
+                "Only European diplomats"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "True or False: Xi appears ready and eager to address every issue with Putin and Trump.",
+              "opts": [
+                "The text states Putin will lead the entire discussion",
+                "The text claims Trump is avoiding the topics",
+                "True",
+                "False"
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwn5vg5n7yrh",
+      "date": "2026-11-19",
+      "category": "World",
+      "title": "Ukraine Fights Underground War in Gas Pipeline",
+      "src": "https://www.bbc.co.uk/news/videos/c8p3vw4q6nzzo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/7a52/live/a0e1e280-e36b-11f1-99b6-a35a62fa4264.jpg",
+      "levels": {
+        "1": {
+          "text": "Ukrainian forces are fighting a secret war. BBC reporter Jonathan Beale went with them. They go inside an old gas pipeline. The battle is below the ground. They fight here because they want to hide. Russian drones fly in the sky. The drones look for soldiers. Underground, the drones cannot see the Ukrainian forces. The soldiers stay out of sight in the pipe. It is a new way to fight.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this story?",
+              "opts": [
+                "Ukrainian forces are building a new gas pipeline.",
+                "Russian drones are shooting at Jonathan Beale.",
+                "BBC reporters are flying drones in the sky.",
+                "Ukrainian forces fight underground in an old pipeline."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does the word 'hide' mean in this text?",
+              "opts": [
+                "To fly very high",
+                "To make a loud noise",
+                "To walk very fast",
+                "To stay where people cannot see you"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Who joined the Ukrainian forces underground?",
+              "opts": [
+                "A gas company worker",
+                "BBC reporter Jonathan Beale",
+                "A Russian pilot",
+                "A drone operator"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Is the statement true or false: Russian drones can see the soldiers inside the pipeline.",
+              "opts": [
+                "Only during the day",
+                "It is not mentioned",
+                "True",
+                "False"
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "2": {
+          "text": "Ukrainian military forces are taking their fight against Russia below ground. BBC reporter Jonathan Beale recently joined these soldiers inside an old gas pipeline. They use this underground tunnel to move and fight away from the view of Russian drones. In this war, drones fly above the surface and search for targets continuously. By taking the battle into the hidden gas pipe, the Ukrainian troops can stay out of sight and remain safe from air sight. This underground strategy allows them to continue their military actions secretly. The BBC footage shows how soldiers adapt to dangerous conditions and find unique ways to avoid enemy eyes.",
+          "quiz": [
+            {
+              "q": "What main combat location is highlighted in the report?",
+              "opts": [
+                "A ruined city center",
+                "An open military field",
+                "A high-tech sky station",
+                "An abandoned underground gas pipeline"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "In this text, what does the word 'continuously' mean?",
+              "opts": [
+                "With great joy",
+                "Without stopping",
+                "Very slowly",
+                "For a short time"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Why do Ukrainian soldiers enter the old pipeline?",
+              "opts": [
+                "To hide from BBC news reporters",
+                "To hide from Russian drones flying above",
+                "To repair damaged gas lines",
+                "To search for missing Russian weapons"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "True or False: Jonathan Beale flew a drone above the pipeline.",
+              "opts": [
+                "The text says he stayed in the newsroom",
+                "False",
+                "True",
+                "The text says he flew a helicopter"
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "In an unusual tactical development, Ukrainian forces have taken their military campaign against Russia subterranean. BBC correspondent Jonathan Beale accompanied Ukrainian troops operating inside a disused gas pipeline. The underground network serves as a strategic shield, allowing soldiers to execute combat operations entirely out of sight of Russian drones patrolling the skies above. Aerial surveillance has become a dominant feature of the conflict, making surface movements extremely perilous. By relocating key engagements below ground into the old pipe, Ukrainian troops effectively counter enemy aerial reconnaissance. Beale's reporting offers a rare glimpse into this hidden theater of war, where soldiers navigate dark, cramped conditions to maintain an operational advantage.",
+          "quiz": [
+            {
+              "q": "What is the primary focus of the news article?",
+              "opts": [
+                "The historical construction of international gas pipelines in Eastern Europe",
+                "Jonathan Beale's career as a foreign conflict correspondent for the BBC",
+                "A technical review of modern Russian drone surveillance capabilities",
+                "Ukrainian soldiers utilizing an old gas pipeline for subterranean warfare against Russia"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does the word 'subterranean' mean in this context?",
+              "opts": [
+                "Involving naval warfare tactics",
+                "Moving at extremely high speeds",
+                "Occurring high in the atmosphere",
+                "Taking place under the earth's surface"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What threat are Ukrainian troops attempting to evade by going underground?",
+              "opts": [
+                "Russian drones patrolling overhead",
+                "Underground explosions",
+                "Gas leaks",
+                "Heavy rainstorms"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "True or False: The pipeline used by Ukrainian forces is currently active and carrying gas.",
+              "opts": [
+                "False",
+                "It is partially active",
+                "True",
+                "The text does not state if it is old"
+              ],
+              "ans": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwn5vhge59za",
+      "date": "2026-11-19",
+      "category": "World",
+      "title": "Myanmar faces historic genocide verdict at UN court over Rohingya massacres",
+      "src": "https://www.bbc.co.uk/news/articles/c5m2l90ez144o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/67fc/live/b89f41e0-e336-11f1-9479-d17d3e98c29d.jpg",
+      "levels": {
+        "1": {
+          "text": "Myanmar faces a big trial at a UN court. The court is looking at massacres against Rohingya people. No state has ever been found guilty of committing genocide by an international court. This case is very important and historic. People around the world are watching the court. A genocide verdict against a country has never happened before in history. The UN court will decide if Myanmar is guilty of this crime. The decision will be very important for international law and all countries.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the text?",
+              "opts": [
+                "A new law passed by the UN for all countries",
+                "The history of international courts around the world",
+                "A peaceful agreement between Myanmar and the UN",
+                "A historic genocide trial involving Myanmar at a UN court"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does the word 'court' mean in this text?",
+              "opts": [
+                "A place where games are played",
+                "A large open park in a city",
+                "A place where legal decisions are made",
+                "A building where politicians make laws"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which group of people is mentioned in relation to the massacres?",
+              "opts": [
+                "Rohingya people",
+                "UN officers",
+                "Court workers",
+                "International judges"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is true according to the text?",
+              "opts": [
+                "The UN court refused to look at the case against Myanmar.",
+                "No state has ever been found guilty of genocide by an international court.",
+                "Many states have been found guilty of genocide by international courts.",
+                "Myanmar has already been found guilty of genocide by the UN."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "2": {
+          "text": "Myanmar is facing a historic trial at the United Nations court regarding massacres committed against Rohingya people. The international court is examining these events to determine if the country is guilty of genocide. This legal case is extremely significant because no state in history has ever been found guilty of committing genocide by an international court. Because of this, the upcoming verdict attracts global attention. Legal experts and nations are closely following the proceedings at the UN court. If Myanmar is found guilty, it will be the first time an international court issues such a verdict against a nation. The final decision will mark a major moment in international legal history.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the article?",
+              "opts": [
+                "Myanmar is facing a historic verdict regarding genocide, a charge no state has ever been convicted of by an international court.",
+                "Myanmar has successfully proven its innocence in an international court.",
+                "Rohingya people are creating a new legal system with the help of the UN.",
+                "The UN court is changing its rules about how international massacres are investigated."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In this text, what does the word 'verdict' mean?",
+              "opts": [
+                "A public protest against a government",
+                "A written agreement between two armies",
+                "A speech given by a leader",
+                "An official legal decision made by a court"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which court is handling this case against Myanmar?",
+              "opts": [
+                "A private legal group",
+                "A UN court",
+                "A local court in Myanmar",
+                "A military tribunal"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Is the following statement true or false based on the text?",
+              "opts": [
+                "True, because no state has ever been found guilty of committing genocide by an international court.",
+                "False, because the UN court does not handle genocide cases.",
+                "True, because Myanmar was already convicted of genocide last year.",
+                "False, because several states have previously been found guilty of genocide."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "Myanmar is confronting a historic genocide verdict at a United Nations court following massacres against the Rohingya population. The proceedings have drawn widespread global focus due to the unprecedented nature of the trial. Throughout modern legal history, no state has ever been found guilty by an international court of committing genocide. Consequently, this trial represents a potential legal watershed moment. The UN court's deliberation centers on the allegations of severe atrocities carried out against the Rohingya people. Observers emphasize that a guilty ruling against a nation-state would set an absolute precedent in international law, as such a conviction has never occurred before. The impending decision holds immense significance for international justice, legal accountability, and global human rights standards, as the world awaits the final ruling from the UN tribunal regarding Myanmar's actions.",
+          "quiz": [
+            {
+              "q": "What is the primary focus of the news report?",
+              "opts": [
+                "A historical review of past genocide convictions against nation-states",
+                "A political agreement reached between Myanmar's leaders and the Rohingya",
+                "The unprecedented UN genocide case facing Myanmar over massacres against the Rohingya",
+                "The reform of international human rights laws by the United Nations"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'unprecedented' mean as used in the context of this report?",
+              "opts": [
+                "Carefully planned in advance",
+                "Officially cancelled by a judge",
+                "Frequently occurring in history",
+                "Never done or known before"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Why is this legal case considered historic?",
+              "opts": [
+                "It is the first time the UN court has accepted a case from Asia.",
+                "Myanmar requested the UN court to judge its military leaders.",
+                "No state has ever been found guilty of genocide by an international court.",
+                "It is the longest trial in the history of the United Nations."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "According to the text, which of the following statements is TRUE?",
+              "opts": [
+                "No nation-state has ever been convicted of genocide by an international court.",
+                "International courts have convicted multiple countries of genocide in the past.",
+                "The massacres mentioned in the report involved UN court officials.",
+                "The UN court has already issued its final guilty ruling against Myanmar."
+              ],
+              "ans": 0
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mwlqfubzyvfq",
       "date": "2026-11-18",
@@ -3942,444 +4380,6 @@
         }
       },
       "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/f6c3/live/95455f00-dac5-11f1-bda8-29fb69dbc026.jpg"
-    },
-    {
-      "id": "mw7g0ua54t84",
-      "date": "2026-11-08",
-      "category": "World",
-      "title": "Israel's President Tasks Opposition Leader Eisenkot with Forming Government",
-      "src": "https://www.bbc.co.uk/news/articles/cmy8367lj5xlo?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "Israel had an election last week. Neither Prime Minister Benjamin Netanyahu's group nor his rival's group won a majority of the votes. Because of this, Israel's president gave a new job to Gadi Eisenkot. Eisenkot is an opposition leader. The president asked him to form a new government. Now, Eisenkot must try to get enough political support to lead the country. It is a big task because the election results were very close and no single group has control.",
-          "quiz": [
-            {
-              "q": "What is the main idea of this news story?",
-              "opts": [
-                "Benjamin Netanyahu won the election easily.",
-                "Gadi Eisenkot was asked to form a government.",
-                "Israel will not have a president anymore.",
-                "The election was canceled last week."
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What does the word 'majority' mean in this story?",
-              "opts": [
-                "A brand new election",
-                "The smallest part of a group",
-                "More than half of the votes",
-                "A very famous leader"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Who is Gadi Eisenkot?",
-              "opts": [
-                "An opposition leader",
-                "A famous voter",
-                "The Prime Minister",
-                "The President"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Which statement is TRUE according to the text?",
-              "opts": [
-                "Neither main group secured a majority.",
-                "Benjamin Netanyahu's group secured a majority.",
-                "Eisenkot refused to help the president.",
-                "The rival's group secured a majority."
-              ],
-              "ans": 0
-            }
-          ]
-        },
-        "2": {
-          "text": "Following last week's election in Israel, neither Prime Minister Benjamin Netanyahu's political bloc nor the rival group managed to secure a majority. As a result of the stalemate, Israel's president has officially tasked opposition leader Gadi Eisenkot with forming the next government. Eisenkot now faces the difficult challenge of bringing different political groups together to create a working coalition. Without a clear majority from last week's vote, political leaders must negotiate to see if a stable government can be established under Eisenkot's leadership. If he succeeds, he will lead the nation forward after a very close election.",
-          "quiz": [
-            {
-              "q": "What main event happened after Israel's election?",
-              "opts": [
-                "Voters held a second election right away.",
-                "The president resigned from his position.",
-                "Netanyahu formed a new government immediately.",
-                "Eisenkot was tasked with forming a government."
-              ],
-              "ans": 3
-            },
-            {
-              "q": "In the text, what does the word 'bloc' mean?",
-              "opts": [
-                "A country's leader",
-                "A physical wall",
-                "A group of political allies",
-                "A type of election ballot"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "When did the election in Israel take place?",
-              "opts": [
-                "Last year",
-                "Yesterday",
-                "Last month",
-                "Last week"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which statement is FALSE according to the story?",
-              "opts": [
-                "Netanyahu's bloc failed to get a majority.",
-                "Netanyahu won a clear majority in the election.",
-                "Israel's president tasked Eisenkot with forming a government.",
-                "Netanyahu's rival group failed to get a majority."
-              ],
-              "ans": 1
-            }
-          ]
-        },
-        "3": {
-          "text": "Following last week's inconclusive election in Israel, neither Prime Minister Benjamin Netanyahu's bloc nor that of his rival managed to secure a majority. In light of this political deadlock, Israel's president has formally tasked opposition leader Gadi Eisenkot with the responsibility of forming a new government. The decision places Eisenkot at the center of complex political negotiations as he attempts to assemble a viable coalition. With neither main faction holding a decisive victory from the recent vote, building a functional administration will require significant compromise among political rivals. It remains to be seen whether Eisenkot can successfully bring the opposing sides together to lead the country.",
-          "quiz": [
-            {
-              "q": "What is the central focus of the article?",
-              "opts": [
-                "A complete change in Israel's voting laws",
-                "Netanyahu's retirement from politics",
-                "The president of Israel stepping down from office",
-                "Eisenkot being appointed to form a government after a tied election"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What does the word 'tasked' mean as used in the text?",
-              "opts": [
-                "Punished for failing a job",
-                "Fired from an official position",
-                "Elected by a public vote",
-                "Given a specific duty or responsibility"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Why was Eisenkot asked to form a government?",
-              "opts": [
-                "He received the most individual votes.",
-                "Netanyahu asked the president to choose him.",
-                "Neither major political bloc secured a majority.",
-                "He is currently the Prime Minister."
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Which of the following statements is TRUE based on the text?",
-              "opts": [
-                "Neither main bloc secured a majority in last week's election.",
-                "The rival group secured a clear majority in last week's vote.",
-                "Netanyahu's bloc secured a majority in last week's vote.",
-                "Eisenkot has already successfully formed the new government."
-              ],
-              "ans": 0
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/1ff8/live/d9aea170-daf1-11f1-a701-fddedf244c16.jpg"
-    },
-    {
-      "id": "mw7g0us4u491",
-      "date": "2026-11-08",
-      "category": "World",
-      "title": "No clear winner after tight New Zealand general election",
-      "src": "https://www.bbc.co.uk/news/articles/c3ewev11g1e0o?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "New Zealand had a general election. The results are very close. There is no clear winner yet. The votes show a highly divided national parliament. Because the results are so tight, political parties need to talk to each other. These coalition talks could take many weeks. The parties must work together to form a new government. People must wait to see who will lead the country. It will take time to get final answers after this close election.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "The political parties refused to talk.",
-                "New Zealand canceled its national election.",
-                "A new leader was chosen immediately.",
-                "The election result is very close and uncertain."
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What does the word 'divided' mean in this text?",
-              "opts": [
-                "Fully united",
-                "Very happy",
-                "Extremely fast",
-                "Split into different parts"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "How long could the coalition talks take?",
-              "opts": [
-                "Exactly two days",
-                "Many weeks",
-                "One full year",
-                "A few hours"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "Which statement is TRUE based on the text?",
-              "opts": [
-                "No talks are needed after the election.",
-                "The final government is already formed.",
-                "The national parliament is highly divided.",
-                "There was a clear winner right away."
-              ],
-              "ans": 2
-            }
-          ]
-        },
-        "2": {
-          "text": "New Zealand recently held its general election, but the outcome remains uncertain. Preliminary results show a very tight race, leaving no clear winner. The votes indicate that the national parliament is highly divided among different political parties. Because no single party gained a clear victory, leaders must now negotiate with each other. Experts say that weeks of coalition talks could follow as parties try to form a working government. Until these discussions are complete, the final result of the election will not be known. Citizens now have to wait while the political parties discuss how to share power and rule the country together.",
-          "quiz": [
-            {
-              "q": "What is the main topic of the text?",
-              "opts": [
-                "The retirement of a popular political leader",
-                "The uncertain outcome of New Zealand's tight election",
-                "The start of a voting campaign",
-                "A law passed by the national parliament"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "In the text, what does 'preliminary' mean?",
-              "opts": [
-                "Secretly hidden",
-                "Completely wrong",
-                "Final and permanent",
-                "Coming before the main or final part"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What indicates that the national parliament is divided?",
-              "opts": [
-                "A statement by foreign leaders",
-                "The total number of voters",
-                "The preliminary election results",
-                "A vote inside a single party"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Which statement is FALSE based on the text?",
-              "opts": [
-                "Coalition talks could last for weeks.",
-                "The political parties must negotiate.",
-                "The election race was very tight.",
-                "A single party won a clear victory immediately."
-              ],
-              "ans": 3
-            }
-          ]
-        },
-        "3": {
-          "text": "Following the recent general election in New Zealand, the nation faces political uncertainty as preliminary results point to a highly divided national parliament. The election race was extremely tight, resulting in no immediate clear winner. As a consequence of the split vote, weeks of coalition talks could follow as rival political factions attempt to negotiate and secure enough support to form a new government. Parliament remains split, meaning that no single party can govern alone based on these early figures. The process to determine the country's leadership will require extensive discussions among party leaders in the coming weeks. Until these negotiations conclude, the official composition of the government remains undecided, leaving citizens waiting for a clear resolution.",
-          "quiz": [
-            {
-              "q": "Which statement best summarizes the news report?",
-              "opts": [
-                "A single party won the election by a massive majority.",
-                "The national parliament decided to hold another election immediately.",
-                "New Zealand's election produced a tight result leading to coalition talks.",
-                "New Zealand citizens refused to participate in the general election."
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What does the word 'coalition' refer to in the text?",
-              "opts": [
-                "A single politician ruling alone",
-                "A quick voting process",
-                "A total defeat of all candidates",
-                "A temporary union of different political parties"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What must happen before a new government can be formed?",
-              "opts": [
-                "The parliament must be closed permanently.",
-                "Citizens must vote for a second time.",
-                "Parties must engage in weeks of negotiations.",
-                "A new election must be called immediately."
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Which statement is TRUE according to the text?",
-              "opts": [
-                "The preliminary results showed a clear winner.",
-                "The government was officially decided on election night.",
-                "One party can easily govern alone.",
-                "Weeks of coalition talks could follow the election."
-              ],
-              "ans": 3
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/3578/live/a76cb0d0-dab5-11f1-a701-fddedf244c16.jpg"
-    },
-    {
-      "id": "mw60l4ccpqkr",
-      "date": "2026-11-07",
-      "category": "World",
-      "title": "AI stocks climb after trillions wiped from market values",
-      "src": "https://www.bbc.co.uk/news/articles/c35ynnpzdq51o?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "Investors sold many tech shares before. They lost trillions of dollars in market value. People worried about the Democrat election victory. They thought this victory would make AI development slower. But now, AI stocks are climbing again. Investors are buying these tech shares today. The market is changing after the big fall.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "The Democrat party lost the election.",
-                "AI stocks are rising after a big fall in value.",
-                "Tech companies are leaving the market.",
-                "Investors are stopping all AI development."
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What does the word 'shares' mean in this text?",
-              "opts": [
-                "Types of new technology",
-                "Telling secrets to people",
-                "Dividing food with friends",
-                "Parts of a company that people can buy"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "How much market value was lost before stocks started climbing?",
-              "opts": [
-                "Billions of dollars",
-                "Trillions of dollars",
-                "Millions of dollars",
-                "Thousands of dollars"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "Which statement is TRUE according to the text?",
-              "opts": [
-                "Investors only bought tech shares before.",
-                "AI development stopped completely.",
-                "Investors never worried about the election.",
-                "AI stocks are climbing now."
-              ],
-              "ans": 3
-            }
-          ]
-        },
-        "2": {
-          "text": "Technology stocks are rising again after losing trillions of dollars in market values. Earlier, investors were selling off their tech shares. This sell-off happened partly because people were worried about the Democrat election victory. Investors feared that the new political situation would lead to slower artificial intelligence development. Because of these concerns, the tech market lost a huge amount of value. However, the situation has now changed as AI stocks begin to climb back up, bringing some relief to the market.",
-          "quiz": [
-            {
-              "q": "What is the main topic of the news article?",
-              "opts": [
-                "A recovery in AI stocks following a major market sell-off",
-                "The official results of the Democrat election victory",
-                "The total end of artificial intelligence research",
-                "How to buy shares in technology companies"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "In the text, what does the word 'concerns' mean?",
-              "opts": [
-                "Worries or fears about something",
-                "New technological inventions",
-                "Promises for the future",
-                "Financial profits"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Why were investors selling their tech shares earlier?",
-              "opts": [
-                "The government banned all stock trading.",
-                "AI technology stopped working completely.",
-                "They wanted to buy non-tech companies.",
-                "They were worried the Democrat victory would slow AI development."
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which of the following is TRUE based on the story?",
-              "opts": [
-                "The election victory caused AI development to speed up.",
-                "Market values never dropped.",
-                "Investors are still only selling their tech shares.",
-                "Trillions of dollars were erased from market values."
-              ],
-              "ans": 3
-            }
-          ]
-        },
-        "3": {
-          "text": "Artificial intelligence stocks have begun to climb, following a period where trillions of dollars were wiped from market values. The previous decline occurred as investors actively sold off technology shares. This widespread sell-off was driven in part by market concerns surrounding the Democrat election victory. Many investors worried that the political shift would result in slower AI development, prompting them to reduce their holdings in tech companies. Despite these initial fears of a prolonged slowdown in the artificial intelligence sector, the market has seen a reversal, with stock prices now rising once again.",
-          "quiz": [
-            {
-              "q": "Which sentence best summarizes the main focus of the text?",
-              "opts": [
-                "AI stocks are rebounding after political concerns wiped out trillions in value.",
-                "Investors are permanently leaving the technology market.",
-                "Tech shares are dropping further due to slow AI development.",
-                "Democrat leaders are stopping artificial intelligence research."
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What does 'wiped' mean in the context of the text?",
-              "opts": [
-                "Removed or erased completely",
-                "Added quickly",
-                "Cleaned with a cloth",
-                "Calculated precisely"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What specific fear caused investors to sell their tech shares?",
-              "opts": [
-                "That technology companies would close down",
-                "That trillions of dollars would be spent on new technology",
-                "That the Democrat election victory would mean slower AI development",
-                "That AI stocks would climb too quickly"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Which statement is FALSE according to the text?",
-              "opts": [
-                "Investor selling was partly due to election concerns.",
-                "Trillions of dollars were previously lost from market values.",
-                "AI stock prices are currently climbing.",
-                "Investors sold tech shares because AI development became too fast."
-              ],
-              "ans": 3
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/fdde/live/9036f7e0-da01-11f1-93e1-3b657b665bcf.jpg"
     }
   ]
 }
