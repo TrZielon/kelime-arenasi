@@ -249,6 +249,7 @@ body.quake .ka-wrap{animation:quake .5s}
 .chi.no{animation:kaShake .4s;box-shadow:0 0 0 2px var(--bad) inset}
 .folders{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media (max-width:760px){.modes{grid-template-columns:1fr!important}.chg{grid-template-columns:1fr}.folders{grid-template-columns:1fr 1fr;gap:14px}.folder{min-height:150px;padding:24px 12px 12px}.folder b{font-size:19px}.folder .fpl{font-size:12px}.folder .fstamp{font-size:11px;top:14px;right:8px}}
+.hud{flex-wrap:wrap}.pexit{margin-left:auto}.cexit{position:absolute;top:8px;right:14px;z-index:2;border:0;background:rgba(0,0,0,.08);color:inherit;font:inherit;font-size:13px;font-weight:800;padding:6px 12px;border-radius:999px;cursor:pointer}.cover{position:relative}
 </style>
 </head>
 <body>
@@ -478,7 +479,7 @@ function objective(){
   return null;
 }
 /* ---------- HUD ---------- */
-function hudHtml(){const l=left();return `<div class="hud" id="hud">${timed()?`<div class="clk ${l<=45?'warn':''}">${I.clock.replace('<svg','<svg width="20" height="20"')}<b>${clock()}</b></div><div class="tbar" title="${C.deadline}'e kalan süre"><i style="width:${l/C.limit*100}%"></i></div>`:`<div class="clk"><span class="pill" style="background:var(--p);color:var(--p-ink)">Hikâye modu</span></div><div style="flex:1"></div>`}<span class="pill">Kanıt <b>${S.ev.length}/${EVK().length}</b></span><button class="pill" id="defter">Defter <b>${Object.keys(S.words).length}</b></button>${S.phase!=='board'?'<button class="pill" data-go="board">← Pano</button>':'<button class="pill" data-go="desk">Masa</button>'}</div>`}
+function hudHtml(){const l=left();return `<div class="hud" id="hud">${timed()?`<div class="clk ${l<=45?'warn':''}">${I.clock.replace('<svg','<svg width="20" height="20"')}<b>${clock()}</b></div><div class="tbar" title="${C.deadline}'e kalan süre"><i style="width:${l/C.limit*100}%"></i></div>`:`<div class="clk"><span class="pill" style="background:var(--p);color:var(--p-ink)">Hikâye modu</span></div><div style="flex:1"></div>`}<span class="pill">Kanıt <b>${S.ev.length}/${EVK().length}</b></span><button class="pill" id="defter">Defter <b>${Object.keys(S.words).length}</b></button>${S.phase!=='board'?'<button class="pill" data-go="board">← Pano</button>':''}<button class="pill pexit" data-go="desk" title="Dosyalara dön. İlerlemen kaydedilir, sonra kaldığın yerden devam edersin." aria-label="Davadan çık">✕ Çık</button></div>`}
 function hud(){const h=$('#hud');if(h)h.outerHTML=hudHtml()}
 /* ---------- render ---------- */
 
@@ -568,7 +569,7 @@ function desk(){
 }
 function intro(){
   const going=S.used>0||Object.keys(S.docs).length;
-  $('#view').innerHTML=`<div class="cover"><span class="tabl">DOSYA NO. ${C.no}</span><span class="sec">GİZLİ</span>
+  $('#view').innerHTML=`<div class="cover"><button class="cexit" data-go="desk" aria-label="Dosyalara dön">← Dosyalar</button><span class="tabl">DOSYA NO. ${C.no}</span><span class="sec">GİZLİ</span>
    <h1>${esc(C.title)}</h1><div class="sub">${esc(C.place)}</div>
    <div class="brief">${C.brief}<br><br>Belgeler, e-postalar ve ifadeler İngilizce. Okuyacak, çelişkileri yakalayacak ve suçluyu kanıtlarıyla göstereceksin.</div>
    <div class="rules"><div><b>1 · Oku</b>Her belgede 2 soru. Doğru cevap panoya kanıt ekler.</div><div><b>2 · Sorgula</b>Yalan söyleyen ifadeye doğru kanıtı sun.</div><div><b>3 · Suçla</b>Sebep, araç, fırsat: iddianı üç kanıtla kur.</div></div>
@@ -673,7 +674,7 @@ function ending(){
   if(win)setTimeout(()=>{const s=document.querySelector('.stamp');if(s&&KA.confetti){const r=s.getBoundingClientRect();KA.confetti(r.left+r.width/2,r.top+r.height/2,40,Math.PI*1.2)}},350);
 }
 /* ---------- etkileşim ---------- */
-function go(p){if(p==='desk'){C=null;S=null;DB.cur=null;try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){};desk();window.scrollTo({top:0,behavior:'smooth'});return}
+function go(p){if(p==='desk'){document.querySelector('.sheet')?.remove();if(C&&S)save();C=null;S=null;DB.cur=null;try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){};desk();window.scrollTo({top:0,behavior:'smooth'});return}
   S.phase=p;save();render();window.scrollTo({top:0,behavior:'smooth'})}
 function openDoc(id,el){if(!S.docs[id]){S.docs[id]={qi:0,ans:null,wr:[],hl:null,solved:false};S.phase=id;spend(COST.doc,el)}go(id)}
 function openTalk(id,el){if(!S.talks[id]){S.talks[id]={stage:1,i:0,bad:0,pr:[],trs:[],done:false,ask:null};S.phase=id;spend(COST.talk,el)}go(id)}
