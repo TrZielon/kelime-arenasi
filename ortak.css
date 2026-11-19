@@ -619,3 +619,17 @@ body:has(.ka-modal) .aiw-ban,body:has(.aiw) .aiw-ban{display:none}
 @keyframes wsSpin{to{transform:rotate(360deg)}}
 .wsrc.busy{border-color:var(--p)}
 @media (max-width:560px){.wsrc-sel{flex:1;max-width:none}.wsrc-go{flex:1 1 100%;justify-content:center}}
+/* Telefon: durum çubuğunun altına in, üst çubuğu sıkılaştır */
+.ka-nav{padding-top:env(safe-area-inset-top)}
+@media (max-width:640px){
+  .ka-nav-in{gap:8px;padding:0 12px}
+  .ka-tools{gap:6px}
+  .ka-tools .ka-chip{height:34px;padding:0 10px;font-size:13px;gap:5px}
+  .ka-tools .ka-chip small{display:none}
+  .ka-acc b{display:none}.ka-tools .ka-acc{padding:0 9px}
+  .ka-mode{padding:2px}.ka-mode button.on{display:none}.ka-mode button{padding:0 8px;min-height:30px}
+  .ka-tools .ka-icon-btn{width:34px;height:34px}
+  .aiw-ban{bottom:calc(96px + env(safe-area-inset-bottom));padding:10px 10px 10px 12px;gap:8px}
+  .aiw-ban small{display:none}.aiw-ban b{font-size:14px;line-height:1.25}
+}
+@media (max-width:360px){.ka-tools .ka-chip.ka-xp,.ka-tools .ka-chip:has(svg[data-i="star"]){display:none}}
