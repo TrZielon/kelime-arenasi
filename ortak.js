@@ -645,7 +645,7 @@ const NOSYNC=new Set(['ka_ai','ka_aiq','ka_aiban','ka_gate','ka_uid','ka_mute',F
 const MAX=800000;
 let FB=null,loading=null,user=null,dirty=new Set(),timer=null,applying=false;
 const ls={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{Storage.prototype._kaSet.call(localStorage,k,v)}catch(e){}},del:k=>{try{Storage.prototype._kaDel.call(localStorage,k)}catch(e){}},keys:()=>{try{return Object.keys(localStorage)}catch(e){return[]}}};
-const syncable=k=>(k.startsWith('ka_')||k.startsWith('db:'))&&!NOSYNC.has(k);
+const syncable=k=>(k.startsWith('ka_')||k.startsWith('db:'))&&!NOSYNC.has(k)&&!k.startsWith('ka_fb')&&k!=='ka_yzchk';
 /* kelime listeleri cihaza özel kimlik içeriyor; bulutta ortak bir biçime çevrilir */
 const upre=()=>'db:data/users/'+KA.uid()+'/';
 const toCloud=k=>k.startsWith(upre())?'db:data/users/@/'+k.slice(upre().length):k;
@@ -659,8 +659,9 @@ async function load(){
     const app=a.initializeApp(CFG);const auth=au.getAuth(app);const db=fs.getFirestore(app);
     try{auth.languageCode='tr'}catch(e){}
     FB={au,fs,auth,db};
-    au.onAuthStateChanged(auth,u=>{const was=user;user=u||null;if(u){ls.set(FLAG,'1');if(!was){if(ls.get(SYNC))pullNew();else firstSync()}}else ls.del(FLAG);chip();if(document.querySelector('.acc'))drawAcc()});
-    try{await au.getRedirectResult(auth)}catch(e){}
+    au.onAuthStateChanged(auth,u=>{const was=user;user=u||null;if(u){ls.set(FLAG,'1');ls.del('ka_fb_redir');if(!was){if(ls.get(SYNC))pullNew();else firstSync()}}else ls.del(FLAG);chip();if(document.querySelector('.acc'))drawAcc()});
+    try{await au.getRedirectResult(auth)}catch(e){ls.del('ka_fb_redir');KA.toast&&KA.toast(errText(e.code||''))}
+    if(ls.get('ka_fb_redir')){ls.del('ka_fb_redir');setTimeout(()=>{if(!user)KA.toast&&KA.toast('Giriş tamamlanamadı. Bir kez daha dene; olmazsa siteyi Safari ya da Chrome\'da aç.')},2500)}
     return FB;
   })();
   return loading;
@@ -725,15 +726,16 @@ if(!Storage.prototype._kaSet){
 }
 /* ---------- giriş / çıkış / silme ---------- */
 let state='';function setState(t){state=t;if(document.querySelector('.acc'))drawAcc()}
+const mobileLike=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true||/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Macintosh/.test(navigator.userAgent))}catch(e){return false}};
+function errText(c){return /popup-closed|cancelled-popup/.test(c)?'Giriş penceresi kapandı. Bir kez daha dene.':/unauthorized-domain/.test(c)?'Bu adres ('+location.hostname+') Firebase\'de yetkili değil. Firebase → Authentication → Settings → Authorized domains listesine tam olarak bu adresi ekle.':/network/.test(c)?'İnternet bağlantısı yok gibi görünüyor.':/redirect-uri|redirect_uri/.test(c)?'Google giriş ayarı eksik (yönlendirme adresi). Yöneticiye haber ver.':/disallowed|web-storage|internal/.test(c)?'Bu tarayıcı Google girişine izin vermiyor. Siteyi Safari ya da Chrome\'da aç.':'Giriş yapılamadı: '+c}
 async function signIn(){
   try{
     const f=FB||await load();const p=new f.au.GoogleAuthProvider();p.setCustomParameters({prompt:'select_account'});
+    // Telefonda ve ana ekran uygulamasında açılır pencere kapanıyor; sayfa yönlendirmesiyle giriş yap
+    if(mobileLike()){setState('Google\'a yönlendiriliyorsun…');if(dirty.size)await flush();ls.set('ka_fb_redir','1');await f.au.signInWithRedirect(f.auth,p);return}
     try{await f.au.signInWithPopup(f.auth,p)}
-    catch(e){if(/popup-blocked|operation-not-supported/.test(e.code||''))await f.au.signInWithRedirect(f.auth,p);else throw e}
-  }catch(e){
-    const c=e.code||'';
-    setState(/popup-closed|cancelled-popup/.test(c)?'Giriş penceresi kapatıldı.':/unauthorized-domain/.test(c)?'Bu adres ('+location.hostname+') Firebase\'de yetkili değil. Firebase → Authentication → Settings → Authorized domains listesine tam olarak bu adresi ekle.':/network/.test(c)?'İnternet bağlantısı yok gibi görünüyor.':/disallowed|web-storage|internal/.test(c)?'Bu tarayıcı Google girişine izin vermiyor. Siteyi Safari ya da Chrome\'da açıp tekrar dene (Instagram gibi uygulamaların içindeki tarayıcılar engelleniyor).':'Giriş yapılamadı: '+(c||e.message||''));
-  }
+    catch(e){if(/popup-blocked|operation-not-supported|popup-closed|cancelled-popup/.test(e.code||'')){ls.set('ka_fb_redir','1');await f.au.signInWithRedirect(f.auth,p)}else throw e}
+  }catch(e){ls.del('ka_fb_redir');setState(errText(e.code||''))}
 }
 async function signOutNow(){if(dirty.size)await flush();await FB.au.signOut(FB.auth);ls.del(SYNC);ls.del('ka_fb_pull');setState('Çıkış yapıldı. Verilerin bu cihazda kalmaya devam ediyor.')}
 async function deleteAll(){
@@ -782,7 +784,7 @@ document.addEventListener('click',e=>{
   if(k==='del'){deleteAll();return}
 });
 const nav1=KA.nav;KA.nav=function(){const r=nav1.apply(this,arguments);chip();return r};
-const boot=()=>{chip();if(ls.get(FLAG)==='1')load().catch(()=>{})};
+const boot=()=>{chip();if(ls.get(FLAG)==='1'||ls.get('ka_fb_redir'))load().catch(()=>{})};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else setTimeout(boot,0);
 })();
 

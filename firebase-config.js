@@ -3,7 +3,8 @@
    Authentication > Authorized domains ayarı sağlar. */
 window.KA_FIREBASE = {
   apiKey: "AIzaSyBDPREJZQzhjoTbGghbxSUy77cX7pWwrBQ",
-  authDomain: "kelime-arenasi-d15cb.firebaseapp.com",
+  // Giriş sayfası sitenin kendi adresinden açılır (vercel.json /__/auth yönlendirmesi). iPhone ve uygulama modunda girişin çalışması için gerekli.
+  authDomain: location.hostname === "kelime-arenasi-d8zm.vercel.app" ? "kelime-arenasi-d8zm.vercel.app" : "kelime-arenasi-d15cb.firebaseapp.com",
   projectId: "kelime-arenasi-d15cb",
   storageBucket: "kelime-arenasi-d15cb.firebasestorage.app",
   messagingSenderId: "435899196018",
