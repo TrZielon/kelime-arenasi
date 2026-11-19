@@ -253,7 +253,7 @@ water-intensive - Çok su gerektiren
 X-intensive - Çok X gerektiren`;
 
 /* ---------- Yapay zekâ komutları ---------- */
-const TR_SYS=`Sen İngilizce-Türkçe sözlük yazarısın. Girdide numaralandırılmış İngilizce kelimeler ve kalıplar var. Her biri için en yaygın Türkçe karşılığını yaz (1-3 kelime). Kelimeyi İngilizce bırakma. YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"tr":"Türkçe karşılık"}]}. Her numarayı girdideki sırayla ve eksiksiz döndür.`;
+const TR_SYS=`Sen İngilizce-Türkçe sözlük yazarısın. Girdide numaralandırılmış İngilizce kelimeler ve kalıplar var. Her biri için en yaygın Türkçe karşılıklarını yaz: akademik metinlerde en sık kullanılan anlam önce gelsin; kelimenin gerçekten farklı anlamları varsa en fazla 3 ayrı anlam ver (her biri 1-3 kelime, aynı anlamı tekrar etme). Fiilleri -mek/-mak ile, kalıpları kalıp anlamıyla yaz (regardless of = -e rağmen, -den bağımsız olarak). Kelimeyi İngilizce bırakma. YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"tr":["birinci anlam","ikinci anlam"]}]}. Her numarayı girdideki sırayla ve eksiksiz döndür.`;
 const BATCH=`Sen BUEPT düzeyinde akademik İngilizce öğretmenisin. YALNIZCA geçerli JSON döndür: {"items":[...]}. Girdideki her satır "en - tr" biçimindedir. Her kelime için: "en" girdideki kelimenin aynısı; "s" kelimeyi içeren akademik C1 düzeyinde 14-22 kelimelik tek İngilizce cümle; "st" cümlenin doğal Türkçe çevirisi; "d" BUEPT çeviri sorusu çeldiricisi olarak 3 yanlış Türkçe çeviri: her biri doğru çeviriyle aynı kelimeleri, aynı üslubu ve neredeyse aynı uzunluğu kullansın, ilk okumada doğru gibi görünsün ama tek bir kilit noktada anlamı bozsun (hedef kelimenin yakın ama yanlış anlamı; neden-sonuç, karşıtlık ya da taviz ilişkisi; kesinlik/olasılık ve nicelik dereceleri; kimin kime ne yaptığı; zaman ya da olumsuzluk); bariz yanlış, eksik ya da konu dışı çeviri yazma; "dn" doğru çeviriyi çeldiricilerden ayıran kilit noktayı anlatan kısa Türkçe ipucu; "syn" kelimenin en fazla 3 İngilizce eş anlamlısı (yoksa boş dizi); "gl" cümledeki önemli kelimelerin en fazla 8 tanesi için {"kelime":"Türkçe anlam"} (küçük harf); "mo" ek-kök ayrımı öğretici en fazla 2 kelime için {"kelime":[["parça","kök" veya "ek","kısa Türkçe açıklama"]]}. "X" içeren maddelerde X yerine gerçek bir örnek kullan (ör. energy-intensive) ve cümlede onu kullan.`;
 const PARA_G=`Sen BUEPT sınavına hazırlanan öğrenciler için akademik İngilizce paragraf yazan bir yazarsın. YALNIZCA geçerli JSON döndür. Kurallar: (1) Verilen her kalıbı paragrafta en az bir kez, parantez içindeki Türkçe anlamına uygun ve doğal çekimli biçimde kullan. "a / b" biçimindeki kalıplarda biri yeterlidir. X içeren kalıplarda X yerine gerçek bir kelime kullan. (2) Tek bir konu seç, cümleleri mantıksal bağlarla bağla. (3) İlk cümle konuyu tanıtsın, son cümle sonuç ya da değerlendirme içersin. (4) C1 akademik üslup, dolgu ve tekrar yok. (5) Uzunluk 70-95 kelime. (6) Uydurma istatistik kullanma. Biçim: {"par":"paragraf metni","ana_fikir":"paragrafın kabataslak özeti, Türkçe, 1-2 cümle","gl":{"kelime":"Türkçe anlam"}} gl: en fazla 12 önemli kelime.`;
 const GLOSS=`Verilen İngilizce kelimelerin her birinin en yaygın Türkçe karşılığını yaz (1-3 kelime; çekimli biçimse o biçimin anlamı). YALNIZCA geçerli JSON döndür: {"kelime":"Türkçe karşılık"}. Anahtarlar küçük harfli ve girdideki gibi olsun.`;
@@ -297,19 +297,51 @@ const ROMAN=['I','II','III','IV','V','VI','VII'];
 /* ---------- Durum ---------- */
 let packs=[],cur=null,mode=-1,BUSY=false,LASTERR='',EN={};
 
+const TRCH=/[çğıöşüÇĞİÖŞÜ]/;
+const isEnSide=t=>/[a-z]/i.test(t)&&!TRCH.test(t);
+const splitMeans=t=>[...new Set(String(t||'').split(/\s*[,;]\s*|\s+\/\s+|\s*\/\/\s*/).map(v=>v.trim().replace(/^_+|[.]+$/g,'').trim()).filter(Boolean))];
 function parse(t){
   const out=[];
   String(t||'').split(/\r?\n/).forEach(raw=>{
-    const l=raw.replace(/[  ]+/g,' ').replace(/[A-ZÇĞİÖŞÜ][A-ZÇĞİÖŞÜ ]{2,}\s*[–-]\s*VOCAB/g,'').replace(/^\s*(?:\d+[.)]|[•*·])\s+/,'').trim();
+    const l=raw.replace(/[  ]+/g,' ').replace(/[A-ZÇĞİÖŞÜ][A-ZÇĞİÖŞÜ ]{2,}\s*[–-]\s*VOCAB/g,'').replace(/^\s*(?:\d+[.)]|[•*·])\s+/,'').trim();
     if(!l||/^[A-ZÇĞİÖŞÜ .]+$/.test(l)&&l.length<30)return;
-    const seg=l.split(/\s+:\s+|\s*:\s+(?=[A-ZÇĞİÖŞÜa-zçğıöşü_])|\s+[-–—]\s+|\s*\|\s*|\t+/).map(s=>s.trim()).filter(Boolean);
-    if(seg.length<2){if(/^[A-Za-z][A-Za-z '\-\/~]{0,60}$/.test(l))out.push({en:l.replace(/\s*~\s*/g,' / '),tr:''});return}
-    const ti=seg.findIndex((s,i)=>i>0&&/[çğıöşüİ]/i.test(s));
-    const en=(ti>1?seg.slice(0,ti):[seg[0]]).join(' / ').replace(/\s*~\s*/g,' / ').trim();
-    const tr=(ti>1?seg.slice(ti):seg.slice(1)).join(', ').replace(/^_+/,'').replace(/\s*\/\/\s*/g,', ').trim();
-    if(en.length<=80)out.push({en,tr:/[a-z]/i.test(tr)?tr:''});
+    let seg=l.split(/\s+:\s+|\s*:\s+(?=[A-ZÇĞİÖŞÜa-zçğıöşü_])|\s+[-–—]\s+|\s*\|\s*|\t+/).map(s=>s.trim()).filter(Boolean);
+    if(seg.length<2){if(/^[A-Za-z][A-Za-z '\-\/~,;]{0,80}$/.test(l))l.split(/\s*[,;]\s*/).filter(Boolean).forEach(e=>out.push({en:e.replace(/\s*~\s*/g,' / '),tr:''}));return}
+    let en,tr;
+    // Türkçe önce yazılmış: "önemli - significant, crucial"
+    if(TRCH.test(seg[0])&&seg.slice(1).every(isEnSide)){tr=seg[0];en=seg.slice(1).join(', ')}
+    else{const ti=seg.findIndex((s,i)=>i>0&&TRCH.test(s));
+      en=(ti>1?seg.slice(0,ti):[seg[0]]).join(' / ');tr=(ti>1?seg.slice(ti):seg.slice(1)).join(', ')}
+    en=en.replace(/\s*~\s*/g,' / ').trim();tr=splitMeans(tr.replace(/^_+/,'')).join(', ');
+    if(!/[a-z]/i.test(tr))tr='';
+    // bir Türkçeye birden fazla İngilizce yazıldıysa her biri ayrı kelime
+    const ens=/[,;]/.test(en)&&en.split(/\s*[,;]\s*/).every(e=>/^[A-Za-z][A-Za-z '\-\/()]{0,60}$/.test(e))?en.split(/\s*[,;]\s*/).filter(Boolean):[en];
+    ens.forEach(e=>{if(e.length<=80)out.push({en:e.trim(),tr})});
   });
-  const seen=new Set();return out.filter(x=>{const k=x.en.toLowerCase();if(seen.has(k))return false;seen.add(k);return true});
+  // aynı kelime iki kez yazıldıysa anlamlarını birleştir
+  const map=new Map();out.forEach(x=>{const k=x.en.toLowerCase();if(!map.has(k)){map.set(k,x);return}const y=map.get(k);y.tr=splitMeans([y.tr,x.tr].filter(Boolean).join(', ')).join(', ')});
+  return [...map.values()];
+}
+/* Anlamlar: bir kelimenin her Türkçe anlamı ayrı sorulur, hepsi doğru sayılır */
+const MEAN=x=>splitMeans(x&&x.tr);
+const pickM=x=>{const m=MEAN(x);return m.length?m[Math.floor(Math.random()*m.length)]:String(x&&x.tr||'')};
+const mKey=m=>String(m||'').toLocaleLowerCase('tr').replace(/\s+/g,' ').trim();
+const sharesM=(o,m)=>MEAN(o).some(v=>mKey(v)===mKey(m));
+/* Eski listeleri düzelt: Türkçesi başa yazılmış ya da bir satıra birden fazla İngilizce yazılmış kelimeler */
+function fixPack(p){
+  let ch=false;const out=[],seen=new Map();
+  p.items.forEach(x=>{
+    let en=String(x.en||'').trim(),tr=String(x.tr||'');
+    if(TRCH.test(en)&&isEnSide(tr)){[en,tr]=[tr,en];ch=true}
+    const ens=/[,;]/.test(en)&&en.split(/\s*[,;]\s*/).every(e=>/^[A-Za-z][A-Za-z '\-\/()]{0,60}$/.test(e))?en.split(/\s*[,;]\s*/).filter(Boolean):[en];
+    if(ens.length>1)ch=true;
+    ens.forEach((e,i)=>{const k=e.toLowerCase();if(seen.has(k)){const y=seen.get(k);const nt=splitMeans([y.tr,tr].filter(Boolean).join(', ')).join(', ');if(nt!==y.tr){y.tr=nt}ch=true;return}
+      const y=i===0&&ens.length===1?Object.assign(x,{en:e,tr}):{en:e,tr};
+      if(ens.length>1&&p.prog.box[en]&&!p.prog.box[e])p.prog.box[e]=p.prog.box[en];
+      seen.set(k,y);out.push(y)});
+  });
+  if(ch){p.items=out;p.words=out.map(x=>({en:x.en,tr:x.tr}));KA.savePack(p,true)}
+  return p;
 }
 const mkPack=(id,name,words)=>KA.normPack({id,name,words:words.map(w=>({en:w.en,tr:w.tr||''})),items:words.map(w=>({en:w.en,tr:w.tr||''}))});
 const save=(now)=>{if(cur)KA.savePack(cur,now)};
@@ -340,7 +372,7 @@ function renderHome(){
     H.innerHTML=`<section class="card empty"><img src="favicon.svg" width="72" height="72" alt=""><h2>Kendi kelime arenanı kur</h2><p>Öğrenmek istediğin kelimeleri yapıştır ya da PDF, Word veya metin dosyası olarak yükle. Anlamlar, akademik örnek cümleler ve paragraflar senin listen için hazırlansın.</p><div class="row" style="justify-content:center"><button class="btn btn-p btn-lg" data-a="new">${ic('plus')}Kelime listesi oluştur</button><button class="btn btn-ghost btn-lg" data-a="sample">${ic('book')}Örnek akademik liste</button></div></section>${pwaHtml()}`;
     return;
   }
-  const aid=KA.activeId();cur=packs.find(p=>p.id===aid)||packs[0];KA.activeId(cur.id);
+  const aid=KA.activeId();cur=packs.find(p=>p.id===aid)||packs[0];KA.activeId(cur.id);fixPack(cur);
   const st=cur.prog.steps,done=st.filter(Boolean).length,nx=nextMode(),meta=KA.meta();
   const learned=cur.items.filter(x=>bx(x)>=3).length,acc=meta.tot?Math.round(meta.ok/meta.tot*100)+'%':'—';
   const ms=missing(cur),needs=ms.tr+ms.s+ms.g>0;
@@ -466,14 +498,14 @@ function startEsle(){
 function roundEsle(){
   const done=new Set(cur.prog.mdone||[]),rem=withTr().filter(x=>!done.has(x.en));
   if(!rem.length){cur.prog.mdone=[];return finish(1,'Bütün çarkları döndürdün','Çark ringi')}
-  const r=shuf(rem).slice(0,6);M.r=r;M.ok=new Set();M.order=shuf(r.map((_,i)=>i));M.pos=shuf(r.map((_,i)=>i));M.pi=0;M.lock=false;M.fresh=true;
+  const r=[];shuf(rem).forEach(o=>{if(r.length<6&&!r.some(y=>MEAN(y).some(v=>sharesM(o,v))))r.push(o)});if(r.length<2)r.push(...shuf(rem).filter(o=>!r.includes(o)).slice(0,2-r.length));M.r=r;M.mm=r.map(pickM);M.ok=new Set();M.order=shuf(r.map((_,i)=>i));M.pos=shuf(r.map((_,i)=>i));M.pi=0;M.lock=false;M.fresh=true;
   prog(M.all-rem.length,M.all);drawEsle();
 }
 function drawEsle(){
   const n=M.r.length,t=M.order[M.pi],done=M.ok.size===n,C=2*Math.PI*46,g=4;
   const arcs=M.pos.map((wi,k)=>`<circle class="${M.ok.has(wi)?'on':''}" cx="50" cy="50" r="46" pathLength="${n*100}" stroke-dasharray="${100-g} ${n*100-100+g}" stroke-dashoffset="${-(k*100)+50-g/2}"/>`).join('');
   ST().innerHTML=`<p class="qlab" style="text-align:center;margin:0 0 6px">Ortadaki anlamın kelimesini çarktan seç</p><div class="wheel ${M.fresh?'in':''} ${done?'done':''}" style="--n:${n}"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(-90 50 50)">${arcs}</g></svg>
-    <div class="hub"><span>${done?'Çark tamam':'Anlamı'}</span><b>${done?ic('check'):esc(M.r[t].tr)}</b><small>${M.ok.size} / ${n}</small></div>
+    <div class="hub"><span>${done?'Çark tamam':'Anlamı'}</span><b>${done?ic('check'):esc(M.mm?M.mm[t]:M.r[t].tr)}</b><small>${M.ok.size} / ${n}</small></div>
     ${M.pos.map((wi,k)=>`<button class="wtile ${M.ok.has(wi)?'gone':''}" data-mw="${wi}" style="--a:${(k/n*360).toFixed(1)}deg;--k:${k}" ${M.ok.has(wi)?'disabled':''}>${esc(M.r[wi].en)}</button>`).join('')}</div>`;
   M.fresh=false;
 }
@@ -487,12 +519,19 @@ function pickEsle(i,el){
 /* ---------- 3-4. Seç ve Yaz (bütün kelimeler) ---------- */
 let Q=null;
 const near=(a,b)=>{a=a.toLowerCase();b=b.toLowerCase();if(Math.abs(a.length-b.length)>1)return false;const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=1;j<=b.length;j++)d[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length]<=1};
-function wordOpts(x,dirEn){
-  const key=o=>dirEn?o.tr:o.en,ans=key(x),L=ans.length;
-  const pool=withTr().filter(o=>o!==x&&key(o)&&key(o).toLowerCase()!==ans.toLowerCase());
-  const d=shuf(pool).sort((a,b)=>Math.abs(key(a).length-L)-Math.abs(key(b).length-L)).slice(0,8);
-  return shuf([ans,...shuf(d).slice(0,3).map(key)]);
+function wordOpts(x,dirEn,m){
+  m=m||pickM(x);const mine=MEAN(x).map(mKey);
+  if(dirEn){
+    const pool=withTr().filter(o=>o!==x&&!MEAN(o).some(v=>mine.includes(mKey(v))));
+    const d=shuf(pool).sort((a,b)=>Math.abs(String(a.tr).length-m.length)-Math.abs(String(b.tr).length-m.length)).slice(0,8);
+    const used=new Set([mKey(m)]),opts=[m];shuf(d).forEach(o=>{if(opts.length>=4)return;const v=pickM(o);if(!used.has(mKey(v))){used.add(mKey(v));opts.push(v)}});
+    const r=shuf(opts);r.m=m;r.ans=m;return r;
+  }
+  const L=x.en.length,pool=withTr().filter(o=>o!==x&&o.en.toLowerCase()!==x.en.toLowerCase()&&!sharesM(o,m));
+  const d=shuf(pool).sort((a,b)=>Math.abs(a.en.length-L)-Math.abs(b.en.length-L)).slice(0,8);
+  const r=shuf([x.en,...shuf(d).slice(0,3).map(o=>o.en)]);r.m=m;r.ans=x.en;return r;
 }
+
 const HARD=`Sen BUEPT (Boğaziçi İngilizce yeterlik sınavı) için çeviri sorusu hazırlayan deneyimli bir sınav yazarısın. Girdide numaralı İngilizce akademik cümleler ve doğru Türkçe çevirileri (TR) var. Her cümle için 3 çeldirici Türkçe çeviri yaz.
 Kurallar: Her çeldirici doğru çeviriyle aynı konuyu, büyük ölçüde aynı kelimeleri, aynı üslubu ve neredeyse aynı uzunluğu kullansın; dilbilgisi kusursuz ve doğal olsun; hızlı okuyan birine doğru gibi görünsün. Ama her biri TEK bir kilit noktada anlamı bozsun ve üçü farklı noktaları bozsun. Kilit noktalar: hedef kelimenin yakın ama yanlış anlamı; neden-sonuç, karşıtlık (however/although/despite) ya da koşul ilişkisinin tersine çevrilmesi; kesinlik, olasılık ve nicelik dereceleri (may/must, some/most, rarely/often, partly/entirely); kimin kime ne yaptığının yer değiştirmesi; zaman, karşılaştırma ya da olumsuzluk. Bariz yanlış, eksik, konu dışı ya da saçma çeviri yazma. Doğru çeviriyi aynen tekrar etme.
 YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"d":["çeldirici 1","çeldirici 2","çeldirici 3"],"dn":"doğru çeviriyi ayıran kilit noktayı anlatan kısa Türkçe ipucu"}]}`;
@@ -526,13 +565,13 @@ function nextQ(){
   if(!Q.q.length)return finish(Q.m==='yaz'?3:2,Q.m==='yaz'?'Bütün kelimeleri yazdın':'Bütün kelimeleri bildin',`${Q.total} kelime`);
   const x=Q.q[0];Q.locked=false;Q.tries=0;prog(Q.solved,Q.total);
   if(Q.m==='yaz'){
-    Q.cur={x,ans:x.en};
-    ST().innerHTML=`<div class="card qcard"><div class="qlab">Türkçe → İngilizce yaz</div><div class="qword">${esc(x.tr)}</div><input class="input yin" id="yin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="İngilizcesini yaz" aria-label="İngilizce cevap"><div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-p btn-lg" data-a="ycheck">Kontrol et</button><button class="btn btn-ghost" data-a="yskip">Bilmiyorum</button></div><div id="fb"></div></div>`;
+    Q.cur={x,ans:x.en,m:pickM(x)};
+    ST().innerHTML=`<div class="card qcard"><div class="qlab">Türkçe → İngilizce yaz</div><div class="qword">${esc(Q.cur.m)}</div><input class="input yin" id="yin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="İngilizcesini yaz" aria-label="İngilizce cevap"><div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-p btn-lg" data-a="ycheck">Kontrol et</button><button class="btn btn-ghost" data-a="yskip">Bilmiyorum</button></div><div id="fb"></div></div>`;
     setTimeout(()=>{const i=$('#yin');if(i)i.focus()},30);return;
   }
   const dirEn=Math.random()<.5;
-  Q.cur={x,dirEn,ans:dirEn?x.tr:x.en,opts:wordOpts(x,dirEn)};
-  drawMC(Q.cur,dirEn?'İngilizce → Türkçe':'Türkçe → İngilizce',dirEn?`<div class="qword">${esc(x.en)}</div><button class="btn btn-ghost btn-sm" data-say="${esc(x.en)}">${ic('sound')}Dinle</button>`:`<div class="qword">${esc(x.tr)}</div>`);
+  const op=wordOpts(x,dirEn);Q.cur={x,dirEn,ans:op.ans,m:op.m,opts:op};
+  drawMC(Q.cur,dirEn?'İngilizce → Türkçe':'Türkçe → İngilizce',dirEn?`<div class="qword">${esc(x.en)}</div><button class="btn btn-ghost btn-sm" data-say="${esc(x.en)}">${ic('sound')}Dinle</button>`:`<div class="qword">${esc(op.m)}</div>`);
 }
 function drawMC(q,lab,body){
   ST().innerHTML=`<div class="card qcard"><div class="qlab">${lab}</div>${body}</div><div class="opts">${q.opts.map((o,i)=>`<button class="opt" data-o="${i}"><kbd>${i+1}</kbd><span>${esc(o)}</span></button>`).join('')}</div><div id="fb"></div>`;
@@ -552,15 +591,60 @@ function answerMC(i){
   save();prog(Q.solved,Q.total);
   feedback(ok,ok?'Doğru!':'Doğru cevap: '+esc(q.ans),`${esc(q.x.en)} = ${esc(q.x.tr)}${ok?'':' · bu kelime tekrar gelecek'}`);
 }
-function yazCheck(skip){
-  const q=Q.cur;if(!q||Q.locked)return;
-  const inp=$('#yin'),v=skip?'':String(inp&&inp.value||'').trim().toLowerCase().replace(/[.,!?]/g,'').replace(/^to /,'');
-  if(!skip&&!v)return;
-  const fs=forms(q.x.en),exact=fs.includes(v),close=!exact&&v.length>4&&fs.some(a=>near(a,v));
-  if(exact||close){Q.locked=true;Q.q.shift();Q.solved++;tally(true);addXp(2);KA.sfx.ok();cur.prog.box[q.x.en]=Math.min(5,bx(q.x)+1);save();prog(Q.solved,Q.total);inp.disabled=true;return feedback(true,exact?'Mükemmel!':'Neredeyse doğru, kabul edildi',close?'Doğru yazımı: '+esc(q.x.en):esc(q.x.en)+' = '+esc(q.x.tr))}
-  if(!skip&&Q.tries===0){Q.tries=1;KA.sfx.bad();const t=fs[0],hint=t.length>2?t[0]+' '+'_ '.repeat(t.length-2)+t[t.length-1]:t[0]+' _';inp.select();$('#fb').innerHTML=`<div class="fbar no" style="justify-content:center"><div class="msg" style="text-align:center"><b style="color:var(--warn)">Bir hakkın daha var</b><span>İpucu: <code style="font-size:16px;letter-spacing:.06em">${esc(hint)}</code> (${t.length} harf)</span></div></div>`;return}
+/* Yazılan cevabı esnek değerlendir: yazım hatası, çekim, eksik/fazla edat yerelde; eş anlamlıyı yapay zekâ kontrol eder */
+const PREP=new Set(['of','to','for','with','in','on','at','from','about','by','into','upon','off','up','out','over','as']);
+const nEn=v=>String(v||'').toLowerCase().replace(/[’`]/g,"'").replace(/\((?:sth|sb|something|someone|somebody)\)|\b(?:sth|sb|something|someone|somebody|one's|oneself)\b/g,' ').replace(/[^a-z' -]/g,' ').replace(/\s+/g,' ').trim().replace(/^(to|a|an|the) /,'');
+const stemEn=w=>w.replace(/(ies)$/,'y').replace(/(ied)$/,'y').replace(/(ing|ed|es|s|ly)$/,'').replace(/e$/,'');
+const noPrep=w=>w.split(' ').filter((t,i,a)=>!(PREP.has(t)&&(i===a.length-1||i===0))).join(' ');
+function localJudge(v,cands){
+  v=nEn(v);if(!v)return null;const cs=[...new Set(cands.map(nEn).filter(Boolean))];
+  if(cs.includes(v))return 'exact';
+  const tol=c=>c.length>8?2:c.length>4?1:0;
+  const dist=(a,b)=>{const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=1;j<=b.length;j++)d[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length]};
+  for(const c of cs){
+    if(noPrep(c)&&noPrep(c)===noPrep(v))return 'prep';
+    const a=c.split(' ').map(stemEn).join(' '),b=v.split(' ').map(stemEn).join(' ');
+    if(a.length>2&&a===b)return 'form';
+    if(noPrep(c).split(' ').map(stemEn).join(' ')===noPrep(v).split(' ').map(stemEn).join(' ')&&a.length>2)return 'form';
+  }
+  for(const c of cs){if(tol(c)&&Math.abs(c.length-v.length)<=tol(c)&&dist(c,v)<=tol(c))return 'typo';const p=noPrep(c);if(p!==c&&tol(p)&&dist(p,noPrep(v))<=tol(p))return 'typo'}
+  return null;
+}
+const YZK='ka_yzchk';
+const JUDGE=`Bir İngilizce kelime çalışmasında öğrenci, Türkçe anlamı verilen kelimenin İngilizcesini yazdı. Öğrencinin cevabı bu Türkçe anlamı doğru ve doğal biçimde karşılıyorsa ok=true ver: eş anlamlı kelime, aynı kökün başka biçimi, eksik ya da fazla edat, küçük yazım hatası kabul. Anlamı farklıysa, çok genel ya da alakasızsa, Türkçe yazdıysa ya da anlamsızsa ok=false. YALNIZCA JSON: {"ok":true,"not":"en fazla 12 kelimelik Türkçe açıklama"}`;
+async function aiJudge(v,x,m){
+  const k=x.en.toLowerCase()+'|'+nEn(v);let c={};try{c=JSON.parse(localStorage.getItem(YZK))||{}}catch(e){}
+  if(c[k])return c[k];
+  if(!/[a-z]{2}/i.test(v)||TRCH.test(v)||v.length>60)return {ok:false};
+  const r=await KA.askJ(JUDGE,`Türkçe anlam: ${m}\nListedeki kelime: ${x.en}\nÖğrencinin cevabı: ${v}`,{tier:'quick',ms:15000});
+  if(!r.json)return null;
+  const o={ok:r.json.ok===true||String(r.json.ok).toLowerCase()==='true',not:String(r.json.not||'').slice(0,140)};
+  c[k]=o;const ks=Object.keys(c);if(ks.length>400)ks.slice(0,ks.length-400).forEach(z=>delete c[z]);try{localStorage.setItem(YZK,JSON.stringify(c))}catch(e){}
+  return o;
+}
+/* sonuç: {ok, how:'exact'|'typo'|'prep'|'form'|'ai', not} */
+async function judgeEn(v,x,m,fb){
+  const same=cur.items.filter(o=>o===x||sharesM(o,m));
+  const loc=localJudge(v,same.flatMap(o=>forms(o.en)));
+  if(loc)return {ok:true,how:loc};
+  if(fb)fb.innerHTML='<p class="mut" style="text-align:center;margin-top:12px"><span class="ka-spin"></span> Cevabına bakılıyor…</p>';
+  let r=null;try{r=await aiJudge(v,x,m)}catch(e){}
+  if(fb)fb.innerHTML='';
+  return r&&r.ok?{ok:true,how:'ai',not:r.not}:{ok:false};
+}
+const HOW={exact:'Mükemmel!',typo:'Küçük bir yazım hatası, kabul edildi',prep:'Edat eksik/fazla, kabul edildi',form:'Farklı biçimiyle yazdın, kabul edildi',ai:'Yakın anlamlı, kabul edildi'};
+async function yazCheck(skip){
+  const q=Q.cur;if(!q||Q.locked||Q.busy)return;
+  const inp=$('#yin'),raw=skip?'':String(inp&&inp.value||'').trim();
+  if(!skip&&!raw)return;
+  let res={ok:false};if(!skip){Q.busy=true;if(inp)inp.disabled=true;try{res=await judgeEn(raw,q.x,q.m,$('#fb'))}finally{Q.busy=false;if(inp)inp.disabled=false}}
+  if(Q.cur!==q)return;
+  const all=esc(q.x.en)+' = '+esc(MEAN(q.x).join(', '));
+  if(res.ok){Q.locked=true;Q.q.shift();Q.solved++;tally(true);addXp(2);KA.sfx.ok();cur.prog.box[q.x.en]=Math.min(5,bx(q.x)+1);save();prog(Q.solved,Q.total);inp.disabled=true;
+    return feedback(true,HOW[res.how],res.how==='exact'?all:`Listendeki kelime: <b>${esc(q.x.en)}</b>${res.not?' · '+esc(res.not):''}`)}
+  if(!skip&&Q.tries===0){Q.tries=1;KA.sfx.bad();const t=forms(q.x.en)[0],hint=t.length>2?t[0]+' '+'_ '.repeat(t.length-2)+t[t.length-1]:t[0]+' _';inp.select();$('#fb').innerHTML=`<div class="fbar no" style="justify-content:center"><div class="msg" style="text-align:center"><b style="color:var(--warn)">Bir hakkın daha var</b><span>İpucu: <code style="font-size:16px;letter-spacing:.06em">${esc(hint)}</code> (${t.length} harf)</span></div></div>`;return}
   Q.locked=true;Q.q.push(Q.q.shift());tally(false);KA.sfx.bad();cur.prog.box[q.x.en]=1;save();if(inp)inp.disabled=true;
-  feedback(false,'Doğru cevap: '+esc(q.x.en),esc(q.x.tr)+' · bu kelime tekrar gelecek');
+  feedback(false,'Doğru cevap: '+esc(q.x.en),esc(MEAN(q.x).join(', '))+' · bu kelime tekrar gelecek');
 }
 
 /* ---------- 5. Bekçi: en zayıf 12 kelime kemerin taşları, 3 can ---------- */
@@ -593,14 +677,14 @@ function nextBoss(){
   B.fell=-1;B.hurt=false;const {x,t}=B.q[0],top=archSvg();
   const lab=`Taş ${B.hits+1}/${B.total} · `;
   if(t==='yaz'){
-    B.cur={x,ans:x.en,t};
-    ST().innerHTML=top+`<div class="card qcard"><div class="qlab">${lab}${B.q[0].key?'Son darbe · yaz':'Yaz'}</div><div class="qword">${esc(x.tr)}</div><input class="input yin" id="yin" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="İngilizcesini yaz"><div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-p btn-lg" data-a="bcheck">Vur</button></div><div id="fb"></div></div>`;
+    B.cur={x,ans:x.en,t,m:pickM(x)};
+    ST().innerHTML=top+`<div class="card qcard"><div class="qlab">${lab}${B.q[0].key?'Son darbe · yaz':'Yaz'}</div><div class="qword">${esc(B.cur.m)}</div><input class="input yin" id="yin" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="İngilizcesini yaz"><div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-p btn-lg" data-a="bcheck">Vur</button></div><div id="fb"></div></div>`;
     setTimeout(()=>{const i=$('#yin');if(i)i.focus()},30);return;
   }
   if(t==='cumle'){const o=sentOpts(x);if(o){B.cur={x,t,ans:x.st,opts:o};ST().innerHTML=top;ST().insertAdjacentHTML('beforeend','<div id="mc"></div>');drawMCInto(B.cur,lab+'Cümlenin anlamı',`<div class="qsent">${KA.tokens(x.s)}</div>`);return}}
-  const dirEn=t!=='ters';B.cur={x,t,ans:dirEn?x.tr:x.en,opts:wordOpts(x,dirEn)};
+  const dirEn=t!=='ters',op=wordOpts(x,dirEn);B.cur={x,t,ans:op.ans,m:op.m,opts:op};
   ST().innerHTML=top+'<div id="mc"></div>';
-  drawMCInto(B.cur,lab+(dirEn?'İngilizce → Türkçe':'Türkçe → İngilizce'),`<div class="qword">${esc(dirEn?x.en:x.tr)}</div>`);
+  drawMCInto(B.cur,lab+(dirEn?'İngilizce → Türkçe':'Türkçe → İngilizce'),`<div class="qword">${esc(dirEn?x.en:op.m)}</div>`);
 }
 function drawMCInto(q,lab,body){$('#mc').innerHTML=`<div class="card qcard"><div class="qlab">${lab}</div>${body}</div><div class="opts">${q.opts.map((o,i)=>`<button class="opt" data-o="${i}"><kbd>${i+1}</kbd><span>${esc(o)}</span></button>`).join('')}</div><div id="fb"></div>`}
 function bossResolve(ok,shown){
@@ -613,7 +697,7 @@ function bossResolve(ok,shown){
   feedback(ok,ok?(won?'Kilit taşı düştü, kemer açıldı!':'Taş düştü!'):'Bekçi taşı yerine oturttu',ok?esc(x.en)+' = '+esc(x.tr):'Doğru cevap: '+esc(shown)+(dead?'':' · bu taş birazdan yine gelecek · '+B.lives+' can'),dead?'Sonucu gör':(won?'Kemerden geç':'Sıradaki taş'));
 }
 function bossMC(i){const q=B.cur;if(!q||B.locked||!q.opts)return;const ok=q.opts[i]===q.ans;document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(q.opts[k]===q.ans)b.classList.add('ok');else if(k===i)b.classList.add('no')});bossResolve(ok,q.ans)}
-function bossYaz(){const q=B.cur;if(!q||B.locked)return;const inp=$('#yin'),v=String(inp&&inp.value||'').trim().toLowerCase().replace(/^to /,'');if(!v)return;const fs=forms(q.x.en);const ok=fs.includes(v)||(v.length>4&&fs.some(a=>near(a,v)));inp.disabled=true;bossResolve(ok,q.x.en)}
+async function bossYaz(){const q=B.cur;if(!q||B.locked||B.busy)return;const inp=$('#yin'),v=String(inp&&inp.value||'').trim();if(!v)return;B.busy=true;inp.disabled=true;let r={ok:false};try{r=await judgeEn(v,q.x,q.m,$('#fb'))}finally{B.busy=false}if(B.cur!==q)return;bossResolve(r.ok,q.x.en);if(r.ok&&r.how!=='exact'){const s2=document.querySelector('#fb .msg span');if(s2)s2.innerHTML=`${esc(HOW[r.how])} · listendeki kelime: <b>${esc(q.x.en)}</b>`}}
 function bossEnd(won){
   $('#hearts').hidden=true;
   const rev=B.miss.length?`<div class="brev"><span class="eyebrow">Bekçinin seni yakaladığı kelimeler</span>${B.miss.map(x=>`<div><button class="ka-icon-btn" data-say="${esc(x.en)}" aria-label="Dinle">${ic('sound')}</button><b>${esc(x.en)}</b><span>${esc(x.tr)}</span></div>`).join('')}</div>`:'';
@@ -772,7 +856,7 @@ async function prepare(){
   document.querySelectorAll('[data-a="prep"]').forEach(b=>b.disabled=true);
   try{
     let todo=p.items.filter(x=>!x.tr),done=0;
-    await pool(chunks(todo,40),async c=>{const r=await KA.askJ(TR_SYS,c.map((x,i)=>`${i+1}. ${x.en}`).join('\n'),{tier:'quick'});if(!r.json){LASTERR=r.err;return}(r.json.items||[]).forEach(o=>{const x=c[Number(o&&o.i)-1];if(x&&!x.tr&&o.tr&&String(o.tr).toLowerCase()!==x.en.toLowerCase())x.tr=String(o.tr).trim()});done+=c.length;prepMsg(`Anlamlar hazırlanıyor · ${done}/${todo.length}`);KA.savePack(p)},2);
+    await pool(chunks(todo,40),async c=>{const r=await KA.askJ(TR_SYS,c.map((x,i)=>`${i+1}. ${x.en}`).join('\n'),{tier:'quick'});if(!r.json){LASTERR=r.err;return}(r.json.items||[]).forEach(o=>{const x=c[Number(o&&o.i)-1];const tv=Array.isArray(o&&o.tr)?o.tr.map(String).join(', '):String(o&&o.tr||'');if(x&&!x.tr&&tv&&tv.toLowerCase()!==x.en.toLowerCase())x.tr=splitMeans(tv).slice(0,3).join(', ')});done+=c.length;prepMsg(`Anlamlar hazırlanıyor · ${done}/${todo.length}`);KA.savePack(p)},2);
     todo=p.items.filter(x=>x.tr&&!x.s);done=0;
     const sentOne=async c=>{const r=await KA.askJ(BATCH,c.map(w=>w.en+' - '+w.tr).join('\n'),{tier:'quick',ms:65000});if(!r.json){LASTERR=r.err;return}(r.json.items||[]).forEach(g=>{const it=c.find(x=>x.en.toLowerCase()===String(g&&g.en).toLowerCase());if(it&&g.s)Object.assign(it,{s:String(g.s),st:String(g.st||''),d:Array.isArray(g.d)?g.d.map(String):[],dv:Array.isArray(g.d)&&g.d.length>=3?2:0,dn:String(g.dn||''),gl:lowerKeys(g.gl),mo:g.mo&&typeof g.mo==='object'?g.mo:{},syn:(Array.isArray(g.syn)?g.syn:[]).map(v=>String(v).toLowerCase()).slice(0,4)})});done+=c.length;prepMsg(`Örnek cümleler hazırlanıyor · ${Math.min(done,todo.length)}/${todo.length}`);KA.savePack(p)};
     await pool(chunks(todo,4),sentOne,2);
