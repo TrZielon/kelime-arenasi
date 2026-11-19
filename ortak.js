@@ -477,7 +477,7 @@ async function gemini(key,prompt,o,signal){
   let last='';
   for(const m of models){
     for(const plain of [false,true]){
-      const gen={temperature:ocr?0:0.7,maxOutputTokens:ocr?24000:quick?4096:8192};
+      const gen={temperature:ocr?0:0.7,maxOutputTokens:ocr?24000:quick?4096:o.tier==='long'?16384:8192};
       if(!plain){if(/2\.5-flash/.test(m))gen.thinkingConfig={thinkingBudget:0};if(o.json)gen.responseMimeType='application/json'}
       let r,j={};
       try{r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`,{method:'POST',headers:{'content-type':'application/json','x-goog-api-key':key},body:JSON.stringify({contents:[{role:'user',parts}],generationConfig:gen}),signal});j=await r.json().catch(()=>({}))}
@@ -499,7 +499,7 @@ async function groq(key,prompt,o,signal){
   const models=o.tier==='quick'?['openai/gpt-oss-20b','openai/gpt-oss-120b','llama-3.3-70b-versatile']:['openai/gpt-oss-120b','openai/gpt-oss-20b','llama-3.3-70b-versatile'];
   let last='';
   for(const m of models){
-    const body={model:m,messages:[{role:'user',content:prompt}],temperature:0.7,max_completion_tokens:o.tier==='quick'?4096:8192};
+    const body={model:m,messages:[{role:'user',content:prompt}],temperature:0.7,max_completion_tokens:o.tier==='quick'?4096:o.tier==='long'?16000:8192};
     if(/gpt-oss/.test(m))body.reasoning_effort='low';
     if(o.json&&/json/i.test(prompt))body.response_format={type:'json_object'};
     for(let k=0;k<2;k++){
@@ -784,6 +784,104 @@ document.addEventListener('click',e=>{
 const nav1=KA.nav;KA.nav=function(){const r=nav1.apply(this,arguments);chip();return r};
 const boot=()=>{chip();if(ls.get(FLAG)==='1')load().catch(()=>{})};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else setTimeout(boot,0);
+})();
+
+/* ---------- Kelime kaynağı: oyunlar örnek setle ya da kullanıcının kendi listesiyle çalışır ---------- */
+(function(){
+const SK='ka_wsrc',GK=g=>'ka_gen_'+g;
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const nm=p=>(p&&(p.name||p.title))||'Listem';
+function packs(min){return KA.listPacks().map(p=>({id:p.id,name:nm(p),box:(p.prog&&p.prog.box)||{},items:(p.items||p.words||[]).filter(x=>x&&x.en&&String(x.en).trim())})).filter(p=>p.items.length>=(min||1))}
+function words(pid,n){
+  const p=packs(1).find(x=>x.id===pid);if(!p)return[];
+  // az bilinen kelimeler öne; aynı seviyede rastgele
+  const it=shuf(p.items).sort((a,b)=>(p.box[a.en]||1)-(p.box[b.en]||1));
+  const seen=new Set(),out=[];for(const x of it){const k=String(x.en).toLowerCase().trim();if(seen.has(k)||k.split(/\s+/).length>3)continue;seen.add(k);out.push({en:String(x.en).trim(),tr:String(x.tr||'').trim(),syn:Array.isArray(x.syn)?x.syn[0]||'':(x.syn||'')});if(out.length>=n)break}
+  return out;
+}
+function cacheGet(g,pid){const c=S.get(GK(g),{});return c&&c[pid]||null}
+function cacheSet(g,pid,v){let c=S.get(GK(g),{});if(!c||typeof c!=='object')c={};c[pid]=Object.assign({t:Date.now()},v);const ks=Object.keys(c).sort((a,b)=>c[b].t-c[a].t);ks.slice(3).forEach(k=>delete c[k]);if(!S.set(GK(g),c)){c={[pid]:c[pid]};S.set(GK(g),c)}}
+/* YZ'den JSON iste, kontrol et, gerekirse bir kez daha dene */
+async function ask(sys,input,check,o={}){
+  let last='';
+  for(let t=0;t<(o.tries||2);t++){
+    const r=await KA.askJ(sys+(last?'\n\nÖNCEKİ DENEMEDEKİ HATA: '+last+'. Bu sefer kurallara tam uy.':''),input,Object.assign({},o.ai||{}));
+    if(!r.json){last=r.err||'geçersiz JSON';if(/hak|limit|anahtar|key/i.test(last))break;continue}
+    try{return check(r.json)}catch(e){last=String(e.message||e)}
+  }
+  throw new Error(last||'Üretim başarısız');
+}
+/* Ortak kontrol yardımcıları */
+const V={
+  arr(a,min,what){if(!Array.isArray(a)||a.length<min)throw new Error((what||'liste')+' en az '+min+' öğe olmalı');return a},
+  str(s,what){if(typeof s!=='string'||!s.trim())throw new Error((what||'alan')+' boş');return s.trim()},
+  idx(i,n,what){i=Number(i);if(!Number.isInteger(i)||i<0||i>=n)throw new Error((what||'indeks')+' geçersiz');return i},
+  has(text,w){return new RegExp('\\b'+String(w).replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/e$/,'e?')+'\\w*','i').test(text)}
+};
+/* Seçici çubuk
+   cfg: {game, need (kaç kelime), min (listede en az), title, gen(words)->Promise<data>, onData(data,meta), onDemo(), hint} */
+function bar(host,cfg){
+  if(typeof host==='string')host=$(host);if(!host)return;
+  const st={busy:false,err:''};
+  const cur=()=>{const v=S.raw(SK,'demo');return v==='demo'||packs(cfg.min||cfg.need).some(p=>p.id===v)?v:'demo'};
+  function apply(){const v=cur();if(v==='demo'){cfg.onDemo&&cfg.onDemo();return}if(cfg.instant){const d=cfg.gen(words(v,cfg.need));if(d){if(st.err){st.err='';draw()}cfg.onData(d,{pid:v});return}if(st.err!=='Bu listede oyuna yetecek kadar anlamı olan kelime yok.'){st.err='Bu listede oyuna yetecek kadar anlamı olan kelime yok.';draw()}cfg.onDemo&&cfg.onDemo();return}const c=cacheGet(cfg.game,v);if(c&&c.data){try{cfg.onData(c.data,{pid:v,words:c.words||[]});return}catch(e){}}cfg.onDemo&&cfg.onDemo()}
+  async function gen(){
+    const v=cur();if(v==='demo'||st.busy)return;
+    const ws=words(v,cfg.need);if(ws.length<(cfg.min||cfg.need)){st.err='Bu listede yeterli kelime yok.';draw();return}
+    st.busy=true;st.err='';draw();
+    try{const data=await cfg.gen(ws);cacheSet(cfg.game,v,{words:ws.map(w=>w.en),data});cfg.onData(data,{pid:v,words:ws.map(w=>w.en),fresh:true});KA.toast&&KA.toast('Kendi kelimelerinle yeni set hazır');}
+    catch(e){const m=(e&&e.message)||'';st.err=/hak|limit|anahtar|kod|bağlan|zaman|internet|sunucu/i.test(m)?m:'Yapay zekâ bu sefer kullanılabilir bir set çıkaramadı. Bir kez daha dene.'+(m?' ('+m.slice(0,90)+')':'');}
+    st.busy=false;draw();
+  }
+  function draw(){
+    const v=cur(),ps=packs(cfg.min||cfg.need),c=v!=='demo'?cacheGet(cfg.game,v):null;
+    const chips=c&&c.words?c.words.slice(0,10).map(w=>`<span>${esc(w)}</span>`).join('')+(c.words.length>10?`<span>+${c.words.length-10}</span>`:''):'';
+    host.innerHTML=`<div class="wsrc ${st.busy?'busy':''}">
+     <div class="wsrc-seg" role="group" aria-label="Kelime kaynağı"><button data-ws="demo" class="${v==='demo'?'on':''}">Örnek set</button><button data-ws="mine" class="${v!=='demo'?'on':''}">Kendi kelimelerim</button></div>
+     ${v==='demo'?`<div class="wsrc-tx">${ps.length?`Hazır örneklerle oynuyorsun. Kendi listenle oynamak için <b>Kendi kelimelerim</b>'e dokun.`:`Kendi kelimelerinle oynamak için önce <a href="index.html">ana sayfadan bir liste oluştur</a> (en az ${cfg.min||cfg.need} kelime).`}</div>`:
+     `<select class="wsrc-sel" aria-label="Liste seç">${ps.map(p=>`<option value="${esc(p.id)}" ${p.id===v?'selected':''}>${esc(p.name)} · ${p.items.length}</option>`).join('')}</select>
+      ${cfg.instant?`<div class="wsrc-tx">${st.err?`<span class="wsrc-err">${esc(st.err)}</span>`:`Bu listedeki kelimelerinle oynuyorsun.`}</div>`:`
+      <button class="btn btn-p btn-sm wsrc-go" ${st.busy?'disabled':''}>${st.busy?'<i class="wsrc-spin"></i>Hazırlanıyor…':(c?KA.ic('reset')+'Yeni kelimelerle üret':KA.ic('play')+'Kelimelerimle hazırla')}</button>
+      <div class="wsrc-tx">${st.busy?`Yapay zekâ ${cfg.need} kelimenle ${esc(cfg.title||'yeni bir set')} yazıyor. 15–40 saniye sürebilir.`:st.err?`<span class="wsrc-err">${esc(st.err)}</span>`:c?`<span class="wsrc-ch">${chips}</span>`:`${cfg.need} kelimen seçilecek (önce en az bildiklerin). ${esc(cfg.hint||'')}`}</div>`}`}
+    </div>`;
+  }
+  host.addEventListener('click',e=>{
+    const b=e.target.closest('[data-ws]');
+    if(b){if(st.busy)return;if(b.dataset.ws==='demo'){S.set(SK,'demo')}else{const ps=packs(cfg.min||cfg.need);if(!ps.length){st.err='';S.set(SK,'demo');draw();KA.toast&&KA.toast('Önce ana sayfadan bir kelime listesi oluştur');return}const pre0=S.raw('ka_active_pack_id','');S.set(SK,(ps.find(p=>p.id===pre0)||ps[0]).id)}st.err='';draw();apply();return}
+    if(e.target.closest('.wsrc-go'))gen();
+  });
+  host.addEventListener('change',e=>{if(e.target.closest('.wsrc-sel')){S.set(SK,e.target.value);st.err='';draw();apply()}});
+  draw();apply();
+  return {redraw:draw,apply,cur};
+}
+/* Örnek bir veriyle aynı yapıda mı? (YZ çıktısını doğrulamak için) dicts: serbest anahtarlı sözlük alanları */
+function shape(sm,out,o={},path='kök'){
+  const D0=new Set(o.dicts||[]),D={has:(k,pa)=>D0.has(k)||(D0.has('/'+k)&&pa==='kök')},ty=x=>Array.isArray(x)?'arr':x===null?'null':typeof x;
+  const t=ty(sm),u=ty(out);
+  if(t==='null'||t==='undefined')return out;
+  if(t==='number'){if(u==='number')return out;if(u==='string'&&out.trim()!==''&&!isNaN(+out))return +out;throw new Error(path+' sayı olmalı')}
+  if(t==='boolean'){if(u==='boolean')return out;throw new Error(path+' doğru/yanlış olmalı')}
+  if(t==='string'){if(u==='null')return '';if(u==='string')return out;if(u==='number')return String(out);throw new Error(path+' metin olmalı')}
+  if(t==='arr'){
+    if(u!=='arr')throw new Error(path+' liste olmalı');if(sm.length&&!out.length)throw new Error(path+' boş');if(!sm.length)return out;
+    const allObj=sm.every(x=>ty(x)==='object'),allArr=sm.every(x=>ty(x)==='arr');
+    if(allObj){const req=Object.keys(sm[0]).filter(k=>sm.every(x=>k in x)&&!(o.opt&&o.opt.includes(k)));const ref={};sm.forEach(x=>Object.keys(x).forEach(k=>{if(!(k in ref))ref[k]=x[k]}));
+      return out.map((e,i)=>{if(ty(e)!=='object')throw new Error(path+'['+i+'] nesne olmalı');req.forEach(k=>{if(!(k in e))throw new Error(path+'['+i+'].'+k+' eksik')});Object.keys(e).forEach(k=>{if(k in ref&&!D0.has(k)&&ref[k]!=null&&e[k]!=null)e[k]=shape(ref[k],e[k],o,path+'['+i+'].'+k);else if(D0.has(k)&&k in ref)e[k]=dict(ref[k],e[k],o,path+'['+i+'].'+k)});return e})}
+    if(allArr){const mn=Math.min(...sm.map(x=>x.length));return out.map((e,i)=>{if(ty(e)!=='arr'||e.length<mn)throw new Error(path+'['+i+'] en az '+mn+' öğeli liste olmalı');for(let j=0;j<mn;j++)e[j]=shape(sm[0][j],e[j],o,path+'['+i+']['+j+']');return e})}
+    return out.map((e,i)=>shape(sm[0],e,o,path+'['+i+']'));
+  }
+  if(t==='object'){
+    if(u!=='object')throw new Error(path+' nesne olmalı');
+    Object.keys(sm).forEach(k=>{if(o.opt&&o.opt.includes(k)&&!(k in out))return;if(!(k in out))throw new Error(path+'.'+k+' eksik');out[k]=D.has(k,path)?dict(sm[k],out[k],o,path+'.'+k):shape(sm[k],out[k],o,path+'.'+k)});
+    return out;
+  }
+  return out;
+}
+function dict(sm,out,o,path){const ty=x=>Array.isArray(x)?'arr':x===null?'null':typeof x;if(ty(out)!=='object')throw new Error(path+' sözlük olmalı');const vs=Object.values(sm||{});if(vs.length&&!Object.keys(out).length)throw new Error(path+' boş');if(!vs.length)return out;
+  const isRec=vs.every(v=>ty(v)==='object');const ref=isRec?Object.assign({},...vs.slice().reverse()):vs[0];
+  Object.keys(out).forEach(k=>{out[k]=isRec?shapeRec(vs,out[k],o,path+'.'+k):shape(ref,out[k],o,path+'.'+k)});return out}
+function shapeRec(vs,e,o,path){const req=Object.keys(vs[0]).filter(k=>vs.every(x=>k in x)&&!(o.opt&&o.opt.includes(k)));if(!e||typeof e!=='object')throw new Error(path+' nesne olmalı');req.forEach(k=>{if(!(k in e))throw new Error(path+'.'+k+' eksik')});Object.keys(e).forEach(k=>{const r=vs.find(x=>k in x);if(r&&r[k]!=null&&e[k]!=null)e[k]=shape(r[k],e[k],o,path+'.'+k)});return e}
+KA.src={packs,words,ask,bar,V,shape,cur:()=>{const v=S.raw(SK,'demo');return v},shuf};
 })();
 
 /* ---------- Başlangıç ---------- */

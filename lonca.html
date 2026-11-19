@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0f766e">
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@700;900&display=swap">
-<link rel="stylesheet" href="ortak.css?v=13">
+<link rel="stylesheet" href="ortak.css?v=14">
 <style>
 :root{--parch:#f4e9cf;--parch2:#e9d9b2;--ink8:#2b1d0e;--gold:#d4a72c;--arc:#6d28d9}
 .realm{position:relative;border-radius:26px;overflow:hidden;padding:24px 22px;color:#efe7ff;background:radial-gradient(120% 80% at 50% 0%,#3b1c6b,#1a0f33 70%);box-shadow:var(--sh2)}
@@ -140,11 +140,12 @@
 .ceremony .stat span{font-size:12px;font-weight:800;color:var(--mut)}
 @media (max-width:900px){.quest{grid-template-columns:1fr}.scrolls{grid-template-columns:1fr 1fr}}
 @media (max-width:620px){.realm{padding:20px 16px}.tome .row3{grid-template-columns:1fr}.arena .side svg{width:84px;height:84px}.petition .txt{font-size:16.5px}.ceremony .stat{grid-template-columns:1fr 1fr}.lhud{top:58px}}
+#wsx{margin-top:16px;position:relative}#wsx .wsrc{margin:0}
 </style>
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="view"></div></main>
-<script src="firebase-config.js?v=13"></script><script src="ortak.js?v=13"></script>
+<script src="firebase-config.js?v=14"></script><script src="ortak.js?v=14"></script>
 <script>
 (function(){
 'use strict';
@@ -168,7 +169,7 @@ const BAN={
  pazar:`<svg viewBox="0 0 600 150" preserveAspectRatio="xMidYMid slice"><rect width="600" height="150" fill="#9a3412"/><rect y="110" width="600" height="40" fill="#78350f"/>${[40,170,300,430].map((x,i)=>`<g><path d="M${x} 60h110l-10-26H${x+10}z" fill="${['#dc2626','#f59e0b','#16a34a','#2563eb'][i]}"/><rect x="${x+6}" y="60" width="98" height="50" fill="#fde68a" opacity=".85"/><rect x="${x+14}" y="76" width="20" height="16" rx="3" fill="#c2410c"/><rect x="${x+44}" y="80" width="20" height="12" rx="3" fill="#65a30d"/></g>`).join('')}</svg>`
 };
 /* ================= İÇERİK ================= */
-const SP={
+let SP={
  scarce:{tr:'kıt, az bulunan',def:'not enough for what is needed',fam:'scarcity (n) · scarcely (adv)',col:'water is scarce · scarce resources',nu:'<b>rare</b> nadir görülen (çoğu zaman özel, alışılmadık şeyler için). <b>scarce</b> ise ihtiyaca yetmeyecek kadar az.',ex:'Fresh water is scarce on the island in summer.'},
  hesitant:{tr:'tereddütlü, çekingen',def:'slow to act or speak because you are not sure',fam:'hesitate (v) · hesitation (n) · hesitantly (adv)',col:'hesitant to do something',nu:'<b>unwilling</b> istemiyor, reddediyor. <b>hesitant</b> ise emin değil; yine de karar verebilir.',ex:'She was hesitant to ask a question in front of everyone.'},
  affect:{tr:'etkilemek (fiil)',def:'to change or influence something',fam:'affected (adj) · effect (n!)',col:'affect someone\'s health · be badly affected',nu:'<b>affect</b> fiildir; <b>effect</b> isimdir: <i>have an effect on</i>. Hafıza ipucu: <b>A</b>ction = <b>A</b>ffect.',ex:'Lack of sleep can affect your memory.'},
@@ -182,7 +183,7 @@ const SP={
  pay:{tr:'(attention) dikkat etmek',def:'pay + attention / a visit / a compliment',fam:'pay attention to · pay someone a visit',col:'pay attention ≠ give attention',nu:'Türkçe "dikkat vermek" değil; İngilizcede dikkat <b>ödenir</b>: <b>pay</b> attention to.',ex:'Please pay attention to the instructions.'},
  raise:{tr:'(a concern) bir endişe dile getirmek; yükseltmek',def:'raise + a question / a concern / awareness / prices',fam:'raise (geçişli: bir şeyi) · rise (geçişsiz: kendisi)',col:'raise a concern · raise awareness',nu:'<b>raise</b> bir şeyi kaldırır, nesne alır: <i>raise a question</i>. <b>rise</b> nesne almaz: <i>prices rise</i>.',ex:'Several students raised concerns about the exam.'}
 };
-const REG=[
+let REG=[
  {id:'liman',n:'Liman',sub:'Eş anlamlıların nüansı',meric:'Limandaki insanlar dertlerini İngilizce yazıyor. Doğru büyü, doğru kelimedir; yakın anlamlı ama yanlış kelime ters teper. Önce kütüphanede dört parşömeni oku.',spells:['scarce','hesitant','affect','thrive'],
   q:[{npc:'halil',n:'Balıkçı Halil',t:'Fish have become {X} this winter; there is barely enough to feed our families.',a:'scarce',o:['scarce','rare','abundant','valuable'],r:{rare:'Rare? These are ordinary fish, apprentice! They are not unusual; there just aren\'t enough of them.',abundant:'Abundant?! Did you not read "barely enough"?',valuable:'Valuable, maybe. But our problem is the amount, not the price.'}},
      {npc:'selin',n:'Liman Reisi Selin',t:'The sailors are {X} to sail. They are afraid of the storm, but they have not refused.',a:'hesitant',o:['hesitant','unwilling','eager','careless'],r:{unwilling:'Unwilling means they refuse. They have NOT refused!',eager:'Eager? They are afraid, apprentice!',careless:'Careless means "not careful", the opposite of my frightened sailors.'}},
@@ -202,10 +203,10 @@ const REG=[
      {npc:'trader',n:'Kumaşçı Leyla',t:'I would like to {X} a concern about the new market taxes.',a:'raise',o:['raise','rise','arise','grow'],r:{rise:'"Rise" cannot take an object. Prices RISE, but I RAISE a concern.',arise:'"Arise" also takes no object: problems arise.',grow:'Grow a concern? This is not a garden!'}}],
   boss:{n:'Abartı Tüccarı',foe:'merchant',p:'The merchant <span class="uw">EXAGGERATED</span> everything: <span class="clue">a small crack in his cup became "a disaster"</span>, and <span class="clue">a light rain became "the end of the world"</span>.',w:'exaggerate',m:['abartmak','saklamak, gizlemek','unutmak','satmak'],ma:0,f:{t:'His story was a huge {X}; nobody in the market believed him.',o:['exaggeration','exaggerate','exaggerated','exaggeratedly'],a:'exaggeration',why:'"a huge …" kalıbında sıfattan sonra <b>isim</b> gelir: a huge exaggeration. -tion isim ekidir.'},why:'Örnekler kalıbı veriyor: küçük bir çatlak "felaket", hafif bir yağmur "dünyanın sonu". Küçük şeyi büyük göstermek: abartmak.'}}
 ];
-const DUEL=[['Water became {X} during the long, dry summer.','scarce'],['She was {X} to speak at first, but in the end she did.','hesitant'],['Too much screen time can {X} your sleep.','affect'],['Small companies {X} when taxes are low.','thrive'],['The team needs a week to {X} the survey results.','analyse'],['The number of students has grown {X} since 2020.','significantly'],['Buying a smaller car is more {X}.','economical'],['The decision had serious {X} for the town.','consequences'],['You need to {X} a decision by tomorrow.','make'],['He went to prison for a crime he had not {X}.','committed'],['Please {X} attention: this part will be in the exam.','pay'],['Many parents {X} concerns about the new rules.','raise']];
-const POOL=['scarce','rare','abundant','hesitant','unwilling','eager','affect','effect','afford','thrive','survive','decline','analyse','analysis','analytical','significantly','significant','significance','economical','economic','economy','consequences','conclusions','consequently','make','do','give','committed','did','made','pay','take','raise','rise','arise'];
+let DUEL=[['Water became {X} during the long, dry summer.','scarce'],['She was {X} to speak at first, but in the end she did.','hesitant'],['Too much screen time can {X} your sleep.','affect'],['Small companies {X} when taxes are low.','thrive'],['The team needs a week to {X} the survey results.','analyse'],['The number of students has grown {X} since 2020.','significantly'],['Buying a smaller car is more {X}.','economical'],['The decision had serious {X} for the town.','consequences'],['You need to {X} a decision by tomorrow.','make'],['He went to prison for a crime he had not {X}.','committed'],['Please {X} attention: this part will be in the exam.','pay'],['Many parents {X} concerns about the new rules.','raise']];
+let POOL=['scarce','rare','abundant','hesitant','unwilling','eager','affect','effect','afford','thrive','survive','decline','analyse','analysis','analytical','significantly','significant','significance','economical','economic','economy','consequences','conclusions','consequently','make','do','give','committed','did','made','pay','take','raise','rise','arise'];
 /* ================= DURUM ================= */
-const KEY='ka_lonca1';
+let KEY='ka_lonca1';
 let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 const fresh=()=>({reg:0,mana:100,book:{},use:{},stage:'map',qi:0,read:{},cleared:[],wr:[],boss:null,duel:null,first:{},wrongs:0,done:false,t0:Date.now()});
 if(!S)S=fresh();
@@ -216,6 +217,44 @@ function lose(n,el){S.mana=Math.max(0,S.mana-n);save();if(el){const r=el.getBoun
 function hud(){return `<div class="lhud"><div class="mana">${MANAI}Mana<div class="bar"><i id="manab" style="width:${S.mana}%"></i></div><b id="manan">${S.mana}</b></div><button class="pill" id="book">Büyü kitabı <b>${Object.keys(S.book).length}</b></button><button class="pill" data-go="map">Harita</button></div>`}
 function meric(t){return `<div class="meric"><i>${MERIC}</i><div><small>USTA MERİÇ</small><p>${t}</p></div></div>`}
 function flash(){const f=document.createElement('div');f.className='flash';document.body.appendChild(f);setTimeout(()=>f.remove(),700)}
+
+/* ================= KENDİ KELİMELERİNLE ================= */
+const DEMO={REG,SP,DUEL,POOL};let CUR='demo';
+function useContent(d,id,reset){if(CUR===id&&!reset)return false;const x=d||DEMO;REG=x.REG;SP=x.SP;DUEL=x.DUEL;POOL=x.POOL;KEY=d?'ka_lonca1m':'ka_lonca1';S=null;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!S||reset)S=fresh();CUR=id;save();return true}
+function checkLon(j,ws){
+  const V=KA.src.V;if(!j||typeof j!=='object')throw new Error('içerik yok');
+  j=KA.src.shape(DEMO,j,{dicts:['/SP','r']});
+  if(j.REG.length<3)throw new Error('üç bölge gerekli');j.REG=j.REG.slice(0,3);
+  const all=[];j.REG.forEach((r,i)=>{const d=DEMO.REG[i];r.id=d.id;r.n=d.n;r.sub=d.sub;
+    r.spells=r.spells.map(String).filter(w=>j.SP[w]);if(r.spells.length<3)throw new Error(r.n+' bölgesinde büyü eksik');all.push(...r.spells);
+    r.q=r.q.filter(q=>q&&/\{X\}/.test(q.t)&&Array.isArray(q.o)&&q.o.includes(q.a));if(r.q.length<3)throw new Error(r.n+' dilekçeleri eksik');
+    r.q.forEach((q,k)=>{if(!NPC[q.npc])q.npc=d.q[k%d.q.length].npc;q.o=q.o.map(String);q.r=q.r&&typeof q.r==='object'?q.r:{};q.o.forEach(o=>{if(o!==q.a&&!q.r[o])q.r[o]='Bu kelime cümleye uymuyor, çırak. İpuçlarını yeniden oku.'})});
+    const b=r.boss;if(!FOES[b.foe])b.foe=d.boss.foe;if(!/class="uw"/.test(b.p))throw new Error('boss metni işaretsiz');b.ma=V.idx(b.ma,b.m.length,'boss cevabı');if(!/\{X\}/.test(b.f.t)||!b.f.o.includes(b.f.a))throw new Error('boss biçim sorusu hatalı')});
+  if(new Set(all).size!==all.length)throw new Error('aynı büyü iki bölgede');
+  j.DUEL=j.DUEL.filter(x=>/\{X\}/.test(x[0])&&j.SP[x[1]]);if(j.DUEL.length<8)throw new Error('düello cümleleri eksik');
+  j.POOL=[...new Set([...j.POOL.map(String),...all])];
+  const lw=ws.map(w=>w.en.toLowerCase()),hit=all.filter(w=>lw.some(u=>u===w.toLowerCase()||u.slice(0,5)===w.toLowerCase().slice(0,5))).length;
+  if(hit<Math.min(8,ws.length))throw new Error('büyülerin çoğu senin kelimelerin olmalı ('+hit+')');
+  j._t=Date.now();return j;
+}
+async function genLon(ws){
+  const sys=`Sen BUEPT (Boğaziçi) hazırlığı için "Lonca: Kelime Büyücüsü" oyununun içeriğini yazan bir yazarsın. Aşağıdaki ÖRNEK İÇERİK ile BİREBİR AYNI JSON yapısında, aynı alan adlarıyla yeni içerik yaz: {"REG":[3 bölge],"SP":{büyüler},"DUEL":[[cümle,kelime]],"POOL":[kelimeler]}.
+Kurallar:
+- Büyüler (SP anahtarları ve REG[].spells) ÖĞRENCİNİN KELİMELERİ olsun; her bölgede 4 büyü, toplam 12 (kelime yetmezse yakın akademik kelimelerle tamamla).
+- Bölge temaları aynı kalsın: 1. Liman = eş anlamlıların nüansı (yakın anlamlı ama yanlış seçenekler), 2. Akademi = kelime aileleri (aynı kökün fiil/isim/sıfat/zarf biçimleri seçenek), 3. Pazar = kelime ortaklıkları (collocation). Her bölgeye uygun kelimeleri yerleştir.
+- q: her bölgede 4 dilekçe; "t" İngilizce cümle ve {X} boşluğu, "a" doğru kelime, "o" 4 seçenek (a dahil), "r" her yanlış seçenek için NPC'nin İngilizce esprili tepkisi. npc alanında örnekteki NPC anahtarlarını kullan.
+- boss: yeni zor bir kelime; "p" İngilizce kısa paragraf, kelime <span class="uw">BÜYÜK HARF</span>, ipuçları <span class="clue">…</span>; m 4 Türkçe anlam seçeneği, ma doğru sıra; f: biçim sorusu. foe: fog, scroll ya da merchant.
+- SP her büyü için: tr (Türkçe), def (İngilizce tanım), fam, col, nu (Türkçe nüans notu, <b> kullanabilirsin), ex (İngilizce örnek).
+- DUEL: 12 cümle, her biri bir büyü kelimesini {X} ile gizler. POOL: büyüler + yakın çeldirici kelimeler.
+- meric: Usta Meriç'in Türkçe bölge açıklaması.
+Yalnızca JSON döndür.
+
+ÖRNEK İÇERİK:
+${JSON.stringify(DEMO)}`;
+  return KA.src.ask(sys,'Öğrencinin kelimeleri:\n'+ws.map(w=>w.en+(w.tr?' = '+w.tr:'')).join('\n'),j=>checkLon(j,ws),{ai:{tier:'long',ms:150000}});
+}
+const LSRC={game:'lonca',need:12,min:8,title:'üç bölgelik yeni bir çıraklık',hint:'Kendi kelimelerinle ayrı bir çıraklık başlar; örnek setteki ilerlemen korunur.',gen:genLon,
+  onData:(d,m)=>{if(useContent(d,'my:'+m.pid+':'+(d._t||''),m.fresh))map()},onDemo:()=>{if(useContent(null,'demo'))map()}};
 /* ================= EKRANLAR ================= */
 function map(){
   S.stage='map';save();
@@ -228,7 +267,8 @@ function map(){
    ${S.cleared.length===0&&!Object.keys(S.book).length?`<div class="lore"><i>${MERIC}</i><p><b>Usta Meriç:</b> Hoş geldin çırak. Kelime bilmek anlamını bilmek değildir; ne zaman, hangi kelimeyle ve hangi biçimde kullanılacağını bilmektir. Liman'dan başlayalım.</p></div>`:''}
    <div class="mapw"><svg viewBox="0 0 600 260"><rect width="600" height="260" fill="#e9d9b2"/><path d="M40 230 C 60 120 180 90 300 100 S 540 120 560 230z" fill="#d9c08a"/><path d="M120 190 Q 200 140 300 120 T 470 200 M300 120 L300 40" stroke="#8a6a3a" stroke-width="3" stroke-dasharray="3 7" fill="none"/>
    ${pts.map(([x,y],i)=>{const u=unlocked(i),d=i<3?S.cleared.includes(REG[i].id):S.done;return `<g class="reg ${u?'':'lock'} ${u&&!d&&i===Math.min(cur,3)?'cur':''}" ${u?`data-reg="${i}"`:''}><circle class="halo" cx="${x}" cy="${y}" r="34" fill="#a78bfa"/><circle cx="${x}" cy="${y}" r="24" fill="${['#0e7490','#4338ca','#c2410c','#1e1b4b'][i]}" stroke="#f4e9cf" stroke-width="4"/>${d?`<circle class="done" cx="${x+18}" cy="${y-18}" r="9"/><path d="M${x+14} ${y-18}l3 3 6-6" stroke="#fff" stroke-width="2.4" fill="none"/>`:''}${u?'':`<path d="M${x-6} ${y-2}h12v10h-12z M${x-4} ${y-2}v-4a4 4 0 0 1 8 0v4" stroke="#f4e9cf" stroke-width="2.4" fill="none"/>`}<text x="${x}" y="${y+46}">${regs[i]}</text></g>`}).join('')}</svg></div>
-   <div class="btnrow">${S.done?`<button class="btn btn-acc" id="reset">Yeni çıraklık</button>`:`<button class="btn btn-acc" data-reg="${Math.min(cur,3)}">${cur===0&&!Object.keys(S.book).length?'Liman\'a git':cur>=3?'Kule\'ye çık':'Sıradaki bölge: '+regs[cur]} ${ic('arrow')}</button>`}<button class="btn btn-ghost" id="book" style="color:#fff;background:rgba(255,255,255,.1)">Büyü kitabı (${Object.keys(S.book).length})</button>${Object.keys(S.book).length?'':''}</div></div></div>`;
+   <div class="btnrow">${S.done?`<button class="btn btn-acc" id="reset">Yeni çıraklık</button>`:`<button class="btn btn-acc" data-reg="${Math.min(cur,3)}">${cur===0&&!Object.keys(S.book).length?'Liman\'a git':cur>=3?'Kule\'ye çık':'Sıradaki bölge: '+regs[cur]} ${ic('arrow')}</button>`}<button class="btn btn-ghost" id="book" style="color:#fff;background:rgba(255,255,255,.1)">Büyü kitabı (${Object.keys(S.book).length})</button>${Object.keys(S.book).length?'':''}</div></div></div><div id="wsx"></div>`;
+  KA.src.bar('#wsx',LSRC);
 }
 function banner(r,lit){return `<div class="banner">${BAN[r.id]}<div class="ttl"><b>${r.n}</b><span>${r.sub}</span></div><div class="lights">${r.q.map((_,i)=>`<i class="${i<lit?'on':''}"></i>`).join('')}<i class="boss ${S.cleared.includes(r.id)?'on':''}"></i></div></div>`}
 function library(){

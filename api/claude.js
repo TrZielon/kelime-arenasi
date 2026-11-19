@@ -22,7 +22,7 @@ const GROQ_MODEL_FAST = process.env.GROQ_MODEL_FAST || 'openai/gpt-oss-20b';
 async function groq(model, key, prompt, maxTokens, wantJson, deadline) {
   const left = deadline - Date.now();
   if (left < 4000) return { status: 504, text: '' };
-  const body = { model, messages: [{ role: 'user', content: prompt }], temperature: 0.7, max_completion_tokens: Math.min(maxTokens, 8192), reasoning_effort: 'low' };
+  const body = { model, messages: [{ role: 'user', content: prompt }], temperature: 0.7, max_completion_tokens: Math.min(maxTokens, 16000), reasoning_effort: 'low' };
   if (wantJson && /json/i.test(prompt)) body.response_format = { type: 'json_object' };
   const go = async b => {
     const ac = new AbortController(); const tm = setTimeout(() => ac.abort(), Math.min(left - 1500, 30000));
@@ -128,7 +128,8 @@ export default async function handler(req, res) {
   const quick = body.tier === 'quick';
   const ocr = body.mode === 'ocr';
   const wantJson = !!body.json;
-  const maxTokens = ocr ? 24000 : quick ? 4096 : 8192;
+  const long = body.tier === 'long';
+  const maxTokens = ocr ? 24000 : quick ? 4096 : long ? 16000 : 8192;
   const models = [...new Set(quick
     ? [MODEL_FAST, MODEL_QUALITY, ...FALLBACK_MODELS]
     : [MODEL_QUALITY, MODEL_FAST, ...FALLBACK_MODELS])];

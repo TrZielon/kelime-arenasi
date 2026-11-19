@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0f766e">
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=13">
+<link rel="stylesheet" href="ortak.css?v=14">
 <style>
 .hub-h{padding:24px 26px;position:relative;overflow:hidden}
 .hub-h h1{font-size:clamp(28px,4.4vw,42px);margin:6px 0}
@@ -118,11 +118,12 @@
 .trn b{display:block;font-family:Fraunces,serif;color:var(--ink);font-size:17px;margin-bottom:2px}
 @media (max-width:760px){.games{grid-template-columns:1fr}.howto{grid-template-columns:1fr}.gart{height:128px}}
 @media (max-width:520px){.hub-h{padding:18px}.stage{padding:14px}.gopts{grid-template-columns:1fr 1fr}.gopts button{padding:12px 8px;font-size:14.5px}.plank{font-size:10px;height:34px}.bridge{height:160px}}
+#wsx{margin:16px auto 6px;max-width:760px;text-align:left}#wsx .wsrc{margin:0}
 </style>
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="view"></div></main>
-<script src="firebase-config.js?v=13"></script><script src="ortak.js?v=13"></script>
+<script src="firebase-config.js?v=14"></script><script src="ortak.js?v=14"></script>
 <script>
 (function(){
 'use strict';
@@ -133,8 +134,9 @@ const heart='<path d="M12 21s-7.5-4.6-9.5-9.3C1 8 3.2 4.5 6.8 4.5c2.1 0 3.6 1.1 
 const conf=el=>{if(!el||!KA.confetti)return;const r=el.getBoundingClientRect();KA.confetti(r.left+r.width/2,r.top+r.height/3,30,Math.PI)};
 /* ---------- veri ---------- */
 const DEFW=[['significant','önemli','important'],['evidence','kanıt','proof'],['decline','düşüş','decrease'],['crucial','kritik','vital'],['assume','varsaymak','suppose'],['retain','korumak, tutmak','keep'],['enhance','geliştirmek','improve'],['scarce','kıt','rare'],['reluctant','isteksiz','unwilling'],['undermine','baltalamak','weaken'],['prevalent','yaygın','widespread'],['acquire','edinmek','obtain'],['sufficient','yeterli','enough'],['beneficial','faydalı','helpful'],['consequence','sonuç','result'],['thorough','kapsamlı','complete'],['hypothesis','hipotez','theory'],['determine','belirlemek','decide'],['wealthy','varlıklı','rich'],['achieve','başarmak','accomplish'],['approach','yaklaşım','method'],['obvious','apaçık','clear'],['constant','sürekli','continuous'],['rapid','hızlı','fast']];
-let W=DEFW;try{const p=KA.getPack(KA.activeId());const it=((p&&p.items)||[]).filter(x=>x.en&&x.tr);if(it.length>=8)W=it.map(x=>[x.en,x.tr,(Array.isArray(x.syn)&&x.syn[0])||''])}catch(e){}
+let W=DEFW;
 const hasSyn=()=>W.filter(x=>x[2]).length>=4;
+
 /* ---------- HUB ---------- */
 const ART={
 fetih:`<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><path d="M60 150V80a90 90 0 0 1 180 0v70" fill="none" stroke="var(--p)" stroke-width="14" opacity=".35"/><path d="M95 150V90a55 55 0 0 1 110 0v60" fill="var(--p)" opacity=".18"/><g stroke="var(--acc2)" stroke-width="8" stroke-linecap="round"><path d="M118 58l64 64M182 58l-64 64"/></g><circle cx="150" cy="90" r="12" fill="var(--acc)"/></svg>`,
@@ -169,12 +171,12 @@ function hub(){
 function head(n,extra){return `<div class="gtop"><button class="btn btn-ghost btn-sm" data-go="hub">← Oyun Salonu</button><div class="hud">${extra||''}</div></div>`}
 /* ---------- HALAT ÇEKME ---------- */
 const H={};
-function halatIntro(){
+function halatIntro(){setTimeout(()=>KA.src.bar('#wsx',SRCQ.halat));
   H.diff=H.diff||1;
   $('#view').innerHTML=`<section class="card stage">${head()}<div class="center"><span class="eyebrow">Halat Çekme</span><h2 style="margin:4px 0 0;font-size:30px">Gölge'ye karşı</h2></div>
    <div class="tug">${tugSvg(0)}</div>
    <div class="howto"><div><b>Doğru cevap</b>Halat bir adım sana gelir.</div><div><b>Rakip</b>Çubuğu dolunca o çeker. Hızlı ol.</div><div><b>3'lü seri</b>Güç çekişi: iki adım birden.</div></div>
-   <div class="diff">${[['Çaylak','4.5 sn'],['Gladyatör','3.3 sn'],['Efsane','2.4 sn']].map(([n,s],i)=>`<button data-diff="${i}" class="${H.diff===i?'on':''}">${n}<small>rakip her ${s}</small></button>`).join('')}</div>
+   <div id="wsx"></div><div class="diff">${[['Çaylak','4.5 sn'],['Gladyatör','3.3 sn'],['Efsane','2.4 sn']].map(([n,s],i)=>`<button data-diff="${i}" class="${H.diff===i?'on':''}">${n}<small>rakip her ${s}</small></button>`).join('')}</div>
    <div class="center"><button class="btn btn-p" id="hstart">Başla ${ic('arrow')}</button></div></section>`;
 }
 function tugSvg(pos){
@@ -232,7 +234,7 @@ function halatEnd(win){
    <div class="row" style="gap:8px;justify-content:center"><button class="btn btn-ghost" data-go="hub">Salona dön</button><button class="btn btn-p" id="hstart">Rövanş ${ic('arrow')}</button></div></div></section>`;if(win)conf($('#bigs'))},500);
 }
 /* ---------- BAĞLAÇ MAKASI ---------- */
-const MR=[
+let MR=[
  {a:'The exam was extremely difficult.',b:'most students passed it.',o:['However,','Therefore,','Moreover,'],k:0,ty:['zıtlık','sonuç','ekleme'],why:'İkinci cümle beklenenin tersini söylüyor: zor sınav ama çoğu geçti. Zıtlık: However.'},
  {a:'The company lost its biggest customer.',b:'it had to close two factories.',o:['In addition,','For example,','As a result,'],k:2,ty:['ekleme','örnek','sonuç'],why:'Fabrika kapatmak, müşteri kaybının sonucu. As a result = bu yüzden.'},
  {a:'Regular exercise improves your heart health.',b:'it reduces stress.',o:['Moreover,','Nevertheless,','Therefore,'],k:0,ty:['ekleme','zıtlık','sonuç'],why:'İkinci cümle aynı yönde yeni bir fayda ekliyor. Moreover = üstelik.'},
@@ -252,11 +254,11 @@ function railSvg(r,pick,res){
    ${r.o.map((o,i)=>`<g class="st ${res!=null&&i===r.k?'ok':res!=null&&i===pick&&i!==r.k?'no':''}" data-mo="${i}" style="cursor:pointer"><rect x="474" y="${ys[i]-24}" width="120" height="48" rx="12"/><text x="534" y="${ys[i]-2}" ${o.length>13?'style="font-size:11.5px"':''}>${esc(o.replace(',',''))}</text><text class="ty" x="534" y="${ys[i]+15}">${res!=null?r.ty[i].toUpperCase():'İSTASYON'}</text></g>`).join('')}
    <g class="train" id="trn"><rect class="car" x="-26" y="-14" width="52" height="28" rx="8"/><rect class="win" x="-16" y="-8" width="12" height="9" rx="2"/><rect class="win" x="2" y="-8" width="12" height="9" rx="2"/><rect class="chim" x="18" y="-24" width="8" height="11" rx="2"/></g></svg>`;
 }
-function makasIntro(){
+function makasIntro(){setTimeout(()=>KA.src.bar('#wsx',SRCQ.makas));
   $('#view').innerHTML=`<section class="card stage">${head()}<div class="center"><span class="eyebrow">Bağlaç Makası</span><h2 style="margin:4px 0 0;font-size:30px">Treni doğru yöne gönder</h2></div>
    <div class="rail">${railSvg(MR[0],null,null)}</div>
    <div class="howto"><div><b>İki cümle</b>Arada eksik bağlaç var.</div><div><b>Makası çevir</b>İstasyona dokun, tren o raya geçsin.</div><div><b>Hız bonusu</b>Ne kadar çabuk, o kadar puan.</div></div>
-   <div class="center"><button class="btn btn-p" id="mstart">Başla ${ic('arrow')}</button></div></section>`;
+   <div id="wsx"></div><div class="center"><button class="btn btn-p" id="mstart">Başla ${ic('arrow')}</button></div></section>`;
   placeTrain(0,0);
 }
 function placeTrain(pi,t){const p=$('#rp'+pi),tr=$('#trn');if(!p||!tr)return;const L=p.getTotalLength(),a=p.getPointAtLength(L*t),b=p.getPointAtLength(Math.min(L,L*t+1));const ang=Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;tr.setAttribute('transform',`translate(${a.x} ${a.y-6}) rotate(${t>=1?0:ang})`)}
@@ -293,7 +295,7 @@ function makasEnd(){
   if(M.ok>=M.order.length-1)conf($('#bigs'));
 }
 /* ---------- CÜMLE KÖPRÜSÜ ---------- */
-const KS=[
+let KS=[
  {c:['Although','the city','is crowded,','many people','prefer','to live there.'],tr:'Şehir kalabalık olsa da birçok insan orada yaşamayı tercih ediyor.',n:'"Although" yan cümleyi başlatır; virgülden sonra ana cümle gelir.'},
  {c:['The results','of the study','were','published','in a','scientific journal.'],tr:'Çalışmanın sonuçları bilimsel bir dergide yayımlandı.',n:'Edilgen yapı: özne + were + V3 (published).'},
  {c:['Students','who sleep well','tend to','remember','more','information.'],tr:'İyi uyuyan öğrenciler daha çok bilgi hatırlama eğilimindedir.',n:'"who sleep well" özneyi tanımlar ve hemen onun arkasına gelir.'},
@@ -302,11 +304,11 @@ const KS=[
 ];
 const K={};
 const walker=`<svg viewBox="0 0 30 46"><circle cx="15" cy="8" r="7" fill="var(--p)"/><path d="M15 15v15M15 30l-6 13M15 30l6 13M7 22h16" stroke="var(--p)" stroke-width="5" stroke-linecap="round" fill="none"/></svg>`;
-function kopruIntro(){
+function kopruIntro(){setTimeout(()=>KA.src.bar('#wsx',SRCQ.kopru));
   $('#view').innerHTML=`<section class="card stage">${head()}<div class="center"><span class="eyebrow">Cümle Köprüsü</span><h2 style="margin:4px 0 0;font-size:30px">Karşıya geç</h2></div>
    <div class="bridge"><div class="river"></div><div class="cliff"></div><div class="cliff r"></div><div class="planks">${'<div class="plank laid">word</div>'.repeat(3)}${'<div class="plank"></div>'.repeat(3)}</div><div class="walker">${walker}</div></div>
    <div class="howto"><div><b>Parçalar karışık</b>Her biri bir köprü tahtası.</div><div><b>Sırayla diz</b>Doğru sıradaki parça tahtayı yerine koyar.</div><div><b>3 can</b>Yanlış tahta nehre düşer, bir can gider.</div></div>
-   <div class="center"><button class="btn btn-p" id="kstart">Başla ${ic('arrow')}</button></div></section>`;
+   <div id="wsx"></div><div class="center"><button class="btn btn-p" id="kstart">Başla ${ic('arrow')}</button></div></section>`;
 }
 function kopruStart(){Object.assign(K,{i:0,lives:3,score:0,clean:0,miss:[]});kopruRound()}
 function kopruRound(){
@@ -340,6 +342,26 @@ function kopruEnd(){
   if(win)conf($('#bigs'));
 }
 /* ---------- yönlendirme ---------- */
+/* ---------- kendi kelimelerinle ---------- */
+const DEMOQ={W:DEFW,MR,KS};
+const QV=KA.src.V;
+async function genMakas(ws){
+  const sys=`Sen BUEPT hazırlığı için İngilizce öğretmenisin. "Bağlaç Makası" oyunu için soru yaz: iki cümle arasında eksik bir bağlaç (However, / Therefore, / Moreover, / For example, / As a result, / In contrast, / Similarly, / Instead, / Nevertheless, / In addition,) var.
+Her soruda öğrencinin kelimelerinden en az birini kullan. Sadece JSON döndür: {"items":[{"a":"Birinci cümle.","b":"ikinci cümlenin bağlaçtan sonraki kısmı (küçük harfle başlar).","o":["3 bağlaç seçeneği, virgüllü"],"k":doğru seçeneğin sırası 0-2,"ty":["her seçeneğin türü: zıtlık|sonuç|ekleme|örnek|benzerlik|seçenek"],"why":"Türkçe kısa açıklama"}]}
+Kurallar: 8 soru; seçeneklerin türleri birbirinden farklı olsun; doğru cevabın yeri karışık olsun; cümleler B1-B2, en fazla 14 kelime.`;
+  return KA.src.ask(sys,ws.map(w=>w.en).join(', '),j=>{const out=[];(j.items||[]).forEach(r=>{try{const o=QV.arr(r.o,3).slice(0,3).map(String);out.push({a:QV.str(r.a),b:QV.str(r.b),o,k:QV.idx(r.k,3),ty:Array.isArray(r.ty)&&r.ty.length>=3?r.ty.slice(0,3).map(String):['','',''],why:String(r.why||'')})}catch(e){}});if(out.length<6)throw new Error('yeterli soru yok');return out});
+}
+async function genKopru(ws){
+  const sys=`Sen BUEPT hazırlığı için İngilizce öğretmenisin. "Cümle Köprüsü" oyunu için karışık sırayla verilecek cümleler yaz. Her cümle öğrencinin kelimelerinden birini içersin ve 5-7 anlamlı parçaya (öbek) bölünsün.
+Sadece JSON döndür: {"items":[{"c":["doğru sırayla öbekler"],"tr":"Türkçe çevirisi","n":"Türkçe kısa dilbilgisi notu (sıralamanın ipucu)"}]}
+Kurallar: 6 cümle; öbekler birleşince tam ve doğru bir İngilizce cümle olsun; aynı öbek iki kez geçmesin; B1-B2 akademik cümleler (although, which, passive, if gibi yapılar).`;
+  return KA.src.ask(sys,ws.map(w=>w.en).join(', '),j=>{const out=[];(j.items||[]).forEach(r=>{try{const c=QV.arr(r.c,4).map(x=>String(x).trim()).filter(Boolean);if(c.length<4||c.length>8||new Set(c).size!==c.length)return;out.push({c,tr:String(r.tr||''),n:String(r.n||'')})}catch(e){}});if(out.length<4)throw new Error('yeterli cümle yok');return out});
+}
+const SRCQ={
+  halat:{game:'halat',need:40,min:8,instant:true,gen:ws=>{const it=ws.filter(x=>x.tr);return it.length>=8?it.map(x=>[x.en,x.tr,x.syn||'']):null},onData:d=>{W=d},onDemo:()=>{W=DEMOQ.W}},
+  makas:{game:'makas',need:8,min:4,title:'bağlaç soruları',gen:genMakas,onData:d=>{MR=d},onDemo:()=>{MR=DEMOQ.MR}},
+  kopru:{game:'kopru',need:6,min:4,title:'köprü cümleleri',gen:genKopru,onData:d=>{KS=d},onDemo:()=>{KS=DEMOQ.KS}}
+};
 function go(v){VIEW=v;cancelAnimationFrame(H.raf);cancelAnimationFrame(M.raf);H.over=true;
   if(v==='hub')hub();else if(v==='halat')halatIntro();else if(v==='makas')makasIntro();else if(v==='kopru')kopruIntro();
   else if(['fetih','dava','avukat','lonca','ari'].includes(v)){location.href=v+'.html';return}

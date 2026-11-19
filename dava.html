@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0f766e">
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Special+Elite&display=swap">
-<link rel="stylesheet" href="ortak.css?v=13">
+<link rel="stylesheet" href="ortak.css?v=14">
 <style>
 :root{--cork:color-mix(in srgb,#b7834a 55%,var(--card));--paper:#fbf7ee;--pink:#e11d48;--type:"Special Elite",ui-monospace,Menlo,monospace}
 :root[data-mode=dark]{--cork:color-mix(in srgb,#7a5530 55%,var(--card));--paper:#f3ecdc}
@@ -229,6 +229,7 @@ body.quake .ka-wrap{animation:quake .5s}
 .qprog{display:flex;gap:4px}.qprog i{width:22px;height:6px;border-radius:4px;background:var(--soft)}.qprog i.on{background:var(--p)}
 .snav .dots i{cursor:pointer}.snav .dots i.sus{background:var(--bad)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--bad) 25%,transparent)}
 .talk .tools{gap:8px}
+#wsx{margin-top:14px}#wsx .wsrc{margin:0}.fmine{position:absolute;top:8px;right:14px;font-size:10px;font-weight:900;letter-spacing:.08em;color:#fff;background:#7c3aed;border-radius:999px;padding:3px 8px}
 @media (max-width:760px){.folders{grid-template-columns:1fr}.modes{grid-template-columns:1fr}.folder{min-height:170px}}
 
 .strat{margin-top:8px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--p) 8%,var(--card));font-size:13.5px;line-height:1.45;color:var(--ink2)}
@@ -252,7 +253,7 @@ body.quake .ka-wrap{animation:quake .5s}
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="view"></div></main>
-<script src="firebase-config.js?v=13"></script><script src="ortak.js?v=13"></script>
+<script src="firebase-config.js?v=14"></script><script src="ortak.js?v=14"></script>
 <script>
 (function(){
 'use strict';
@@ -480,6 +481,70 @@ function objective(){
 function hudHtml(){const l=left();return `<div class="hud" id="hud">${timed()?`<div class="clk ${l<=45?'warn':''}">${I.clock.replace('<svg','<svg width="20" height="20"')}<b>${clock()}</b></div><div class="tbar" title="${C.deadline}'e kalan süre"><i style="width:${l/C.limit*100}%"></i></div>`:`<div class="clk"><span class="pill" style="background:var(--p);color:var(--p-ink)">Hikâye modu</span></div><div style="flex:1"></div>`}<span class="pill">Kanıt <b>${S.ev.length}/${EVK().length}</b></span><button class="pill" id="defter">Defter <b>${Object.keys(S.words).length}</b></button>${S.phase!=='board'?'<button class="pill" data-go="board">← Pano</button>':'<button class="pill" data-go="desk">Masa</button>'}</div>`}
 function hud(){const h=$('#hud');if(h)h.outerHTML=hudHtml()}
 /* ---------- render ---------- */
+
+/* ---------- Kendi kelimelerinle dava ---------- */
+const MYK='ka_dava_my';
+let MY={};try{MY=JSON.parse(localStorage.getItem(MYK))||{}}catch(e){MY={}}
+const myOrder=()=>Object.keys(MY).sort((a,b)=>(MY[b]._t||0)-(MY[a]._t||0));
+function regMy(){myOrder().forEach(id=>{CASES[id]=MY[id]})}
+regMy();
+const PAL=[['#0f766e','#44403c','glasses'],['#be185d','#1c1917','bun'],['#4d7c0f','#d6d3d1'],['#1d4ed8','#3f3f46','beard'],['#9333ea','#78350f'],['#b45309','#111827','cap']];
+function checkCase(c,ws){
+  const sm=CASES.fosil;
+  if(!c||typeof c!=='object')throw new Error('dava nesnesi yok');(c.sus||[]).forEach(x=>{if(!x.f||typeof x.f!=='object')x.f={};if(!x.f.c)x.f.c='#334155';if(!x.f.hair)x.f.hair='#1c1917'});Object.values(c.talk||{}).forEach(t=>{if(t&&!t.done)t.done=[];if(t&&!t.unlock)t.unlock=[]});
+  c=KA.src.shape(sm,c,{dicts:['/aw','/ev','g','/talk','wrong'],opt:['head','mh','c','w','br','lesson','stage','acc','shadow']});
+  const E=new Set(Object.keys(c.ev));if(E.size<6)throw new Error('kanıt sayısı az');
+  const sk=new Set(c.sus.map(x=>x.k));if(sk.size!==c.sus.length||c.sus.length<3)throw new Error('şüpheliler hatalı');
+  const tids=Object.keys(c.talk);if(tids.length<1||tids.some(t=>!t.startsWith('i_')))throw new Error('sorgu kimlikleri i_ ile başlamalı');
+  c.sus.forEach((x,i)=>{if(x.talk&&!c.talk[x.talk])delete x.talk;const pl=PAL[i%PAL.length];if(!x.f||typeof x.f!=='object')x.f={};if(!x.f.shadow){x.f.c=x.f.c&&/^#/.test(x.f.c)?x.f.c:pl[0];x.f.hair=x.f.hair&&/^#/.test(x.f.hair)?x.f.hair:pl[1];if(x.f.acc&&!['hat','cap','bun','glasses','beard'].includes(x.f.acc))delete x.f.acc}});
+  const ids=new Set(c.docs.map(d=>d.id));if(ids.size!==c.docs.length||c.docs.length<3)throw new Error('belgeler hatalı');
+  const ok=x=>ids.has(x)||!!c.talk[x];
+  c.docs.forEach(d=>{d.unlock=(d.unlock||[]).filter(ok);if(!['report','log','mail','record','letter','phone'].includes(d.k))d.k='report';
+    if(d.k==='mail'&&!d.mh)d.k='report';if(d.q.length<2)throw new Error(d.id+' iki soru içermeli');
+    d.q.forEach(q=>{if(!E.has(q.e))throw new Error(d.id+' sorusu bilinmeyen kanıta bağlı: '+q.e);q.a=KA.src.V.idx(q.a,q.o.length,'cevap');q.ev=Math.min(Math.max(0,q.ev|0),d.s.length-1);if(!TIP[q.ty])q.ty='Çıkarım'})});
+  Object.entries(c.talk).forEach(([id,t])=>{if(!sk.has(t.who))throw new Error(id+' kişisi yok');t.unlock=(t.unlock||[]).filter(ok);t.done=(t.done||[]).filter(x=>ids.has(x));
+    const lies=t.st.filter(x=>x.c);if(!lies.length)throw new Error(id+' içinde çelişki yok');
+    t.st.forEach(x=>{if(!x.c)return;x.c=x.c.filter(e=>E.has(e));if(!x.c.length)throw new Error(id+' çelişkisi kanıta bağlı değil');
+      const tk=new Set(x.en.split(/\s+/).map(norm));x.w=(x.w||[]).map(String).filter(w=>tk.has(norm(w)));if(!x.w.length)x.w=x.en.split(/\s+/).map(norm).filter(w=>w.length>4).slice(0,2);
+      x.br=x.br||'…';x.lesson=x.lesson||''})});
+  if(!sk.has(c.sol.who))throw new Error('suçlu şüpheliler arasında değil');
+  c.sol.slots.forEach(sl=>{sl[2]=sl[2].filter(e=>E.has(e));if(!sl[2].length)throw new Error('iddia yuvası kanıtsız')});
+  c.tl=c.tl.filter(r=>!r[2]||E.has(r[2]));if(c.tl.length<3)throw new Error('zaman çizelgesi kısa');c.tl.forEach((r,i)=>{r[3]=r[3]==='red'?'red':'';r[4]=Math.round(4+i*(93/Math.max(1,c.tl.length-1)))});
+  Object.values(c.ev).forEach(v=>{if(!sk.has(v.s))v.s=c.sol.who});
+  // çözülebilirlik: belgeler ve sorgular sırayla açılabiliyor mu?
+  const got=new Set(),sd=new Set(),td=new Set();let prog=true;
+  const open=u=>u.every(x=>x.startsWith('i_')?td.has(x):sd.has(x));
+  while(prog){prog=false;c.docs.forEach(d=>{if(!sd.has(d.id)&&open(d.unlock)){sd.add(d.id);d.q.forEach(q=>got.add(q.e));prog=true}});
+    Object.entries(c.talk).forEach(([id,t])=>{if(!td.has(id)&&open(t.unlock)&&t.st.filter(x=>x.c).every(x=>x.c.some(e=>got.has(e)))){td.add(id);prog=true}})}
+  if(sd.size!==c.docs.length||td.size!==tids.length)throw new Error('dava çözülemiyor: sorgudaki çelişkinin kanıtı sorgudan önce bulunmalı');
+  const used=Object.values(c.aw||{}).length;if(used<6)throw new Error('akademik kelime listesi eksik');
+  const txt=c.docs.map(d=>d.s.join(' ')).join(' ').toLowerCase();const hit=ws.filter(w=>KA.src.V.has(txt,w.en)).length;if(hit<Math.min(5,ws.length-1))throw new Error('kelimelerin belgelerde yeterince geçmiyor ('+hit+')');
+  c.start=Math.min(600,Math.max(420,c.start|0||540));c.limit=Math.min(360,Math.max(240,c.limit|0||300));c.deadline=hm(c.start+c.limit);
+  c.stars=2;c.len='20 dk';
+  return c;
+}
+async function genDava(ws){
+  const sm=JSON.stringify(CASES.fosil);
+  const sys=`Sen BUEPT (Boğaziçi) reading hazırlığı için "Dedektif Masası" davaları yazan bir yazarsın. Aşağıdaki ÖRNEK DAVA ile BİREBİR AYNI JSON yapısında, aynı alan adlarıyla, yepyeni bir dava yaz.
+Kurallar:
+- Hikâye, yer, kişiler ve kanıtlar tamamen yeni ve gerçekçi olsun (Türkiye'de bir kurum, şirket, okul, müze vb.).
+- Belgeler (docs[].s), ifadeler (talk[].st[].en), kanıt alıntıları (ev[].en), epi.en ve fail.en İNGİLİZCE (B2, akademik). Açıklamalar, notlar, brief, intro, why, lesson, tr alanları TÜRKÇE.
+- "aw" sözlüğü TAM OLARAK öğrencinin kelimelerini içersin (anahtar = kelime, değer = Türkçe anlamı). Bu kelimelerin her biri belgelerin cümlelerinde geçsin ve docs[].g sözlüğünde de açıklansın.
+- Yapı örnekteki gibi: 8 kanıt (f1…f8), 4 belge (d1, d2, d3, d4) ve her belgede 2 soru; her sorunun "e" alanı o soru doğru cevaplanınca kazanılan kanıt. 4 şüpheli; 2 tanesi sorgulanır (talk anahtarları "i_" ile başlar, sus[].talk ile eşleşir).
+- Kilit sırası örnektekiyle aynı mantıkta: d1 açık; d2 d1'den sonra; ilk sorgu d2'den sonra; d3 ilk sorgudan sonra; ikinci sorgu d3'ten sonra; d4 ikinci sorgudan sonra.
+- Her sorguda yalan söylenen TAM BİR ifade olsun: "c" o yalanı çürüten kanıt(lar) (sorgudan ÖNCE açılan belgelerden), "w" ifadede AYNEN geçen ve çelişen 2-4 kelime, "br" itiraf cümlesi (İngilizce), "lesson" Türkçe ders (<b> kullanabilirsin).
+- Soru tipleri örnektekilerden biri: Çıkarım, Detay, Gönderme, Bağlamda anlam, Doğru / Yanlış / Yok. Doğru cevabın yeri karışık olsun. "ev" alanı cevabın bulunduğu cümlenin sırası (0'dan).
+- sol: suçlu (who), 3 iddia yuvası (Sebep / Araç / Fırsat) ve her yuvaya uygun kanıtlar; wrong: diğer şüpheliler neden suçlu değil.
+- Saat: start ve limit dakika cinsinden; brief içindeki son saat start+limit ile aynı olsun.
+Metinleri örnekten biraz kısa tut (belge başına 4-5 cümle). Yalnızca JSON döndür.
+
+ÖRNEK DAVA:
+${sm}`;
+  const inp='Öğrencinin kelimeleri:\n'+ws.map(w=>w.en+(w.tr?' = '+w.tr:'')).join('\n');
+  return KA.src.ask(sys,inp,j=>checkCase(j.case||j,ws),{tries:2,ai:{tier:'long',ms:150000}});
+}
+function addMy(c){const id='my'+Date.now().toString(36);c.id=id;c.no=String(1000+Math.floor(Math.random()*9000));c._mine=1;c._t=Date.now();MY[id]=c;
+  const ks=myOrder();ks.slice(6).forEach(k=>{delete MY[k];delete CASES[k]});try{localStorage.setItem(MYK,JSON.stringify(MY))}catch(e){}CASES[id]=c;return id}
 function render(){
   const v=$('#view');
   if(!C||S.phase==='desk'||DB.cur==null){return desk()}
@@ -495,10 +560,11 @@ function render(){
 }
 function desk(){
   DB.cur=null;try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}
-  const cards=CASE_ORDER.map(id=>{const c=CASES[id],s=DB.cases[id],st=!s||s.phase==='intro'?'Yeni':s.end==='win'?'Çözüldü':s.end==='time'?'Süre doldu':'Devam ediyor';
-   return `<button class="folder" data-case="${id}"><span class="ftab2">DOSYA ${c.no}</span>${s&&s.end==='win'?`<span class="fstamp">ÇÖZÜLDÜ</span>`:''}<b>${esc(c.title)}</b><span class="fpl">${esc(c.place)}</span><span class="fmeta"><span>${'●'.repeat(c.stars)}${'○'.repeat(3-c.stars)} zorluk</span><span>${c.len}</span></span><span class="fst ${st==='Çözüldü'?'ok':st==='Devam ediyor'?'on':''}">${st}${s&&s.rank?' · '+esc(s.rank):''}</span></button>`}).join('');
-  $('#view').innerHTML=`<section class="card deskh"><a href="oyunlar.html" class="mut" style="font-weight:800;font-size:13px;text-decoration:none">← Oyun Salonu</a><span class="eyebrow" style="display:block;margin-top:8px">Dedektif Masası</span><h1>Hangi dosyayı açıyorsun?</h1><p>Her dava İngilizce belgeler, ifadeler ve kayıtlarla dolu. Okudukça kanıt toplar, çelişkileri yakalar, suçluyu gösterirsin. Yanında Komiser Nil var; takıldığında yol gösterir.</p></section>
-   <div class="folders">${cards}<div class="folder soon"><span class="ftab2">DOSYA ????</span><b>Yeni dava yolda</b><span class="fpl">Bir sonraki dosya hazırlanıyor.</span></div></div>`;
+  const cards=[...myOrder(),...CASE_ORDER].map(id=>{const c=CASES[id],s=DB.cases[id],st=!s||s.phase==='intro'?'Yeni':s.end==='win'?'Çözüldü':s.end==='time'?'Süre doldu':'Devam ediyor';
+   return `<button class="folder" data-case="${id}"><span class="ftab2">DOSYA ${c.no}</span>${c._mine?`<span class="fmine">SENİN KELİMELERİN</span>`:''}${s&&s.end==='win'?`<span class="fstamp">ÇÖZÜLDÜ</span>`:''}<b>${esc(c.title)}</b><span class="fpl">${esc(c.place)}</span><span class="fmeta"><span>${'●'.repeat(c.stars)}${'○'.repeat(3-c.stars)} zorluk</span><span>${c.len}</span></span><span class="fst ${st==='Çözüldü'?'ok':st==='Devam ediyor'?'on':''}">${st}${s&&s.rank?' · '+esc(s.rank):''}</span></button>`}).join('');
+  $('#view').innerHTML=`<section class="card deskh"><a href="oyunlar.html" class="mut" style="font-weight:800;font-size:13px;text-decoration:none">← Oyun Salonu</a><span class="eyebrow" style="display:block;margin-top:8px">Dedektif Masası</span><h1>Hangi dosyayı açıyorsun?</h1><p>Her dava İngilizce belgeler, ifadeler ve kayıtlarla dolu. Okudukça kanıt toplar, çelişkileri yakalar, suçluyu gösterirsin. Yanında Komiser Nil var; takıldığında yol gösterir.</p><div id="wsx"></div></section>
+   <div class="folders">${cards}<div class="folder soon"><span class="ftab2">DOSYA ????</span><b>Kendi davanı yazdır</b><span class="fpl">Yukarıdan <b>Kendi kelimelerim</b>'i seç; kelimelerin belgelerin içine gizlenmiş yeni bir dava hazırlanır.</span></div></div>`;
+  KA.src.bar('#wsx',{game:'dava',need:8,min:6,title:'yeni bir dava (belgeler, ifadeler, kanıtlar)',hint:'Hazırlanması 30–60 saniye sürebilir.',gen:genDava,onData:(d,m)=>{if(m&&m.fresh){const c=JSON.parse(JSON.stringify(d));const id=addMy(c);useCase(id);render();window.scrollTo({top:0})}}});
 }
 function intro(){
   const going=S.used>0||Object.keys(S.docs).length;

@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0f766e">
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="ortak.css?v=13">
+<link rel="stylesheet" href="ortak.css?v=14">
 <style>
 :root{--bot:#0f766e;--scr:#0b1f24;--glow:#5eead4;--warm:#f59e0b}
 .lab{position:relative;border-radius:26px;overflow:hidden;padding:26px 24px;color:#e7fbf7;background:linear-gradient(160deg,#08262b,#0f3d40 60%,#0b2e31);box-shadow:var(--sh2)}
@@ -108,11 +108,12 @@
 .rulebook b{display:block;font-size:13px;color:var(--p);letter-spacing:.04em}
 @media (max-width:900px){.room,.hubg{grid-template-columns:1fr}.botcard{position:static;display:grid;grid-template-columns:110px 1fr;text-align:left;gap:12px;align-items:center}.lab .hero{grid-template-columns:120px 1fr}}
 @media (max-width:620px){.lab{padding:20px 16px}.lab .rules{grid-template-columns:1fr}.lab .hero{grid-template-columns:90px 1fr;gap:12px}.passage{font-size:16.5px}.result .stat{grid-template-columns:1fr 1fr}.ahud{top:58px}}
+#wsx .wsrc{margin:0}
 </style>
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="view"></div></main>
-<script src="firebase-config.js?v=13"></script><script src="ortak.js?v=13"></script>
+<script src="firebase-config.js?v=14"></script><script src="ortak.js?v=14"></script>
 <script>
 (function(){
 'use strict';
@@ -128,7 +129,7 @@ function bot(mood,cls){
   return `<svg class="bot ${cls||''}" viewBox="0 0 172 200"><path d="M86 6v18" stroke="#94a3b8" stroke-width="4"/><circle cx="86" cy="8" r="7" fill="${mood==='think'?'#f59e0b':'#5eead4'}"/><rect x="22" y="24" width="128" height="100" rx="30" fill="#e2e8f0"/><rect x="34" y="36" width="104" height="76" rx="20" fill="#0b1f24" class="scrn"/>${eyes}${mouth}<rect x="12" y="58" width="12" height="30" rx="6" fill="#94a3b8"/><rect x="148" y="58" width="12" height="30" rx="6" fill="#94a3b8"/><rect x="50" y="128" width="72" height="56" rx="18" fill="#0f766e"/><circle cx="86" cy="150" r="9" fill="#5eead4"/><rect x="64" y="168" width="44" height="6" rx="3" fill="#134e4a"/><rect x="30" y="134" width="16" height="40" rx="8" fill="#94a3b8"/><rect x="126" y="134" width="16" height="40" rx="8" fill="#94a3b8"/></svg>`;
 }
 /* ================= DERSLER ================= */
-const L=[
+let L=[
  {k:'false',n:'Sahte Arkadaşlar',sub:'sympathetic ≠ sempatik',intro:'Yeni bir metin okudum! Bazı kelimeler Türkçeye çok benziyor, bu yüzden çok kolay oldu… sanırım.',
   p:'My new neighbour is very sympathetic. When my cat was ill, she listened to me for an hour and helped me take it to the vet.',
   ch:['Yeni komşum','çok sempatik, herkesi güldüren eğlenceli biri.','Kedim hastayken bana yardım etti.'],wch:[1],tg:['sympathetic'],
@@ -172,7 +173,7 @@ const L=[
   pr:[{s:'Ahmet looked at his watch again and again and kept walking up and down the platform.',a:'Ahmet muhtemelen treni bekliyor ve sabırsızlanıyor.',ok:true,mis:'Ahmet saatine bakıyor ve yürüyor. Bundan başka bir şey bilemeyiz.'},
       {s:'The streets were wet, and people were closing their umbrellas.',a:'Şu anda çok şiddetli yağmur yağıyor.',ok:false,fix:['Yağmur yeni dinmiş','Şu anda şiddetli yağmur yağıyor'],fa:0,fw:'İnsanlar şemsiyelerini kapatıyorsa yağmur durmuştur; ıslak sokaklar da az önce yağdığını gösteriyor.'}]}
 ];
-const EXAM=[
+let EXAM=[
  {k:'false',q:'"The professor was very sympathetic when I explained my problem." What does this tell us about the professor?',ok:'The professor was understanding and kind.',no:'The professor was funny and charming!',why:'sympathetic = anlayışlı'},
  {k:'few',q:'"Few people came to the concert." Was the concert popular?',ok:'No. Hardly anyone came.',no:'Yes, some people came, so it was popular!',why:'few = çok az'},
  {k:'ref',q:'"The farmers saved the horses from the burning barn. They had been trapped inside for an hour." Who had been trapped?',ok:'The horses.',no:'The farmers, because they come first in the sentence!',why:'Mahsur kalan, kurtarılan atlardır.'},
@@ -182,7 +183,7 @@ const EXAM=[
 ];
 const NODES=[[60,48],[150,30],[240,52],[70,118],[160,108],[250,122]];
 /* ================= DURUM ================= */
-const KEY='ka_ari1';
+let KEY='ka_ari1';
 let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 const fresh=()=>({li:0,st:{},stage:'intro',cur:null,exam:null});
 if(!S)S=fresh();
@@ -194,6 +195,41 @@ function brain(){
   return `<div class="brain"><svg viewBox="0 0 310 160"><path d="M40 90C20 40 80 6 155 10s140 30 118 84-60 60-120 58S56 140 40 90z" fill="none" stroke="rgba(94,234,212,.25)" stroke-width="2" stroke-dasharray="3 5"/>${lines.map(([a,b])=>`<line class="ln ${strength(L[a].k)!=null&&strength(L[b].k)!=null?'on':''}" x1="${NODES[a][0]}" y1="${NODES[a][1]}" x2="${NODES[b][0]}" y2="${NODES[b][1]}"/>`).join('')}${L.map((l,i)=>`<g class="nd"><circle cx="${NODES[i][0]}" cy="${NODES[i][1]}" r="${strength(l.k)==null?9:13}" fill="${col(l.k)}"/><text x="${NODES[i][0]}" y="${NODES[i][1]+28}">${esc(l.n.split(' ')[0])}</text></g>`).join('')}</svg><div class="blab"><span><i style="background:#5eead4"></i>sağlam</span><span><i style="background:#f59e0b"></i>öğrendi</span><span><i style="background:#f43f5e"></i>yanlış öğrendi</span><span><i style="background:#1f3b40"></i>henüz yok</span></div></div>`;
 }
 function hud(){return `<div class="ahud"><div class="les">${L.map((l,i)=>{const s=strength(l.k);return `<i class="${s==null?(i===S.li&&S.stage==='lesson'?'c':''):'d'+s}"></i>`}).join('')}</div><div class="sp"></div><button class="pill" id="tohub">Ders planı</button></div>`}
+
+/* ================= KENDİ KELİMELERİNLE ================= */
+const DEMO={L,EXAM};let CUR='demo';
+function useContent(d,id,reset){if(CUR===id&&!reset)return false;const x=d||DEMO;L=x.L;EXAM=x.EXAM;KEY=d?'ka_ari1m':'ka_ari1';S=null;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!S||reset)S=fresh();if(S.stage==='intro')S.stage='hub';CUR=id;save();return true}
+function checkAri(j,ws){
+  const V=KA.src.V;if(!j||typeof j!=='object')throw new Error('içerik yok');
+  j=KA.src.shape(DEMO,j,{opt:['mis','fix','fa','fw']});
+  const ks=DEMO.L.map(l=>l.k),out=[];
+  ks.forEach((k,i)=>{const l=j.L.find(x=>x.k===k)||j.L[i];if(!l)throw new Error(k+' dersi eksik');const d=DEMO.L[i];l.k=k;l.n=d.n;l.sub=d.sub;
+    if(l.ch.length<2)throw new Error(k+' parçaları eksik');l.wch=l.wch.map(Number).filter(x=>x>=0&&x<l.ch.length);if(!l.wch.length)throw new Error(k+' yanlış parça işaretsiz');
+    const tk=l.p.split(/\s+/).map(w=>w.replace(/[^A-Za-z'-]/g,'').toLowerCase());l.tg=l.tg.map(String).filter(t=>tk.includes(t.toLowerCase()));if(!l.tg.length)throw new Error(k+' yanıltan kelime metinde yok');
+    if(l.r.length<3||l.r.filter(x=>x[1]==1).length!==1)throw new Error(k+' kurallarından yalnız biri doğru olmalı');l.r=l.r.slice(0,3).map(x=>[String(x[0]),x[1]==1?1:0]);
+    if(l.pr.length<2)throw new Error(k+' alıştırmaları eksik');l.pr=l.pr.slice(0,2).map(x=>{x.ok=!!x.ok;x.mis=x.mis||x.a;if(!x.ok){if(!Array.isArray(x.fix)||x.fix.length<2)throw new Error(k+' düzeltme seçenekleri eksik');x.fa=V.idx(x.fa,x.fix.length,'düzeltme');x.fw=String(x.fw||'')}return x});
+    out.push(l)});
+  j.L=out;j.EXAM=ks.map(k=>j.EXAM.find(x=>x.k===k)).filter(Boolean);if(j.EXAM.length<6)throw new Error('sınav soruları eksik');
+  const txt=out.map(l=>l.p+' '+l.pr.map(x=>x.s).join(' ')).join(' '),hit=ws.filter(w=>V.has(txt,w.en)).length;if(hit<Math.min(4,ws.length-1))throw new Error('kelimelerin metinlerde yeterince geçmiyor ('+hit+')');
+  j._t=Date.now();return j;
+}
+async function genAri(ws){
+  const sys=`Sen BUEPT (Boğaziçi) reading hazırlığı için "ARI'yı Eğit" oyununun içeriğini yazan bir yazarsın. ARI, Türk öğrencilerin tipik okuma hatalarını yapan bir robot. Aşağıdaki ÖRNEK İÇERİK ile BİREBİR AYNI JSON yapısında yeni içerik yaz: {"L":[6 ders],"EXAM":[6 soru]}.
+Kurallar:
+- Ders türleri (k) ve sırası aynı: false (sahte arkadaş kelimeler), few (few/a few, little/a little), ref (zamir göndermesi), phr (phrasal verb), hedge (may, unlikely, not necessarily), inf (çıkarım).
+- Her dersin İngilizce metni (p) ve alıştırma cümleleri (pr[].s) öğrencinin kelimelerinden en az birini içersin. Toplamda kelimelerin çoğunu kullan.
+- intro: ARI'nın kendinden emin Türkçe cümlesi. ch: ARI'nın Türkçe çevirisi parçalar hâlinde; wch: yanlış parçaların sırası; tg: metinde AYNEN geçen ve ARI'yı yanıltan kelime(ler).
+- r: 3 kural seçeneği [Türkçe metin, 1 doğru / 0 yanlış], yalnız biri 1. rule: Türkçe özet kural.
+- pr: 2 alıştırma; s İngilizce cümle, a ARI'nın Türkçe yorumu, ok yorum doğru mu; mis ARI yanlış kural öğrenseydi ne derdi; ok false ise fix [doğru, yanlış], fa doğru seçeneğin sırası, fw açıklama.
+- EXAM: her türden bir soru; q İngilizce, ok doğru Türkçe/İngilizce cevap, no tuzak cevap, why kısa açıklama.
+Yalnızca JSON döndür.
+
+ÖRNEK İÇERİK:
+${JSON.stringify(DEMO)}`;
+  return KA.src.ask(sys,'Öğrencinin kelimeleri:\n'+ws.map(w=>w.en+(w.tr?' = '+w.tr:'')).join('\n'),j=>checkAri(j,ws),{ai:{tier:'long',ms:150000}});
+}
+const ASRC={game:'ari',need:8,min:5,title:'altı yeni ders ve bir sınav',hint:'Kendi kelimelerinle ayrı bir sınıf açılır; örnek setteki ilerlemen korunur.',gen:genAri,
+  onData:(d,m)=>{if(useContent(d,'my:'+m.pid+':'+(d._t||''),m.fresh))hub()},onDemo:()=>{if(useContent(null,'demo'))(S.stage==='intro'?intro:hub)()}};
 /* ================= EKRANLAR ================= */
 function intro(){
   $('#view').innerHTML=`<div class="lab"><a href="oyunlar.html" style="color:#a7d8d0;font-weight:800;font-size:13px;text-decoration:none;position:relative">← Oyun Salonu</a>
@@ -207,8 +243,9 @@ function hub(){
   const next=L.findIndex(l=>strength(l.k)==null);
   $('#view').innerHTML=hud()+`<div class="hubg"><section class="card" style="padding:18px 20px"><span class="eyebrow">Ders planı</span><h2 style="margin:4px 0 12px;font-size:26px">${all?'ARI sınava hazır':'Altı ders, bir sınav'}</h2>
    <div class="lessons">${L.map((l,i)=>{const s=strength(l.k);const lock=i>0&&strength(L[i-1].k)==null;return `<button class="lesson ${s==null?'':'d'+s}" data-les="${i}" ${lock?'disabled':''}><span class="num">${i+1}</span><span><b>${esc(l.n)}</b><small>${esc(l.sub)}</small></span><span class="tag">${s==null?(lock?'kilitli':'başla'):s===2?'sağlam':s===1?'öğrendi':'yanlış öğrendi'}</span></button>`}).join('')}</div>
-   <div class="row" style="justify-content:flex-end;margin-top:14px;gap:8px;flex-wrap:wrap">${all?`<button class="btn btn-acc" id="exam">ARI'yı sınava gönder ${ic('arrow')}</button>`:`<button class="btn btn-p" data-les="${next}">${next+1}. derse başla ${ic('arrow')}</button>`}</div></section>
+   <div class="row" style="justify-content:flex-end;margin-top:14px;gap:8px;flex-wrap:wrap">${all?`<button class="btn btn-acc" id="exam">ARI'yı sınava gönder ${ic('arrow')}</button>`:`<button class="btn btn-p" data-les="${next}">${next+1}. derse başla ${ic('arrow')}</button>`}</div><div id="wsx" style="margin-top:16px"></div></section>
    <aside><div class="card botcard">${bot(all?'proud':'neutral')}<div><b>ARI</b><small>Beyin haritası</small></div></div><div style="margin-top:12px">${brain()}</div></aside></div>`;
+  KA.src.bar('#wsx',ASRC);
 }
 function lesson(){
   const l=L[S.li],c=S.cur;S.stage='lesson';save();

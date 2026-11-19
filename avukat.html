@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0f766e">
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=13">
+<link rel="stylesheet" href="ortak.css?v=14">
 <style>
 :root{--wood:#5b3a1e;--wood2:#7a4f2a;--paper:#fbf8f1;--ink9:#1f1b16;--brass:#c9a227}
 :root[data-mode=dark]{--paper:#f1ece0}
@@ -164,11 +164,12 @@ body.quake .ka-wrap{animation:quake .5s}
 .plan ol b{color:var(--ink)}
 @media (max-width:900px){.prep,.brief{grid-template-columns:1fr}.qcard{position:static}.cases{grid-template-columns:1fr}}
 @media (max-width:620px){.office{padding:20px 16px}.scale{width:60px;opacity:.5}.paper{padding:18px 14px;font-size:15.5px}.paper .cl{padding-left:40px}.court .who i{width:54px;height:54px}.court .who.judge i{width:66px;height:66px}.jury svg{width:16px;height:20px}.slots,.stat{grid-template-columns:1fr 1fr}.slots .slot:last-child{grid-column:1/-1}.cmp{grid-template-columns:1fr}.skills div{grid-template-columns:120px 1fr 44px;font-size:13px}.ahud{top:58px}}
+#wsx{margin-top:18px;position:relative}#wsx .wsrc{margin:0}
 </style>
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="view"></div></main>
-<script src="firebase-config.js?v=13"></script><script src="ortak.js?v=13"></script>
+<script src="firebase-config.js?v=14"></script><script src="ortak.js?v=14"></script>
 <script>
 (function(){
 'use strict';
@@ -267,6 +268,51 @@ let C=null,S=null;
 const save=()=>{try{if(C)DB.cases[C.id]=S;localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}};
 function useCase(id){C=CASES[id];S=DB.cases[id]||fresh();DB.cases[id]=S;save()}
 const skAdd=(ty,ok)=>{S.sk[ty]=S.sk[ty]||[0,0];S.sk[ty][1]++;if(ok)S.sk[ty][0]++};
+
+/* ================= KENDİ KELİMELERİNLE DAVA ================= */
+const MYK='ka_avukat_my';
+let MY={};try{MY=JSON.parse(localStorage.getItem(MYK))||{}}catch(e){MY={}}
+const myOrder=()=>Object.keys(MY).sort((a,b)=>(MY[b]._t||0)-(MY[a]._t||0));
+const FACES=[['#b45309','#3f1d0b',''],['#0e7490','#292524','beard'],['#7c3aed','#1c1917','bun'],['#15803d','#57534e','glasses'],['#be123c','#111827','']];
+function dress(c,i){const f=FACES[i%FACES.length];c.client.f=face(f[0],f[1],f[2]?ACC[f[2]]:'');return c}
+myOrder().forEach((id,i)=>{CASES[id]=dress(MY[id],i)});
+function sampleCase(){const c=JSON.parse(JSON.stringify(CASES.kira,(k,v)=>k==='f'?'(yüz otomatik eklenir)':v));return JSON.stringify(c)}
+function checkAv(c,ws){
+  if(!c||typeof c!=='object')throw new Error('dava nesnesi yok');if(c.client)c.client.f='x';
+  const sm=JSON.parse(JSON.stringify(CASES.kira,(k,v)=>k==='f'?'x':v));
+  c=KA.src.shape(sm,c,{dicts:['g','/cards'],opt:['ok','bad','card','orig','mk','head']});
+  const V=KA.src.V,ids=new Set(c.docs.map(d=>d.id)),K=new Set(Object.keys(c.cards));
+  if(ids.size<3)throw new Error('en az 3 belge gerekli');if(K.size<3)throw new Error('en az 3 kanıt kartı gerekli');
+  c.docs.forEach(d=>{if(!['contract','record','mail','letter'].includes(d.k))d.k='record';d.s=d.s.filter(x=>Array.isArray(x)&&x.length>=2).map(x=>[String(x[0]||''),String(x[1])]);if(!d.s.length)throw new Error(d.id+' boş')});
+  c.prep.forEach((q,i)=>{if(!ids.has(q.doc))throw new Error('hazırlık '+(i+1)+' belgesi yok');const d=c.docs.find(x=>x.id===q.doc);q.cl=Math.min(Math.max(0,q.cl|0),d.s.length-1);q.a=V.idx(q.a,q.o.length,'cevap');if(!K.has(q.card))throw new Error('hazırlık '+(i+1)+' kartı yok');if(!SK[q.ty])q.ty='Detay'});
+  const got=new Set(c.prep.map(q=>q.card));
+  let lies=0;c.trial.forEach((t,i)=>{if(t.ok){t.ok=true;delete t.bad;return}const tk=new Set(t.en.split(/\s+/).map(w=>w.toLowerCase().replace(/[^a-z']/g,'')));
+    t.bad=(t.bad||[]).map(String).filter(w=>tk.has(w.toLowerCase().replace(/[^a-z']/g,'')));t.card=(Array.isArray(t.card)?t.card:[t.card]).filter(k=>got.has(k));
+    if(!t.bad.length||!t.card.length){t.ok=true;delete t.bad;delete t.card;return}t.orig=String(t.orig||'');t.mk=(t.mk||[]).map(String).filter(m=>t.orig.includes(m));lies++});
+  if(lies<3)throw new Error('duruşmada en az 3 çarpıtma olmalı');
+  c.slots.forEach(sl=>{sl[2]=(sl[2]||[]).filter(k=>got.has(k));if(!sl[2].length)throw new Error('kapanış yuvası kartsız')});
+  if(c.closing.filter(x=>x[1]==1).length!==1)throw new Error('kapanışta tam bir doğru konuşma olmalı');c.closing.forEach(x=>{x[1]=x[1]==1?1:0;x[2]=String(x[2]||'')});
+  const txt=c.docs.map(d=>d.s.map(x=>x[1]).join(' ')).join(' ');const hit=ws.filter(w=>V.has(txt,w.en)).length;if(hit<Math.min(4,ws.length-1))throw new Error('kelimelerin belgelerde yeterince geçmiyor ('+hit+')');
+  c.stars=2;c.len='15–20 dk';return c;
+}
+async function genAv(ws){
+  const sys=`Sen BUEPT (Boğaziçi) reading hazırlığı için "Mahkeme: Stajyer Avukat" davaları yazan bir yazarsın. Aşağıdaki ÖRNEK DAVA ile BİREBİR AYNI JSON yapısında, aynı alan adlarıyla yepyeni bir dava yaz.
+Kurallar:
+- Yeni bir müvekkil ve gerçekçi bir anlaşmazlık (iş sözleşmesi, garanti, okul kaydı, sigorta, abonelik, kira vb.). Karşı taraf avukatı yine Mr. Crane; belgeleri kendi lehine çarpıtır.
+- Belgeler (docs[].s: [madde no ya da etiket, İngilizce metin]), duruşma cümleleri (trial[].en), kart alıntıları (cards[].en), closing metinleri, win.en ve lose.en İNGİLİZCE (B2). brief, client.q, tr, why, d, t alanları TÜRKÇE.
+- Öğrencinin kelimelerinin hepsini belgelerin metinlerinde kullan ve ilgili belgenin "g" sözlüğünde Türkçe anlamlarıyla açıkla. Ayrıca unless, may, shall, no fewer than gibi hukuki dil tuzaklarını kullan.
+- prep: 5 soru; her biri bir belgeye (doc), o belgedeki maddenin sırasına (cl, 0'dan), bir soru tipine (ty: Koşul, Modal, Nicelik, Detay, Çıkarım, Kapsam, Doğru / Yanlış / Yok) ve kazanılan karta (card) bağlı. Doğru cevabın yeri karışık olsun.
+- trial: 6 cümle; 2 tanesi doğru (ok:true), 4 tanesi çarpıtma: bad (cümlede AYNEN geçen çarpıtan kelimeler), card (çürüten kart anahtarları), orig (belgedeki asıl cümle), mk (orig içinde AYNEN geçen vurgulanacak ifadeler), why.
+- slots: 3 kapanış yuvası ve kartları; closing: 3 seçenek, yalnız biri doğru (1), diğerleri 0 ve neden yanlış oldukları.
+- "f" alanını aynen bırak, yüz otomatik eklenir.
+Yalnızca JSON döndür.
+
+ÖRNEK DAVA:
+${sampleCase()}`;
+  return KA.src.ask(sys,'Öğrencinin kelimeleri:\n'+ws.map(w=>w.en+(w.tr?' = '+w.tr:'')).join('\n'),j=>checkAv(j.case||j,ws),{ai:{tier:'long',ms:150000}});
+}
+function addMy(c){const id='my'+Date.now().toString(36);c.id=id;c.no='Dava '+String(myOrder().length+3).padStart(2,'0');c._mine=1;c._t=Date.now();MY[id]=JSON.parse(JSON.stringify(c,(k,v)=>k==='f'?undefined:v));
+  myOrder().slice(6).forEach(k=>{delete MY[k];delete CASES[k]});try{localStorage.setItem(MYK,JSON.stringify(MY))}catch(e){}CASES[id]=dress(c,myOrder().length);return id}
 /* ================= EKRANLAR ================= */
 function render(){
   if(!C)return home();
@@ -281,12 +327,13 @@ function hud(){const ph=['prep','trial','closing'],n=['Hazırlık','Duruşma','K
   return `<div class="ahud"><div class="ph">${n.map((x,i)=>`<span class="${i===cur?'on':i<cur?'ok':''}">${i+1} · ${x}</span>`).join('')}</div><div class="sp"></div><span class="pill">Kart <b>${S.cards.length}/${Object.keys(C.cards).length}</b></span><button class="pill" id="files">Dava dosyası</button><button class="pill" id="home">Büro</button></div>`}
 function mentor(t){return `<div class="mentor"><i>${P.selma}</i><div><small>AV. SELMA ERDEM · PATRONUN</small><p>${t}</p></div></div>`}
 function home(){
-  const cs=ORDER.map(id=>{const c=CASES[id],s=DB.cases[id],st=!s?'Yeni':s.end==='win'?'Kazanıldı':s.end==='lose'?'Kaybedildi':'Devam ediyor';
-   return `<button class="cs" data-case="${id}">${s&&s.end==='win'?'<span class="seal">KAZANILDI</span>':''}<span class="no">${c.no.toUpperCase()}</span><b>${esc(c.title)}</b><span class="d">${esc(c.client.n)} · ${esc(c.client.r)}</span><span class="m"><span>${'●'.repeat(c.stars)}${'○'.repeat(3-c.stars)} zorluk</span><span>${c.len}</span></span><span class="st ${st==='Kazanıldı'?'ok':st==='Devam ediyor'?'on':''}">${st}</span></button>`}).join('');
+  const cs=[...myOrder(),...ORDER].map(id=>{const c=CASES[id],s=DB.cases[id],st=!s?'Yeni':s.end==='win'?'Kazanıldı':s.end==='lose'?'Kaybedildi':'Devam ediyor';
+   return `<button class="cs" data-case="${id}">${s&&s.end==='win'?'<span class="seal">KAZANILDI</span>':''}<span class="no">${c.no.toUpperCase()}${c._mine?' · SENİN KELİMELERİN':''}</span><b>${esc(c.title)}</b><span class="d">${esc(c.client.n)} · ${esc(c.client.r)}</span><span class="m"><span>${'●'.repeat(c.stars)}${'○'.repeat(3-c.stars)} zorluk</span><span>${c.len}</span></span><span class="st ${st==='Kazanıldı'?'ok':st==='Devam ediyor'?'on':''}">${st}</span></button>`}).join('');
   $('#view').innerHTML=`<div class="office"><svg class="scale" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8v48M20 56h24M12 18h40"/><path d="M12 18 6 34h12zM52 18l-6 16h12z"/><path d="M6 34a6 4 0 0 0 12 0M46 34a6 4 0 0 0 12 0"/></svg>
    <a href="oyunlar.html" style="color:#d8c7ad;font-weight:800;font-size:13px;text-decoration:none;position:relative">← Oyun Salonu</a>
    <div style="position:relative"><span class="eyebrow" style="color:#fde68a;display:block;margin-top:10px">Mahkeme</span><h1>Stajyer Avukat</h1><div class="sub">Erdem & Partners hukuk bürosundaki ilk haftan. Dosyalar İngilizce, karşı taraf kurnaz, hâkim sabırsız. Davayı kazanacak şey bir kelimedir: <b>may</b> ile <b>must</b>, <b>unless</b> ile <b>because</b> arasındaki fark.</div>
-   <div class="cases">${cs}<div class="cs soon"><span class="no">DAVA 03</span><b>Yakında</b><span class="d">Telif hakkı davası hazırlanıyor.</span></div></div></div></div>`;
+   <div class="cases">${cs}<div class="cs soon"><span class="no">YENİ DAVA</span><b>Kendi davanı aç</b><span class="d">Aşağıdan <b>Kendi kelimelerim</b>'i seç; kelimelerin sözleşmelerin içine yazılır.</span></div></div><div id="wsx"></div></div></div>`;
+  KA.src.bar('#wsx',{game:'avukat',need:8,min:5,title:'yeni bir dava (sözleşme, kayıtlar, duruşma)',hint:'Hazırlanması 30–60 saniye sürebilir.',gen:genAv,onData:(d,m)=>{if(m&&m.fresh){const id=addMy(JSON.parse(JSON.stringify(d)));useCase(id);render();scrollTo({top:0})}}});
 }
 function brief(){
   $('#view').innerHTML=`<div class="brief"><div>${mentor(esc(C.brief))}

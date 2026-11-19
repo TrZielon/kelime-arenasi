@@ -604,3 +604,18 @@ body .word h2,body .rtop h2{animation:kaDrop .6s var(--spring) backwards}
 @media (max-width:1240px){.ka-brand{font-size:0;gap:0}}
 .ka-acc.on{border-color:var(--p);background:var(--p-soft)}
 body:has(.ka-modal) .aiw-ban,body:has(.aiw) .aiw-ban{display:none}
+/* Kelime kaynağı çubuğu */
+.wsrc{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--card);margin:0 0 14px}
+.wsrc-seg{display:flex;padding:3px;border-radius:11px;background:var(--soft);border:1px solid var(--line);flex:0 0 auto}
+.wsrc-seg button{border:0;background:transparent;font:inherit;font-size:13px;font-weight:800;color:var(--mut);padding:7px 12px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.wsrc-seg button.on{background:var(--card);color:var(--p);box-shadow:var(--sh1)}
+.wsrc-sel{font:inherit;font-size:13.5px;font-weight:700;color:var(--ink);background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:7px 10px;max-width:230px}
+.wsrc-go svg{width:15px;height:15px}
+.wsrc-tx{flex:1 1 240px;min-width:0;font-size:13px;color:var(--mut);line-height:1.4}
+.wsrc-tx a{color:var(--p);font-weight:800}
+.wsrc-err{color:#dc2626;font-weight:700}
+.wsrc-ch{display:flex;flex-wrap:wrap;gap:5px}.wsrc-ch span{font-size:12px;font-weight:800;color:var(--p);background:var(--p-soft);border-radius:999px;padding:3px 9px}
+.wsrc-spin{display:inline-block;width:13px;height:13px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:wsSpin .8s linear infinite;margin-right:6px;vertical-align:-2px}
+@keyframes wsSpin{to{transform:rotate(360deg)}}
+.wsrc.busy{border-color:var(--p)}
+@media (max-width:560px){.wsrc-sel{flex:1;max-width:none}.wsrc-go{flex:1 1 100%;justify-content:center}}
