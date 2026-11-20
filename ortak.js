@@ -466,19 +466,19 @@ const conf=()=>{const c=rd(K);return c&&c.key?c:null};
 KA.aiConf=conf;
 KA.aiLeft=()=>Math.max(0,LIM-quota().n);
 KA.aiLimit=LIM;
-const detect=k=>{k=String(k||'').trim();if(/^AIza[0-9A-Za-z_\-]{30,}$/.test(k))return 'gemini';if(/^gsk_[0-9A-Za-z]{20,}$/.test(k))return 'groq';return null};
+const detect=k=>{k=String(k||'').trim();if(/^AIza[0-9A-Za-z_\-]{30,}$/.test(k)||/^AQ\.[0-9A-Za-z_\-.]{20,}$/.test(k))return 'gemini';if(/^gsk_[0-9A-Za-z]{20,}$/.test(k))return 'groq';return null};
 KA.aiDetect=detect;
 class KeyErr extends Error{}
 /* Gemini, doğrudan tarayıcıdan */
 async function gemini(key,prompt,o,signal){
   const quick=o.tier==='quick',ocr=o.mode==='ocr';
-  const models=quick?['gemini-2.5-flash-lite','gemini-2.5-flash','gemini-flash-lite-latest','gemini-flash-latest']:['gemini-2.5-flash','gemini-2.5-flash-lite','gemini-flash-latest','gemini-flash-lite-latest'];
+  const models=quick?['gemini-flash-lite-latest','gemini-flash-latest','gemini-2.5-flash-lite','gemini-2.5-flash']:['gemini-flash-latest','gemini-flash-lite-latest','gemini-2.5-flash','gemini-2.5-flash-lite'];
   const parts=o.image?[{inline_data:{mime_type:o.image.mime,data:o.image.data}},{text:prompt}]:[{text:prompt}];
   let last='';
   for(const m of models){
     for(const plain of [false,true]){
       const gen={temperature:ocr?0:0.7,maxOutputTokens:ocr?24000:quick?4096:o.tier==='long'?16384:8192};
-      if(!plain){if(/2\.5-flash/.test(m))gen.thinkingConfig={thinkingBudget:0};if(o.json)gen.responseMimeType='application/json'}
+      if(!plain){if(/2\.5-flash/.test(m))gen.thinkingConfig={thinkingBudget:0};else gen.thinkingConfig={thinkingLevel:'low'};if(o.json)gen.responseMimeType='application/json'}
       let r,j={};
       try{r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`,{method:'POST',headers:{'content-type':'application/json','x-goog-api-key':key},body:JSON.stringify({contents:[{role:'user',parts}],generationConfig:gen}),signal});j=await r.json().catch(()=>({}))}
       catch(e){if(e.name==='AbortError')throw e;throw new Error('Bağlantı koptu. İnternetini kontrol edip tekrar dene.')}
@@ -567,7 +567,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 const MOCK={
  g1:`<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span>aistudio.google.com/apikey</span></div><div class="mk-body"><div class="mk-g"><b style="color:#4285f4">G</b><b style="color:#ea4335">o</b><b style="color:#fbbc05">o</b><b style="color:#4285f4">g</b><b style="color:#34a853">l</b><b style="color:#ea4335">e</b></div><div class="mk-line">Oturum açın</div><div class="mk-in">ornek@gmail.com</div><div class="mk-btn">İleri</div></div></div>`,
  g2:`<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span>Google AI Studio</span></div><div class="mk-body"><div class="mk-line" style="font-weight:800">API Keys</div><div class="mk-row"><span>Henüz anahtar yok</span><span class="mk-btn hot">Create API key</span></div><div class="mk-hand">☝</div></div></div>`,
- g3:`<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span>Google AI Studio</span></div><div class="mk-body"><div class="mk-row key"><code>AIzaSyB•••••••••••••••Xk4</code><span class="mk-copy hot">⧉ Copy</span></div><div class="mk-hand">☝</div></div></div>`,
+ g3:`<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span>Google AI Studio</span></div><div class="mk-body"><div class="mk-row key"><code>AQ.Ab8R•••••••••••••••x4k</code><span class="mk-copy hot">⧉ Copy</span></div><div class="mk-hand">☝</div></div></div>`,
  r1:`<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span>console.groq.com/keys</span></div><div class="mk-body"><div class="mk-line" style="font-weight:800">groq</div><div class="mk-btn" style="background:#fff;color:#111;border:1px solid #ddd">Continue with Google</div></div></div>`,
  r2:`<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span>GroqCloud · API Keys</span></div><div class="mk-body"><div class="mk-row"><span>API Keys</span><span class="mk-btn hot" style="background:#f55036">Create API Key</span></div><div class="mk-hand">☝</div></div></div>`,
  r3:`<div class="mk"><div class="mk-bar"><i></i><i></i><i></i><span>GroqCloud</span></div><div class="mk-body"><div class="mk-row key"><code>gsk_8Fq•••••••••••••••2mZ</code><span class="mk-copy hot">⧉ Copy</span></div><div class="mk-hand">☝</div></div></div>`
@@ -576,7 +576,7 @@ const STEPS={
  gemini:{n:'Google Gemini',tag:'Önerilen',url:'https://aistudio.google.com/apikey',steps:[
   ['Google sayfasını aç','Aşağıdaki düğmeye bas. Sayfa yeni sekmede açılır; bu sekme açık kalır.','g1','Google hesabınla giriş yap. İlk seferde şartları onaylamanı isterse kutucukları işaretleyip devam et.'],
   ['"Create API key" düğmesine bas','Sayfadaki mavi düğme. Proje sorarsa varsayılanı bırak ve oluştur.','g2',''],
-  ['Kodu kopyala','"AIza" ile başlayan uzun kodun yanındaki kopyala simgesine bas, sonra bu sekmeye geri dön.','g3','']]},
+  ['Kodu kopyala','"AQ." (eski hesaplarda "AIza") ile başlayan uzun kodun yanındaki kopyala simgesine bas, sonra bu sekmeye geri dön.','g3','']]},
  groq:{n:'Groq',tag:'Çok hızlı',url:'https://console.groq.com/keys',steps:[
   ['Groq sayfasını aç','Aşağıdaki düğmeye bas ve "Continue with Google" ile giriş yap.','r1',''],
   ['"Create API Key" düğmesine bas','Bir isim ister: "kelime" yazman yeterli, sonra "Submit".','r2',''],
@@ -603,7 +603,7 @@ function drawW(){
    <div class="aiw-tabs">${Object.entries(STEPS).map(([k,v])=>`<button class="${W.prov===k?'on':''}" data-aiw-prov="${k}"><b>${v.n}</b><small>${v.tag}</small></button>`).join('')}</div>
    <ol class="aiw-steps">${S.steps.map(([t,d,mk,note],i)=>`<li><div class="aiw-n">${i+1}</div><div class="aiw-st"><b>${t}</b><p>${d}</p>${i===0?`<a class="btn btn-p" href="${S.url}" target="_blank" rel="noopener">${S.n} sayfasını aç ↗</a>`:''}${MOCK[mk]}${note?`<p class="aiw-note">${note}</p>`:''}</div></li>`).join('')}
     <li><div class="aiw-n">4</div><div class="aiw-st"><b>Kodu buraya yapıştır</b><p>Kodu yapıştırdığın an otomatik olarak denenir.</p>
-     <div class="aiw-paste"><input id="aiwKey" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${W.prov==='groq'?'gsk_…':'AIza…'}"><button class="btn btn-ghost btn-sm" data-aiw="clip">Panodan yapıştır</button></div>
+     <div class="aiw-paste"><input id="aiwKey" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${W.prov==='groq'?'gsk_…':'AQ.… ya da AIza…'}"><button class="btn btn-ghost btn-sm" data-aiw="clip">Panodan yapıştır</button></div>
      <div class="aiw-msg ${W.st}">${W.st==='test'?'<span class="spin"></span> Deneniyor…':esc(W.msg)}</div>
      <button class="btn btn-p" data-aiw="save" ${W.st==='test'?'disabled':''}>Bağla ve dene</button></div></li></ol>
    <div class="aiw-trust"><div><b>Neden?</b>Herkes kendi ücretsiz kotasını kullanınca site daha hızlı çalışır ve bekleme olmaz.</div><div><b>Güvenli mi?</b>Kod sadece senin cihazında saklanır, sunucumuza gönderilmez. İstediğin an Google'dan silebilirsin.</div><div><b>Ücretli mi?</b>Hayır. Kart bilgisi girmezsen hiçbir ücret çıkmaz.</div></div>
@@ -613,7 +613,7 @@ async function trySave(v){
   v=String(v||'').trim().replace(/\s+/g,'');
   const p=detect(v);
   if(!v){W.st='err';W.msg='Önce kodu yapıştır.';return drawW()}
-  if(!p){W.st='err';W.msg=/^AIza|^gsk_/.test(v)?'Kod eksik görünüyor; tamamını kopyaladığından emin ol.':'Bu bir bağlantı kodu gibi görünmüyor. Gemini kodları "AIza", Groq kodları "gsk_" ile başlar.';return drawW()}
+  if(!p){W.st='err';W.msg=/^AIza|^AQ\.|^gsk_/.test(v)?'Kod eksik görünüyor; tamamını kopyaladığından emin ol.':'Bu bir bağlantı kodu gibi görünmüyor. Gemini kodları "AQ." ya da "AIza", Groq kodları "gsk_" ile başlar.';return drawW()}
   W.prov=p;W.st='test';drawW();const i=document.getElementById('aiwKey');if(i)i.value=v;
   try{const ok=await KA.aiTest(p,v);if(!ok)throw new Error('Beklenmedik bir yanıt geldi; yine de kaydedildi.');wr(K,{prov:p,key:v,at:Date.now()});W.st='ok';drawW();chip();KA.sfx&&KA.sfx.ok&&KA.sfx.ok();const b=document.querySelector('.aiw-ok .big');if(b&&KA.confetti){const r=b.getBoundingClientRect();KA.confetti(r.left+r.width/2,r.top+r.height/2,30,Math.PI)}}
   catch(e){W.st='err';W.msg=e.message||'Denenemedi.';drawW();const j=document.getElementById('aiwKey');if(j)j.value=v}
