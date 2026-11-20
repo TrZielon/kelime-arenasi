@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0f766e">
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=18">
+<link rel="stylesheet" href="ortak.css?v=19">
 <style>
 .hub-h{padding:24px 26px;position:relative;overflow:hidden}
 .hub-h h1{font-size:clamp(28px,4.4vw,42px);margin:6px 0}
@@ -123,7 +123,7 @@
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="view"></div></main>
-<script src="firebase-config.js?v=18"></script><script src="ortak.js?v=18"></script>
+<script src="firebase-config.js?v=19"></script><script src="ortak.js?v=19"></script>
 <script>
 (function(){
 'use strict';
@@ -139,6 +139,7 @@ const hasSyn=()=>W.filter(x=>x[2]).length>=4;
 
 /* ---------- HUB ---------- */
 const ART={
+ravenwood:"<svg viewBox=\"0 0 300 150\" preserveAspectRatio=\"xMidYMid slice\"><defs><radialGradient id=\"rwg\" cx=\"50%\" cy=\"0%\" r=\"90%\"><stop offset=\"0\" stop-color=\"#173a2e\"/><stop offset=\"1\" stop-color=\"#11151C\"/></radialGradient></defs><rect width=\"300\" height=\"150\" fill=\"url(#rwg)\"/><g fill=\"#0a1210\"><path d=\"M30 150V70l20-20 20 20v80z\"/><path d=\"M230 150V60l18-22 18 22v90z\"/><rect x=\"80\" y=\"80\" width=\"140\" height=\"70\"/><path d=\"M80 80l70-34 70 34z\"/></g><g fill=\"#D4AF37\" opacity=\".85\"><rect x=\"96\" y=\"96\" width=\"10\" height=\"16\"/><rect x=\"128\" y=\"96\" width=\"10\" height=\"16\"/><rect x=\"162\" y=\"96\" width=\"10\" height=\"16\" opacity=\".3\"/><rect x=\"194\" y=\"96\" width=\"10\" height=\"16\"/><rect x=\"244\" y=\"74\" width=\"8\" height=\"12\"/></g><circle cx=\"262\" cy=\"26\" r=\"12\" fill=\"#F4EFE6\" opacity=\".85\"/><g transform=\"translate(118 18) rotate(-8)\"><rect width=\"70\" height=\"40\" rx=\"3\" fill=\"#F4EFE6\"/><text x=\"35\" y=\"25\" text-anchor=\"middle\" font-family=\"Cinzel,serif\" font-weight=\"900\" font-size=\"11\" fill=\"#9B1B30\">EXPOSED</text><rect x=\"6\" y=\"12\" width=\"58\" height=\"18\" fill=\"none\" stroke=\"#9B1B30\" stroke-width=\"2\"/></g></svg>",
 fetih:`<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><path d="M60 150V80a90 90 0 0 1 180 0v70" fill="none" stroke="var(--p)" stroke-width="14" opacity=".35"/><path d="M95 150V90a55 55 0 0 1 110 0v60" fill="var(--p)" opacity=".18"/><g stroke="var(--acc2)" stroke-width="8" stroke-linecap="round"><path d="M118 58l64 64M182 58l-64 64"/></g><circle cx="150" cy="90" r="12" fill="var(--acc)"/></svg>`,
 halat:`<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><path d="M0 128h300" stroke="var(--line2)" stroke-width="3"/><path d="M40 86 Q150 96 260 86" fill="none" stroke="#a16207" stroke-width="6" stroke-linecap="round"/><path d="M150 112v-50" stroke="var(--bad)" stroke-width="3" stroke-dasharray="5 5"/><circle cx="150" cy="91" r="7" fill="var(--bad)"/><g stroke="var(--p)" stroke-width="8" stroke-linecap="round" fill="none"><path d="M52 64l12 30M64 94l-14 30M64 94l12 30M58 76l20 12"/></g><circle cx="48" cy="52" r="12" fill="var(--p)"/><g stroke="var(--acc2)" stroke-width="8" stroke-linecap="round" fill="none"><path d="M248 64l-12 30M236 94l14 30M236 94l-12 30M242 76l-20 12"/></g><circle cx="252" cy="52" r="12" fill="var(--acc2)"/></svg>`,
 makas:`<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid meet"><g fill="none" stroke="var(--p)" stroke-width="7" stroke-linecap="round" opacity=".55"><path d="M0 80h110c50 0 60-50 110-50h80"/><path d="M110 80h190"/><path d="M110 80c50 0 60 45 110 45h80"/></g><rect x="40" y="62" width="58" height="30" rx="8" fill="var(--p)"/><rect x="50" y="68" width="14" height="10" rx="3" fill="var(--p-ink)"/><rect x="70" y="68" width="14" height="10" rx="3" fill="var(--p-ink)"/><rect x="84" y="52" width="10" height="12" rx="3" fill="var(--acc)"/><rect x="226" y="16" width="70" height="26" rx="8" fill="var(--card)" stroke="var(--line2)" stroke-width="2"/><text x="261" y="34" font-size="12" font-weight="800" text-anchor="middle" fill="var(--ink)" font-family="Plus Jakarta Sans">However</text><rect x="226" y="66" width="70" height="26" rx="8" fill="var(--ok-soft)" stroke="var(--ok)" stroke-width="2"/><text x="261" y="84" font-size="12" font-weight="800" text-anchor="middle" fill="var(--ink)" font-family="Plus Jakarta Sans">Therefore</text><rect x="226" y="112" width="70" height="26" rx="8" fill="var(--card)" stroke="var(--line2)" stroke-width="2"/><text x="261" y="130" font-size="12" font-weight="800" text-anchor="middle" fill="var(--ink)" font-family="Plus Jakarta Sans">Moreover</text></svg>`,
@@ -149,6 +150,7 @@ ari:"<svg viewBox=\"0 0 300 150\" preserveAspectRatio=\"xMidYMid slice\"><rect w
 kopru:`<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><rect x="0" y="118" width="300" height="32" fill="var(--p)" opacity=".3"/><rect x="0" y="80" width="56" height="70" rx="8" fill="var(--ink2)" opacity=".7"/><rect x="244" y="80" width="56" height="70" rx="8" fill="var(--ink2)" opacity=".7"/><g fill="#c2840a"><rect x="60" y="78" width="40" height="14" rx="3"/><rect x="104" y="78" width="40" height="14" rx="3"/><rect x="148" y="78" width="40" height="14" rx="3"/></g><rect x="194" y="58" width="40" height="14" rx="3" fill="#c2840a" transform="rotate(-14 214 65)"/><circle cx="30" cy="54" r="9" fill="var(--p)"/><path d="M30 63v14M30 77l-6 10M30 77l6 10M24 69h12" stroke="var(--p)" stroke-width="5" stroke-linecap="round"/></svg>`
 };
 const BIG=[
+ ['ravenwood','The Impostor: Ravenwood Files','Sahte kimlikle seçkin bir akademiye sız, kayıp ablanın izini sür. Raporlarda yalan yakala, sözleşme tuzaklarını gör, kelime kartlarıyla söz düellosu yap. Bölüm 1: 7 gün.',['Close reading','Hedging','Kart düellosu'],'#9B1B30',1],
  ['dava','Dedektif Masası','Hikâyeli davalar: İngilizce belgeleri oku, ifadelerdeki çelişkileri yakala, suçluyu kanıtlarıyla göster. İki dava açık.',['Reading','Çıkarım','Paraphrase'],'#b45309',0],
  ['avukat','Mahkeme: Stajyer Avukat','Sözleşmeleri oku, kart topla; duruşmada karşı avukat belgeleri çarpıttığında "İtiraz!" de ve çarpıtılan kelimeyi göster.',['may / must','unless','Paraphrase'],'#7a4f2a',1],
  ['lonca','Lonca: Kelime Büyücüsü','Kelimelerin güç taşıdığı diyarda çıraksın. Dilekçeleri doğru kelimeyle çöz, yaratıkların adını bağlamdan bul, Kâtip\'le düello yap.',['Nüans','Kelime türü','Collocation'],'#6d28d9',1],
@@ -364,7 +366,7 @@ const SRCQ={
 };
 function go(v){VIEW=v;cancelAnimationFrame(H.raf);cancelAnimationFrame(M.raf);H.over=true;
   if(v==='hub')hub();else if(v==='halat')halatIntro();else if(v==='makas')makasIntro();else if(v==='kopru')kopruIntro();
-  else if(['fetih','dava','avukat','lonca','ari'].includes(v)){location.href=v+'.html';return}
+  else if(['fetih','dava','avukat','lonca','ari','ravenwood'].includes(v)){location.href=v+'.html';return}
   window.scrollTo({top:0,behavior:'smooth'})}
 document.addEventListener('click',e=>{
   const t=e.target,q=s=>t.closest(s);let b;

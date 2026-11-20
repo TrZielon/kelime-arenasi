@@ -1,6 +1,6 @@
 /* Kelime Arenası · çevrimdışı çalışma (service worker) */
-const V='ka-v22';
-const CORE=['./','index.html','haber.html','fetih.html','sinav.html','sozluk.html','dinle.html','oyunlar.html','atolye.html','dava.html','avukat.html','lonca.html','ari.html','gizlilik.html','offline.html','ortak.css?v=11','ortak.js?v=11','favicon.svg','favicon-96.png','icon-192.png','icon-512.png','manifest.webmanifest'];
+const V='ka-v26';
+const CORE=['./','index.html','haber.html','fetih.html','sinav.html','sozluk.html','dinle.html','oyunlar.html','atolye.html','dava.html','avukat.html','lonca.html','ari.html','ravenwood.html','gizlilik.html','offline.html','ortak.css?v=11','ortak.js?v=11','favicon.svg','favicon-96.png','icon-192.png','icon-512.png','manifest.webmanifest'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{
