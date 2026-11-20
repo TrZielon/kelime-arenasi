@@ -471,14 +471,14 @@ KA.aiDetect=detect;
 class KeyErr extends Error{}
 /* Gemini, doğrudan tarayıcıdan */
 async function gemini(key,prompt,o,signal){
-  const quick=o.tier==='quick',ocr=o.mode==='ocr';
+  const quick=o.tier==='quick',scan=o.mode==='scan',ocr=o.mode==='ocr'||scan;
   const models=quick?['gemini-flash-lite-latest','gemini-flash-latest','gemini-2.5-flash-lite','gemini-2.5-flash']:['gemini-flash-latest','gemini-flash-lite-latest','gemini-2.5-flash','gemini-2.5-flash-lite'];
   const parts=o.image?[{inline_data:{mime_type:o.image.mime,data:o.image.data}},{text:prompt}]:[{text:prompt}];
   let last='';
   for(const m of models){
     for(const plain of [false,true]){
-      const gen={temperature:ocr?0:0.7,maxOutputTokens:ocr?24000:quick?4096:o.tier==='long'?16384:8192};
-      if(!plain){if(/2\.5-flash/.test(m))gen.thinkingConfig={thinkingBudget:0};else gen.thinkingConfig={thinkingLevel:'low'};if(o.json)gen.responseMimeType='application/json'}
+      const gen={temperature:ocr?0:0.7,maxOutputTokens:scan?8192:ocr?24000:quick?4096:o.tier==='long'?16384:8192};
+      if(!plain){if(/2\.5-flash/.test(m))gen.thinkingConfig={thinkingBudget:0};else gen.thinkingConfig={thinkingLevel:'low'};if(o.json)gen.responseMimeType='application/json';if(o.image)gen.mediaResolution=scan?'MEDIA_RESOLUTION_MEDIUM':'MEDIA_RESOLUTION_HIGH'}
       let r,j={};
       try{r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`,{method:'POST',headers:{'content-type':'application/json','x-goog-api-key':key},body:JSON.stringify({contents:[{role:'user',parts}],generationConfig:gen}),signal});j=await r.json().catch(()=>({}))}
       catch(e){if(e.name==='AbortError')throw e;throw new Error('Bağlantı koptu. İnternetini kontrol edip tekrar dene.')}

@@ -59,7 +59,7 @@ function limited(ip) {
 // Vercel fonksiyonu 60 sn'de kesilir; tarayıcı (özellikle Safari) bağlantıyı "Load failed" diye düşürür.
 // Bu yüzden toplam süreyi 50 sn'de tutuyoruz ve süre kalmadıysa yeni deneme başlatmıyoruz.
 const BUDGET_MS = 50000;
-async function gemini(model, key, prompt, maxTokens, image, ocr, wantJson, plain, deadline) {
+async function gemini(model, key, prompt, maxTokens, image, ocr, wantJson, plain, deadline, scan) {
   const gen = { temperature: ocr ? 0 : 0.7, maxOutputTokens: maxTokens };
   const tb = process.env.GEMINI_THINKING_BUDGET;
   if (!plain) {
@@ -67,7 +67,7 @@ async function gemini(model, key, prompt, maxTokens, image, ocr, wantJson, plain
     if (tb !== undefined && tb !== '') gen.thinkingConfig = { thinkingBudget: Number(tb) };
     else if (/gemini-3/.test(model)) gen.thinkingConfig = { thinkingLevel: 'low' };
     else if (/2\.5-flash/.test(model)) gen.thinkingConfig = { thinkingBudget: 0 };
-    if (ocr && image) gen.mediaResolution = 'MEDIA_RESOLUTION_HIGH';
+    if (ocr && image) gen.mediaResolution = scan ? 'MEDIA_RESOLUTION_MEDIUM' : 'MEDIA_RESOLUTION_HIGH';
     if (wantJson) gen.responseMimeType = 'application/json';
   }
   const parts = image ? [{ inline_data: { mime_type: image.mime, data: image.data } }, { text: prompt }] : [{ text: prompt }];
@@ -126,10 +126,11 @@ export default async function handler(req, res) {
     image = { mime: im.mime, data: im.data };
   }
   const quick = body.tier === 'quick';
-  const ocr = body.mode === 'ocr';
+  const scan = body.mode === 'scan';
+  const ocr = body.mode === 'ocr' || scan;
   const wantJson = !!body.json;
   const long = body.tier === 'long';
-  const maxTokens = ocr ? 24000 : quick ? 4096 : long ? 16000 : 8192;
+  const maxTokens = scan ? 8192 : ocr ? 24000 : quick ? 4096 : long ? 16000 : 8192;
   const models = [...new Set(quick
     ? [MODEL_FAST, MODEL_QUALITY, ...FALLBACK_MODELS]
     : [MODEL_QUALITY, MODEL_FAST, ...FALLBACK_MODELS])];
@@ -148,11 +149,11 @@ export default async function handler(req, res) {
   let last = null, usedModel = '';
   for (const model of models) {
     if (last && deadline - Date.now() < 8000) break;
-    let { status, json } = await gemini(model, key, prompt, maxTokens, image, ocr, wantJson, false, deadline);
+    let { status, json } = await gemini(model, key, prompt, maxTokens, image, ocr, wantJson, false, deadline, scan);
     let msg = (json && json.error && json.error.message) || '';
     // Model ek ayarları (çözünürlük, düşünme, JSON) desteklemiyorsa sade istekle tekrar dene
     if (status === 400 && (ocr || wantJson) && !/model/i.test(msg)) {
-      ({ status, json } = await gemini(model, key, prompt, maxTokens, image, ocr, false, true, deadline));
+      ({ status, json } = await gemini(model, key, prompt, maxTokens, image, ocr, false, true, deadline, scan));
       msg = (json && json.error && json.error.message) || '';
     }
     usedModel = model;

@@ -16,7 +16,7 @@
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=17">
+<link rel="stylesheet" href="ortak.css?v=18">
 <style>
 .hero{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:center;padding:30px 32px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%)}
 .hero h1{font-size:clamp(28px,4vw,40px);margin:8px 0 10px}
@@ -156,7 +156,7 @@
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="home"></div><section id="act" class="act" hidden></section></main>
-<script src="firebase-config.js?v=17"></script><script src="ortak.js?v=17"></script>
+<script src="firebase-config.js?v=18"></script><script src="ortak.js?v=18"></script>
 <script>
 (function(){
 'use strict';
@@ -948,14 +948,28 @@ function rawItems(txt){
   if(items.length<2){const w=(txt.match(/\b[A-Za-z][a-z'-]{2,}(?:\s(?:in|on|of|to|up|out|for|with|into|off|down|away)\b)?/g)||[]);items=[...new Set(w.map(x=>x.toLowerCase()))].slice(0,60).map(en=>({en,tr:''}))}
   return items;
 }
+const SCAN=`Bu fotoğraf bir İngilizce kelime listesi, defter, tablo, kitap sayfası ya da çalışma kâğıdı. Fotoğraftaki kelimeleri doğrudan bir İngilizce kelime listesine dönüştür.
+Kurallar:
+- Fotoğraftaki HER İngilizce kelimeyi ve kalıbı yukarıdan aşağıya sırasıyla al (liste ya da tabloysa hiçbirini atlama, el yazısını da oku). Düz bir paragrafsa öğrenmeye değer kelimeleri seç (en fazla 40).
+- Numara, madde işareti, başlık, sayfa numarası ve tarih alma. Fiil kalıplarını ("take into account") tek öğe olarak al.
+- Kelimenin yanında Türkçe anlamı yazıyorsa aynen al (Türkçe harfleri koru) ve "oto":false yap. Yoksa en yaygın Türkçe karşılığını SEN yaz ve "oto":true yap. Birden fazla anlam varsa virgülle ayır.
+- Bir Türkçe kelimenin yanında birden fazla İngilizce kelime varsa her İngilizce kelimeyi ayrı öğe yap.
+YALNIZCA geçerli JSON döndür: {"items":[{"en":"kelime","tr":"Türkçe anlam","oto":false}]}`;
 async function scanPhoto(f,say){
-  const img=await KA.prepImage(f,2048);
-  say('Fotoğraftaki yazı okunuyor…');
-  const o=await KA.ocrText(img,{status:say});
-  if(!o.text)return {items:[],err:o.err};
-  say('Kelimeler ayıklanıyor ve eksik anlamlar tamamlanıyor…');
-  const r=await KA.askJ(STRUCT,o.text.slice(0,12000),{ms:60000,json:true});
+  say('Fotoğraf hazırlanıyor…');
+  const img=await KA.prepImage(f,1600);
+  say('Kelimeler okunuyor…');
+  // Hızlı yol: tek istekte fotoğraftan doğrudan liste
+  const r=await KA.askJ(SCAN,'(fotoğraf ekte)',{image:{mime:img.mime,data:img.data},mode:'scan',ms:45000});
   let items=ocrItems(r.json);
+  if(items.length)return {items};
+  if(/hak|limit|anahtar|kod/i.test(r.err||''))return {items:[],err:r.err};
+  // Yedek yol: önce yazıyı oku, sonra listeye çevir
+  say('Daha dikkatli okunuyor…');
+  const o=await KA.ocrText(img,{status:say});
+  if(!o.text)return {items:[],err:o.err||r.err};
+  const r2=await KA.askJ(STRUCT,o.text.slice(0,12000),{ms:60000,json:true});
+  items=ocrItems(r2.json);
   if(!items.length)items=rawItems(o.text);
   return {items,text:o.text};
 }
@@ -964,13 +978,16 @@ async function importFiles(fs,el){
   const imgs=fs.filter(KA.isImage),rest=fs.filter(f=>!KA.isImage(f));
   for(const f of rest)await importFile(f,el);
   if(!imgs.length)return;
-  const out=el.querySelector('#pfs'),all=[],errs=[];
-  for(let i=0;i<imgs.length;i++){
-    const pre=imgs.length>1?`Fotoğraf ${i+1}/${imgs.length}: `:'';
-    const say=t=>{out.innerHTML='<span class="ka-spin"></span> '+esc(pre+t)};
-    try{const {items,err}=await scanPhoto(imgs[i],say);if(items.length)all.push(...items);else errs.push(err||'yazı bulunamadı')}
-    catch(e){errs.push(e.message)}
-  }
+  const out=el.querySelector('#pfs'),res=new Array(imgs.length),errs=[],st=new Array(imgs.length).fill('Sırada');let done=0;
+  const show=()=>{out.innerHTML='<span class="ka-spin"></span> '+(imgs.length>1?esc(`${done}/${imgs.length} fotoğraf okundu · `)+esc(st.find(x=>x!=='Bitti'&&x!=='Sırada')||'Okunuyor…'):esc(st[0]))};
+  show();
+  // Fotoğraflar aynı anda (en fazla 3) okunur
+  let next=0;
+  const worker=async()=>{while(next<imgs.length){const i=next++;const say=t=>{st[i]=t;show()};
+    try{const {items,err}=await scanPhoto(imgs[i],say);res[i]=items;if(!items.length)errs.push(err||'yazı bulunamadı')}catch(e){res[i]=[];errs.push(e.message)}
+    st[i]='Bitti';done++;show()}};
+  await Promise.all(Array.from({length:Math.min(3,imgs.length)},worker));
+  const all=res.flat().filter(Boolean);
   const seen=new Set(),items=all.filter(x=>{const k=x.en.toLowerCase();if(seen.has(k))return false;seen.add(k);return true});
   if(!items.length){out.innerHTML=`Fotoğraftaki kelimeler okunamadı${errs[0]?' ('+esc(errs[0])+')':''}. Sayfayı düz tutup ışıklı bir yerde, kelimeler ekranı dolduracak şekilde yeniden çek ya da ekran görüntüsü kullan.`;return}
   const ta=el.querySelector('#pw');ta.value=(ta.value.trim()?ta.value.trim()+'\n':'')+items.map(x=>x.tr?x.en+' - '+x.tr:x.en).join('\n');
