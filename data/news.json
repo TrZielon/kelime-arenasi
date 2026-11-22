@@ -1,6 +1,444 @@
 {
-  "updated": "2026-11-19T06:20:33.950Z",
+  "updated": "2026-11-22T06:20:33.805Z",
   "items": [
+    {
+      "id": "mwrg6vte9urf",
+      "date": "2026-11-22",
+      "category": "World",
+      "title": "New draft deal aims to avert collapse of climate talks",
+      "src": "https://www.bbc.co.uk/news/articles/cq7827z2841zo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/9b71/live/e0c68530-e61e-11f1-94c8-1db910b5b42e.jpg",
+      "levels": {
+        "1": {
+          "text": "The UN COP31 meeting is in Turkey. Countries are at the meeting to talk about climate change. However, it is very hard for them to make an agreement. The meeting is not finished on time. Now, it enters a second day of overtime. The countries are still trying to work together. They want to make a draft deal. They hope this deal stops the talks from failing. Everyone is watching to see if they can agree on a plan.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this news story?",
+              "opts": [
+                "Countries have already signed a new plan.",
+                "Turkey is hosting a holiday event.",
+                "A climate meeting finished earlier than planned.",
+                "A meeting in Turkey enters overtime to reach a deal."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does 'overtime' mean in this news story?",
+              "opts": [
+                "Starting a meeting early.",
+                "Extra time after the usual end time.",
+                "Canceling a meeting.",
+                "A break during the day."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Where is the UN COP31 meeting taking place?",
+              "opts": [
+                "In the UK.",
+                "In the US.",
+                "In France.",
+                "In Turkey."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which sentence is TRUE?",
+              "opts": [
+                "The meeting is on its second day of overtime.",
+                "Countries easily made an agreement.",
+                "The COP31 meeting was canceled.",
+                "The talks ended on the first day."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "The United Nations COP31 climate meeting in Turkey has reached a critical moment. Delegates from many countries are finding it very difficult to reach a final agreement on climate action. Because of these strong disagreements, the conference did not finish on schedule. It has now entered its second day of overtime. Representatives are working hard to create a new draft deal to save the negotiations. The main goal of this new proposal is to prevent the total collapse of the talks. People around the world are waiting to see if the nations can overcome their differences and agree before the extended summit finally comes to an end.",
+          "quiz": [
+            {
+              "q": "What is the primary topic of the passage?",
+              "opts": [
+                "The history of United Nations meetings in Turkey.",
+                "Countries struggling to agree at a climate summit in Turkey.",
+                "A new economic deal between world leaders.",
+                "The cancellation of the COP31 meeting."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "In this text, what does 'draft' mean?",
+              "opts": [
+                "A payment made to a bank.",
+                "A cold current of air in a room.",
+                "A final and unchangeable law.",
+                "A preliminary or trial version of a document."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "How much extra time has the meeting taken so far?",
+              "opts": [
+                "It has entered its first hour of overtime.",
+                "It has been delayed by two weeks.",
+                "It has entered a second day of overtime.",
+                "It has been extended by one month."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "The COP31 summit is happening in the US.",
+                "The summit finished exactly on schedule.",
+                "A final deal was completed on the first day.",
+                "Countries are struggling to reach an agreement."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "3": {
+          "text": "Negotiations at the UN COP31 climate conference in Turkey have run into serious difficulties, pushing the event into a second day of overtime. Representatives from participating nations are actively struggling to find common ground and bridge significant divides in order to reach a global consensus. To avert a complete collapse of the high-stakes talks, organizers and leaders are attempting to craft a new draft deal. This updated proposal aims to address the core disagreements that have delayed the conclusion of the summit. As discussions continue past the original deadline, the international community is closely monitoring whether the delegates can successfully resolve their issues and finalize an agreement.",
+          "quiz": [
+            {
+              "q": "Which statement best summarizes the news article?",
+              "opts": [
+                "Delegates at COP31 have successfully signed a final climate treaty ahead of schedule.",
+                "Discussions at the COP31 meeting collapsed after delegates refused to meet.",
+                "Turkey has officially withdrawn from hosting the UN climate conference.",
+                "The UN COP31 summit in Turkey is in a second day of overtime as nations attempt to secure a deal."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "In the context of the passage, what does 'avert' mean?",
+              "opts": [
+                "To ignore a serious problem.",
+                "To cause something to happen faster.",
+                "To announce an event publicly.",
+                "To prevent or ward off an undesirable outcome."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What specific event is being held in Turkey?",
+              "opts": [
+                "A G20 economic summit.",
+                "The UN COP31 meeting.",
+                "A global trade conference.",
+                "The UN COP30 meeting."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which of the following statements is TRUE?",
+              "opts": [
+                "The conference ended precisely at its original deadline.",
+                "The UN COP31 meeting has entered a second day of overtime.",
+                "Participating nations found it easy to reach a consensus.",
+                "No new draft deal is being prepared by the delegates."
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwrg71cd0o77",
+      "date": "2026-11-22",
+      "category": "World",
+      "title": "Zelensky Says Crimean Bridge Strikes Are Fair Response",
+      "src": "https://www.bbc.co.uk/news/articles/c6wy0qj7w5zqo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/3686/live/9ee585d0-e5a6-11f1-99b6-a35a62fa4264.jpg",
+      "levels": {
+        "1": {
+          "text": "Ukraine's president is Volodymyr Zelensky. He met with Wes Streeting from the UK. Zelensky talked about attacks on the Crimean Bridge. He said these strikes are a fair response. He explained that Russia attacked bridges in Ukraine first. Russia used 109 separate aerial attacks on Ukrainian bridges. Because of this, Kyiv decided to act. Zelensky believes Ukraine has the right to answer these Russian strikes. The meeting between Zelensky and Streeting focused on these news and events. Both men discussed the ongoing situation and the recent bridge attacks in the region.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Zelensky says attacks on the Crimean Bridge are a fair response to Russia.",
+                "Russia stopped all aerial attacks in Ukraine.",
+                "Zelensky moved to the UK to meet Streeting.",
+                "Streeting visited bridges in Ukraine to fix them."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'response' mean in this text?",
+              "opts": [
+                "An answer or action because of something else",
+                "A travel plan",
+                "A quick question",
+                "A type of bridge"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "How many separate aerial attacks did Russia make on bridges in Ukraine?",
+              "opts": [
+                "10",
+                "99",
+                "109",
+                "200"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "True or False: Kyiv acted before Russia attacked any Ukrainian bridges.",
+              "opts": [
+                "True",
+                "Not mentioned",
+                "False",
+                "Only Streeting acted"
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "2": {
+          "text": "Ukrainian President Volodymyr Zelensky recently met with the UK's Wes Streeting. During their meeting, Zelensky spoke about the strikes on the Crimean Bridge. He stated that Kyiv's actions were a fair response to previous military actions by Moscow. According to Zelensky, Ukraine decided to act only after Russia carried out 109 separate aerial attacks on bridges located inside Ukraine. He explained that Ukraine needed to defend itself and respond to these continuous strikes on its infrastructure. The conversation highlighted Ukraine's position on targeting the Crimean Bridge after facing numerous Russian bombardments. Zelensky maintained that Kyiv acted appropriately given the large number of Russian aerial assaults on Ukrainian territory.",
+          "quiz": [
+            {
+              "q": "What is the main topic of this news report?",
+              "opts": [
+                "Zelensky defending strikes on the Crimean Bridge as a fair response",
+                "UK plans to build new bridges in Kyiv",
+                "A new trade deal between Ukraine and the UK",
+                "Russia ending its military operations in Ukraine"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'aerial' mean in the text?",
+              "opts": [
+                "Underneath the water",
+                "Moving very slowly",
+                "Taking place in the air",
+                "Happening underground"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Who did President Zelensky meet with?",
+              "opts": [
+                "The President of Russia",
+                "A group of Ukrainian soldiers",
+                "The UK's Wes Streeting",
+                "A leader from the United Nations"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE according to the article?",
+              "opts": [
+                "Kyiv attacked the Crimean Bridge before any Russian strikes.",
+                "Zelensky met with a official from the UK.",
+                "Russia suffered 109 bridge attacks from Kyiv.",
+                "Ukraine launched 109 aerial attacks on London."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "Ukrainian President Volodymyr Zelensky has declared that strikes against the Crimean Bridge represent a 'fair response' by Kyiv. Zelensky made these comments during a meeting with Wes Streeting, a politician from the United Kingdom. Defending Ukraine's military decisions, the president explained that Kyiv only took action following a relentless campaign by Moscow. Specifically, he pointed out that Russia had executed 109 separate aerial attacks targeting various bridges across Ukraine prior to Kyiv's retaliation. By highlighting this statistic, Zelensky emphasized that Ukraine's targeting of the strategic Crimean Bridge was directly justified by Russia's extensive strikes on Ukrainian infrastructure. The discussion between Zelensky and Streeting centered on these military developments and Ukraine's rationale for its actions amid the ongoing conflict.",
+          "quiz": [
+            {
+              "q": "What is the main focus of Zelensky's statement during his meeting with Streeting?",
+              "opts": [
+                "To request new bridges from the United Kingdom",
+                "To criticize the UK's involvement in the region",
+                "To justify attacks on the Crimean Bridge as a fair reaction to Russian strikes",
+                "To announce a peaceful treaty with Russia"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What is the meaning of 'retaliation' as used in the context of this story?",
+              "opts": [
+                "An official count of damaged buildings",
+                "A formal meeting held in the United Kingdom",
+                "A peaceful negotiation between two friendly countries",
+                "An action taken to harm someone because they harmed you first"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Why did Kyiv target the Crimean Bridge according to Zelensky?",
+              "opts": [
+                "Because Ukraine wanted to test new weapons",
+                "Because 109 bridges were built in Crimea",
+                "Because Russia attacked 109 Ukrainian bridges from the air",
+                "Because Streeting ordered Ukraine to do so"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is FALSE based on the text?",
+              "opts": [
+                "Russia carried out 109 separate aerial attacks on bridges in Ukraine.",
+                "Zelensky described the Crimean Bridge strikes as a 'fair response'.",
+                "Zelensky met with UK politician Wes Streeting.",
+                "Streeting stated that Ukraine was wrong to strike the Crimean Bridge."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwrg6ychxevd",
+      "date": "2026-11-22",
+      "category": "World",
+      "title": "Russia-bound ship attacked in Gulf of Finland",
+      "src": "https://www.bbc.co.uk/news/articles/cj752ddve27ko?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/4cee/live/4e2fa7a0-e5c5-11f1-a738-4787e1a18cce.jpg",
+      "levels": {
+        "1": {
+          "text": "A ship was traveling to Russia. The ship was in the Gulf of Finland. Then, a drone attacked the ship. Drones are flying machines without human pilots. Finnish defence forces talked about this event. They said Ukraine was likely behind the drone attack on the vessel. Nobody knows all the details yet, but Finnish officials shared this news. People in the area are watching the situation closely. Safety at sea is very important for many countries right now. Analysts will continue to look into the ship attack in the Gulf of Finland.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this news story?",
+              "opts": [
+                "Russia stopped all boats in the sea.",
+                "Ukraine sent a ship to Finland.",
+                "A ship going to Russia was attacked by a drone.",
+                "Finland bought new drones for its army."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'vessel' mean in this text?",
+              "opts": [
+                "A ship or boat",
+                "A country in Europe",
+                "A type of flying drone",
+                "A military plane"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Where did the drone attack happen?",
+              "opts": [
+                "In Ukraine",
+                "In the Gulf of Finland",
+                "In Russia",
+                "In the Black Sea"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Finnish forces say Ukraine was likely behind the attack.",
+                "Human pilots were inside the drone.",
+                "The ship was traveling to Ukraine.",
+                "Finland attacked the ship with a drone."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "A vessel traveling toward Russia was targeted by a drone attack in the Gulf of Finland. Following the incident, Finnish defence forces provided information regarding who might be responsible. They stated that Ukraine was likely behind the attack on the vessel. Drones are unmanned aircraft that can be controlled from far away. This event happened in an important sea area near Finland and Russia. Security concerns in these waters remain high after the event. Authorities are closely observing maritime activities in the region. Finnish defence forces have not given more details about the damage to the ship, but they continue to assess the situation carefully while keeping the public informed.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the text?",
+              "opts": [
+                "A drone attack on a Russia-bound vessel in the Gulf of Finland.",
+                "A new trade agreement between Finland and Ukraine.",
+                "A training exercise by Finnish defence forces.",
+                "A collision between two ships in the Gulf of Finland."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "In this text, what does the word 'targeted' mean?",
+              "opts": [
+                "Aimed at or attacked",
+                "Cleaned carefully",
+                "Helped by someone",
+                "Sold to a business"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Where was the vessel going when it was attacked?",
+              "opts": [
+                "To Russia",
+                "To Finland",
+                "To Ukraine",
+                "To an unknown island"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is FALSE based on the text?",
+              "opts": [
+                "Finnish forces said Russia attacked the ship.",
+                "Finnish defence forces said Ukraine was likely responsible.",
+                "The attack took place in the Gulf of Finland.",
+                "The vessel was traveling toward Russia."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "A vessel bound for Russia was recently hit by a drone attack while navigating through the Gulf of Finland. According to statements released by Finnish defence forces, Ukraine was likely behind the strike on the ship. The Gulf of Finland serves as a critical maritime passage, making any security incident in these waters a matter of international attention. While the full extent of the incident remains under review, the assessment by Finnish military officials points toward Ukrainian involvement in the operation. Regional security observers are keeping a close watch on the situation as events unfold. Maritime safety concerns have escalated in the area following this sudden aerial assault. Finnish authorities have not disclosed further specifics regarding potential casualties or structural damage to the targeted vessel, but defence analysts state that monitoring of the strategic waterway will intensify in the wake of the attack.",
+          "quiz": [
+            {
+              "q": "Which statement best summarizes the main idea of the article?",
+              "opts": [
+                "Ukraine and Finland have signed a military agreement to protect ships in the Gulf of Finland.",
+                "Russia launched a series of drone attacks against commercial shipping lanes near Finland.",
+                "Finland has officially declared war after a drone struck a vessel in its territorial waters.",
+                "Finnish defence forces believe Ukraine likely carried out a drone attack on a Russia-bound ship in the Gulf of Finland."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What is the meaning of 'bound for' as used in the text?",
+              "opts": [
+                "Escaping from",
+                "Traveling toward",
+                "Stopping permanently in",
+                "Destroyed inside"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Who provided the assessment regarding the likely culprit of the attack?",
+              "opts": [
+                "Finnish defence forces",
+                "Ukrainian military spokespersons",
+                "International trade officials",
+                "Russian ship captains"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Finnish defence forces stated Ukraine was likely behind the drone strike.",
+                "The text lists the exact number of casualties from the attack.",
+                "Finnish forces confirmed that Russia launched the drone.",
+                "The ship was attacked while traveling toward Finland."
+              ],
+              "ans": 0
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mwn5vgsbildp",
       "date": "2026-11-19",
@@ -3942,444 +4380,6 @@
         }
       },
       "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/a160/live/111155a0-dc27-11f1-b441-2b33b063138f.jpg"
-    },
-    {
-      "id": "mw8vgpf97eyx",
-      "date": "2026-11-09",
-      "category": "World",
-      "title": "Surgeon having lunch near Krakow shooting undoubtedly saved officer's life, colleague says",
-      "src": "https://www.bbc.co.uk/news/articles/c5x2vw4e1gx1o?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "Two Polish police officers are heroes. They stopped a gunman in Krakow. The gunman wanted to kill more people. During the shooting, a surgeon was having lunch nearby. The surgeon saw an injured police officer. The doctor went to help the officer right away. A colleague said the surgeon saved the officer's life. Now, more details about the event are clear. People are happy that the surgeon was near the shooting. The police officers and the surgeon did a great job.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "A gunman escaped from police in Krakow.",
-                "Two police officers had lunch at a restaurant.",
-                "A surgeon helped save an injured police officer during a shooting in Krakow.",
-                "A doctor decided to become a police officer."
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What does the word 'colleague' mean in this text?",
-              "opts": [
-                "A person you work with",
-                "A police chief",
-                "A person who is sick",
-                "A dangerous gunman"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Where was the surgeon when the shooting happened?",
-              "opts": [
-                "Having lunch nearby",
-                "At home sleeping",
-                "Driving a police car",
-                "Inside a hospital room"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Which statement is TRUE according to the text?",
-              "opts": [
-                "The story happened in a city in Germany.",
-                "The gunman killed many doctors.",
-                "The surgeon refused to help the police officer.",
-                "Two police officers stopped the gunman from killing more people."
-              ],
-              "ans": 3
-            }
-          ]
-        },
-        "2": {
-          "text": "More details have emerged about two Polish police officers who are being praised for their bravery. They successfully prevented a gunman in Krakow from killing more people during a dangerous shooting incident. At the same time, a surgeon happened to be having lunch near the location of the attack. When an officer was injured, the surgeon immediately stepped in to provide medical assistance. A colleague of the surgeon later stated that the doctor undoubtedly saved the police officer's life. The quick actions of both the brave police officers and the attentive surgeon helped prevent a much worse tragedy from happening in the city.",
-          "quiz": [
-            {
-              "q": "What main event is described in the article?",
-              "opts": [
-                "A lunch meeting between Polish doctors and police officers",
-                "A new safety law passed in Poland",
-                "A hospital opening in Krakow",
-                "Details about police officers and a surgeon responding to a gunman in Krakow"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "In the text, what does the word 'emerged' mean?",
-              "opts": [
-                "Disappeared completely",
-                "Become known or clear",
-                "Caused harm",
-                "Ended quickly"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "Who stated that the surgeon saved the officer's life?",
-              "opts": [
-                "The gunman",
-                "The surgeon's colleague",
-                "The injured officer's family",
-                "A local news reader"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "Which statement is FALSE based on the text?",
-              "opts": [
-                "The surgeon was eating lunch near the incident.",
-                "The police officers were criticized for failing to act.",
-                "The shooting took place in Krakow.",
-                "The surgeon provided medical help to an injured officer."
-              ],
-              "ans": 1
-            }
-          ]
-        },
-        "3": {
-          "text": "Further details have emerged regarding an incident in Krakow, where two Polish police officers have been widely hailed for preventing a gunman from committing further killings. As the dangerous situation unfolded, a surgeon who was having lunch nearby noticed the crisis and rushed to assist an injured officer. The doctor's rapid medical intervention proved critical during the event. According to a colleague, the surgeon's timely actions undoubtedly saved the police officer's life. The combined effort of the officers who contained the gunman and the doctor who provided immediate medical care has drawn significant public attention as more information about the event is released.",
-          "quiz": [
-            {
-              "q": "What is the primary focus of this news story?",
-              "opts": [
-                "A debate over medical training for police in Poland",
-                "An investigation into the background of a Polish gunman",
-                "The emerging details of how officers and a surgeon responded to a shooting in Krakow",
-                "A report on restaurant safety in Krakow"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What is the meaning of the word 'hailed' as used in the passage?",
-              "opts": [
-                "Injured severely",
-                "Ignored by the crowd",
-                "Praised publicly",
-                "Arrested by authorities"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What was the surgeon doing just before helping the injured officer?",
-              "opts": [
-                "Patrolling the streets",
-                "Writing a medical report",
-                "Performing surgery at a hospital",
-                "Having lunch nearby"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which statement accurately reflects the information in the text?",
-              "opts": [
-                "The shooting was prevented before any shots were fired.",
-                "The colleague doubted that the surgeon made any difference.",
-                "Two police officers stopped the gunman from taking more lives.",
-                "The surgeon was injured while fighting the gunman."
-              ],
-              "ans": 2
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/e5f9/live/5b43f440-db76-11f1-b1f1-3be4e895d0fe.jpg"
-    },
-    {
-      "id": "mw8vgprh4ks2",
-      "date": "2026-11-09",
-      "category": "World",
-      "title": "Seven Dead After Trains Collide in Egypt",
-      "src": "https://www.bbc.co.uk/news/articles/cwvgr20mmmevo?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "Two trains crashed in Egypt. The accident happened outside the city of Giza. Both trains were travelling in the same direction. After the crash, several carriages derailed. Sadly, seven people died in the accident. More than 100 people were injured. Help came to the area after the crash. Officials are looking at what happened. People in Egypt are very sad about this news.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "A train crash in Egypt killed seven people and injured over 100.",
-                "Seven trains arrived late in Egypt today.",
-                "A new train station opened in the city of Giza.",
-                "More than 100 people traveled to Giza by train."
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What does the word 'derailed' mean in the text?",
-              "opts": [
-                "Came off the tracks",
-                "Traveled very fast",
-                "Turned back around",
-                "Stopped to get fuel"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Where did the crash happen?",
-              "opts": [
-                "Outside the city of Giza",
-                "Near a mountain river",
-                "Inside a train station",
-                "In the middle of Cairo"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Which statement is TRUE according to the story?",
-              "opts": [
-                "The trains were travelling in the same direction.",
-                "Exactly 100 people died in the accident.",
-                "Nobody was injured in the train crash.",
-                "The trains were travelling in opposite directions."
-              ],
-              "ans": 0
-            }
-          ]
-        },
-        "2": {
-          "text": "A tragic train accident has occurred in Egypt outside the city of Giza. Two trains travelling in the same direction crashed into each other. The force of the impact caused several carriages to derail. Officials confirmed that seven people died as a result of the collision. In addition, more than 100 people suffered injuries. Emergency services quickly arrived at the scene to help the victims and clear the tracks. Authorities are now investigating how the two trains ended up crashing while moving in the same direction.",
-          "quiz": [
-            {
-              "q": "What is the main topic of this news report?",
-              "opts": [
-                "Safety tips for passengers traveling on trains in Egypt.",
-                "A delay in train services across Egyptian cities.",
-                "Plans to build new railway lines outside of Giza.",
-                "A collision between two trains in Egypt that caused deaths and injuries."
-              ],
-              "ans": 3
-            },
-            {
-              "q": "In the text, what does the word 'collision' mean?",
-              "opts": [
-                "A planned meeting",
-                "A quick repair",
-                "A long travel journey",
-                "A crash between moving vehicles"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "How many people were injured in the crash?",
-              "opts": [
-                "More than 100",
-                "Fewer than seven",
-                "Over seven hundred",
-                "Exactly 100"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Which statement is FALSE based on the text?",
-              "opts": [
-                "The accident happened outside Giza.",
-                "Seven people lost their lives in the accident.",
-                "The two trains were moving in opposite directions.",
-                "Several train carriages came off the tracks."
-              ],
-              "ans": 2
-            }
-          ]
-        },
-        "3": {
-          "text": "A severe railway accident outside the Egyptian city of Giza has left seven people dead and more than 100 others injured. The incident occurred when two trains travelling in the same direction crashed into one another. The violent impact caused several train carriages to derail from the tracks. Emergency response teams rushed to the site to assist the injured passengers and manage the wreckage. Investigators are working to determine how two trains operating on the same route in the same direction came to collide, resulting in significant casualties.",
-          "quiz": [
-            {
-              "q": "What is the main point of the article?",
-              "opts": [
-                "Seven train carriages were stolen outside the city of Giza.",
-                "Two trains collided outside Giza, resulting in seven fatalities and over 100 injuries.",
-                "Egyptian authorities are replacing all old train carriages near Giza.",
-                "Train travel in Egypt has been completely stopped following an investigation."
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What is the best definition for 'casualties' as implied in the context?",
-              "opts": [
-                "Emergency response teams",
-                "Train drivers",
-                "Official train schedules",
-                "People hurt or killed in an accident"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What happened to the carriages as a result of the impact?",
-              "opts": [
-                "They detached and safely stopped.",
-                "They caught fire instantly.",
-                "They suffered no physical damage.",
-                "Several of them derailed."
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which statement is TRUE according to the passage?",
-              "opts": [
-                "Fewer than 100 people were injured in the crash.",
-                "The two trains involved were travelling in the same direction.",
-                "The crash involved trains heading in different directions.",
-                "The incident took place inside the city center of Giza."
-              ],
-              "ans": 1
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/3886/live/ab03aa70-db8a-11f1-b441-2b33b063138f.jpg"
-    },
-    {
-      "id": "mw7g0ucnzjy0",
-      "date": "2026-11-08",
-      "category": "World",
-      "title": "What we know so far after Krakow gun attack",
-      "src": "https://www.bbc.co.uk/news/articles/cmd7q15drwgeo?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "A sad event happened in Krakow. Six people died in a random shooting. The shooting was in the city's main square. Later, police found three more bodies. These bodies were at the home of the attacker. In total, nine people died in this event. People in the city are very sad and scared after the attack. Police are looking into the case to learn more.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "Nine people died after a shooting attack in Krakow.",
-                "Police caught three bad people in the city.",
-                "Krakow is building a new city square.",
-                "Six people moved to a new home in Krakow."
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What does 'random' mean in this text?",
-              "opts": [
-                "Very slow",
-                "With many friends",
-                "Without a plan or clear reason",
-                "Very happy"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Where did the shooting happen?",
-              "opts": [
-                "At a school",
-                "In the city's main square",
-                "At a police station",
-                "In a big park"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "True or false: Three bodies were found at the attacker's home.",
-              "opts": [
-                "The text does not say",
-                "Only two bodies were found",
-                "False",
-                "True"
-              ],
-              "ans": 3
-            }
-          ]
-        },
-        "2": {
-          "text": "A violent event has shocked the city of Krakow. Six people were killed during a random shooting that took place in the city's main square. The public was scared by the sudden violence in such a busy area. Later, officers made another sad discovery. They found three more bodies at the home of the attacker. This brought the total number of victims to nine. Authorities are now working to understand what happened during the attack. The community is mourning the loss of the victims while police continue their investigation.",
-          "quiz": [
-            {
-              "q": "What is the main topic of the news report?",
-              "opts": [
-                "A shooting attack in Krakow that killed nine people",
-                "A report on new houses in Krakow",
-                "A celebration in the main square",
-                "A police safety course for local residents"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What does the word 'attacker' mean in the text?",
-              "opts": [
-                "A person who writes news stories",
-                "A person who hurts others with violence",
-                "A person who helps police",
-                "A person who cleans the city square"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "How many bodies were found at the home of the attacker?",
-              "opts": [
-                "Six",
-                "Zero",
-                "Three",
-                "Nine"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Which of the following statements is TRUE based on the text?",
-              "opts": [
-                "The attacker had no home.",
-                "The shooting happened at a school.",
-                "Nobody died during the shooting.",
-                "Six people were killed in the main square."
-              ],
-              "ans": 3
-            }
-          ]
-        },
-        "3": {
-          "text": "A tragic gun attack has taken place in Krakow, leaving a total of nine people dead. The violence began when an armed individual opened fire in a random shooting in the city's main square, instantly claiming the lives of six victims. The incident caused widespread shock and panic among people present in the area. Following the public shooting, investigators searched the home of the attacker, where they made another grim discovery. Officers found three additional bodies inside the residence. Authorities are currently investigating the events surrounding the tragedy to determine the full circumstances of the deadly event.",
-          "quiz": [
-            {
-              "q": "What is the primary focus of this news article?",
-              "opts": [
-                "A deadly attack in Krakow resulting in nine deaths",
-                "A city police investigation into a robbery",
-                "The discovery of a historical home in Krakow",
-                "A public safety meeting held in Krakow's main square"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What does the word 'grim' mean as used in the context of the story?",
-              "opts": [
-                "Unpleasant and shocking",
-                "Bright and cheerful",
-                "Easy to understand",
-                "Very fast"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Where did the initial shooting take place?",
-              "opts": [
-                "In the city's main square",
-                "At a local police station",
-                "Inside a private residence",
-                "In a busy train station"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Which statement is FALSE according to the text?",
-              "opts": [
-                "The shooting in the main square was random.",
-                "Six people died in the city's main square.",
-                "The shooting happened inside a crowded store.",
-                "Three bodies were discovered at the attacker's home."
-              ],
-              "ans": 2
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/f6c3/live/95455f00-dac5-11f1-bda8-29fb69dbc026.jpg"
     }
   ]
 }
