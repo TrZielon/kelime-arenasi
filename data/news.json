@@ -1,6 +1,444 @@
 {
-  "updated": "2026-11-23T06:20:21.379Z",
+  "updated": "2026-11-25T06:20:20.911Z",
   "items": [
+    {
+      "id": "mwvqibe7ydoe",
+      "date": "2026-11-25",
+      "category": "World",
+      "title": "US Attorney General Dodges Questions About Nvidia",
+      "src": "https://www.bbc.co.uk/news/articles/crpdw1qx7jgxo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/067a/live/dc6baca0-e839-11f1-a094-5fdc692f3e33.png",
+      "levels": {
+        "1": {
+          "text": "Nvidia is a famous company. Recently, Nvidia's share price fell by 7%. This happened because lawmakers have many questions. They want to know about President Donald Trump's involvement in Huang's reinstatement. Huang is a leader at the company. However, the US attorney general dodges these questions. Dodges means avoids answering. Lawmakers are demanding real answers right now. People are watching the company and the government closely.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Nvidia created a new product.",
+                "President Donald Trump bought Nvidia stock.",
+                "Nvidia's share price fell while the attorney general avoids questions.",
+                "Huang left the company forever."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'dodges' mean in the text?",
+              "opts": [
+                "Avoids answering",
+                "Writes down",
+                "Answers clearly",
+                "Asks again"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "By how much did Nvidia's share price fall?",
+              "opts": [
+                "10%",
+                "7%",
+                "5%",
+                "17%"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Lawmakers do not want any answers.",
+                "The US attorney general answered all questions directly.",
+                "Lawmakers demand answers about President Donald Trump's involvement.",
+                "Nvidia's share price went up."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "2": {
+          "text": "Nvidia has recently experienced a significant drop in its stock value. The technology company's share price fell by 7% following political questions. Lawmakers are demanding clear answers regarding President Donald Trump's involvement in the reinstatement of Huang. However, the US attorney general dodges questions about the ongoing Nvidia investigation. To dodge a question means to intentionally avoid giving a direct answer. Lawmakers want to understand what role the government played in Huang returning to his position. As the US attorney general refuses to provide details about the case, attention remains focused on the relationship between President Donald Trump, the government officials, and the major company.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the news article?",
+              "opts": [
+                "A full report provided by the US attorney general",
+                "A drop in Nvidia shares and political questions being avoided",
+                "The retirement of President Donald Trump",
+                "The successful launch of a new technology product"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does 'dodges' mean as used in the article?",
+              "opts": [
+                "Officially denies an accusation",
+                "Publicly supports a decision",
+                "Intentionally avoids answering",
+                "Eagerly explains in detail"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Whose reinstatement are lawmakers asking about?",
+              "opts": [
+                "A lawmaker's",
+                "President Donald Trump's",
+                "Huang's",
+                "The attorney general's"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which of the following statements is TRUE?",
+              "opts": [
+                "Huang was fired permanently from Nvidia.",
+                "Nvidia's share price increased by 7%.",
+                "Lawmakers are asking about President Donald Trump's involvement.",
+                "The attorney general gave full details about the investigation."
+              ],
+              "ans": 2
+            }
+          ]
+        },
+        "3": {
+          "text": "Nvidia's share price has experienced a sharp decline of 7% as political scrutiny intensifies surrounding the company. The drop comes as US lawmakers aggressively demand answers regarding President Donald Trump's involvement in Huang's reinstatement. Despite growing public and legislative pressure, the US attorney general dodges questions concerning the investigation into Nvidia. In this context, to dodge means to cleverly or deliberately evade addressing a critical issue or inquiry. Lawmakers are seeking transparency to determine the extent of President Donald Trump's influence over the decisions regarding Huang's return. However, with the US attorney general declining to provide specific information about the Nvidia investigation, concerns persist among investors and officials, leaving the political and financial ramifications of the situation uncertain.",
+          "quiz": [
+            {
+              "q": "What is the main focus of this report?",
+              "opts": [
+                "A complete government takeover of technology companies",
+                "Nvidia's financial report showing record profits",
+                "The attorney general's evasion of questions amidst a fall in Nvidia stock",
+                "President Donald Trump's official speech about the US economy"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What is the meaning of 'dodges' in the context of the story?",
+              "opts": [
+                "Strongly recommends",
+                "Carefully records",
+                "Deliberately evades",
+                "Accepts responsibility"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What specific percentage did Nvidia's share price fall?",
+              "opts": [
+                "5%",
+                "7%",
+                "3%",
+                "12%"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which of the following statements is TRUE based on the text?",
+              "opts": [
+                "The attorney general offered complete transparency regarding Nvidia.",
+                "Lawmakers are demanding answers about President Donald Trump's involvement in Huang's reinstatement.",
+                "Nvidia's share price rose after lawmakers questioned Huang.",
+                "Huang refused to return to Nvidia despite being reinstated."
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwvqib2jqsq4",
+      "date": "2026-11-25",
+      "category": "World",
+      "title": "Leaked Figures Show High Death Toll from War in Ukraine",
+      "src": "https://www.bbc.co.uk/news/articles/cmx27g533zwyo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/9e47/live/6a03aa70-e832-11f1-917e-35f1674fb52c.jpg",
+      "levels": {
+        "1": {
+          "text": "Leaked data from Russia shows new information about the war in Ukraine. The full-scale invasion started a few years ago. Now, Russia's own figures reveal that almost 500,000 people have died in the conflict. This is a very large number. The information shows how the war has fundamentally changed mortality patterns in Russia. Many families in the country are affected by these deaths. The new data gives us a clearer picture of the total losses from the ongoing fighting in Ukraine.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Ukraine shared new data about its population.",
+                "Leaked figures reveal nearly 500,000 deaths in the war.",
+                "Russia is ending the war in Ukraine.",
+                "Mortality patterns in Russia have remained completely unchanged."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'data' mean in this text?",
+              "opts": [
+                "Money",
+                "Buildings",
+                "Weapons",
+                "Information"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "How many deaths do Russia's own figures show?",
+              "opts": [
+                "Almost 100,000",
+                "Almost 5,000,000",
+                "Almost 500,000",
+                "Almost 50,000"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "The figures were officially published in a news broadcast.",
+                "The death toll comes from Ukrainian figures.",
+                "No families in Russia are affected by the war.",
+                "The full-scale invasion has changed Russian mortality patterns."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "2": {
+          "text": "Recently leaked data has provided a dramatic look at the human cost of Russia's full-scale invasion of Ukraine. According to Russia's own figures, almost 500,000 deaths have occurred due to the war in Ukraine. This massive loss of life has fundamentally changed mortality patterns across Russia since the conflict began. The leaked information offers rare insight into the scale of casualties that the country has experienced during the fighting. As the war continues, these internal figures show a stark difference from official public statements, highlighting the deep impact the invasion is having on Russian society and its overall population statistics.",
+          "quiz": [
+            {
+              "q": "What is the main topic of this report?",
+              "opts": [
+                "Official Russian public speeches about the economy",
+                "Leaked Russian data showing nearly 500,000 war deaths",
+                "A new peace treaty between Russia and Ukraine",
+                "Changes in Ukrainian population statistics"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'mortality' refer to in the text?",
+              "opts": [
+                "Military weapons",
+                "Birth rates",
+                "Death rates",
+                "Health care"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Where did the new information about the deaths come from?",
+              "opts": [
+                "An international treaty document",
+                "A report by Ukrainian journalists",
+                "Leaked data containing Russia's own figures",
+                "A public survey of Russian citizens"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Which of the following is TRUE based on the text?",
+              "opts": [
+                "The data was released in an official public statement by Russia.",
+                "The full-scale invasion has not altered Russian mortality patterns.",
+                "The conflict has had no impact on Russian population statistics.",
+                "Russia's own figures show almost 500,000 deaths in the war."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "3": {
+          "text": "Leaked data from official sources has offered a sobering look into the true scale of casualties resulting from the conflict in Ukraine. Russia's own figures reveal that almost 500,000 deaths have occurred as a direct consequence of the full-scale invasion. This vast loss of life demonstrates how the ongoing military campaign has fundamentally changed mortality patterns within Russia. The unexpected release of these internal metrics provides critical context regarding the domestic toll of the war, illustrating a profound shift in the nation's demographic landscape since the invasion was launched.",
+          "quiz": [
+            {
+              "q": "What main discovery is reported in the text?",
+              "opts": [
+                "Ukraine has released new domestic mortality statistics.",
+                "Leaked Russian data reveals nearly 500,000 deaths from the invasion.",
+                "Russia has declared an end to military operations.",
+                "Demographic patterns in Russia have remained entirely stable."
+              ],
+              "ans": 1
+            },
+            {
+              "q": "In this text, what does the word 'profound' mean?",
+              "opts": [
+                "Slight and minor",
+                "Very great or deep",
+                "Unimportant",
+                "Temporary"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What has the full-scale invasion fundamentally changed in Russia?",
+              "opts": [
+                "Its educational system",
+                "Its mortality patterns",
+                "Its financial currency",
+                "Its international borders"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Russia's own internal figures indicate almost 500,000 deaths.",
+                "The figures were announced during an official press conference.",
+                "The invasion has had little impact on Russia's demographic landscape.",
+                "The casualty numbers were calculated exclusively by external observers."
+              ],
+              "ans": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mwvqiahnr8ru",
+      "date": "2026-11-25",
+      "category": "World",
+      "title": "Kilmar Ábrego García Leaving US for Spain",
+      "src": "https://www.bbc.co.uk/news/articles/c6808pyy5dl9o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/3c4a/live/dcbcfdf0-e85a-11f1-9b85-e50d1e9de678.jpg",
+      "levels": {
+        "1": {
+          "text": "Kilmar Ábrego García is leaving the United States. He is going to Spain. This move ends a big battle about his deportation. First, the US sent him to El Salvador. Later, he came back to the US. His story became very famous. People used it to talk about President Donald Trump and his rules for immigration. Many people watched this case carefully for a long time. Now, going to Spain ends the long fight in the US. Ábrego García is starting a new life in another country.",
+          "quiz": [
+            {
+              "q": "Where is Kilmar Ábrego García going after leaving the US?",
+              "opts": [
+                "Spain",
+                "Mexico",
+                "El Salvador",
+                "Canada"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does the word 'deportation' mean in this story?",
+              "opts": [
+                "Sending a person out of a country",
+                "Buying a new home",
+                "Visiting family for vacation",
+                "Moving to a new job"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "To which country was Kilmar Ábrego García first deported?",
+              "opts": [
+                "The United States",
+                "Honduras",
+                "El Salvador",
+                "Spain"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "True or false: Kilmar Ábrego García never returned to the US after his deportation.",
+              "opts": [
+                "True",
+                "False",
+                "The story does not say",
+                "He moved to France instead"
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "2": {
+          "text": "Kilmar Ábrego García is leaving the United States to live in Spain. His departure marks the end of a long legal battle over his deportation. Originally, officials deported him to El Salvador, but he later returned to the US. His deportation and subsequent return became a major flash point in the national debate regarding President Donald Trump's immigration agenda. Many people discussed his case when arguing about immigration rules and policies. By choosing to move to Spain, Ábrego García brings his public legal fight in the US to a close.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the text?",
+              "opts": [
+                "Tourism between El Salvador and the US",
+                "Kilmar Ábrego García leaving the US for Spain after an immigration fight",
+                "The new immigration laws in Spain",
+                "A battle over Donald Trump's reelection"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the phrase 'flash point' mean in the text?",
+              "opts": [
+                "A place with bright lights",
+                "A fast airplane ticket",
+                "A focal point of great anger or excitement",
+                "A sudden fire in a building"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "Whose immigration agenda was discussed during this legal battle?",
+              "opts": [
+                "President Donald Trump's",
+                "The King of Spain's",
+                "The President of El Salvador's",
+                "The US Supreme Court's"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which of the following statements is TRUE based on the text?",
+              "opts": [
+                "The legal battle started in Spain.",
+                "Donald Trump stopped the legal fight personally.",
+                "Ábrego García was never sent to El Salvador.",
+                "Ábrego García is moving to Spain."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "3": {
+          "text": "Kilmar Ábrego García is departing the United States for Spain, effectively concluding a high-profile legal battle over his deportation. His initial deportation to El Salvador and his subsequent return to the US turned his personal story into a major flash point in the nationwide debate surrounding President Donald Trump's aggressive immigration agenda. The case drew significant public attention as supporters and critics used his legal trajectory to argue about the administration's broader policy goals and procedures. Ábrego García's decision to relocate to Spain brings an end to the prolonged controversy that made him a central figure in American immigration politics.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the article?",
+              "opts": [
+                "President Donald Trump created a new policy in El Salvador.",
+                "Spain is changing its immigration policies for US residents.",
+                "Deportation cases in the US are now officially banned.",
+                "Kilmar Ábrego García's move to Spain ends a prominent debate over his US deportation."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does the word 'subsequent' mean as used in the text?",
+              "opts": [
+                "Extremely fast",
+                "Happening after something else",
+                "Unlikely to occur",
+                "Happening before an event"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which two countries outside the US are mentioned in relation to Ábrego García?",
+              "opts": [
+                "El Salvador and Canada",
+                "El Salvador and Spain",
+                "Spain and France",
+                "Spain and Mexico"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is FALSE according to the text?",
+              "opts": [
+                "His story became part of the debate on Trump's immigration agenda.",
+                "Ábrego García's move to Spain ends the legal fight in the US.",
+                "Ábrego García returned to the US after being sent to El Salvador.",
+                "Ábrego García will continue his legal battle from El Salvador."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mwsvmmf62fz5",
       "date": "2026-11-23",
@@ -3942,444 +4380,6 @@
         }
       },
       "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/d247/live/940d6f30-de7e-11f1-b88b-3f1671ea859d.jpg"
-    },
-    {
-      "id": "mwbqcpms7rqh",
-      "date": "2026-11-11",
-      "category": "World",
-      "title": "US Soldier Arrested in UK Over Russia Spying Suspicions",
-      "src": "https://www.bbc.co.uk/news/articles/c6d7q77xgw0vo?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "A 41-year-old soldier from the US Army was arrested in the UK. Police suspect he was spying for Russia. The man is a senior soldier. He is accused of national security offences. Right now, police are questioning him in London. The authorities take national security very seriously. They want to find out what happened. This situation is important for both the US and the UK. The soldier remains in London while police ask him questions. More news will come later as the investigation continues.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "Russia and the UK started a new program.",
-                "A soldier was arrested in the UK for suspected spying.",
-                "London police hired a new US soldier.",
-                "A soldier moved to London to work."
-              ],
-              "ans": 1
-            },
-            {
-              "q": "In this story, what does 'arrested' mean?",
-              "opts": [
-                "Sent on a business trip",
-                "Given a promotion at work",
-                "Allowed to go home",
-                "Taken away by police for a suspected crime"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "How old is the US Army soldier?",
-              "opts": [
-                "41 years old",
-                "31 years old",
-                "61 years old",
-                "51 years old"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Which statement is TRUE based on the text?",
-              "opts": [
-                "The soldier is a junior member of the army.",
-                "The soldier was arrested in the United States.",
-                "The soldier is accused of stealing money.",
-                "The soldier is being questioned in London."
-              ],
-              "ans": 3
-            }
-          ]
-        },
-        "2": {
-          "text": "A 41-year-old senior soldier from the US Army has been arrested in the United Kingdom. He is suspected of spying for Russia and is now accused of national security offences. Following his arrest, he was taken to London, where officials are currently questioning him about his actions. Because he is a senior soldier, this case is very important to national security teams. Investigators are working to learn more details about the situation and what information might be involved. The investigation is still ongoing in London. Authorities have not given more details yet, but the man remains in custody while questioning continues.",
-          "quiz": [
-            {
-              "q": "What is the main topic of this article?",
-              "opts": [
-                "London police are hiring new security guards.",
-                "A senior US soldier was arrested in the UK for suspected Russian espionage.",
-                "A US soldier received an award in London.",
-                "The UK and Russia signed a new national security agreement."
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What does 'offences' mean in this story?",
-              "opts": [
-                "Military training exercises",
-                "Crimes or illegal acts",
-                "Safety rules",
-                "Official rewards"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "Where is the soldier currently being questioned?",
-              "opts": [
-                "In Moscow",
-                "In New York",
-                "In Washington",
-                "In London"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which statement is TRUE according to the text?",
-              "opts": [
-                "The investigation in London is completely finished.",
-                "The arrested man is a senior soldier.",
-                "The soldier was arrested in Russia.",
-                "The soldier is 35 years old."
-              ],
-              "ans": 1
-            }
-          ]
-        },
-        "3": {
-          "text": "A 41-year-old senior US Army soldier has been arrested in the United Kingdom under suspicion of spying for Russia. The soldier is facing serious charges related to national security offences. Following his arrest by authorities, he was brought to London, where he is currently undergoing questioning by investigators. Given his senior rank within the military, the allegations have raised significant concern regarding national security. Officials are conducting a thorough investigation to determine the full scope of the alleged activities. As the inquiry proceeds, the suspect remains in police custody in London while law enforcement officers work to gather more details about the case.",
-          "quiz": [
-            {
-              "q": "What is the primary focus of this news report?",
-              "opts": [
-                "The arrest and questioning of a US Army soldier in the UK for spying for Russia",
-                "A change in national security laws in the United Kingdom",
-                "A new military alliance between the US, the UK, and Russia",
-                "The retirement of a 41-year-old senior US Army official in London"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "In the text, what does 'allegations' refer to?",
-              "opts": [
-                "Official military promotions",
-                "Public awards for bravery",
-                "Signed peace treaties",
-                "Unproven claims that someone has done something wrong"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What kind of offences is the soldier accused of?",
-              "opts": [
-                "Property damage",
-                "Traffic violations",
-                "Financial crimes",
-                "National security offences"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which statement is TRUE based on the summary?",
-              "opts": [
-                "The soldier was detained inside the United States.",
-                "The suspect is a 41-year-old junior soldier.",
-                "The soldier is currently being questioned in London.",
-                "Police have finished questioning the suspect."
-              ],
-              "ans": 2
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/c66f/live/939c6190-dd44-11f1-9ac0-6b8f7fc58221.png"
-    },
-    {
-      "id": "mwbqde520179",
-      "date": "2026-11-11",
-      "category": "World",
-      "title": "US House Blocks Bid to Impeach Defence Secretary",
-      "src": "https://www.bbc.co.uk/news/articles/cxly4y5jzl0qo?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "The US House of Representatives blocked an attempt to impeach Defence Secretary Pete Hegseth. This decision stops the attempt for now. Donald Trump was happy with the result. He praised Hegseth and called him a Great American Patriot. However, this is not the end of the story. Democrats can try to impeach Hegseth again next year. For now, Hegseth keeps his job as the US Defence Secretary.",
-          "quiz": [
-            {
-              "q": "What did the US House do?",
-              "opts": [
-                "They blocked a bid to impeach Pete Hegseth.",
-                "They chose a new Defence Secretary.",
-                "They fired Pete Hegseth.",
-                "They helped Democrats pass a new law."
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What does 'praised' mean in this text?",
-              "opts": [
-                "Asked someone to leave",
-                "Said good things about someone",
-                "Gave a gift to someone",
-                "Fought with someone"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What did Trump call Pete Hegseth?",
-              "opts": [
-                "A Democrat Leader",
-                "A Great American Patriot",
-                "A US House Leader",
-                "A New President"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "True or False: Democrats can try to impeach Hegseth again next year.",
-              "opts": [
-                "True",
-                "False",
-                "The text says they cannot try again.",
-                "The text says Trump will stop them."
-              ],
-              "ans": 0
-            }
-          ]
-        },
-        "2": {
-          "text": "The United States House of Representatives has blocked an attempt to impeach Defence Secretary Pete Hegseth, ending the effort for the time being. Donald Trump welcomed the outcome of the vote. He publicly praised Hegseth, describing him as a Great American Patriot. Despite this setback for Hegseth's political opponents, the issue is not completely resolved. Democrats still have the opportunity to try to impeach the Defence Secretary again next year. For now, Hegseth remains in his position, but future efforts against him could return in the upcoming year as Democrats retain the option to bring the bid back.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the passage?",
-              "opts": [
-                "Donald Trump was impeached by the US House.",
-                "The US House blocked an effort to impeach Pete Hegseth for now.",
-                "Democrats successfully removed Pete Hegseth from office.",
-                "Pete Hegseth resigned from his position."
-              ],
-              "ans": 1
-            },
-            {
-              "q": "In the text, what does the word 'outcome' mean?",
-              "opts": [
-                "A starting point",
-                "A financial cost",
-                "A secret plan",
-                "A final result"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "How did Donald Trump react to the House's decision?",
-              "opts": [
-                "He asked Hegseth to resign.",
-                "He voted against Hegseth.",
-                "He criticized the House.",
-                "He welcomed the outcome."
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which of the following statements is TRUE based on the text?",
-              "opts": [
-                "The House successfully impeached Pete Hegseth.",
-                "Trump called Hegseth a bad leader.",
-                "Democrats can try to impeach Hegseth again next year.",
-                "Democrats can never try to impeach Hegseth again."
-              ],
-              "ans": 2
-            }
-          ]
-        },
-        "3": {
-          "text": "The US House of Representatives has successfully blocked an attempt to impeach Defence Secretary Pete Hegseth, halting the effort for now. Following the vote, Donald Trump welcomed the outcome and strongly praised Hegseth, calling him a Great American Patriot. Although this vote provides temporary relief for the Defence Secretary, the political battle is far from over. Democrats have not lost the ability to challenge him further, as they can attempt another impeachment effort next year. For the moment, Hegseth retains his leadership post at the Department of Defence, but the possibility of renewed action by House Democrats remains a potential hurdle for him in the coming year.",
-          "quiz": [
-            {
-              "q": "What is the primary focus of the news article?",
-              "opts": [
-                "The US House blocking an impeachment attempt against Pete Hegseth",
-                "Trump's plan to replace Pete Hegseth next year",
-                "The permanent end of all impeachment bids against Hegseth",
-                "A new law passed by Democrats in the US House"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What does the word 'halting' mean in the context of the text?",
-              "opts": [
-                "Stopping or pausing",
-                "Ignoring completely",
-                "Starting a debate",
-                "Accelerating quickly"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Who described Pete Hegseth as a 'Great American Patriot'?",
-              "opts": [
-                "The US House Speaker",
-                "Donald Trump",
-                "House Democrats",
-                "Pete Hegseth himself"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "Which statement is FALSE according to the summary?",
-              "opts": [
-                "The bid to impeach Pete Hegseth was blocked for now.",
-                "Trump praised Hegseth after the vote.",
-                "Pete Hegseth is the Defence Secretary.",
-                "Democrats are prevented from trying to impeach Hegseth ever again."
-              ],
-              "ans": 3
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/5391/live/eb55ba30-dd67-11f1-a701-fddedf244c16.jpg"
-    },
-    {
-      "id": "mwaax6bbcv40",
-      "date": "2026-11-10",
-      "category": "World",
-      "title": "Trump says FBI investigating Nvidia boss's affair with alleged Chinese spy",
-      "src": "https://www.bbc.co.uk/news/articles/cqg7x7dpvym8o?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "The US president said he spoke with Jensen Huang on Monday. Jensen Huang is the boss of Nvidia. The president asked him about an affair. The affair was with an alleged Chinese spy. The president said the FBI is investigating the matter. This is a very serious situation for the company chief. Many people are talking about the news. The government is looking into the relationship closely.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "Jensen Huang is leaving his job at Nvidia today.",
-                "The FBI stopped working with the US president.",
-                "The US president spoke to Nvidia's boss about an FBI investigation into an affair with an alleged spy.",
-                "Nvidia is buying a new company in China."
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What does 'alleged' mean in this text?",
-              "opts": [
-                "Proven true in court",
-                "Said to be true but not proven",
-                "Happening very fast",
-                "Very famous"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "When did the US president speak with Jensen Huang?",
-              "opts": [
-                "On Tuesday",
-                "On Monday",
-                "On Friday",
-                "On Sunday"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "True or False: The president asked Huang about an affair with an alleged spy.",
-              "opts": [
-                "The text says they never talked",
-                "Not mentioned",
-                "False",
-                "True"
-              ],
-              "ans": 3
-            }
-          ]
-        },
-        "2": {
-          "text": "The US president stated that he had a conversation with Nvidia boss Jensen Huang on Monday. During their discussion, the president asked Huang about his affair with an alleged Chinese spy. The president revealed that the FBI is currently investigating the situation. This news has raised significant concerns because Huang leads one of the world's top technology companies. The investigation focuses on the relationship between the business leader and the suspected spy. It remains unclear what the FBI has discovered so far, but the government is taking the matter very seriously as they look deeper into the case.",
-          "quiz": [
-            {
-              "q": "What is the main topic of the article?",
-              "opts": [
-                "An FBI investigation into Jensen Huang's affair with an alleged spy",
-                "A trade agreement between the US and China",
-                "A new technology product made by Nvidia",
-                "The history of the FBI and US presidents"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "In the text, what does the word 'investigating' mean?",
-              "opts": [
-                "Selling a product to customers",
-                "Ignoring a problem",
-                "Trying to find out the facts about something",
-                "Creating a new law"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Who is Jensen Huang?",
-              "opts": [
-                "An alleged Chinese spy",
-                "The boss of Nvidia",
-                "The US president",
-                "The head of the FBI"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "Which of the following statements is TRUE according to the text?",
-              "opts": [
-                "The president spoke with Huang on Tuesday.",
-                "The FBI is looking into Huang's affair with an alleged Chinese spy.",
-                "Jensen Huang refused to speak to the president.",
-                "Nvidia is a Chinese government agency."
-              ],
-              "ans": 1
-            }
-          ]
-        },
-        "3": {
-          "text": "The US president announced that he spoke directly with Nvidia boss Jensen Huang on Monday regarding troubling allegations. According to the president, he questioned Huang about an affair involving an alleged Chinese spy. Furthermore, the president stated that the FBI is actively investigating the matter. The revelation has drawn intense interest due to Huang's prominent position at the helm of a major American technology giant. A security investigation involving high-level corporate leaders and foreign espionage threats presents significant concerns for national security and business operations. The official inquiry by the FBI highlights the severity of the situation, though further details about the investigation's current findings have not yet been disclosed by federal authorities.",
-          "quiz": [
-            {
-              "q": "What is the primary focus of this news report?",
-              "opts": [
-                "Nvidia's new microchip technology",
-                " Jensen Huang's resignation from Nvidia",
-                "A conflict between US federal agencies",
-                "An FBI inquiry into the Nvidia chief's relationship with a suspected Chinese spy"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What does the word 'allegation' mean in this context?",
-              "opts": [
-                "A successful business partnership",
-                "A official written contract between two companies",
-                "A final judgment made by a legal court",
-                "A statement that someone did something wrong, made without proof"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Who told the public about the FBI investigation?",
-              "opts": [
-                "Jensen Huang",
-                "The FBI director",
-                "The US president",
-                "The alleged Chinese spy"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Which statement is FALSE based on the provided text?",
-              "opts": [
-                "Jensen Huang is the boss of Nvidia.",
-                "The president asked Huang about an affair with an alleged Chinese spy.",
-                "The US president spoke with Jensen Huang on Monday.",
-                "The president said the FBI has already finished its investigation."
-              ],
-              "ans": 3
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/123a/live/434e87b0-dcd9-11f1-a701-fddedf244c16.png"
     }
   ]
 }
