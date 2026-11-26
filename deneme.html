@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="tr" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sınav Oluştur · Kelime Arenası</title>
+<meta name="description" content="Gerçek BUEPT deneme sınavlarına benzer yeni reading sınavları oluştur, süre tutarak çöz, açıklamalı sonuçlarını gör.">
+<meta name="theme-color" content="#0f766e">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="K. Arenası">
+<link rel="manifest" href="manifest.webmanifest">
+<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="ortak.css?v=19">
+<style>
+.dn-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:18px;margin-bottom:22px}
+.dn-hero .card{padding:26px}
+.dn-hero h1{font-size:clamp(28px,4vw,42px);margin:6px 0 10px}
+.dn-hero p{color:var(--ink2);margin:0 0 14px}
+.dn-feat{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dn-feat div{padding:10px 12px;border-radius:12px;background:var(--soft);font-size:13px;color:var(--ink2);line-height:1.4}
+.dn-feat b{display:block;color:var(--ink);font-size:13.5px}
+.opt-g{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px}
+.opt-g .pill.on{background:var(--p);color:var(--p-ink);border-color:var(--p)}
+.lbl{font-weight:800;font-size:14px}
+.dn-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.dn-item{padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:6px}
+.dn-item:hover{border-color:var(--p)}
+.dn-item b{font-family:Fraunces,serif;font-size:18px}
+.dn-item .row{justify-content:space-between}
+/* sınav */
+.exbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;margin:-4px 0 12px;background:var(--bg);border-bottom:1px solid var(--line)}
+.exbar .t{font-weight:800;flex:1;min-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tmr{font:800 15px "Plus Jakarta Sans";padding:6px 12px;border-radius:999px;background:var(--soft)}
+.tmr.low{background:var(--bad-soft);color:var(--bad)}
+.exgrid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:16px;align-items:start}
+.pane{padding:20px 22px;max-height:calc(100vh - 150px);overflow:auto;position:sticky;top:64px}
+.ptitle{font-family:Fraunces,serif;font-size:26px;text-align:center;margin:4px 0 14px;letter-spacing:.02em}
+.ph{font-weight:800;font-size:15px;margin:16px 0 4px;font-style:italic}
+.pp{display:grid;grid-template-columns:28px 1fr;gap:8px;margin:0 0 12px;font-family:Fraunces,serif;font-size:17px;line-height:1.75}
+.pp .no{font:800 13px "Plus Jakarta Sans";color:var(--mut);padding-top:4px;text-align:right}
+.pp.flash{animation:fl 1.6s}
+@keyframes fl{0%,100%{background:transparent}30%{background:var(--acc-soft)}}
+.pp mark{background:color-mix(in srgb,var(--acc) 40%,transparent);color:inherit;border-radius:3px}
+.notes{border-top:1px solid var(--line);margin-top:14px;padding-top:10px;font-size:13px;color:var(--ink2)}
+.qq{padding:14px 0;border-bottom:1px solid var(--line)}
+.qq:last-child{border-bottom:0}
+.qq .qn{display:flex;gap:8px;align-items:flex-start;font-weight:700;line-height:1.45}
+.qq .qn i{font-style:normal;min-width:24px;height:24px;border-radius:8px;background:var(--p);color:var(--p-ink);display:grid;place-items:center;font-size:12.5px;font-weight:800}
+.qq .kd{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:0 0 4px 32px}
+.qq .ctx{margin:8px 0 0 32px;padding:10px 12px;border-radius:10px;background:var(--soft);font-size:14.5px;line-height:1.55;white-space:pre-line}
+.qo{display:grid;gap:6px;margin:10px 0 0 32px}
+.qo label{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);border-radius:12px;cursor:pointer;font-size:14.5px;line-height:1.4;background:var(--card)}
+.qo label:hover{border-color:var(--p)}
+.qo input{margin-top:3px;accent-color:var(--p)}
+.qo label.sel{border-color:var(--p);background:var(--p-soft)}
+.qo label.ok{border-color:var(--ok);background:var(--ok-soft)}
+.qo label.no{border-color:var(--bad);background:var(--bad-soft)}
+.qo .L{font-weight:800;min-width:18px}
+.qi{margin:10px 0 0 32px}
+.qi input,.qi select{width:100%}
+.boxw{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0 32px}
+.boxw span{border:1px dashed var(--line2);border-radius:8px;padding:3px 10px;font-weight:700;font-size:13.5px}
+.mrow{display:grid;grid-template-columns:1fr 130px;gap:8px;align-items:center;margin:8px 0 0 32px;font-size:14.5px}
+.res{margin:10px 0 0 32px;padding:12px 14px;border-radius:12px;font-size:14.5px;line-height:1.55}
+.res.ok{background:var(--ok-soft)}.res.no{background:var(--bad-soft)}
+.res b.h{display:block;margin-bottom:2px}
+.res q{display:block;font-style:italic;margin:6px 0;color:var(--ink2)}
+.tabsm{display:none;gap:6px;margin-bottom:10px}
+.score{display:flex;gap:16px;align-items:center;padding:16px 18px;margin-bottom:14px}
+.dial{--v:0;--c:var(--p);width:84px;height:84px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--v)*1%),var(--soft) 0);display:grid;place-items:center;flex:0 0 auto}
+.dial span{width:64px;height:64px;border-radius:50%;background:var(--card);display:grid;place-items:center;font:800 19px "Plus Jakarta Sans"}
+.gen{padding:24px;text-align:center}
+.gen .steps{display:grid;gap:6px;max-width:360px;margin:14px auto 0;text-align:left}
+.gen .steps div{display:flex;gap:8px;align-items:center;font-weight:700;color:var(--mut)}
+.gen .steps div.on{color:var(--ink)}.gen .steps div.ok{color:var(--ok)}
+@media (max-width:900px){
+ .dn-hero{grid-template-columns:1fr}.dn-feat{grid-template-columns:1fr}.dn-hero section:last-child{order:-1}
+ .exgrid{grid-template-columns:1fr}
+ .pane{max-height:none;position:static;padding:16px}
+ .tabsm{display:flex}
+ .exgrid[data-tab="t"] .qpane{display:none}.exgrid[data-tab="q"] .tpane{display:none}
+ .pp{grid-template-columns:22px 1fr;font-size:16.5px}
+ .mrow{grid-template-columns:1fr}
+ .qo,.qi,.boxw,.mrow,.res,.qq .ctx{margin-left:0}.qq .kd{margin-left:0}
+}
+</style>
+</head>
+<body>
+<main class="ka-wrap" id="main"></main>
+<script src="firebase-config.js?v=19"></script><script src="ortak.js?v=19"></script>
+<script>
+(()=>{
+const {$,esc,shuf}=KA,ic=KA.ic;
+const KEY='ka_deneme';
+const all=()=>{try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return []}};
+const putAll=a=>{try{localStorage.setItem(KEY,JSON.stringify(a.slice(0,20)))}catch(e){KA.toast('Kayıt alanı doldu; eski bir denemeyi sil.')}};
+let READY=[],DB=null,EX=null,tick=null,TAB='t';
+const TOPICS=[['rnd','Rastgele'],['psy','Psikoloji deneyleri'],['soc','Sosyoloji ve toplumsal hareketler'],['med','Medya ve ikna'],['tech','Teknoloji ve yapay zekâ'],['eth','Etik, felsefe ve hukuk'],['his','Tarih ve ekonomi'],['hea','Sağlık ve beslenme'],['edu','Eğitim ve öğrenme'],['cul','Sinema, sanat ve kültür']];
+const TOPIC_EN={psy:'psychology experiments and theories (e.g. conformity, motivation, memory, learned behaviour)',soc:'sociology, collective behaviour and social movements',med:'media, advertising, propaganda and persuasion',tech:'technology, artificial intelligence and society',eth:'ethics, moral philosophy and law',his:'history, economics and colonial/post-colonial development',hea:'health, nutrition and public health history',edu:'education, learning and reading habits',cul:'film, art and cultural analysis'};
+const SEC={1:{n:'Reading I',lim:40,w:'950-1150',p:'10-12',q:10},2:{n:'Reading II',lim:50,w:'1200-1450',p:'12-15',q:11}};
+let OPT={topic:'rnd',sec:1};
+
+/* ---------- Üretim komutları (20 deneme sınavının analizine göre) ---------- */
+const GEN_T=`You are an experienced item writer for the Boğaziçi University English Proficiency Test (BUEPT) reading section. Write ONE ORIGINAL academic reading passage that matches the style of real BUEPT mock exams.
+Style profile extracted from 20 real mock exams (e.g. "Learned Helplessness", "Moral Luck", "Business Ethics", "New Media and Social Movements", "Media and Persuasion", "The Dancing Mania", "Is Astrology a Pseudoscience?", "Sugar and Society", "Understanding Social Movements", "Social Psychology of Violence", "Socialism", "Artificial Intelligence", "How to Read a Film"):
+- Topic: social sciences or popular science, explained for an educated non-specialist reader.
+- Structure: an opening paragraph that introduces a puzzle, phenomenon or debate; then definitions of key concepts ("X refers to..."), 2-4 named theories, categories or types, studies or experiments with researcher names and years, concrete examples and cases, opposing views or criticisms, and a final evaluative paragraph. Optional 1-3 short subheadings.
+- Language: C1 academic English, long multi-clause sentences, varied linkers (whereas, despite, nevertheless, thus, in contrast, by the same token), hedging (may, tend to, is likely to), some reporting verbs (argues, contends, points out), 1-2 low-frequency words whose meaning can be guessed from context.
+- Accuracy: you may mention real, well-known researchers and findings ONLY if what you say is accurate; otherwise use neutral wording ("one study", "researchers at a British university"). Do not invent statistics about real named people.
+- Also choose ONE sentence to be removed for a sentence-insertion question: it must be in a paragraph with at least 5 sentences, must not be the first sentence, and must have a clear cohesive link (a pronoun, "In other words", "For example", "However", "This", etc.) to the sentence before or after it.
+Return ONLY valid JSON: {"title":"UPPER CASE TITLE","paras":["paragraph 1", "..."],"heads":{"4":"Subheading placed before paragraph 4"},"notes":[{"w":"term","d":"short English definition"}],"remove":{"p":6,"s":"exact sentence copied from paragraph 6"}}`;
+const GEN_Q=`You are an experienced BUEPT reading item writer. Write exam questions for the numbered passage below, exactly in the style of real Boğaziçi University mock exams.
+Use these question types (types observed in 20 real exams):
+- "mc" detail: "Which of the following is NOT true / NOT mentioned according to paragraphs X and Y?"
+- "mc" inference: "What can be inferred from paragraph X?" / "What does the author imply about ...?"
+- "mc" purpose: "What is the primary purpose of paragraph X?" / "Why does the author mention ... in paragraph X?"
+- "mc" relation: "How does paragraph X relate to paragraph Y?" (options like "It provides counter-evidence to...", "It gives examples of...", "It explains the reasons behind...")
+- "mc" vocab: "What does the word/phrase '...' in paragraph X mean?" (a low-frequency word or idiomatic phrase)
+- "mc" case: a NEW short real-life scenario (3-5 sentences, put it in "ctx") and the student decides which concept/theory/type from the text it illustrates. Options are concept names from the text.
+- "mc" combo: statements I, II, III (in "ctx") and options like "I and II", "II only", "I, II and III".
+- "mc" main: "Which of the following best summarizes the main idea of paragraph X?" (may use quotes)
+- "multi": "Which TWO of the following ...?" with 5 options and "pick":2.
+- "short": short-answer or sentence completion with "____"; the answer is 1-6 words that appear in or are directly supported by the text. Give 2-4 acceptable answers in "a".
+- "box": summary completion of 3 blanks [1] [2] [3] in "ctx", with a "box" of 6-7 words (3 correct + plausible distractors of the same word class).
+- "match": "Match the statements with the correct researchers/views. There is one EXTRA." rows (2-3 paraphrased statements) and options (one more than rows).
+Rules:
+- Distractors must be plausible: they use words from the text but distort one key point (wrong cause, wrong person, wrong degree, reversed relation, not mentioned).
+- Paraphrase; do not copy whole sentences into correct options.
+- Spread questions across the whole passage in paragraph order.
+- For EVERY question give "p" (paragraph number of the evidence), "kanit" (an EXACT quotation of 5-25 words copied from that paragraph) and "why" (a clear Turkish explanation, 1-3 sentences, of why the answer is correct and why the tempting distractor is wrong).
+- Do NOT write a sentence-insertion question; it is added separately.
+Return ONLY valid JSON: {"qs":[{"type":"mc","kind":"Çıkarım","q":"...","ctx":"","o":["...","...","...","..."],"a":2,"p":3,"kanit":"...","why":"..."},{"type":"multi","pick":2,"kind":"İki doğru","q":"...","o":["a","b","c","d","e"],"a":[0,3],"p":5,"kanit":"...","why":"..."},{"type":"short","kind":"Kısa cevap","q":"... ____ ...","a":["answer","alternative"],"p":7,"kanit":"...","why":"..."},{"type":"box","kind":"Kutudan tamamlama","q":"Complete the summary with words from the box.","ctx":"... [1] ... [2] ... [3] ...","box":["w1","w2","w3","w4","w5","w6"],"a":["w2","w5","w1"],"p":8,"kanit":"...","why":"..."},{"type":"match","kind":"Eşleştirme","q":"...","rows":["statement","statement"],"o":["A) ...","B) ...","C) ..."],"a":[2,0],"p":9,"kanit":"...","why":"..."}]}
+"kind" must be one of: Detay, Çıkarım, Yazarın amacı, Paragraf ilişkisi, Bağlamdan anlam, Vaka uygulama, Kombinasyon, Ana fikir, İki doğru, Kısa cevap, Kutudan tamamlama, Eşleştirme.`;
+const INS_WHY=`Bir BUEPT cümle yerleştirme sorusu için kısa Türkçe açıklama yaz: eksik cümle neden bu konuma uyuyor? Önceki ve sonraki cümleyle bağını (zamir, bağlaç, örnek, sonuç) belirt. 2 cümleyi geçme. YALNIZCA JSON: {"why":"..."}`;
+const SHORTJ=`Sen deneyimli ve adil bir BUEPT okuma değerlendiricisisin. Her kısa cevaplı soru için öğrencinin cevabının, cevap anahtarındaki anlamla aynı olup olmadığına karar ver. Yazım hatası, farklı ama eş anlamlı ifade, fazladan ama doğru kelimeler kabul; eksik kilit bilgi, farklı anlam ya da metinde olmayan bilgi kabul değil. YALNIZCA JSON: {"items":[{"n":3,"ok":true,"not":"en fazla 15 kelimelik Türkçe açıklama"}]}`;
+const TOPIC_POOL={psy:['the placebo effect','cognitive dissonance','the marshmallow test and self-control','conformity and the Asch experiments','false memories','the halo effect'],soc:['urbanisation and loneliness','the sociology of fashion','gentrification','social mobility and education','moral panics'],med:['propaganda in wartime','the attention economy','framing in news media','celebrity endorsement'],tech:['algorithms and filter bubbles','automation and the future of work','surveillance technology','video games and learning'],eth:['the ethics of animal experiments','free will and responsibility','whistleblowing','the trolley problem'],his:['the Silk Road and globalisation','the Black Death and its economic consequences','the history of coffee houses','the tulip mania'],hea:['the history of vaccination','sleep and memory','the obesity epidemic','antibiotic resistance'],edu:['the testing effect in learning','bilingual education','homework debates','growth mindset'],cul:['the language of advertising images','realism in documentary film','the psychology of music','the museum in the digital age']};
+
+/* ---------- Kütüphane ---------- */
+async function lib(){
+  stop();EX=null;location.hash='';
+  if(!READY.length){try{READY=await (await fetch('deneme-hazir.json?v=1')).json()}catch(e){READY=[]}}
+  const list=all();
+  $('#main').innerHTML=`<div class="dn-hero"><section class="card"><span class="eyebrow">Sınav Odası · Sınav oluştur</span><h1>Yeni bir BUEPT reading sınavı oluştur</h1><p>20 gerçek Boğaziçi deneme sınavını inceledim: metin yapısı, konu seçimi ve soru tipleri bu sınavlarla aynı. Her seferinde konusu benzer ama metni ve soruları yeni bir sınav hazırlanır; süre tutarak çözersin, sonunda her sorunun açıklamasını metinden alıntıyla görürsün.</p>
+   <div class="dn-feat"><div><b>Gerçek soru tipleri</b>NOT true, çıkarım, paragrafın amacı, paragraf ilişkisi, cümle yerleştirme, vaka, I-II-III, kutudan tamamlama, kısa cevap</div><div><b>Gerçek süre</b>Reading I 40 dk · Reading II 50 dk</div><div><b>Açıklamalı sonuç</b>Her sorunun Türkçe açıklaması ve metindeki kanıt cümlesi</div><div><b>Kelimeye dokun</b>Metindeki bilmediğin kelimeye dokununca anlamı açılır</div></div>
+   <p class="mut" style="margin:14px 0 0;font-size:13px"><a href="sinav.html">← Kendi sınavını yüklemek için Sınav Odası'na dön</a></p></section>
+  <section class="card"><div class="lbl">Konu</div><div class="opt-g">${TOPICS.map(([k,n])=>`<button class="pill ${OPT.topic===k?'on':''}" data-tp="${k}">${n}</button>`).join('')}</div>
+   <div class="lbl">Bölüm</div><div class="opt-g">${[1,2].map(k=>`<button class="pill ${OPT.sec===k?'on':''}" data-sec="${k}">${SEC[k].n} · ${SEC[k].lim} dk · ${SEC[k].q} soru</button>`).join('')}</div>
+   <button class="btn btn-p btn-lg" data-a="gen" style="width:100%">${ic('spark')}Sınavı oluştur</button>
+   <p class="mut" style="font-size:12.5px;margin:10px 0 0">Hazırlanması yaklaşık 30-60 saniye sürer. Yapay zekâ bağlı değilse bugünkü ücretsiz deneme hakların kullanılır.</p></section></div>
+  <h2 style="font-size:21px;margin:0 0 10px">Hazır deneme</h2>
+  <div class="dn-list" style="margin-bottom:22px">${READY.map(x=>itemHtml(Object.assign({},x,list.find(y=>y.id===x.id)||{}),1)).join('')}</div>
+  ${list.filter(x=>!x.ready).length?`<h2 style="font-size:21px;margin:0 0 10px">Oluşturduğun sınavlar</h2><div class="dn-list">${list.filter(x=>!x.ready).map(x=>itemHtml(x)).join('')}</div>`:''}`;
+}
+function itemHtml(x,ready){const n=Object.keys(x.ans||{}).length,r=x.res;return `<div class="card dn-item" data-open="${x.id}" role="button" tabindex="0"><span class="eyebrow">${esc(x.topic||'')} · ${SEC[x.sec||1].n}</span><b>${esc(x.title)}</b><span class="mut" style="font-size:13px">${(x.paras||[]).length} paragraf · ${(x.qs||[]).length} soru · ${x.limit||SEC[x.sec||1].lim} dk</span><div class="row"><span class="mut" style="font-size:13px">${r?`<b style="color:${r.pct>=60?'var(--ok)':'var(--bad)'}">%${r.pct}</b> puan`:n?`${n} soru cevaplandı`:'Başlanmadı'}</span>${ready?'':`<button class="ka-icon-btn" data-del="${x.id}" aria-label="Sil" style="width:32px;height:32px">${ic('trash')}</button>`}</div></div>`}
+
+/* ---------- Üretim ---------- */
+const nrm=s=>String(s||'').toLowerCase().replace(/[’‘`]/g,"'").replace(/[“”]/g,'"').replace(/[^a-z0-9' ]+/g,' ').replace(/\s+/g,' ').trim();
+const sentsOf=p=>p.match(/[^.!?]+[.!?]+["”’)]*\s*/g)||[p];
+async function generate(){
+  const tp=OPT.topic==='rnd'?shuf(Object.keys(TOPIC_EN))[0]:OPT.topic,sec=SEC[OPT.sec];
+  const idea=shuf(TOPIC_POOL[tp])[0];
+  const steps=['Konu ve metin planı','Metin yazılıyor','Sorular yazılıyor','Kontrol ediliyor'];let si=0;
+  const draw=(err)=>{$('#main').innerHTML=`<div class="card gen"><span class="eyebrow">${esc(sec.n)} · ${esc(TOPICS.find(t=>t[0]===tp)[1])}</span><h2 style="margin:8px 0 4px">${err?'Sınav oluşturulamadı':'Sınavın hazırlanıyor…'}</h2><p class="mut">${err?esc(err):'Gerçek BUEPT denemelerindeki yapıya göre yeni bir metin ve sorular yazılıyor.'}</p>${err?`<div class="row" style="justify-content:center;gap:8px;margin-top:12px"><button class="btn btn-p" data-a="gen">${ic('reset')}Tekrar dene</button><button class="btn btn-ghost" data-a="lib">Geri dön</button></div>`:`<div class="steps">${steps.map((s,i)=>`<div class="${i<si?'ok':i===si?'on':''}">${i<si?ic('check'):i===si?'<span class="ka-spin"></span>':'·'} ${s}</div>`).join('')}</div>`}</div>`};
+  draw();si=1;draw();
+  let T=null,err='';
+  for(let k=0;k<2&&!T;k++){
+    const r=await KA.askJ(GEN_T+(err?'\nPREVIOUS ATTEMPT FAILED: '+err:''),`Section: BUEPT ${sec.n}. Length: ${sec.w} words in ${sec.p} paragraphs. Topic area: ${TOPIC_EN[tp]}. Suggested focus (you may choose a related angle): ${idea}.`,{tier:'long',ms:110000});
+    const j=r.json;if(!j){err=r.err||'invalid JSON';continue}
+    const paras=(Array.isArray(j.paras)?j.paras:[]).map(p=>String(p).trim().replace(/^\d+[.)]?\s+/,'')).filter(p=>p.split(/\s+/).length>25);
+    if(paras.length<8){err='too few paragraphs ('+paras.length+')';continue}
+    T={title:String(j.title||'READING').toUpperCase().slice(0,80),paras,heads:j.heads&&typeof j.heads==='object'?j.heads:{},notes:Array.isArray(j.notes)?j.notes.filter(n=>n&&n.w&&n.d).slice(0,3):[],remove:j.remove};
+  }
+  if(!T)return draw('Metin yazılamadı ('+err+'). Biraz sonra tekrar dene.');
+  // cümle yerleştirme: kaldırılan cümleyi bul, işaretleri koy
+  const ins=makeInsert(T);
+  si=2;draw();
+  const passage=T.paras.map((p,i)=>`[${i+1}] ${p}`).join('\n\n');
+  let Q=[];err='';
+  for(let k=0;k<2&&Q.length<sec.q-2;k++){
+    const r=await KA.askJ(GEN_Q+(err?'\nPREVIOUS ATTEMPT FAILED: '+err:''),`Write ${sec.q-(ins?1:0)} questions. Use this mix: ${OPT.sec===2?'1 detail (NOT true), 1 inference, 1 purpose, 1 relation, 1 vocab, 1 case, 1 combo, 1 multi (pick 2), 1 match, 1 short':'1 detail (NOT true/NOT mentioned), 1 inference, 1 purpose or relation, 1 vocab, 1 case, 1 main idea, 1 box, 2 short'}.\n\nTITLE: ${T.title}\n\n${passage}`,{tier:'long',ms:110000});
+    const j=r.json;if(!j){err=r.err||'invalid JSON';continue}
+    Q=cleanQs(j.qs||[],T);if(Q.length<sec.q-2)err='only '+Q.length+' valid questions; follow the JSON format exactly';
+  }
+  if(Q.length<6)return draw('Sorular yazılamadı ('+err+'). Tekrar dene.');
+  si=3;draw();
+  if(ins){Q.push(ins);Q.sort((a,b)=>a.p-b.p)}
+  if(ins){try{const r=await KA.askJ(INS_WHY,`Paragraf: ${T.paras[ins.p-1]}\nEksik cümle: ${ins.sent}\nDoğru yer: ${ins.o[ins.a]}`,{tier:'quick',ms:20000});if(r.json&&r.json.why)ins.why=String(r.json.why)}catch(e){}}
+  Q.forEach((q,i)=>q.n=i+1);
+  const ex={id:'g'+Date.now().toString(36),title:T.title,topic:TOPICS.find(t=>t[0]===tp)[1],sec:OPT.sec,limit:sec.lim,paras:T.paras,heads:T.heads,notes:T.notes,qs:Q,ans:{},elapsed:0,created:Date.now()};
+  const L=all();L.unshift(ex);putAll(L);KA.sfx&&KA.sfx.win&&KA.sfx.win();
+  open(ex.id);
+}
+function makeInsert(T){
+  const r=T.remove;if(!r||!r.s)return null;const want=nrm(r.s);
+  let pi=(Number(r.p)||0)-1;if(!T.paras[pi]||!nrm(T.paras[pi]).includes(want))pi=T.paras.findIndex(p=>nrm(p).includes(want));
+  if(pi<0)return null;
+  const ss=sentsOf(T.paras[pi]).map(x=>x.trim()).filter(Boolean);const k=ss.findIndex(x=>nrm(x)===want||nrm(x).includes(want));
+  if(k<1||ss.length<4)return null;
+  const sent=ss[k];const rest=ss.filter((x,i)=>i!==k);// boşluklar: 1..rest.length (sona da konabilir)
+  const gaps=[...Array(rest.length).keys()].map(i=>i+1);const right=k;// kalan cümlelerde k. konumdan önce
+  let pick=gaps.filter(g=>g!==right);pick=shuf(pick).slice(0,3).concat([right]).sort((a,b)=>a-b);
+  const L='ABCD';let out='';rest.forEach((x,i)=>{out+=(i?' ':'')+(pick.includes(i)?`(${L[pick.indexOf(i)]}) `:'')+x});if(pick.includes(rest.length))out+=` (${L[pick.indexOf(rest.length)]})`;
+  T.paras[pi]=out;
+  return {type:'mc',kind:'Cümle yerleştirme',q:`There is a missing sentence in paragraph ${pi+1}, and the paragraph shows four letters (A, B, C, D) where the missing sentence could be added. Where does the following sentence fit best?\n"${sent}"`,o:['(A)','(B)','(C)','(D)'],a:pick.indexOf(right),p:pi+1,kanit:(rest[right-1]||'').slice(0,160),why:'Eksik cümle, önceki cümleyle doğrudan bağlantılı: bağlaçlara ve zamirlere dikkat et.',sent};
+}
+function cleanQs(arr,T){
+  const txt=T.paras.map(nrm);const out=[];
+  arr.forEach(q=>{if(!q||typeof q!=='object')return;const t=String(q.type||'mc');const b={type:t,kind:String(q.kind||''),q:String(q.q||'').trim(),ctx:String(q.ctx||'').trim(),p:Math.max(1,Math.min(T.paras.length,Number(q.p)||1)),kanit:String(q.kanit||'').trim(),why:String(q.why||'').trim()};
+    if(!b.q)return;
+    if(b.kanit&&!txt.some(p=>p.includes(nrm(b.kanit).slice(0,60))))b.kanit='';
+    if(t==='mc'){const o=(q.o||[]).map(String).filter(Boolean);const a=Number(q.a);if(o.length<3||!(a>=0&&a<o.length))return;b.o=o.map(x=>x.replace(/^[A-Ea-e][.)]\s+/,''));b.a=a}
+    else if(t==='multi'){const o=(q.o||[]).map(String);const a=(Array.isArray(q.a)?q.a:[]).map(Number).filter(v=>v>=0&&v<o.length);if(o.length<4||a.length<2)return;b.o=o.map(x=>x.replace(/^[A-Ea-e][.)]\s+/,''));b.a=[...new Set(a)];b.pick=b.a.length}
+    else if(t==='short'){const a=(Array.isArray(q.a)?q.a:[q.a]).map(String).filter(Boolean);if(!a.length)return;b.a=a}
+    else if(t==='box'){const bx=(q.box||[]).map(String),a=(q.a||[]).map(String);if(bx.length<4||!a.length||!a.every(w=>bx.includes(w))||!/\[1\]/.test(b.ctx))return;b.box=bx;b.a=a}
+    else if(t==='match'){const rows=(q.rows||[]).map(String),o=(q.o||[]).map(String),a=(q.a||[]).map(Number);if(rows.length<2||o.length<rows.length||a.length!==rows.length||!a.every(v=>v>=0&&v<o.length))return;b.rows=rows;b.o=o;b.a=a}
+    else return;
+    out.push(b)});
+  return out;
+}
+
+/* ---------- Sınavı aç ---------- */
+function get(id){return all().find(x=>x.id===id)||READY.find(x=>x.id===id)}
+function persist(){if(!EX)return;const L=all(),i=L.findIndex(x=>x.id===EX.id);const c=JSON.parse(JSON.stringify(EX));if(i>=0)L[i]=c;else L.unshift(c);putAll(L)}
+async function open(id){
+  if(!READY.length){try{READY=await (await fetch('deneme-hazir.json?v=1')).json()}catch(e){}}
+  const x=get(id);if(!x)return lib();
+  const saved=all().find(y=>y.id===id);EX=JSON.parse(JSON.stringify(Object.assign({},x,saved||{})));EX.ans=EX.ans||{};EX.elapsed=EX.elapsed||0;
+  location.hash=id;TAB='t';draw();if(!EX.res)start();
+}
+function stop(){clearInterval(tick);tick=null}
+function start(){stop();tick=setInterval(()=>{if(!EX||EX.res)return stop();EX.elapsed++;drawTmr();if(EX.elapsed%5===0)persist();if(EX.elapsed>=EX.limit*60){stop();KA.toast('Süre doldu. Cevapların değerlendiriliyor.',3500);finish(true)}},1000)}
+const mm=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+function drawTmr(){const t=$('#tmr');if(!t||!EX)return;const left=EX.limit*60-EX.elapsed;t.textContent=EX.res?'Süre: '+mm(EX.elapsed):'Kalan '+mm(Math.max(0,left));t.classList.toggle('low',!EX.res&&left<300)}
+function passHtml(){
+  return `<div class="ptitle">${esc(EX.title)}</div>${EX.paras.map((p,i)=>`${EX.heads&&EX.heads[i+1]?`<div class="ph">${esc(EX.heads[i+1])}</div>`:''}<div class="pp" id="pp${i+1}"><span class="no">${i+1}</span><div>${KA.tokens(p)}</div></div>`).join('')}${(EX.notes||[]).length?`<div class="notes">${EX.notes.map((n,i)=>`<div>${i+1}. <b>${esc(n.w)}</b>: ${esc(n.d)}</div>`).join('')}</div>`:''}`;
+}
+const LET='ABCDE';
+function qHtml(q){
+  const a=EX.ans[q.n],R=EX.res&&EX.res.per[q.n],done=!!EX.res;
+  let body='';
+  if(q.ctx&&q.type!=='box')body+=`<div class="ctx">${esc(q.ctx)}</div>`;
+  if(q.type==='mc'||q.type==='multi'){
+    const multi=q.type==='multi',sel=multi?(a||[]):[a];
+    body+=`<div class="qo">${q.o.map((o,i)=>{const s=sel.includes(i),right=multi?q.a.includes(i):q.a===i;const cls=done?(right?'ok':s?'no':''):(s?'sel':'');return `<label class="${cls}"><input type="${multi?'checkbox':'radio'}" name="q${q.n}" data-q="${q.n}" value="${i}" ${s?'checked':''} ${done?'disabled':''}><span class="L">${LET[i]}</span><span>${esc(o)}</span></label>`}).join('')}</div>${multi?`<div class="mut" style="font-size:12.5px;margin:6px 0 0 32px">${q.pick} seçenek işaretle</div>`:''}`;
+  }else if(q.type==='short'){
+    body+=`<div class="qi"><input class="input" data-q="${q.n}" value="${esc(a||'')}" placeholder="Cevabını yaz" ${done?'disabled':''} autocomplete="off"></div>`;
+  }else if(q.type==='box'){
+    const parts=q.ctx.split(/\[(\d)\]/);let h='';for(let i=0;i<parts.length;i++){if(i%2===0)h+=esc(parts[i]);else{const k=+parts[i]-1,v=(a||[])[k]||'';h+=`<select class="select" data-q="${q.n}" data-k="${k}" style="display:inline-block;width:auto;min-height:34px;padding:2px 28px 2px 8px;margin:2px" ${done?'disabled':''}><option value="">(${k+1})</option>${q.box.map(w=>`<option ${w===v?'selected':''}>${esc(w)}</option>`).join('')}</select>`}}
+    body+=`<div class="boxw">${q.box.map(w=>`<span>${esc(w)}</span>`).join('')}</div><div class="ctx" style="white-space:normal">${h}</div>`;
+  }else if(q.type==='match'){
+    body+=`<div class="qo" style="gap:4px">${q.o.map(o=>`<div class="mut" style="font-size:13.5px">${esc(o)}</div>`).join('')}</div>${q.rows.map((r,k)=>`<div class="mrow"><span>${['I','II','III','IV'][k]}. ${esc(r)}</span><select class="select" data-q="${q.n}" data-k="${k}" ${done?'disabled':''}><option value="">Seç</option>${q.o.map((o,i)=>`<option value="${i}" ${(a||[])[k]===i?'selected':''}>${LET[i]}</option>`).join('')}</select></div>`).join('')}`;
+  }
+  if(done){const ok=R&&R.ok;body+=`<div class="res ${ok?'ok':'no'}"><b class="h">${ok?'Doğru':R&&R.part?'Kısmen doğru':'Yanlış'}${!ok?' · Doğru cevap: '+esc(keyText(q)):''}</b>${R&&R.not?`<div>${esc(R.not)}</div>`:''}${q.why?`<div>${esc(q.why)}</div>`:''}${q.kanit?`<q>“${esc(q.kanit)}”</q>`:''}<button class="btn btn-ghost btn-sm" data-show="${q.n}">${ic('book')}Metinde göster · ¶${q.p}</button></div>`}
+  return `<div class="qq" id="q${q.n}">${q.kind?`<div class="kd">${esc(q.kind)}</div>`:''}<div class="qn"><i>${q.n}</i><span style="white-space:pre-line">${esc(q.q)}</span></div>${body}</div>`;
+}
+function keyText(q){if(q.type==='mc')return LET[q.a]+') '+q.o[q.a];if(q.type==='multi')return q.a.map(i=>LET[i]).join(' ve ');if(q.type==='short')return q.a[0];if(q.type==='box')return q.a.map((w,i)=>`(${i+1}) ${w}`).join(', ');if(q.type==='match')return q.a.map((v,k)=>['I','II','III','IV'][k]+'-'+LET[v]).join(', ');return ''}
+function draw(){
+  const n=EX.qs.length,ans=EX.qs.filter(q=>answered(q)).length,R=EX.res;
+  $('#main').innerHTML=`<div class="exbar"><button class="ka-icon-btn" data-a="lib" aria-label="Sınavlara dön">${ic('back')}</button><span class="t">${esc(EX.title)}</span><span class="tmr" id="tmr"></span><span class="mut" style="font-weight:800;font-size:13px">${ans}/${n}</span>${R?`<button class="btn btn-ghost btn-sm" data-a="redo">${ic('reset')}Yeniden çöz</button>`:`<button class="btn btn-p btn-sm" data-a="finish">${ic('check')}Bitir ve puanla</button>`}</div>
+  ${R?`<div class="card score"><div class="dial" style="--v:${R.pct};--c:${R.pct>=60?'var(--ok)':'var(--bad)'}"><span>%${R.pct}</span></div><div><b style="font-size:18px">${R.ok}/${n} doğru</b><div class="mut" style="font-size:14px">Süre: ${mm(EX.elapsed)} · ${R.pct>=60?'BUEPT eşiğinin üstünde, böyle devam.':'Yanlışlarının açıklamalarını oku; kanıt cümlesine metinde bak.'}</div><div class="row" style="gap:6px;margin-top:8px;flex-wrap:wrap">${kindStats(R)}</div></div></div>`:''}
+  <div class="tabsm"><button class="pill ${TAB==='t'?'on':''}" data-tab="t">${ic('book')}Metin</button><button class="pill ${TAB==='q'?'on':''}" data-tab="q">${ic('pen')}Sorular (${ans}/${n})</button></div>
+  <div class="exgrid" data-tab="${TAB}"><article class="card pane tpane" id="tp">${passHtml()}</article><section class="card pane qpane" id="qp"><span class="eyebrow">${SEC[EX.sec||1].n} · ${EX.limit} dk</span><p class="mut" style="font-size:13px;margin:4px 0 0">Kısa ve net cevaplar ver. Çoktan seçmelilerde tek şık işaretle.</p>${EX.qs.map(qHtml).join('')}${R?'':`<div style="padding-top:14px"><button class="btn btn-p btn-lg" data-a="finish" style="width:100%">${ic('check')}Bitir ve puanla</button></div>`}</section></div>`;
+  drawTmr();
+}
+function kindStats(R){const m={};EX.qs.forEach(q=>{const k=q.kind||'Soru';m[k]=m[k]||[0,0];m[k][1]++;if(R.per[q.n]&&R.per[q.n].ok)m[k][0]++});return Object.entries(m).map(([k,[a,b]])=>`<span class="tag" style="${a<b?'background:var(--bad-soft);color:var(--bad)':'background:var(--ok-soft);color:var(--ok)'}">${esc(k)} ${a}/${b}</span>`).join('')}
+function answered(q){const a=EX.ans[q.n];if(a==null||a==='')return false;if(Array.isArray(a))return a.filter(v=>v!==''&&v!=null).length>0;return true}
+const nE=s=>nrm(s).replace(/\b(the|a|an|of|to)\b/g,' ').replace(/\s+/g,' ').trim();
+function shortLocal(v,keys){v=nE(v);if(!v)return false;return keys.some(k=>{k=nE(k);if(!k)return false;if(v===k||v.includes(k))return true;const kw=k.split(' ').filter(w=>w.length>3),hit=kw.filter(w=>v.includes(w.slice(0,Math.max(4,w.length-2)))).length;return kw.length&&hit/kw.length>=.85})}
+async function finish(force){
+  if(!EX||EX.res)return;
+  const empty=EX.qs.filter(q=>!answered(q)).length;
+  if(!force&&empty&&!confirm(empty+' soru boş. Yine de bitirip puanlansın mı?'))return;
+  stop();const per={};const ask=[];
+  EX.qs.forEach(q=>{const a=EX.ans[q.n];let ok=false;
+    if(q.type==='mc')ok=a===q.a;
+    else if(q.type==='multi'){const s=new Set(a||[]);ok=s.size===q.a.length&&q.a.every(i=>s.has(i))}
+    else if(q.type==='box'||q.type==='match'){const arr=a||[];const hit=q.a.filter((v,k)=>arr[k]===v).length;ok=hit===q.a.length;per[q.n]={ok,part:!ok&&hit>0}; return}
+    else if(q.type==='short'){ok=shortLocal(a,q.a);if(!ok&&a&&String(a).trim())ask.push(q)}
+    per[q.n]={ok}});
+  EX.res={per,pct:0,ok:0};draw();
+  if(ask.length){const b=document.querySelector('[data-a="redo"]');KA.toast('Kısa cevaplar değerlendiriliyor…');
+    try{const r=await KA.askJ(SHORTJ,ask.map(q=>`Soru ${q.n}: ${q.q}\nCevap anahtarı: ${q.a.join(' / ')}\nÖğrencinin cevabı: ${EX.ans[q.n]}`).join('\n\n'),{tier:'quick',ms:30000});
+      ((r.json&&r.json.items)||[]).forEach(o=>{const q=ask.find(x=>x.n===Number(o.n));if(q)per[q.n]={ok:o.ok===true||String(o.ok)==='true',not:String(o.not||'')}})}catch(e){}}
+  const ok=EX.qs.filter(q=>per[q.n]&&per[q.n].ok).length;EX.res={per,ok,pct:Math.round(ok/EX.qs.length*100)};
+  persist();try{KA.addXp&&KA.addXp(ok*3)}catch(e){}(EX.res.pct>=60?KA.sfx.win:KA.sfx.bad)();
+  TAB='q';draw();scrollTo({top:0,behavior:'smooth'});
+}
+function setAns(el){
+  const n=+el.dataset.q,q=EX.qs.find(x=>x.n===n);if(!q||EX.res)return;
+  if(q.type==='mc')EX.ans[n]=+el.value;
+  else if(q.type==='multi'){const s=new Set(EX.ans[n]||[]);el.checked?s.add(+el.value):s.delete(+el.value);if(s.size>q.pick){el.checked=false;s.delete(+el.value);KA.toast(q.pick+' seçenekten fazla işaretleyemezsin.')}EX.ans[n]=[...s]}
+  else if(q.type==='short')EX.ans[n]=el.value;
+  else if(q.type==='box'){const a=EX.ans[n]||[];a[+el.dataset.k]=el.value;EX.ans[n]=a}
+  else if(q.type==='match'){const a=EX.ans[n]||[];a[+el.dataset.k]=el.value===''?'':+el.value;EX.ans[n]=a}
+  persist();
+  if(el.type==='radio'||el.type==='checkbox'){document.querySelectorAll(`input[name="q${n}"]`).forEach(i=>i.closest('label').classList.toggle('sel',i.checked))}
+  const c=document.querySelector('.exbar .mut');if(c)c.textContent=EX.qs.filter(answered).length+'/'+EX.qs.length;
+}
+function showEv(n){
+  const q=EX.qs.find(x=>x.n===n);if(!q)return;if(innerWidth<=900){TAB='t';document.querySelector('.exgrid').dataset.tab='t';document.querySelectorAll('[data-tab]').forEach(b=>b.classList&&b.classList.toggle('on',b.dataset.tab==='t'))}
+  const el=$('#pp'+q.p);if(!el)return;const body=el.querySelector('div');
+  if(q.kanit){const p=EX.paras[q.p-1];const k=p.toLowerCase().indexOf(q.kanit.toLowerCase().slice(0,40));if(k>=0){let e=p.indexOf('.',k+q.kanit.length-5);if(e<0)e=p.length;body.innerHTML=KA.tokens(p.slice(0,k))+'<mark>'+KA.tokens(p.slice(k,Math.min(p.length,Math.max(e+1,k+q.kanit.length))))+'</mark>'+KA.tokens(p.slice(Math.min(p.length,Math.max(e+1,k+q.kanit.length))))}}
+  el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');
+  const pane=$('#tp');if(innerWidth>900){pane.scrollTo({top:el.offsetTop-pane.offsetTop-20,behavior:'smooth'})}else el.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+/* ---------- Olaylar ---------- */
+document.addEventListener('click',e=>{
+  const t=e.target;
+  const tk=t.closest('.tk');if(tk){const s=(tk.closest('.pp')||tk.parentElement).textContent;const sent=(s.match(/[^.!?]+[.!?]*/g)||[]).map(z=>z.trim()).find(z=>z.includes(tk.dataset.w))||'';KA.lookup(tk.dataset.w,{anchor:tk,context:sent});return}
+  const tp=t.closest('[data-tp]');if(tp){OPT.topic=tp.dataset.tp;document.querySelectorAll('[data-tp]').forEach(b=>b.classList.toggle('on',b===tp));return}
+  const sc=t.closest('[data-sec]');if(sc){OPT.sec=+sc.dataset.sec;document.querySelectorAll('[data-sec]').forEach(b=>b.classList.toggle('on',b===sc));return}
+  const del=t.closest('[data-del]');if(del){e.stopPropagation();if(!confirm('Bu sınav silinsin mi?'))return;putAll(all().filter(x=>x.id!==del.dataset.del));lib();return}
+  const op=t.closest('[data-open]');if(op){open(op.dataset.open);return}
+  const tb=t.closest('button[data-tab]');if(tb){TAB=tb.dataset.tab;document.querySelector('.exgrid').dataset.tab=TAB;document.querySelectorAll('button[data-tab]').forEach(b=>b.classList.toggle('on',b===tb));scrollTo({top:0});return}
+  const sh=t.closest('[data-show]');if(sh){showEv(+sh.dataset.show);return}
+  const a=t.closest('[data-a]');if(!a)return;
+  ({gen:generate,lib,finish:()=>finish(false),redo:()=>{if(!confirm('Cevapların silinip sınav yeniden başlasın mı?'))return;EX.ans={};EX.res=null;EX.elapsed=0;persist();draw();start()}}[a.dataset.a]||(()=>{}))();
+});
+document.addEventListener('change',e=>{const el=e.target.closest('[data-q]');if(el&&EX)setAns(el)});
+document.addEventListener('input',e=>{const el=e.target.closest('input.input[data-q]');if(el&&EX)setAns(el)});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.closest('[data-open]'))open(e.target.closest('[data-open]').dataset.open)});
+addEventListener('beforeunload',()=>persist());
+KA.nav('sinav.html');
+const h=location.hash.slice(1);if(h)open(h);else lib();
+})();
+</script>
+</body>
+</html>

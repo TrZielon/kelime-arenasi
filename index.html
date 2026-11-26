@@ -107,6 +107,8 @@
 .fbar.ok{background:var(--ok-soft)}.fbar.no{background:var(--bad-soft)}
 .fbar .msg{flex:1;min-width:200px}
 .fbar .msg b{display:block;font-size:16px}
+.fbx{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.fbx .btn{min-height:34px;padding:6px 12px;font-size:13.5px}
+.ainote{display:block;margin-top:6px;font-size:14px;opacity:.95}
 .fbar.ok .msg b{color:var(--ok)}.fbar.no .msg b{color:var(--bad)}
 .fbar .msg span{font-size:14px;color:var(--ink2)}
 .flip{min-height:300px;display:flex;flex-direction:column;justify-content:center;cursor:pointer;user-select:none}
@@ -128,6 +130,13 @@
 .bosshp .pbar i{background:var(--bad)}
 .groups{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
 .groups .pill{min-width:40px;justify-content:center}
+.groups.scr{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding-bottom:4px;-webkit-overflow-scrolling:touch}.groups.scr .pill{flex:0 0 auto}
+.srcsw{display:inline-flex;gap:4px;padding:4px;border-radius:999px;background:var(--soft);margin:0 0 12px}
+.srcsw button{border:0;background:transparent;color:inherit;font:700 13.5px/1 inherit;padding:9px 14px;border-radius:999px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.srcsw button svg{width:16px;height:16px}.srcsw button.on{background:var(--p);color:#fff}
+.tk.hit{background:color-mix(in srgb,var(--acc2) 28%,transparent);border-radius:4px;box-shadow:0 0 0 2px color-mix(in srgb,var(--acc2) 28%,transparent)}
+.ctxp{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--soft);font-size:15px;line-height:1.65;text-align:left}
+.ctxp mark{background:color-mix(in srgb,var(--acc) 35%,transparent);color:inherit;border-radius:3px;padding:0 2px}
 .groups .pill.done{background:var(--ok-soft);border-color:transparent;color:var(--ok)}
 .para{font-family:Fraunces,serif;font-size:19px;line-height:1.85;text-align:left}
 .sumbox{margin-top:16px;text-align:left}
@@ -300,6 +309,37 @@ let packs=[],cur=null,mode=-1,BUSY=false,LASTERR='',EN={};
 const TRCH=/[çğıöşüÇĞİÖŞÜ]/;
 const isEnSide=t=>/[a-z]/i.test(t)&&!TRCH.test(t);
 const splitMeans=t=>[...new Set(String(t||'').split(/\s*[,;]\s*|\s+\/\s+|\s*\/\/\s*/).map(v=>v.trim().replace(/^_+|[.]+$/g,'').trim()).filter(Boolean))];
+/* ---------- Dil tanıma: bir parça Türkçe mi, İngilizce mi? ---------- */
+const TRW=new Set('ve ile bir için gibi olan olarak bu şu da de ki ya veya ama fakat çok daha en her hiç bazı kendi olmak etmek yapmak zaman sonra önce kadar göre karşı derken bahsederken anlamında kullanılır'.split(' '));
+const ENW=new Set('the of and to a an in on at for with by from as is are be been was were or not that this which who it its into about than one sth sb someone something'.split(' '));
+function langOf(t){
+  t=String(t||'').trim();if(!t)return '?';let tr=0,en=0;if(TRCH.test(t))tr+=3;
+  t.toLocaleLowerCase('tr').split(/[^a-zçğıöşüâîû']+/).filter(Boolean).forEach(w=>{
+    if(TRW.has(w))tr+=2;if(ENW.has(w))en+=2;
+    if(/[wqx]/.test(w))en+=2;if(/(th|sh|ph|ck|gh|wh)/.test(w))en+=1.5;
+    if(w.length>4&&/(tion|sion|ment|ness|ity|ous|ive|ful|less|ance|ence|ship|ism|ical|able|ible|ize|ise|ure|ly)$/.test(w))en+=1.5;
+    if(/(ea|ou|oo|ee|oa|ie|ei)/.test(w))en+=1;
+    if(w.length>4&&/(mak|mek|lık|lik|luk|lük|lar|ler|dan|den|tan|ten|ken|ması|mesi|sız|siz|nın|nin|yor|mış|miş)$/.test(w))tr+=1.5;
+  });
+  return en>=tr+1?'en':tr>=en+1?'tr':'?';
+}
+const EN_ONE=/^[A-Za-z][A-Za-z '\-\/()]{0,60}$/;
+/* Bir satırı düzelt: yer değiştirmiş dilleri çevir, "Sword: Kılıç, Shield, Kalkan, Bow, Yay" gibi karışık satırları çiftlere ayır */
+function normLine(en,tr,known){
+  en=String(en||'').trim();tr=String(tr||'').trim();known=known||new Set();
+  let toks=splitMeans(tr);
+  const isEn=v=>{const k=String(v).toLowerCase();return k!==en.toLowerCase()&&(known.has(k)||langOf(v)==='en')};
+  // diller yer değiştirmiş: "Ekonomik krizden bahsederken - depression, decline"
+  if(en&&toks.length&&langOf(en)==='tr'&&toks.every(v=>isEnSide(v)&&langOf(v)!=='tr')&&(toks.some(isEn)||TRCH.test(en))){const e2=toks.join(', ');tr=en;en=e2;toks=splitMeans(tr)}
+  let out=[];
+  // Türkçe tarafında İngilizce kelimeler var: her İngilizce kelime yeni bir kart başlatır
+  if(toks.length>1&&langOf(en)!=='tr'&&toks.some(isEn)&&toks.some(v=>!isEn(v))&&toks.filter(v=>!isEn(v)).every(v=>!EN_ONE.test(v)||langOf(v)!=='en')){
+    let c={en,tr:[]};toks.forEach(v=>{if(String(v).toLowerCase()===c.en.toLowerCase())return;if(isEn(v)&&EN_ONE.test(v)){out.push(c);c={en:v,tr:[]}}else c.tr.push(v)});out.push(c);
+    out=out.map(o=>({en:o.en,tr:o.tr.join(', ')}));
+  } else out=[{en,tr:toks.join(', ')}];
+  // bir satıra birden fazla İngilizce yazıldıysa her biri ayrı kart
+  return out.flatMap(o=>{const ens=/[,;]/.test(o.en)&&o.en.split(/\s*[,;]\s*/).every(e=>EN_ONE.test(e))?o.en.split(/\s*[,;]\s*/).filter(Boolean):[o.en];return ens.map(e=>({en:e.trim(),tr:o.tr}))}).filter(o=>o.en);
+}
 function parse(t){
   const out=[];
   String(t||'').split(/\r?\n/).forEach(raw=>{
@@ -315,8 +355,7 @@ function parse(t){
     en=en.replace(/\s*~\s*/g,' / ').trim();tr=splitMeans(tr.replace(/^_+/,'')).join(', ');
     if(!/[a-z]/i.test(tr))tr='';
     // bir Türkçeye birden fazla İngilizce yazıldıysa her biri ayrı kelime
-    const ens=/[,;]/.test(en)&&en.split(/\s*[,;]\s*/).every(e=>/^[A-Za-z][A-Za-z '\-\/()]{0,60}$/.test(e))?en.split(/\s*[,;]\s*/).filter(Boolean):[en];
-    ens.forEach(e=>{if(e.length<=80)out.push({en:e.trim(),tr})});
+    normLine(en,tr).forEach(o=>{if(o.en.length<=80)out.push({en:o.en,tr:/[a-z]/i.test(o.tr)?o.tr:''})});
   });
   // aynı kelime iki kez yazıldıysa anlamlarını birleştir
   const map=new Map();out.forEach(x=>{const k=x.en.toLowerCase();if(!map.has(k)){map.set(k,x);return}const y=map.get(k);y.tr=splitMeans([y.tr,x.tr].filter(Boolean).join(', ')).join(', ')});
@@ -324,29 +363,33 @@ function parse(t){
 }
 /* Anlamlar: bir kelimenin her Türkçe anlamı ayrı sorulur, hepsi doğru sayılır */
 const MEAN=x=>splitMeans(x&&x.tr);
-const pickM=x=>{const m=MEAN(x);return m.length?m[Math.floor(Math.random()*m.length)]:String(x&&x.tr||'')};
+const MEANT=x=>MEAN(x).filter(m=>langOf(m)!=='en');
+const pickM=x=>{const t=MEANT(x),m=t.length?t:MEAN(x);return m.length?m[Math.floor(Math.random()*m.length)]:String(x&&x.tr||'')};
 const mKey=m=>String(m||'').toLocaleLowerCase('tr').replace(/\s+/g,' ').trim();
 const sharesM=(o,m)=>MEAN(o).some(v=>mKey(v)===mKey(m));
 /* Eski listeleri düzelt: Türkçesi başa yazılmış ya da bir satıra birden fazla İngilizce yazılmış kelimeler */
 function fixPack(p){
-  let ch=false;const out=[],seen=new Map();
+  if(p.fix===3)return p;
+  const known=new Set(p.items.map(x=>String(x.en||'').toLowerCase()).filter(k=>langOf(k)!=='tr'));
+  let ch=false;const out=[],seen=new Map(),bak=JSON.parse(JSON.stringify(p.items));
   p.items.forEach(x=>{
-    let en=String(x.en||'').trim(),tr=String(x.tr||'');
-    if(TRCH.test(en)&&isEnSide(tr)){[en,tr]=[tr,en];ch=true}
-    const ens=/[,;]/.test(en)&&en.split(/\s*[,;]\s*/).every(e=>/^[A-Za-z][A-Za-z '\-\/()]{0,60}$/.test(e))?en.split(/\s*[,;]\s*/).filter(Boolean):[en];
-    if(ens.length>1)ch=true;
-    ens.forEach((e,i)=>{const k=e.toLowerCase();if(seen.has(k)){const y=seen.get(k);const nt=splitMeans([y.tr,tr].filter(Boolean).join(', ')).join(', ');if(nt!==y.tr){y.tr=nt}ch=true;return}
-      const y=i===0&&ens.length===1?Object.assign(x,{en:e,tr}):{en:e,tr};
-      if(ens.length>1&&p.prog.box[en]&&!p.prog.box[e])p.prog.box[e]=p.prog.box[en];
+    const en0=String(x.en||'').trim(),tr0=String(x.tr||'');
+    let parts=normLine(en0,tr0,known);
+    if(parts.length!==1||parts[0].en!==en0||parts[0].tr!==splitMeans(tr0).join(', '))ch=true;
+    parts.forEach((o,i)=>{const k=o.en.toLowerCase();
+      if(seen.has(k)){const y=seen.get(k);y.tr=splitMeans([y.tr,o.tr].filter(Boolean).join(', ')).join(', ');ch=true;return}
+      const y=i===0?Object.assign(x,{en:o.en,tr:o.tr}):{en:o.en,tr:o.tr};
+      if(o.en!==en0&&p.prog.box[en0]&&!p.prog.box[o.en]&&i===0)p.prog.box[o.en]=p.prog.box[en0];
       seen.set(k,y);out.push(y)});
   });
-  if(ch){p.items=out;p.words=out.map(x=>({en:x.en,tr:x.tr}));KA.savePack(p,true)}
+  if(ch){if(!p.bak)p.bak={items:bak,at:Date.now()};p.items=out;p.words=out.map(x=>({en:x.en,tr:x.tr}))}
+  p.fix=3;KA.savePack(p,true);
   return p;
 }
 const mkPack=(id,name,words)=>KA.normPack({id,name,words:words.map(w=>({en:w.en,tr:w.tr||''})),items:words.map(w=>({en:w.en,tr:w.tr||''}))});
 const save=(now)=>{if(cur)KA.savePack(cur,now)};
 const bx=x=>cur.prog.box[x.en]||1;
-const withTr=()=>cur.items.filter(x=>x.tr);
+const withTr=()=>cur.items.filter(x=>x.tr&&MEANT(x).length);
 const sentOf=()=>cur.items.filter(x=>x.tr&&x.s&&x.st);
 function addXp(n){cur.prog.xp=(cur.prog.xp||0)+n;KA.markDay();save();KA.refreshChips()}
 let COMBO=0;function comboFx(ok){COMBO=ok?COMBO+1:0;const c=$('#combo');if(!c)return;c.hidden=false;c.textContent='Seri ×'+COMBO;c.classList.remove('pop','brk');void c.offsetWidth;c.classList.add(ok?'pop':'brk')}
@@ -373,6 +416,9 @@ function renderHome(){
     return;
   }
   const aid=KA.activeId();cur=packs.find(p=>p.id===aid)||packs[0];KA.activeId(cur.id);fixPack(cur);
+  if(!cur.aud&&!AUD_RUN.has(cur.id)&&cur.id!=='def'&&cur.id!=='unk')setTimeout(()=>runAudit(cur),300);
+  const audCard=AUD_RUN.has(cur.id)?`<div class="card prep"><span class="ka-spin"></span><p>Yapay zekâ kartlarını denetliyor: yer değiştirmiş, karışmış ya da yanlış anlamlı kartlar düzeltiliyor…</p></div>`:
+    (cur.audLog&&cur.audLog.length&&!cur.audSeen)?`<div class="card prep"><span style="color:var(--acc2)">${ic('spark')}</span><p>Yapay zekâ listende <b>${cur.audLog.length} kartı</b> düzeltti (yer değiştirmiş dil, aynı satıra karışmış kelimeler, yanlış anlam).</p><div class="row" style="gap:6px"><button class="btn btn-ghost btn-sm" data-a="audlog">Neleri düzeltti?</button>${cur.bak?'<button class="btn btn-ghost btn-sm" data-a="audundo">Geri al</button>':''}<button class="btn btn-acc btn-sm" data-a="audok">Tamam</button></div></div>`:'';
   const st=cur.prog.steps,done=st.filter(Boolean).length,nx=nextMode(),meta=KA.meta();
   const learned=cur.items.filter(x=>bx(x)>=3).length,acc=meta.tot?Math.round(meta.ok/meta.tot*100)+'%':'—';
   const ms=missing(cur),needs=ms.tr+ms.s+ms.g>0;
@@ -381,7 +427,7 @@ function renderHome(){
   const maxT=Math.max(1,...tiers.map(t=>t.n));
   const badges=[['İlk kapı','kart',st[0]||meta.kart>0],['Keskin nişancı','sec',meta.tot>=30&&meta.ok/meta.tot>=.9],['7 gün seri','flame',KA.streak(meta)>=7],['Bekçiyi geçen','boss',!!st[4]],['Yazar','yaz',!!st[3]],['Paragraf ustası','para',!!st[6]]];
   H.innerHTML=`
-  ${needs?`<div class="card prep" id="prep"><span style="color:var(--acc2)">${ic('spark')}</span><p id="prepTxt">${BUSY?'Hazırlanıyor…':`Bu listede ${[ms.tr&&ms.tr+' kelimenin anlamı',ms.s&&ms.s+' kelimenin örnek cümlesi',ms.g&&ms.g+' kelimenin paragrafı'].filter(Boolean).join(', ')} eksik.`}</p><button class="btn btn-acc btn-sm" data-a="prep" ${BUSY?'disabled':''}>${ic('spark')}Hazırla</button></div>`:''}
+  ${audCard}${needs?`<div class="card prep" id="prep"><span style="color:var(--acc2)">${ic('spark')}</span><p id="prepTxt">${BUSY?'Hazırlanıyor…':`Bu listede ${[ms.tr&&ms.tr+' kelimenin anlamı',ms.s&&ms.s+' kelimenin örnek cümlesi',ms.g&&ms.g+' kelimenin paragrafı'].filter(Boolean).join(', ')} eksik.`}</p><button class="btn btn-acc btn-sm" data-a="prep" ${BUSY?'disabled':''}>${ic('spark')}Hazırla</button></div>`:''}
   <section class="card hero">
     <div>
       <div class="row" style="gap:8px"><span class="eyebrow">Aktif liste</span><span class="rank">${ic('crown')}${rankOf(cur.prog.xp||0)}</span></div>
@@ -434,8 +480,8 @@ function ticketHtml(meta,learned){
 function ringMeta(i){
   const n=withTr().length;
   if(i===4)return '12 taş · 3 can';
-  if(i===5){const s=sentOf().length;return s?s+' cümle':'Cümle hazır değil'}
-  if(i===6){const g=cur.groups.filter(g=>g.text).length;return g?g+' paragraf':'Paragraf hazır değil'}
+  if(i===5){if(srcOf(5)==='bu')return 'BUEPT metinleri · 150 cümle';const s=sentOf().length;return s?s+' cümle':'Cümle hazır değil'}
+  if(i===6){if(srcOf(6)==='bu')return 'BUEPT metinleri · 18 metin';const g=cur.groups.filter(g=>g.text).length;return g?g+' paragraf':'Paragraf hazır değil'}
   return n+' kelime';
 }
 function pwaHtml(){
@@ -462,7 +508,7 @@ function sessSnap(){
   if(mode===0&&K&&K.q.length)d={q:K.q.map(x=>x.en),total:K.total,known:K.known};
   else if((mode===2||mode===3)&&Q&&Q.q.length)d={q:Q.q.map(x=>x.en),total:Q.total,solved:Q.solved};
   else if(mode===4&&B&&B.q.length&&B.lives>0)d={q:B.q.map(m=>({en:m.x.en,t:m.t,key:m.key||0,again:m.again||0})),total:B.total,ord:B.ord,lives:B.lives,hits:B.hits,miss:B.miss.map(x=>x.en),fell:B.fell};
-  else if(mode===6)d={gi:P.gi};
+  else if(mode===6&&!P.bu)d={gi:P.gi};
   if(d){o[mode]=Object.assign(d,{t});sessPut(o)}else if(o[mode]&&mode!==6){delete o[mode];sessPut(o)}
 }
 const byEn=en=>cur.items.find(x=>x.en===en&&x.tr);
@@ -606,9 +652,9 @@ function nextQ(){
 function drawMC(q,lab,body){
   ST().innerHTML=`<div class="card qcard"><div class="qlab">${lab}</div>${body}</div><div class="opts">${q.opts.map((o,i)=>`<button class="opt" data-o="${i}"><kbd>${i+1}</kbd><span>${esc(o)}</span></button>`).join('')}</div><div id="fb"></div>`;
 }
-function feedback(ok,main,sub,btn){
+function feedback(ok,main,sub,btn,extra){
   const f=$('#fb');if(!f)return;
-  f.innerHTML=`<div class="fbar ${ok?'ok':'no'}"><div class="msg"><b>${main}</b><span>${sub||''}</span></div><button class="btn ${ok?'btn-ok':'btn-p'}" data-a="next" id="nextBtn">${btn||'Devam et'}${ic('arrow')}</button></div>`;
+  f.innerHTML=`<div class="fbar ${ok?'ok':'no'}"><div class="msg"><b>${main}</b><span>${sub||''}</span>${extra?`<div class="fbx">${extra}</div>`:''}</div><button class="btn ${ok?'btn-ok':'btn-p'}" data-a="next" id="nextBtn">${btn||'Devam et'}${ic('arrow')}</button></div>`;
   const n=$('#nextBtn');if(n)n.focus({preventScroll:true});
 }
 function answerMC(i){
@@ -619,7 +665,7 @@ function answerMC(i){
   if(ok){Q.q.shift();Q.solved++;addXp(1);KA.sfx.ok();cur.prog.box[q.x.en]=Math.min(5,bx(q.x)+1)}
   else{Q.q.push(Q.q.shift());KA.sfx.bad();cur.prog.box[q.x.en]=1}
   save();prog(Q.solved,Q.total);
-  feedback(ok,ok?'Doğru!':'Doğru cevap: '+esc(q.ans),`${esc(q.x.en)} = ${esc(q.x.tr)}${ok?'':' · bu kelime tekrar gelecek'}`);
+  feedback(ok,ok?'Doğru!':'Doğru cevap: '+esc(q.ans),`${esc(q.x.en)} = ${esc(q.x.tr)}${ok?'':' · bu kelime tekrar gelecek'}`,null,ok?'':`<button class="btn btn-ghost" data-a="editcard">${ic('pen')}Kartta hata var</button>`);
 }
 /* Yazılan cevabı esnek değerlendir: yazım hatası, çekim, eksik/fazla edat yerelde; eş anlamlıyı yapay zekâ kontrol eder */
 const PREP=new Set(['of','to','for','with','in','on','at','from','about','by','into','upon','off','up','out','over','as']);
@@ -641,28 +687,37 @@ function localJudge(v,cands){
   return null;
 }
 const YZK='ka_yzchk';
-const JUDGE=`Bir İngilizce kelime çalışmasında öğrenci, Türkçe anlamı verilen kelimenin İngilizcesini yazdı. Öğrencinin cevabı bu Türkçe anlamı doğru ve doğal biçimde karşılıyorsa ok=true ver: eş anlamlı kelime, aynı kökün başka biçimi, eksik ya da fazla edat, küçük yazım hatası kabul. Anlamı farklıysa, çok genel ya da alakasızsa, Türkçe yazdıysa ya da anlamsızsa ok=false. YALNIZCA JSON: {"ok":true,"not":"en fazla 12 kelimelik Türkçe açıklama"}`;
+const JUDGE=`Sen deneyimli ve adil bir İngilizce öğretmenisin. Öğrenciye bir Türkçe anlam gösterildi ve İngilizcesini yazması istendi. Cevabı bir öğretmen gibi değerlendir.
+ok=true ver: cevap gösterilen Türkçe anlamı doğru karşılıyorsa. Eş anlamlı kelime, aynı kökün başka biçimi (çoğul, fiil çekimi, isim-fiil), Amerikan/İngiliz yazımı, eksik ya da fazla edat/artikel ve 1-2 harflik yazım hatası kabul.
+ok=false ver: anlam farklıysa, yalnızca uzaktan ilgiliyse, çok genel ya da çok özelse, Türkçe yazılmışsa ya da anlamsızsa.
+Listedeki kelime de bazen hatalı girilmiş olabilir: gösterilen Türkçe anlam listedeki kelimeyle uyuşmuyor ve öğrencinin cevabı bu Türkçe anlama uyuyorsa ok=true ver ve "liste":true yaz.
+"not": Türkçe, en fazla 18 kelime. Ret ise öğrencinin yazdığı kelimenin ne demek olduğunu ve farkı söyle (ör. "sided = taraflı; mızrak spear demek"). Kabul ise kısa onay.
+"dogru": bu Türkçe anlam için en doğru İngilizce karşılık.
+YALNIZCA JSON: {"ok":false,"not":"...","dogru":"...","liste":false}`;
+const jKey=(x,v)=>'v2|'+x.en.toLowerCase()+'|'+nEn(v);
+const jCache=()=>{try{return JSON.parse(localStorage.getItem(YZK))||{}}catch(e){return {}}};
+function jPut(k,o){const c=jCache();c[k]=o;const ks=Object.keys(c);if(ks.length>500)ks.slice(0,ks.length-500).forEach(z=>delete c[z]);try{localStorage.setItem(YZK,JSON.stringify(c))}catch(e){}}
 async function aiJudge(v,x,m){
-  const k=x.en.toLowerCase()+'|'+nEn(v);let c={};try{c=JSON.parse(localStorage.getItem(YZK))||{}}catch(e){}
-  if(c[k])return c[k];
-  if(!/[a-z]{2}/i.test(v)||TRCH.test(v)||v.length>60)return {ok:false};
-  const r=await KA.askJ(JUDGE,`Türkçe anlam: ${m}\nListedeki kelime: ${x.en}\nÖğrencinin cevabı: ${v}`,{tier:'quick',ms:15000});
+  const k=jKey(x,v),c=jCache();if(c[k])return c[k];
+  if(!/[a-z]{2}/i.test(v)||TRCH.test(v)||v.length>60)return {ok:false,not:TRCH.test(v)?'Türkçe yazdın; İngilizcesi isteniyor.':''};
+  const others=cur.items.filter(o=>o!==x&&sharesM(o,m)).map(o=>o.en).slice(0,6);
+  const r=await KA.askJ(JUDGE,`Gösterilen Türkçe anlam: ${m}\nListedeki kelime: ${x.en} (listedeki tüm anlamları: ${MEAN(x).join(', ')})${others.length?`\nListede aynı anlamı taşıyan başka kelimeler: ${others.join(', ')}`:''}\nÖğrencinin cevabı: ${v}`,{tier:'quick',ms:15000});
   if(!r.json)return null;
-  const o={ok:r.json.ok===true||String(r.json.ok).toLowerCase()==='true',not:String(r.json.not||'').slice(0,140)};
-  c[k]=o;const ks=Object.keys(c);if(ks.length>400)ks.slice(0,ks.length-400).forEach(z=>delete c[z]);try{localStorage.setItem(YZK,JSON.stringify(c))}catch(e){}
-  return o;
+  const o={ok:r.json.ok===true||String(r.json.ok).toLowerCase()==='true',not:String(r.json.not||'').slice(0,160),dogru:String(r.json.dogru||'').slice(0,60),liste:r.json.liste===true};
+  jPut(k,o);return o;
 }
-/* sonuç: {ok, how:'exact'|'typo'|'prep'|'form'|'ai', not} */
+/* sonuç: {ok, how:'exact'|'typo'|'prep'|'form'|'ai'|'me', not} */
 async function judgeEn(v,x,m,fb){
   const same=cur.items.filter(o=>o===x||sharesM(o,m));
   const loc=localJudge(v,same.flatMap(o=>forms(o.en)));
   if(loc)return {ok:true,how:loc};
+  const ck=jCache()[jKey(x,v)];if(ck&&ck.me)return {ok:true,how:'me'};
   if(fb)fb.innerHTML='<p class="mut" style="text-align:center;margin-top:12px"><span class="ka-spin"></span> Cevabına bakılıyor…</p>';
   let r=null;try{r=await aiJudge(v,x,m)}catch(e){}
   if(fb)fb.innerHTML='';
-  return r&&r.ok?{ok:true,how:'ai',not:r.not}:{ok:false};
+  return r&&r.ok?{ok:true,how:'ai',not:r.not,liste:r.liste}:{ok:false,not:r&&r.not||'',dogru:r&&r.dogru||''};
 }
-const HOW={exact:'Mükemmel!',typo:'Küçük bir yazım hatası, kabul edildi',prep:'Edat eksik/fazla, kabul edildi',form:'Farklı biçimiyle yazdın, kabul edildi',ai:'Yakın anlamlı, kabul edildi'};
+const HOW={exact:'Mükemmel!',typo:'Küçük bir yazım hatası, kabul edildi',prep:'Edat eksik/fazla, kabul edildi',form:'Farklı biçimiyle yazdın, kabul edildi',ai:'Yakın anlamlı, kabul edildi',me:'Daha önce doğru saydığın cevap'};
 async function yazCheck(skip){
   const q=Q.cur;if(!q||Q.locked||Q.busy)return;
   const inp=$('#yin'),raw=skip?'':String(inp&&inp.value||'').trim();
@@ -672,9 +727,102 @@ async function yazCheck(skip){
   const all=esc(q.x.en)+' = '+esc(MEAN(q.x).join(', '));
   if(res.ok){Q.locked=true;Q.q.shift();Q.solved++;tally(true);addXp(2);KA.sfx.ok();cur.prog.box[q.x.en]=Math.min(5,bx(q.x)+1);save();prog(Q.solved,Q.total);inp.disabled=true;
     return feedback(true,HOW[res.how],res.how==='exact'?all:`Listendeki kelime: <b>${esc(q.x.en)}</b>${res.not?' · '+esc(res.not):''}`)}
-  if(!skip&&Q.tries===0){Q.tries=1;KA.sfx.bad();const t=forms(q.x.en)[0],hint=t.length>2?t[0]+' '+'_ '.repeat(t.length-2)+t[t.length-1]:t[0]+' _';inp.select();$('#fb').innerHTML=`<div class="fbar no" style="justify-content:center"><div class="msg" style="text-align:center"><b style="color:var(--warn)">Bir hakkın daha var</b><span>İpucu: <code style="font-size:16px;letter-spacing:.06em">${esc(hint)}</code> (${t.length} harf)</span></div></div>`;return}
-  Q.locked=true;Q.q.push(Q.q.shift());tally(false);KA.sfx.bad();cur.prog.box[q.x.en]=1;save();if(inp)inp.disabled=true;
-  feedback(false,'Doğru cevap: '+esc(q.x.en),esc(MEAN(q.x).join(', '))+' · bu kelime tekrar gelecek');
+  if(!skip&&Q.tries===0){Q.tries=1;Q.last=raw;KA.sfx.bad();const t=forms(q.x.en)[0],hint=t.length>2?t[0]+' '+'_ '.repeat(t.length-2)+t[t.length-1]:t[0]+' _';inp.select();$('#fb').innerHTML=`<div class="fbar no" style="justify-content:center"><div class="msg" style="text-align:center"><b style="color:var(--warn)">Bir hakkın daha var</b><span>İpucu: <code style="font-size:16px;letter-spacing:.06em">${esc(hint)}</code> (${t.length} harf)</span>${res.not?`<span class="ainote">✦ ${esc(res.not)}</span>`:''}</div></div>`;return}
+  Q.locked=true;Q.undo={x:q.x,box:bx(q.x),ans:raw};Q.q.push(Q.q.shift());tally(false);KA.sfx.bad();cur.prog.box[q.x.en]=1;save();if(inp)inp.disabled=true;
+  const alts=cur.items.filter(o=>o!==q.x&&sharesM(o,q.m)).map(o=>o.en);
+  feedback(false,'Doğru cevap: '+esc(q.x.en),`${esc(q.m)}${alts.length?' · bunlar da doğru: '+esc(alts.join(', ')):''}${res.dogru&&res.dogru.toLowerCase()!==q.x.en.toLowerCase()&&!alts.map(a=>a.toLowerCase()).includes(res.dogru.toLowerCase())?' · '+esc(res.dogru)+' de olur':''} · bu kelime tekrar gelecek${res.not?`<span class="ainote">✦ ${esc(res.not)}</span>`:''}`,null,
+   `${raw?`<button class="btn btn-ghost" data-a="override">${ic('check')}Aslında doğruydum</button>`:''}<button class="btn btn-ghost" data-a="editcard">${ic('pen')}Kartta hata var</button>`);
+}
+
+/* Quizlet'teki gibi: "Aslında doğruydum" ve kartı yerinde düzeltme */
+function overrideYaz(){
+  const u=Q&&Q.undo;if(!u||!Q.locked)return;Q.undo=null;
+  const i=Q.q.lastIndexOf(u.x);if(i>=0)Q.q.splice(i,1);Q.solved++;cur.prog.box[u.x.en]=Math.min(5,u.box+1);
+  const m=KA.meta();m.ok=(m.ok||0)+1;KA.saveMeta(m);addXp(2);save();prog(Q.solved,Q.total);
+  if(u.ans)jPut(jKey(u.x,u.ans),{ok:true,me:true,not:'Senin onayınla kabul edildi'});
+  KA.sfx.ok();feedback(true,'Doğru sayıldı','Bu cevabı bir dahaki sefere de doğru kabul edeceğim.');
+}
+function editCard(x){
+  if(!x)return;
+  const {el,close}=KA.modal(`<span class="eyebrow">Kartı düzelt</span><h2 style="margin:6px 0 12px">Kart doğru mu?</h2>
+  <label class="eyebrow" for="ecen">İngilizce</label><input class="input" id="ecen" value="${esc(x.en)}" style="margin:6px 0 12px">
+  <label class="eyebrow" for="ectr">Türkçe anlam(lar) · virgülle ayır</label><input class="input" id="ectr" value="${esc(x.tr)}" style="margin:6px 0 8px">
+  <div class="mut" id="ecmsg" style="font-size:13px;min-height:18px"></div>
+  <div class="row" style="margin-top:12px;justify-content:space-between"><button class="btn btn-ghost" id="ecai">${ic('spark')}Yapay zekâ düzeltsin</button><div class="row"><button class="btn btn-ghost" data-close>Vazgeç</button><button class="btn btn-p" id="ecok">${ic('check')}Kaydet</button></div></div>`);
+  el.querySelector('[data-close]').onclick=close;
+  el.querySelector('#ecai').onclick=async()=>{const m=el.querySelector('#ecmsg');m.innerHTML='<span class="ka-spin"></span> Bakılıyor…';
+    const r=await KA.askJ(AUDIT,`1. ${el.querySelector('#ecen').value} ⇒ ${el.querySelector('#ectr').value}`,{tier:'quick',ms:25000});
+    const f=r.json&&Array.isArray(r.json.fix)&&r.json.fix[0];
+    if(!r.json){m.textContent='Yanıt alınamadı: '+(r.err||'');return}
+    if(!f||!Array.isArray(f.items)||!f.items.length){m.textContent='Kart doğru görünüyor.';return}
+    const a=f.items[0];el.querySelector('#ecen').value=a.en||x.en;el.querySelector('#ectr').value=a.tr||x.tr;m.textContent=(f.neden?f.neden+' · ':'')+'Kaydet\'e basınca uygulanır.'+(f.items.length>1?' (Satırda '+f.items.length+' kelime vardı; diğerleri listeye ayrıca eklenir.)':'');el.dataset.more=JSON.stringify(f.items.slice(1))};
+  el.querySelector('#ecok').onclick=()=>{
+    const en=el.querySelector('#ecen').value.trim(),tr=splitMeans(el.querySelector('#ectr').value).join(', ');if(!en)return;
+    if(en!==x.en){if(cur.prog.box[x.en]&&!cur.prog.box[en])cur.prog.box[en]=cur.prog.box[x.en];delete cur.prog.box[x.en];if(x.en.toLowerCase()!==en.toLowerCase()){x.s='';x.st='';x.d=[]}}
+    x.en=en;x.tr=tr;
+    let more=[];try{more=JSON.parse(el.dataset.more||'[]')}catch(e){}
+    more.forEach(o=>{if(o&&o.en&&!cur.items.some(y=>y.en.toLowerCase()===String(o.en).toLowerCase()))cur.items.push(KA.normPack({items:[{en:String(o.en).trim(),tr:splitMeans(o.tr).join(', ')}]}).items[0])});
+    cur.words=cur.items.map(y=>({en:y.en,tr:y.tr}));save(true);close();
+    if(Q&&Q.undo&&Q.undo.x===x){const i=Q.q.lastIndexOf(x);if(i>=0)Q.q.splice(i,1);Q.q.push(x);Q.undo=null}
+    KA.toast('Kart düzeltildi'+(more.length?' · '+more.length+' yeni kart eklendi':''));
+  };
+}
+
+/* ---------- Yapay zekâ liste denetimi: yer değiştirmiş, karışmış ya da yanlış kartları düzeltir ---------- */
+const AUDIT=`Sen titiz bir İngilizce-Türkçe sözlük editörüsün. Girdide bir öğrencinin kelime listesinden numaralı satırlar var: "n. İNGİLİZCE ⇒ TÜRKÇE". Liste fotoğraftan ya da dosyadan okunduğu için hatalı olabilir. Her satırı kontrol et ve YALNIZCA hatalı satırlar için düzeltme döndür.
+Hata türleri:
+1) Diller yer değiştirmiş: sol taraf Türkçe, sağ taraf İngilizce.
+2) Bir satıra birden fazla kelime çifti karışmış ("Sword ⇒ Kılıç, Shield, Kalkan, Bow, Yay"): her İngilizce kelimeyi kendi Türkçesiyle ayrı öğe yap.
+3) Türkçe taraf çeviri değil: başlık, kategori, kullanım notu ("ekonomik krizden bahsederken") ya da yanlış çeviri. Kelimenin doğru, yaygın Türkçe karşılığını yaz.
+4) İngilizce kelimede OCR ya da yazım hatası: düzelt.
+5) Satır öğrenilecek bir kelime değil (başlık, sayı, anlamsız): "items":[] ver.
+Doğru satırları döndürme. Öğrencinin yazdığı doğru Türkçe anlamları silme; gerekirse eksik ana anlamı ekle. Türkçe anlamlar kısa olsun (1-4 kelime), birden fazlaysa virgülle ayır, en fazla 3 anlam. Fiilleri -mek/-mak ile yaz.
+YALNIZCA geçerli JSON: {"fix":[{"i":3,"items":[{"en":"recession","tr":"durgunluk, resesyon"}],"neden":"kısa Türkçe neden"}]}`;
+const AUD_RUN=new Map(),AUD_TRIED=new Set();
+function runAudit(p,force){
+  if(!p||!p.items.length)return Promise.resolve(0);
+  if(AUD_RUN.has(p.id))return AUD_RUN.get(p.id);
+  if((p.aud||AUD_TRIED.has(p.id))&&!force)return Promise.resolve(0);AUD_TRIED.add(p.id);
+  const pr=auditPack(p).finally(()=>{AUD_RUN.delete(p.id);if(mode<0&&cur&&cur.id===p.id)renderHome()});
+  AUD_RUN.set(p.id,pr);if(mode<0&&cur&&cur.id===p.id)setTimeout(renderHome,0);return pr;
+}
+async function auditPack(p){
+  const before=JSON.parse(JSON.stringify(p.items)),fixes=new Map();let fail=0;const idx=p.items.map((x,i)=>i);
+  await pool(chunks(idx,40),async c=>{
+    const r=await KA.askJ(AUDIT,c.map((k,i)=>`${i+1}. ${p.items[k].en} ⇒ ${p.items[k].tr||'(boş)'}`).join('\n'),{tier:'quick',ms:60000});
+    if(!r.json){fail++;return}
+    (r.json.fix||[]).forEach(f=>{const k=c[Number(f&&f.i)-1];if(k==null||!Array.isArray(f.items))return;
+      const its=f.items.map(o=>({en:String(o&&o.en||'').trim(),tr:splitMeans(Array.isArray(o&&o.tr)?o.tr.join(', '):o&&o.tr).slice(0,4).join(', ')})).filter(o=>o.en&&/[a-z]/i.test(o.en)&&!TRCH.test(o.en)&&o.en.length<=80);
+      if(!its.length&&f.items.length)return;fixes.set(k,{items:its,why:String(f.neden||'').slice(0,120)})});
+  },3);
+  if(fail&&!fixes.size)return 0;
+  const log=[],out=[],seen=new Map();
+  p.items.forEach((x,k)=>{
+    const f=fixes.get(k);
+    if(!f){const key=x.en.toLowerCase();if(!seen.has(key)){seen.set(key,x);out.push(x)}return}
+    const same=f.items.length===1&&f.items[0].en===x.en&&f.items[0].tr===x.tr;if(same){if(!seen.has(x.en.toLowerCase())){seen.set(x.en.toLowerCase(),x);out.push(x)}return}
+    log.push({from:x.en+' = '+(x.tr||'—'),to:f.items.length?f.items.map(o=>o.en+' = '+o.tr).join(' · '):'(listeden çıkarıldı)',why:f.why});
+    f.items.forEach((o,i)=>{const key=o.en.toLowerCase();
+      if(seen.has(key)){const y=seen.get(key);y.tr=splitMeans([y.tr,o.tr].filter(Boolean).join(', ')).join(', ');return}
+      let y;if(o.en.toLowerCase()===x.en.toLowerCase()||i===0){y=x;if(o.en.toLowerCase()!==x.en.toLowerCase()){if(p.prog.box[x.en]&&!p.prog.box[o.en])p.prog.box[o.en]=p.prog.box[x.en];x.s='';x.st='';x.d=[];x.dv=0}x.en=o.en;x.tr=o.tr}
+      else y=KA.normPack({items:[{en:o.en,tr:o.tr}]}).items[0];
+      seen.set(key,y);out.push(y)});
+  });
+  p.aud=1;
+  if(log.length){p.bak={items:before,at:Date.now()};p.items=out;p.words=out.map(x=>({en:x.en,tr:x.tr}));p.audLog=log.slice(0,80);p.audSeen=0}
+  KA.savePack(p,true);
+  return log.length;
+}
+function auditUndo(){
+  if(!cur||!cur.bak||!confirm('Yapay zekânın yaptığı düzeltmeler geri alınsın mı? Liste önceki haline döner.'))return;
+  cur.items=KA.normPack({items:cur.bak.items}).items;cur.words=cur.items.map(x=>({en:x.en,tr:x.tr}));cur.bak=null;cur.audLog=[];cur.audSeen=1;cur.fix=3;save(true);renderHome();KA.toast('Liste önceki haline döndü.');
+}
+function auditLog(){
+  const L=cur.audLog||[];
+  const {el,close}=KA.modal(`<span class="eyebrow">Yapay zekâ denetimi</span><h2 style="margin:6px 0 12px">${L.length} kart düzeltildi</h2>
+  <div style="max-height:55vh;overflow:auto;display:grid;gap:8px">${L.map(l=>`<div class="card" style="padding:10px 12px"><div class="mut" style="text-decoration:line-through;font-size:13.5px">${esc(l.from)}</div><div style="font-weight:700">${esc(l.to)}</div>${l.why?`<small class="mut">${esc(l.why)}</small>`:''}</div>`).join('')}</div>
+  <div class="row" style="margin-top:14px;justify-content:flex-end">${cur.bak?`<button class="btn btn-ghost" data-a="audundo">Hepsini geri al</button>`:''}<button class="btn btn-p" data-close>Tamam</button></div>`);
+  el.querySelector('[data-close]').onclick=close;el.addEventListener('click',e=>{if(e.target.closest('[data-a=audundo]'))close()});
 }
 
 /* ---------- 5. Bekçi: en zayıf 12 kelime kemerin taşları, 3 can ---------- */
@@ -737,8 +885,36 @@ function bossEnd(won){
 }
 
 /* ---------- 6. Cümle: bütün cümleler, onar onar ---------- */
+/* ---------- BUEPT metin bankası: 20 deneme sınavının metinleri ---------- */
+let BUDB=null;
+async function buLoad(){if(BUDB)return BUDB;const r=await fetch('okuma-db.json?v=1');if(!r.ok)throw new Error('Metin bankası yüklenemedi');BUDB=await r.json();return BUDB}
+const srcOf=m=>{try{return localStorage.getItem('ka_src_'+m)||'bu'}catch(e){return 'bu'}};
+const BUK='ka_bu';
+const buSt=()=>{let o={};try{o=JSON.parse(localStorage.getItem(BUK))||{}}catch(e){}o.p=o.p||{};o.c=o.c||[];o.x=o.x||{};return o};
+const buPut=o=>{try{localStorage.setItem(BUK,JSON.stringify(o))}catch(e){}};
+const buTitle=id=>{const t=BUDB&&BUDB.texts.find(x=>x.id===id);return t?t.title:''};
+function myForms(){const F=new Map();(cur?cur.items:[]).forEach(x=>forms(x.en).forEach(f=>{if(f.length>2&&!/\bx\b/.test(f))F.set(f,x.en)}));return F}
+function hitsOf(text,F){const low=' '+String(text).toLowerCase().replace(/[^a-z' -]/g,' ')+' ';const h=new Set();F.forEach((en,f)=>{const st=f.replace(/e$/,'');if(low.includes(' '+f+' ')||(st.length>4&&new RegExp('\\b'+st.replace(/[^a-z ]/g,'')+'(s|es|ed|d|ing|ly)?\\b').test(low)))h.add(en)});return [...h]}
+function srcBar(m){const v=srcOf(m);return `<div class="srcsw" role="tablist"><button class="${v==='bu'?'on':''}" data-src="bu" data-m2="${m}">${ic('book')}BUEPT metinleri</button><button class="${v==='my'?'on':''}" data-src="my" data-m2="${m}">${ic('list')}Kendi listem</button></div>`}
+const TRSYS=`Sen BUEPT (Boğaziçi İngilizce yeterlik sınavı) için çeviri sorusu hazırlayan deneyimli bir sınav yazarısın. Girdide gerçek BUEPT okuma metinlerinden alınmış numaralı İngilizce cümleler var. Her cümle için:
+- "st": doğal, akıcı ve anlamı birebir koruyan Türkçe çeviri (bağlaçları, kesinlik derecesini, olumsuzluğu ve kimin kime ne yaptığını tam koru).
+- "d": 3 çeldirici Türkçe çeviri. Her biri doğru çeviriyle aynı konuyu, büyük ölçüde aynı kelimeleri ve neredeyse aynı uzunluğu kullansın; doğal ve dilbilgisi kusursuz olsun; ama TEK bir kilit noktada anlamı bozsun (bağlaç ilişkisi, neden-sonuç yönü, kesinlik/olasılık, nicelik, olumsuzluk, özne-nesne, karşılaştırma yönü) ve üçü farklı noktaları bozsun.
+- "dn": doğru çeviriyi ayıran kilit noktayı anlatan kısa Türkçe ipucu (ör. "despite = -e rağmen · less likely = olasılığı daha düşük").
+YALNIZCA geçerli JSON: {"items":[{"i":1,"st":"...","d":["...","...","..."],"dn":"..."}]}`;
+async function buHarden(list){
+  const need=list.filter(x=>!(x.st&&x.d&&x.d.length>=3));if(!need.length)return;
+  const o=buSt();
+  await pool(chunks(need,5),async c=>{const r=await KA.askJ(TRSYS,c.map((x,i)=>`${i+1}. ${x.s}`).join('\n'),{tier:'quick',ms:55000});
+    if(!r.json)return;(r.json.items||[]).forEach(v=>{const x=c[Number(v&&v.i)-1];if(!x||!v.st||!Array.isArray(v.d))return;const d=v.d.map(String).map(t=>t.trim()).filter(t=>t&&t!==v.st);if(d.length<3)return;
+      Object.assign(x,{st:String(v.st).trim(),d:d.slice(0,3),dv:2,dn:String(v.dn||'')});o.x[x.en]={st:x.st,d:x.d,dn:x.dn,dv:2}})},3);
+  buPut(o);
+}
+const cDone=()=>new Set(C&&C.bu?buSt().c:(cur.prog.cdone||[]));
+function cMark(en){if(C&&C.bu){const o=buSt();o.c=[...new Set([...o.c,en])];buPut(o)}else cur.prog.cdone=[...new Set([...(cur.prog.cdone||[]),en])]}
+function cReset(){if(C&&C.bu){const o=buSt();o.c=[];buPut(o)}else cur.prog.cdone=[]}
 let C=null;
 function startCumle(){
+  if(srcOf(5)==='bu')return startCumleBu();
   const pool=sentOf();if(pool.length<4)return emptyMsg('Cümleler henüz hazır değil. Hazırla düğmesiyle akademik cümleleri oluştur.',true);
   const order=[],seen=new Set();
   cur.groups.forEach(g=>g.w.forEach(en=>{const x=pool.find(p=>p.en===en);if(x&&!seen.has(x.en)){seen.add(x.en);order.push(x)}}));
@@ -749,47 +925,87 @@ function startCumle(){
   let gi=G.findIndex(g=>!g.every(x=>done.has(x.en)));if(gi<0)gi=0;
   C={G,gi,total:order.length};groupCumle();
 }
+async function startCumleBu(){
+  ST().innerHTML=srcBar(5)+'<div class="card done-card"><span class="ka-spin"></span><p class="mut">BUEPT metinleri yükleniyor…</p></div>';
+  let db;try{db=await buLoad()}catch(e){ST().innerHTML=srcBar(5)+`<div class="card done-card"><p class="bad">${esc(e.message)}</p></div>`;return}
+  if(mode!==5)return;
+  const o=buSt(),F=myForms();
+  const items=db.sents.map((v,k)=>{const id='bs'+k;const x=Object.assign({en:id,t:v.t,pi:v.i,s:v.s,st:v.st||'',d:v.d||[],dn:v.dn||'',dv:v.st&&v.d?2:0},o.x[id]||{});x.hit=hitsOf(v.s,F);return x});
+  const ids=db.texts.map(t=>t.id);
+  const G=ids.map(id=>items.filter(x=>x.t===id)).filter(g=>g.length).map(g=>g.sort((a,b)=>(b.hit.length-a.hit.length)||((b.dv===2)-(a.dv===2))));
+  G.sort((a,b)=>b.reduce((n,x)=>n+x.hit.length,0)-a.reduce((n,x)=>n+x.hit.length,0));
+  const done=new Set(o.c),total=items.length;
+  if(items.every(x=>done.has(x.en))){o.c=[];buPut(o);done.clear()}
+  let gi=G.findIndex(g=>!g.every(x=>done.has(x.en)));if(gi<0)gi=0;
+  C={G,gi,total,bu:1,ctx:false};groupCumle();
+}
 async function groupCumle(){
-  const done=new Set(cur.prog.cdone||[]);
-  const g=C.G[C.gi];C.q=shuf(g.filter(x=>!done.has(x.en)));
+  const done=cDone();
+  const g=C.G[C.gi];C.q=C.bu?g.filter(x=>!done.has(x.en)):shuf(g.filter(x=>!done.has(x.en)));
   if(!C.q.length){return nextGroup()}
-  if(C.q.some(x=>x.dv!==2)){const my=C;ST().innerHTML=stripCumle()+`<div class="card done-card"><div class="bigic">${ic('spark')}</div><h2 style="font-size:24px">BUEPT tarzı şıklar hazırlanıyor…</h2><p class="mut">Her cümle için birbirine çok yakın, çeldirici çeviriler yazılıyor. Bu yalnızca ilk seferde birkaç saniye sürer.</p><span class="ka-spin"></span></div>`;await hardenSet(C.q);if(C!==my)return}
+  if(C.bu){const first=C.q.slice(0,6);if(first.some(x=>x.dv!==2)){const my=C;ST().innerHTML=stripCumle()+`<div class="card done-card"><div class="bigic">${ic('spark')}</div><h2 style="font-size:24px">Şıklar hazırlanıyor…</h2><p class="mut">Bu metnin cümleleri için doğru çeviri ve BUEPT tarzı çeldiriciler yazılıyor. Yalnızca ilk seferde birkaç saniye sürer.</p><span class="ka-spin"></span></div>`;await buHarden(first);if(C!==my)return}}
+  else if(C.q.some(x=>x.dv!==2)){const my=C;ST().innerHTML=stripCumle()+`<div class="card done-card"><div class="bigic">${ic('spark')}</div><h2 style="font-size:24px">BUEPT tarzı şıklar hazırlanıyor…</h2><p class="mut">Her cümle için birbirine çok yakın, çeldirici çeviriler yazılıyor. Bu yalnızca ilk seferde birkaç saniye sürer.</p><span class="ka-spin"></span></div>`;await hardenSet(C.q);if(C!==my)return}
   nextCumle();
 }
 function nextGroup(){
-  const done=new Set(cur.prog.cdone||[]);
+  const done=cDone();
   const ni=C.G.findIndex(g=>!g.every(x=>done.has(x.en)));
-  if(ni<0){cur.prog.cdone=[];return finish(5,'Bütün cümleleri çözdün',C.total+' cümle')}
+  if(ni<0){cReset();if(!C.bu)save();return finish(5,'Bütün cümleleri çözdün',C.total+' cümle')}
   C.gi=ni;groupCumle();
 }
-function stripCumle(){const done=new Set(cur.prog.cdone||[]);return `<div class="groups">${C.G.map((g,i)=>`<button class="pill ${i===C.gi?'on':''} ${g.every(x=>done.has(x.en))?'done':''}" data-cg="${i}" title="Grup ${i+1}">${i+1}</button>`).join('')}</div>`}
+function stripCumle(){const done=cDone();
+  if(C.bu)return srcBar(5)+`<div class="groups scr">${C.G.map((g,i)=>{const t=buTitle(g[0].t),h=g.reduce((n,x)=>n+x.hit.length,0);return `<button class="pill ${i===C.gi?'on':''} ${g.every(x=>done.has(x.en))?'done':''}" data-cg="${i}" title="${esc(t)}">${esc(t.length>22?t.slice(0,20)+'…':t)}${h?` <b style="color:var(--acc2)">★${h}</b>`:''}</button>`}).join('')}</div>`;
+  return `<div class="groups">${C.G.map((g,i)=>`<button class="pill ${i===C.gi?'on':''} ${g.every(x=>done.has(x.en))?'done':''}" data-cg="${i}" title="Grup ${i+1}">${i+1}</button>`).join('')}</div>`}
+function ctxHtml(x){const t=BUDB&&BUDB.texts.find(v=>v.id===x.t),p=t&&t.paras[x.pi];if(!p)return '';const k=p.indexOf(x.s);return `<div class="ctxp">${k<0?esc(p):esc(p.slice(0,k))+'<mark>'+esc(x.s)+'</mark>'+esc(p.slice(k+x.s.length))}</div>`}
+function markHits(s,hit){let h=KA.tokens(s);if(!hit||!hit.length)return h;const F=myForms();return h.replace(/<span class="tk" data-w="([^"]+)">/g,(m,w)=>{const en=F.get(w.toLowerCase())||[...F.keys()].find(f=>f.length>4&&w.toLowerCase().startsWith(f.replace(/e$/,'')))&&F.get([...F.keys()].find(f=>f.length>4&&w.toLowerCase().startsWith(f.replace(/e$/,''))));return en&&hit.includes(en)?`<span class="tk hit" data-w="${w}">`:m})}
 function nextCumle(){
   KA.closeLookup();
-  const done=new Set(cur.prog.cdone||[]);prog(done.size,C.total);
+  const done=cDone();prog(done.size,C.total);
   if(!C.q.length){
     const ni=C.G.findIndex(g=>!g.every(x=>done.has(x.en)));
     if(ni<0)return nextGroup();
-    ST().innerHTML=stripCumle()+`<div class="card done-card"><div class="bigic">${ic('check')}</div><h2 style="font-size:26px">Grup ${C.gi+1} tamam</h2><p class="mut">${C.G.length-C.G.filter(g=>g.every(x=>done.has(x.en))).length} grup kaldı.</p><div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-p btn-lg" data-a="cnext">Grup ${ni+1}'e geç${ic('arrow')}</button></div></div>`;
+    const nm=C.bu?buTitle(C.G[ni][0].t):'Grup '+(ni+1);
+    ST().innerHTML=stripCumle()+`<div class="card done-card"><div class="bigic">${ic('check')}</div><h2 style="font-size:26px">${C.bu?esc(buTitle(C.G[C.gi][0].t)):'Grup '+(C.gi+1)} tamam</h2><p class="mut">${C.G.length-C.G.filter(g=>g.every(x=>done.has(x.en))).length} ${C.bu?'metin':'grup'} kaldı.</p><div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-p btn-lg" data-a="cnext">${esc(nm)}${C.bu?'':"'e"} geç${ic('arrow')}</button></div></div>`;
     return;
   }
-  const x=C.q[0],o=sentOpts(x);
-  if(!o){C.q.shift();cur.prog.cdone=[...done,x.en];return nextCumle()}
+  const x=C.q[0];
+  if(C.bu&&x.dv!==2){const my=C;ST().innerHTML=stripCumle()+'<div class="card done-card"><span class="ka-spin"></span><p class="mut">Sıradaki cümlelerin şıkları hazırlanıyor…</p></div>';buHarden(C.q.slice(0,5)).then(()=>{if(C!==my||mode!==5)return;if(x.dv!==2){C.q.shift();cMark(x.en);KA.toast('Bu cümlenin şıkları hazırlanamadı, atlandı.')}nextCumle()});return}
+  const o=C.bu?shuf([x.st,...x.d.slice(0,3)]):sentOpts(x);
+  if(!o){C.q.shift();cMark(x.en);return nextCumle()}
   C.cur={x,ans:x.st,opts:o};C.locked=false;
-  ST().innerHTML=stripCumle()+`<div class="card qcard"><div class="qlab">Grup ${C.gi+1} · Cümlenin anlamı hangisi?</div><div class="qsent">${KA.tokens(x.s)}</div><div class="row" style="justify-content:flex-start"><button class="btn btn-ghost btn-sm" data-say="${esc(x.s)}">${ic('sound')}Cümleyi dinle</button></div></div><div class="opts">${o.map((v,i)=>`<button class="opt" data-o="${i}"><kbd>${i+1}</kbd><span>${esc(v)}</span></button>`).join('')}</div><div id="fb"></div>`;
+  const lab=C.bu?`<span lang="en">${esc(buTitle(x.t))}</span> · ¶${x.pi+1}`:'Grup '+(C.gi+1);
+  ST().innerHTML=stripCumle()+`<div class="card qcard"><div class="qlab">${lab} · Cümlenin anlamı hangisi?</div><div class="qsent">${C.bu?markHits(x.s,x.hit):KA.tokens(x.s)}</div>${C.bu&&x.hit.length?`<div class="row" style="gap:6px;justify-content:flex-start;margin:4px 0">${x.hit.map(w=>`<span class="tag">★ Listendeki kelime: ${esc(w)}</span>`).join('')}</div>`:''}<div class="row" style="justify-content:flex-start"><button class="btn btn-ghost btn-sm" data-say="${esc(x.s)}">${ic('sound')}Cümleyi dinle</button>${C.bu?`<button class="btn btn-ghost btn-sm" data-a="ctx">${ic('book')}${C.ctx?'Paragrafı gizle':'Paragrafta gör'}</button>`:''}</div>${C.bu&&C.ctx?ctxHtml(x):''}</div><div class="opts">${o.map((v,i)=>`<button class="opt" data-o="${i}"><kbd>${i+1}</kbd><span>${esc(v)}</span></button>`).join('')}</div><div id="fb"></div>`;
+  const on=document.querySelector('.groups.scr .pill.on');if(on)on.scrollIntoView({inline:'center',block:'nearest'});
 }
 function answerCumle(i){
   const q=C.cur;if(!q||C.locked)return;C.locked=true;
   const ok=q.opts[i]===q.ans;
   document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(q.opts[k]===q.ans)b.classList.add('ok');else if(k===i)b.classList.add('no')});
   tally(ok);
-  if(ok){C.q.shift();cur.prog.cdone=[...new Set([...(cur.prog.cdone||[]),q.x.en])];addXp(1);KA.sfx.ok()}else{C.q.push(C.q.shift());KA.sfx.bad()}
-  save();prog((cur.prog.cdone||[]).length,C.total);
-  feedback(ok,ok?'Doğru!':'Bu cümle tekrar gelecek',ok?'':'Doğru çeviri: '+esc(q.ans)+(q.x.dn?'<br><b>İpucu:</b> '+esc(q.x.dn):''));
+  if(ok){C.q.shift();cMark(q.x.en);addXp(1);KA.sfx.ok()}else{C.q.push(C.q.shift());KA.sfx.bad()}
+  save();prog(cDone().size,C.total);
+  feedback(ok,ok?'Doğru!':'Bu cümle tekrar gelecek',(ok?'':'Doğru çeviri: '+esc(q.ans))+(q.x.dn?(ok?'':'<br>')+'<b>Kilit nokta:</b> '+esc(q.x.dn):''));
 }
 
 /* ---------- 7. Paragraf: kabataslak özet ---------- */
 let P={gi:0};
+const PL=()=>P.bu?P.L:cur.groups;
+function pSave(now){if(!P.bu)return save(now);const o=buSt();P.L.forEach(g=>{if(g.ok||g.last||g.draft||g.ana0)o.p[g.key]={ok:g.ok||false,last:g.last||null,draft:g.draft||'',ana:g.ana0||''}});buPut(o)}
+async function startParaBu(){
+  ST().innerHTML=srcBar(6)+'<div class="card done-card"><span class="ka-spin"></span><p class="mut">BUEPT metinleri yükleniyor…</p></div>';
+  let db;try{db=await buLoad()}catch(e){ST().innerHTML=srcBar(6)+`<div class="card done-card"><p class="bad">${esc(e.message)}</p></div>`;return}
+  if(mode!==6)return;
+  const o=buSt(),F=myForms(),cu=new Map(db.kursu.map(k=>[k.t+':'+k.i,k]));
+  const L=[];db.texts.forEach(t=>t.paras.forEach((p,i)=>{const n=p.split(/\s+/).length,key=t.id+':'+i,c=cu.get(key);if(!c&&(n<60||n>185||!/^[A-Z“"‘']/.test(p)))return;const st=o.p[key]||{};
+    L.push({key,t:t.id,i,text:p,ana:c?c.ana:(st.ana||''),ana0:c?'':(st.ana||''),nok:c?c.nok:[],cur:!!c,w:hitsOf(p,F),gl:{},ok:!!st.ok,last:st.last||null,draft:st.draft||''})}));
+  L.sort((a,b)=>(b.cur-a.cur)||(b.w.length-a.w.length));
+  P.bu=1;P.L=L;P.tt=P.tt||'';
+  let k=L.findIndex(g=>!g.ok&&(!P.tt||g.t===P.tt));if(k<0)k=0;if(P.gi>=L.length)P.gi=k;if(!P.ok0){P.gi=k;P.ok0=1}
+  drawPara();
+}
 function startPara(){
+  if(srcOf(6)==='bu')return startParaBu();
+  P.bu=0;
   const G=cur.groups.filter(g=>g.text);
   if(!G.length)return emptyMsg('Paragraflar henüz hazır değil. Hazırla düğmesiyle akademik paragrafları oluştur.',true);
   if(P.gi>=cur.groups.length||!cur.groups[P.gi].text)P.gi=Math.max(0,cur.groups.findIndex(g=>g.text&&!g.ok));
@@ -798,11 +1014,16 @@ function startPara(){
 }
 function drawPara(){
   KA.closeLookup();
-  const G=cur.groups,g=G[P.gi];prog(G.filter(x=>x.ok).length,G.filter(x=>x.text).length);
-  ST().innerHTML=`<div class="groups">${G.map((x,i)=>x.text?`<button class="pill ${i===P.gi?'on':''} ${x.ok?'done':''}" data-pg="${i}">${i+1}</button>`:'').join('')}</div>
-  <div class="card qcard" style="text-align:left"><div class="row" style="justify-content:space-between"><span class="qlab">Paragraf ${P.gi+1}</span><div class="row" style="gap:6px"><button class="btn btn-ghost btn-sm" data-say="${esc(g.text)}">${ic('sound')}Dinle</button><button class="btn btn-ghost btn-sm" data-a="regen">${ic('reset')}Yeni paragraf</button></div></div>
-  <div class="para" id="ptext">${KA.tokens(g.text)}</div>
-  <div class="row" style="margin-top:12px;gap:6px">${g.w.map(w=>`<span class="tag">${esc(w)}</span>`).join('')}</div></div>
+  const G=PL(),g=G[P.gi];prog(G.filter(x=>x.ok).length,G.filter(x=>x.text).length);
+  let head;
+  if(P.bu){const ts=BUDB.texts.filter(t=>G.some(x=>x.t===t.id)),tt=g.t,mine=G.map((x,i)=>[x,i]).filter(([x])=>x.t===tt).sort((a,b)=>a[0].i-b[0].i);
+    head=srcBar(6)+`<div class="row" style="gap:8px;margin-bottom:10px"><select class="select" id="ptt" style="width:auto;min-height:40px;max-width:100%">${ts.map(t=>{const n=G.filter(x=>x.t===t.id),d=n.filter(x=>x.ok).length,h=n.reduce((a,x)=>a+x.w.length,0);return `<option value="${t.id}" ${t.id===tt?'selected':''}>${esc(t.title)} · ${d}/${n.length}${h?' · ★'+h:''}</option>`}).join('')}</select><span class="mut" style="font-size:13px">${esc((BUDB.texts.find(t=>t.id===tt)||{}).topic||'')}</span></div>
+    <div class="groups">${mine.map(([x,i])=>`<button class="pill ${i===P.gi?'on':''} ${x.ok?'done':''}" data-pg="${i}" title="Paragraf ${x.i+1}">¶${x.i+1}${x.cur?'':''}</button>`).join('')}</div>`}
+  else head=`<div class="groups">${G.map((x,i)=>x.text?`<button class="pill ${i===P.gi?'on':''} ${x.ok?'done':''}" data-pg="${i}">${i+1}</button>`:'').join('')}</div>`;
+  ST().innerHTML=head+`
+  <div class="card qcard" style="text-align:left"><div class="row" style="justify-content:space-between"><span class="qlab">${P.bu?'<span lang="en">'+esc(buTitle(g.t))+'</span> · Paragraf '+(g.i+1):'Paragraf '+(P.gi+1)}</span><div class="row" style="gap:6px"><button class="btn btn-ghost btn-sm" data-say="${esc(g.text)}">${ic('sound')}Dinle</button>${P.bu?`<button class="btn btn-ghost btn-sm" data-a="prand">${ic('reset')}Başka paragraf</button>`:`<button class="btn btn-ghost btn-sm" data-a="regen">${ic('reset')}Yeni paragraf</button>`}</div></div>
+  <div class="para" id="ptext">${P.bu?markHits(g.text,g.w):KA.tokens(g.text)}</div>
+  <div class="row" style="margin-top:12px;gap:6px">${g.w.map(w=>`<span class="tag">${P.bu?'★ ':''}${esc(w)}</span>`).join('')}</div></div>
   <div class="card qcard sumbox"><label for="ap" style="font-weight:800;font-size:16px">Kabataslak özetini çıkar</label><p class="mut" style="margin:4px 0 12px;font-size:14px">Paragrafın ana fikrini ve en önemli noktasını kendi cümlelerinle, Türkçe olarak 1-3 cümlede yaz. Bot %70 ve üzerini geçer sayar.</p>
   <textarea class="textarea" id="ap" placeholder="Örnek: Yazar, … olduğunu savunuyor; çünkü …">${esc(g.draft||'')}</textarea>
   <div class="row" style="margin-top:12px"><button class="btn btn-p btn-lg" data-a="grade">${ic('check')}Özeti değerlendir</button>${g.ok?`<span class="tag" style="background:var(--ok-soft);color:var(--ok)">${ic('check')} Bu paragraf geçildi</span>`:''}</div>
@@ -826,15 +1047,15 @@ function overlap(t,g){const bag=[g.ana||'',...Object.values(g.gl||{}).map(String
 const normT=s=>lowTr(s).replace(/[^a-zçğıöşü0-9 ]+/g,' ').replace(/\s+/g,' ').trim();
 const num=(v,mx)=>Math.max(0,Math.min(mx,Math.round(Number(String(v).replace(',','.'))||0)));
 async function grade(){
-  const g=cur.groups[P.gi],ta=$('#ap'),t=String(ta&&ta.value||'').trim(),out=h=>{const e=$('#gres');if(e)e.innerHTML=h};
-  if(!g||BUSY)return;g.draft=t;save();
+  const g=PL()[P.gi],ta=$('#ap'),t=String(ta&&ta.value||'').trim(),out=h=>{const e=$('#gres');if(e)e.innerHTML=h};
+  if(!g||BUSY)return;g.draft=t;pSave();
   if(!t)return out('<p class="bad" style="font-weight:700">Önce özetini yaz.</p>');
-  const bad=gibberish(t,g.text);if(bad){g.last={sc:0,msg:bad,local:1};save();return out(resultHtml(g.last))}
+  const bad=gibberish(t,g.text);if(bad){g.last={sc:0,msg:bad,local:1};pSave();return out(resultHtml(g.last))}
   const btn=document.querySelector('[data-a="grade"]');if(btn)btn.disabled=true;
   out('<p class="mut" style="margin-top:14px"><span class="ka-spin"></span> Bot özetini değerlendiriyor…</p>');
   try{
-    if(!(g.ana&&g.ana.length>15)){const r=await KA.askJ(REFGEN,'PARAGRAF: '+g.text,{ms:40000});const a=r.json&&String(r.json.ana_fikir||'').trim();if(a&&a.length>15){g.ana=a;save()}else return out(`<p class="bad">Değerlendirme hazırlanamadı: ${esc(r.err||'yanıt yok')}. Tekrar dene.</p>`)}
-    const r=await KA.askJ(GRADE,`PARAGRAF:\n${g.text}\n\nREFERANS ÖZET: ${g.ana}\n\n<<<ÖZET\n${t.replace(/<<<|>>>/g,' ')}\nÖZET>>>`,{ms:50000});
+    if(!(g.ana&&g.ana.length>15)){const r=await KA.askJ(REFGEN,'PARAGRAF: '+g.text,{ms:40000});const a=r.json&&String(r.json.ana_fikir||'').trim();if(a&&a.length>15){g.ana=a;if(P.bu)g.ana0=a;pSave()}else return out(`<p class="bad">Değerlendirme hazırlanamadı: ${esc(r.err||'yanıt yok')}. Tekrar dene.</p>`)}
+    const r=await KA.askJ(GRADE,`PARAGRAF:\n${g.text}\n\nREFERANS ÖZET: ${g.ana}${g.nok&&g.nok.length?'\nÖNEMLİ NOKTALAR: '+g.nok.join(' | '):''}\n\n<<<ÖZET\n${t.replace(/<<<|>>>/g,' ')}\nÖZET>>>`,{ms:50000});
     const j=r.json&&!Array.isArray(r.json)?r.json:null;
     if(!j||!['ana_fikir','noktalar','dogruluk'].every(k=>isFinite(Number(String(j[k]).replace(',','.')))))return out(`<p class="bad">Bot geçerli bir değerlendirme veremedi${r.err?' ('+esc(r.err)+')':''}. Tekrar dene.</p>`);
     const a=num(j.ana_fikir,50),n=num(j.noktalar,30),d=num(j.dogruluk,20);
@@ -849,16 +1070,17 @@ async function grade(){
     let A=a,N=n,D=d;if(sc<a+n+d&&a+n+d>0){const f=sc/(a+n+d);A=Math.round(a*f);N=Math.round(n*f);D=sc-A-N}
     g.last={sc,a:A,n:N,d:D,why,yorum:String(j.yorum||''),eksik:String(j.eksik||''),ornek:String(j.ornek||g.ana||'')};
     if(pass&&!g.ok){g.ok=true;addXp(15)}
-    if(cur.groups.filter(x=>x.text).every(x=>x.ok))cur.prog.steps[6]=1;
-    save(true);pass?KA.sfx.win():KA.sfx.bad();
+    if(!P.bu&&cur.groups.filter(x=>x.text).every(x=>x.ok))cur.prog.steps[6]=1;
+    if(P.bu&&pass)cur.prog.steps[6]=1;
+    pSave(true);save(true);pass?KA.sfx.win():KA.sfx.bad();
     out(resultHtml(g.last));
-    prog(cur.groups.filter(x=>x.ok).length,cur.groups.filter(x=>x.text).length);
+    prog(PL().filter(x=>x.ok).length,PL().filter(x=>x.text).length);
   }finally{const b=document.querySelector('[data-a="grade"]');if(b)b.disabled=false}
 }
 function resultHtml(L){
   if(L.local)return `<div class="fbar no" style="margin-top:14px"><div class="msg"><b>%0 · Değerlendirilmedi</b><span>${esc(L.msg)}</span></div></div>`;
   const pass=L.sc>=70,c=pass?'var(--ok)':(L.sc>=45?'var(--acc2)':'var(--bad)');
-  const nx=cur.groups.findIndex((x,i)=>x.text&&!x.ok&&i!==P.gi);
+  const G=PL(),gg=G[P.gi];let nx=G.findIndex((x,i)=>x.text&&!x.ok&&i!==P.gi&&(!P.bu||x.t===gg.t));if(nx<0)nx=G.findIndex((x,i)=>x.text&&!x.ok&&i!==P.gi);
   return `<div class="score"><div class="dial" style="--v:${L.sc};--c:${c}"><span>%${L.sc}</span></div><div><b style="font-size:18px;color:${c}">${pass?'Geçti':'Geçmedi'}</b> <span class="mut">· eşik %70</span>
   <div class="rub"><div><b>${L.a}/50</b>Ana fikir</div><div><b>${L.n}/30</b>Önemli noktalar</div><div><b>${L.d}/20</b>Doğruluk</div></div></div></div>
   ${L.why?`<p class="bad" style="font-weight:700;margin:12px 0 0">${esc(L.why)}</p>`:''}
@@ -867,7 +1089,7 @@ function resultHtml(L){
   ${pass&&nx>=0?`<div class="row" style="margin-top:14px"><button class="btn btn-p" data-pg="${nx}">Sıradaki paragraf${ic('arrow')}</button></div>`:''}`;
 }
 async function regen(){
-  const g=cur.groups[P.gi];if(!g||BUSY)return;
+  if(P.bu)return;const g=cur.groups[P.gi];if(!g||BUSY)return;
   const words=g.w.map(en=>cur.items.find(x=>x.en===en)).filter(Boolean);
   KA.toast('Yeni paragraf yazılıyor…');
   const r=await KA.askJ(PARA_G,'KALIPLAR: '+words.map(x=>x.en+(x.tr?` (${x.tr})`:'')).join(' | '),{ms:55000});
@@ -928,7 +1150,7 @@ function modalNew(){
     if(!w.length){el.querySelector('#pfs').textContent='Önce en az bir kelime ekle.';return}
     const p=mkPack('p'+Date.now().toString(36),(el.querySelector('#pn').value||'').trim()||'Yeni liste',w);
     KA.savePack(p,true);KA.activeId(p.id);close();renderHome();KA.toast(w.length+' kelimelik liste oluşturuldu.');
-    if(p.items.some(x=>!x.tr)||p.items.length)setTimeout(prepare,400);
+    setTimeout(async()=>{try{await runAudit(p)}catch(e){}prepare()},300);
   };
 }
 const STRUCT=`Görevin: Bir fotoğraftan OCR ile okunmuş metni İngilizce kelime listesine dönüştürmek. Metin kelime listesi, defter, tablo, kitap sayfası ya da çalışma kâğıdı olabilir; OCR hataları içerebilir (harf karışması, bölünmüş kelime, gereksiz işaret).
@@ -1051,6 +1273,7 @@ document.addEventListener('click',e=>{
   const mw=t.closest('[data-mw]');if(mw){pickEsle(+mw.dataset.mw,mw);return}
   const o=t.closest('[data-o]');if(o){const i=+o.dataset.o;if(mode===4)bossMC(i);else if(mode===5)answerCumle(i);else answerMC(i);return}
   const cg=t.closest('[data-cg]');if(cg){C.gi=+cg.dataset.cg;groupCumle();return}
+  const sw=t.closest('[data-src]');if(sw){try{localStorage.setItem('ka_src_'+sw.dataset.m2,sw.dataset.src)}catch(e){}P.ok0=0;openMode(+sw.dataset.m2,true);return}
   const pg=t.closest('[data-pg]');if(pg){P.gi=+pg.dataset.pg;setTimeout(sessSnap,0);drawPara();scrollTo({top:0,behavior:'smooth'});return}
   const tr=t.closest('[data-tier]');if(tr){modalTier(+tr.dataset.tier);return}
   const a=t.closest('[data-a]');if(!a)return;
@@ -1059,10 +1282,14 @@ document.addEventListener('click',e=>{
     reset:()=>{if(!confirm('Bu listedeki bütün ilerleme sıfırlansın mı? Kelimeler ve cümleler silinmez.'))return;cur.prog={box:{},steps:[0,0,0,0,0,0,0],xp:0,mdone:[],cdone:[]};cur.groups.forEach(g=>{g.ok=false;g.last=null});save(true);renderHome()},
     del:()=>{if(!confirm('“'+cur.name+'” listesi tamamen silinsin mi?'))return;KA.deletePack(cur.id);KA.activeId('');renderHome()},
     next:()=>{if(mode===4)nextBoss();else if(mode===5)nextCumle();else nextQ()},
-    ycheck:()=>yazCheck(false),yskip:()=>yazCheck(true),bcheck:bossYaz,cnext:nextGroup
+    ctx:()=>{C.ctx=!C.ctx;const x=C.cur&&C.cur.x;if(!x)return;const fb=$('#fb').innerHTML,lk=C.locked;nextCumle();if(lk){document.querySelectorAll('.opt').forEach(b=>{b.disabled=true});$('#fb').innerHTML=fb;C.locked=true}},
+    prand:()=>{const G=PL(),c=G.map((x,i)=>i).filter(i=>i!==P.gi&&!G[i].ok);P.gi=c.length?c[Math.floor(Math.random()*c.length)]:0;drawPara();scrollTo({top:0,behavior:'smooth'})},
+    ycheck:()=>yazCheck(false),yskip:()=>yazCheck(true),bcheck:bossYaz,cnext:nextGroup,override:overrideYaz,editcard:()=>Q&&Q.cur&&editCard(Q.cur.x),
+    audundo:auditUndo,audok:()=>{cur.audSeen=1;save(true);renderHome()},audlog:auditLog,audrun:()=>runAudit(cur,true)
   }[a.dataset.a]||(()=>{}))();
 });
-document.addEventListener('change',e=>{if(e.target.id==='pk'){KA.activeId(e.target.value);renderHome()}});
+document.addEventListener('change',e=>{if(e.target.id==='pk'){KA.activeId(e.target.value);renderHome()}
+  if(e.target.id==='ptt'&&P.bu){const G=PL(),cand=G.map((x,i)=>[x,i]).filter(([x])=>x.t===e.target.value).sort((a,b)=>a[0].i-b[0].i),f=cand.find(([x])=>!x.ok)||cand[0];P.gi=f?f[1]:0;drawPara()}});
 document.addEventListener('keydown',e=>{
   if(mode<0||e.metaKey||e.ctrlKey||e.altKey)return;
   const inInput=e.target.matches&&e.target.matches('input,textarea,select');
