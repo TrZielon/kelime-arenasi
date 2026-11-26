@@ -263,8 +263,18 @@ X-intensive - Çok X gerektiren`;
 
 /* ---------- Yapay zekâ komutları ---------- */
 const TR_SYS=`Sen İngilizce-Türkçe sözlük yazarısın. Girdide numaralandırılmış İngilizce kelimeler ve kalıplar var. Her biri için en yaygın Türkçe karşılıklarını yaz: akademik metinlerde en sık kullanılan anlam önce gelsin; kelimenin gerçekten farklı anlamları varsa en fazla 3 ayrı anlam ver (her biri 1-3 kelime, aynı anlamı tekrar etme). Fiilleri -mek/-mak ile, kalıpları kalıp anlamıyla yaz (regardless of = -e rağmen, -den bağımsız olarak). Kelimeyi İngilizce bırakma. YALNIZCA geçerli JSON döndür: {"items":[{"i":1,"tr":["birinci anlam","ikinci anlam"]}]}. Her numarayı girdideki sırayla ve eksiksiz döndür.`;
-const BATCH=`Sen BUEPT düzeyinde akademik İngilizce öğretmenisin. YALNIZCA geçerli JSON döndür: {"items":[...]}. Girdideki her satır "en - tr" biçimindedir. Her kelime için: "en" girdideki kelimenin aynısı; "s" kelimeyi içeren akademik C1 düzeyinde 14-22 kelimelik tek İngilizce cümle; "st" cümlenin doğal Türkçe çevirisi; "d" BUEPT çeviri sorusu çeldiricisi olarak 3 yanlış Türkçe çeviri: her biri doğru çeviriyle aynı kelimeleri, aynı üslubu ve neredeyse aynı uzunluğu kullansın, ilk okumada doğru gibi görünsün ama tek bir kilit noktada anlamı bozsun (hedef kelimenin yakın ama yanlış anlamı; neden-sonuç, karşıtlık ya da taviz ilişkisi; kesinlik/olasılık ve nicelik dereceleri; kimin kime ne yaptığı; zaman ya da olumsuzluk); bariz yanlış, eksik ya da konu dışı çeviri yazma; "dn" doğru çeviriyi çeldiricilerden ayıran kilit noktayı anlatan kısa Türkçe ipucu; "syn" kelimenin en fazla 3 İngilizce eş anlamlısı (yoksa boş dizi); "gl" cümledeki önemli kelimelerin en fazla 8 tanesi için {"kelime":"Türkçe anlam"} (küçük harf); "mo" ek-kök ayrımı öğretici en fazla 2 kelime için {"kelime":[["parça","kök" veya "ek","kısa Türkçe açıklama"]]}. "X" içeren maddelerde X yerine gerçek bir örnek kullan (ör. energy-intensive) ve cümlede onu kullan.`;
-const PARA_G=`Sen BUEPT sınavına hazırlanan öğrenciler için akademik İngilizce paragraf yazan bir yazarsın. YALNIZCA geçerli JSON döndür. Kurallar: (1) Verilen her kalıbı paragrafta en az bir kez, parantez içindeki Türkçe anlamına uygun ve doğal çekimli biçimde kullan. "a / b" biçimindeki kalıplarda biri yeterlidir. X içeren kalıplarda X yerine gerçek bir kelime kullan. (2) Tek bir konu seç, cümleleri mantıksal bağlarla bağla. (3) İlk cümle konuyu tanıtsın, son cümle sonuç ya da değerlendirme içersin. (4) C1 akademik üslup, dolgu ve tekrar yok. (5) Uzunluk 70-95 kelime. (6) Uydurma istatistik kullanma. Biçim: {"par":"paragraf metni","ana_fikir":"paragrafın kabataslak özeti, Türkçe, 1-2 cümle","gl":{"kelime":"Türkçe anlam"}} gl: en fazla 12 önemli kelime.`;
+const BUEPT_STYLE=`BUEPT ÜSLUP PROFİLİ (20 gerçek Boğaziçi deneme sınavının analizinden; metinleri KOPYALAMA, yalnızca mantığını uygula):
+- Konu havuzu: psikoloji deneyleri ve kuramları, sosyoloji ve toplumsal hareketler, medya ve ikna, etik/felsefe/hukuk, teknoloji ve yapay zekâ, tarih ve ekonomi (sömürgecilik, ticaret, iş dünyası), sağlık ve beslenme tarihi, eğitim ve okuma alışkanlıkları, sinema ve kültür, bilim ve sözde bilim.
+- Cümle mantığı: taviz ve karşıtlık (although, while, despite, whereas), kesinlik derecesi (may, tend to, is likely to, not necessarily, to some extent), karşılaştırma yönü (far less X than Y, at least as X as), vurgu yapıları (It was only after ... that), not only ... but also, neden-sonuç zinciri (as X rose, Y fell), edilgen + by (was silenced by), koşul (Without X, Y would not ...), raporlama fiilleri (argues, contends, points out), kavram tanımı (X refers to ...).
+- Paragraf mantığı: konu cümlesi → kavram tanımı → araştırmacı ya da çalışma (gerçek değilse genel ifade: "one study", "researchers") → somut örnek ya da vaka → karşı görüş, sınırlama ya da eleştiri → değerlendirme/bağlantı cümlesi.`;
+const PTOP=['a psychology experiment and what it reveals','a sociological theory of collective behaviour','media, advertising and persuasion','an ethical or legal dilemma','technology and artificial intelligence','economic or colonial history','the history of a food or health habit','education, learning and reading habits','film, art and cultural analysis','science versus pseudoscience','business ethics and attitudes towards business','social psychology of group behaviour'];
+const ptop=()=>PTOP[Math.floor(Math.random()*PTOP.length)];
+const BATCH=`Sen BUEPT düzeyinde akademik İngilizce öğretmenisin. Her cümle ÖZGÜN olsun ve aşağıdaki profilde yazılsın; cümleler farklı konulardan ve farklı yapılardan gelsin (aynı kalıbı tekrarlama).
+${BUEPT_STYLE}
+YALNIZCA geçerli JSON döndür: {"items":[...]}. Girdideki her satır "en - tr" biçimindedir. Her kelime için: "en" girdideki kelimenin aynısı; "s" kelimeyi içeren, profildeki cümle mantıklarından en az birini taşıyan, akademik C1 düzeyinde 16-28 kelimelik tek İngilizce cümle (bir BUEPT okuma metninden alınmış gibi dursun); "st" cümlenin doğal Türkçe çevirisi; "d" BUEPT çeviri sorusu çeldiricisi olarak 3 yanlış Türkçe çeviri: her biri doğru çeviriyle aynı kelimeleri, aynı üslubu ve neredeyse aynı uzunluğu kullansın, ilk okumada doğru gibi görünsün ama tek bir kilit noktada anlamı bozsun (hedef kelimenin yakın ama yanlış anlamı; neden-sonuç, karşıtlık ya da taviz ilişkisi; kesinlik/olasılık ve nicelik dereceleri; kimin kime ne yaptığı; zaman ya da olumsuzluk); bariz yanlış, eksik ya da konu dışı çeviri yazma; "dn" doğru çeviriyi çeldiricilerden ayıran kilit noktayı anlatan kısa Türkçe ipucu; "syn" kelimenin en fazla 3 İngilizce eş anlamlısı (yoksa boş dizi); "gl" cümledeki önemli kelimelerin en fazla 8 tanesi için {"kelime":"Türkçe anlam"} (küçük harf); "mo" ek-kök ayrımı öğretici en fazla 2 kelime için {"kelime":[["parça","kök" veya "ek","kısa Türkçe açıklama"]]}. "X" içeren maddelerde X yerine gerçek bir örnek kullan (ör. energy-intensive) ve cümlede onu kullan.`;
+const PARA_G=`Sen BUEPT sınavına hazırlanan öğrenciler için akademik İngilizce paragraf yazan bir yazarsın. Paragraf ÖZGÜN olsun ama gerçek bir BUEPT okuma metninin ortasından alınmış gibi dursun.
+${BUEPT_STYLE}
+YALNIZCA geçerli JSON döndür. Kurallar: (1) Verilen her kalıbı paragrafta en az bir kez, parantez içindeki Türkçe anlamına uygun ve doğal çekimli biçimde kullan. "a / b" biçimindeki kalıplarda biri yeterlidir. X içeren kalıplarda X yerine gerçek bir kelime kullan. (2) Konu havuzundan girdide verilen konuyu kullan; cümleleri mantıksal bağlarla bağla. (3) Profildeki paragraf mantığını izle: konu cümlesi, tanım, çalışma ya da düşünür, örnek, karşı görüş, değerlendirme (hepsi şart değil ama en az dördü olsun). (4) C1 akademik üslup, dolgu ve tekrar yok. (5) Uzunluk 85-120 kelime. (6) Uydurma istatistik kullanma. Biçim: {"par":"paragraf metni","ana_fikir":"paragrafın kabataslak özeti, Türkçe, 1-2 cümle","gl":{"kelime":"Türkçe anlam"}} gl: en fazla 12 önemli kelime.`;
 const GLOSS=`Verilen İngilizce kelimelerin her birinin en yaygın Türkçe karşılığını yaz (1-3 kelime; çekimli biçimse o biçimin anlamı). YALNIZCA geçerli JSON döndür: {"kelime":"Türkçe karşılık"}. Anahtarlar küçük harfli ve girdideki gibi olsun.`;
 const REFGEN=`Aşağıdaki İngilizce akademik paragrafın kabataslak özetini Türkçe, 1-2 açık cümleyle yaz. Paragrafta olmayan bir şey ekleme. YALNIZCA geçerli JSON döndür: {"ana_fikir":"..."}`;
 const GRADE=`Sen sıkı ama adil bir BUEPT okuma sınavı değerlendiricisisin. Öğrenci aşağıdaki İngilizce paragrafı okuyup TÜRKÇE kabataslak bir özet yazdı. Özeti yalnızca PARAGRAFA ve REFERANS ÖZETE göre değerlendir.
@@ -386,7 +396,7 @@ function fixPack(p){
   p.fix=3;KA.savePack(p,true);
   return p;
 }
-const mkPack=(id,name,words)=>KA.normPack({id,name,words:words.map(w=>({en:w.en,tr:w.tr||''})),items:words.map(w=>({en:w.en,tr:w.tr||''}))});
+const mkPack=(id,name,words)=>KA.normPack({id,name,sty:2,words:words.map(w=>({en:w.en,tr:w.tr||''})),items:words.map(w=>({en:w.en,tr:w.tr||''}))});
 const save=(now)=>{if(cur)KA.savePack(cur,now)};
 const bx=x=>cur.prog.box[x.en]||1;
 const withTr=()=>cur.items.filter(x=>x.tr&&MEANT(x).length);
@@ -417,6 +427,7 @@ function renderHome(){
   }
   const aid=KA.activeId();cur=packs.find(p=>p.id===aid)||packs[0];KA.activeId(cur.id);fixPack(cur);
   if(!cur.aud&&!AUD_RUN.has(cur.id)&&cur.id!=='def'&&cur.id!=='unk')setTimeout(()=>runAudit(cur),300);
+  const styCard=(!AUD_RUN.has(cur.id)&&!BUSY&&cur.sty!==2&&cur.id!=='unk'&&cur.items.some(x=>x.s))?`<div class="card prep"><span style="color:var(--acc2)">${ic('spark')}</span><p><b>Yeni BUEPT üslubu hazır.</b> Tercüman cümleleri ve Kürsü paragrafları artık 20 Boğaziçi deneme sınavının konu, paragraf ve cümle mantığıyla, senin kelimelerinle özgün olarak yazılıyor. Bu listeyi de yenileyelim mi? İlerlemen korunur.</p><div class="row" style="gap:6px"><button class="btn btn-acc btn-sm" data-a="styup">${ic('reset')}Yenile</button><button class="btn btn-ghost btn-sm" data-a="styno">Şimdilik kalsın</button></div></div>`:'';
   const audCard=AUD_RUN.has(cur.id)?`<div class="card prep"><span class="ka-spin"></span><p>Yapay zekâ kartlarını denetliyor: yer değiştirmiş, karışmış ya da yanlış anlamlı kartlar düzeltiliyor…</p></div>`:
     (cur.audLog&&cur.audLog.length&&!cur.audSeen)?`<div class="card prep"><span style="color:var(--acc2)">${ic('spark')}</span><p>Yapay zekâ listende <b>${cur.audLog.length} kartı</b> düzeltti (yer değiştirmiş dil, aynı satıra karışmış kelimeler, yanlış anlam).</p><div class="row" style="gap:6px"><button class="btn btn-ghost btn-sm" data-a="audlog">Neleri düzeltti?</button>${cur.bak?'<button class="btn btn-ghost btn-sm" data-a="audundo">Geri al</button>':''}<button class="btn btn-acc btn-sm" data-a="audok">Tamam</button></div></div>`:'';
   const st=cur.prog.steps,done=st.filter(Boolean).length,nx=nextMode(),meta=KA.meta();
@@ -427,7 +438,7 @@ function renderHome(){
   const maxT=Math.max(1,...tiers.map(t=>t.n));
   const badges=[['İlk kapı','kart',st[0]||meta.kart>0],['Keskin nişancı','sec',meta.tot>=30&&meta.ok/meta.tot>=.9],['7 gün seri','flame',KA.streak(meta)>=7],['Bekçiyi geçen','boss',!!st[4]],['Yazar','yaz',!!st[3]],['Paragraf ustası','para',!!st[6]]];
   H.innerHTML=`
-  ${audCard}${needs?`<div class="card prep" id="prep"><span style="color:var(--acc2)">${ic('spark')}</span><p id="prepTxt">${BUSY?'Hazırlanıyor…':`Bu listede ${[ms.tr&&ms.tr+' kelimenin anlamı',ms.s&&ms.s+' kelimenin örnek cümlesi',ms.g&&ms.g+' kelimenin paragrafı'].filter(Boolean).join(', ')} eksik.`}</p><button class="btn btn-acc btn-sm" data-a="prep" ${BUSY?'disabled':''}>${ic('spark')}Hazırla</button></div>`:''}
+  ${audCard}${styCard}${needs?`<div class="card prep" id="prep"><span style="color:var(--acc2)">${ic('spark')}</span><p id="prepTxt">${BUSY?'Hazırlanıyor…':`Bu listede ${[ms.tr&&ms.tr+' kelimenin anlamı',ms.s&&ms.s+' kelimenin örnek cümlesi',ms.g&&ms.g+' kelimenin paragrafı'].filter(Boolean).join(', ')} eksik.`}</p><button class="btn btn-acc btn-sm" data-a="prep" ${BUSY?'disabled':''}>${ic('spark')}Hazırla</button></div>`:''}
   <section class="card hero">
     <div>
       <div class="row" style="gap:8px"><span class="eyebrow">Aktif liste</span><span class="rank">${ic('crown')}${rankOf(cur.prog.xp||0)}</span></div>
@@ -888,7 +899,7 @@ function bossEnd(won){
 /* ---------- BUEPT metin bankası: 20 deneme sınavının metinleri ---------- */
 let BUDB=null;
 async function buLoad(){if(BUDB)return BUDB;const r=await fetch('okuma-db.json?v=1');if(!r.ok)throw new Error('Metin bankası yüklenemedi');BUDB=await r.json();return BUDB}
-const srcOf=m=>{try{return localStorage.getItem('ka_src_'+m)||'bu'}catch(e){return 'bu'}};
+const srcOf=m=>'my';
 const BUK='ka_bu';
 const buSt=()=>{let o={};try{o=JSON.parse(localStorage.getItem(BUK))||{}}catch(e){}o.p=o.p||{};o.c=o.c||[];o.x=o.x||{};return o};
 const buPut=o=>{try{localStorage.setItem(BUK,JSON.stringify(o))}catch(e){}};
@@ -1092,7 +1103,7 @@ async function regen(){
   if(P.bu)return;const g=cur.groups[P.gi];if(!g||BUSY)return;
   const words=g.w.map(en=>cur.items.find(x=>x.en===en)).filter(Boolean);
   KA.toast('Yeni paragraf yazılıyor…');
-  const r=await KA.askJ(PARA_G,'KALIPLAR: '+words.map(x=>x.en+(x.tr?` (${x.tr})`:'')).join(' | '),{ms:55000});
+  const r=await KA.askJ(PARA_G,'KONU: '+ptop()+'\nKALIPLAR: '+words.map(x=>x.en+(x.tr?` (${x.tr})`:'')).join(' | '),{ms:55000});
   if(!r.json||!r.json.par)return KA.toast('Paragraf yazılamadı: '+(r.err||'yanıt yok'));
   Object.assign(g,{text:String(r.json.par).trim(),ana:String(r.json.ana_fikir||'').trim(),gl:lowerKeys(r.json.gl),ok:false,last:null,draft:''});save(true);drawPara();
 }
@@ -1116,7 +1127,7 @@ async function prepare(){
     const have=new Set(p.groups.flatMap(g=>g.w)),left=p.items.filter(x=>x.tr&&!have.has(x.en)).map(x=>x.en);
     for(let i=0;i<left.length;i+=10)p.groups.push({w:left.slice(i,i+10),text:'',ana:'',gl:{},ok:false});
     const gs=p.groups.filter(g=>!g.text);done=0;
-    const paraOne=async g=>{const ws=g.w.map(en=>p.items.find(x=>x.en===en)).filter(Boolean);const r=await KA.askJ(PARA_G,'KALIPLAR: '+ws.map(x=>x.en+(x.tr?` (${x.tr})`:'')).join(' | '),{ms:65000});if(r.json&&r.json.par){Object.assign(g,{text:String(r.json.par).trim(),ana:String(r.json.ana_fikir||'').trim(),gl:lowerKeys(r.json.gl)})}else LASTERR=r.err;done++;prepMsg(`Paragraflar hazırlanıyor · ${Math.min(done,gs.length)}/${gs.length}`);KA.savePack(p)};
+    const paraOne=async g=>{const ws=g.w.map(en=>p.items.find(x=>x.en===en)).filter(Boolean);const r=await KA.askJ(PARA_G,'KONU: '+ptop()+'\nKALIPLAR: '+ws.map(x=>x.en+(x.tr?` (${x.tr})`:'')).join(' | '),{ms:65000});if(r.json&&r.json.par){Object.assign(g,{text:String(r.json.par).trim(),ana:String(r.json.ana_fikir||'').trim(),gl:lowerKeys(r.json.gl)})}else LASTERR=r.err;done++;prepMsg(`Paragraflar hazırlanıyor · ${Math.min(done,gs.length)}/${gs.length}`);KA.savePack(p)};
     await pool(gs,paraOne,2);
     {const again=p.groups.filter(g=>!g.text);if(again.length){prepMsg('Eksik kalan paragraflar yeniden deneniyor…');await pool(again,paraOne,1)}}
     const lexs=new Set(p.items.flatMap(x=>forms(x.en)));
@@ -1285,6 +1296,8 @@ document.addEventListener('click',e=>{
     ctx:()=>{C.ctx=!C.ctx;const x=C.cur&&C.cur.x;if(!x)return;const fb=$('#fb').innerHTML,lk=C.locked;nextCumle();if(lk){document.querySelectorAll('.opt').forEach(b=>{b.disabled=true});$('#fb').innerHTML=fb;C.locked=true}},
     prand:()=>{const G=PL(),c=G.map((x,i)=>i).filter(i=>i!==P.gi&&!G[i].ok);P.gi=c.length?c[Math.floor(Math.random()*c.length)]:0;drawPara();scrollTo({top:0,behavior:'smooth'})},
     ycheck:()=>yazCheck(false),yskip:()=>yazCheck(true),bcheck:bossYaz,cnext:nextGroup,override:overrideYaz,editcard:()=>Q&&Q.cur&&editCard(Q.cur.x),
+    styup:()=>{if(BUSY)return;cur.items.forEach(x=>{x.s='';x.st='';x.d=[];x.dv=0;x.dn=''});cur.groups.forEach(g=>{g.text='';g.ana='';g.gl={};g.last=null;g.draft=''});cur.prog.cdone=[];cur.sty=2;save(true);prepare()},
+    styno:()=>{cur.sty=2;save(true);renderHome()},
     audundo:auditUndo,audok:()=>{cur.audSeen=1;save(true);renderHome()},audlog:auditLog,audrun:()=>runAudit(cur,true)
   }[a.dataset.a]||(()=>{}))();
 });

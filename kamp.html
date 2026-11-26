@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>BUEPT Okuma Kampı · Kelime Arenası</title>
-<meta name="description" content="BUEPT reading'in en sık soru tipleri için üç alıştırma: cümle yerleştirme, vaka dosyası ve ana fikir avı.">
+<meta name="description" content="BUEPT reading'in en sık soru tipleri için kendi kelimelerinle üretilen üç alıştırma: cümle yerleştirme, vaka dosyası ve ana fikir avı.">
 <meta name="theme-color" content="#0f766e">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -67,125 +67,134 @@
 <script>
 (()=>{
 const {$,esc,shuf}=KA,ic=KA.ic;
-let DB=null,VK=null,G=null;
+let DEMO=null,VK=null,G=null,BAR=null;
 const ROUND=8;
 const BK='ka_kamp';const best=()=>{try{return JSON.parse(localStorage.getItem(BK))||{}}catch(e){return {}}};
 const MODES={
- yer:{n:'Cümle Yerleştir',d:'Gerçek BUEPT metinlerinden bir cümle çıkarıldı. Bağlaçlara ve zamirlere bakarak doğru boşluğu bul.',g:'#0f766e',i:'pen',k:'Her sınavda en az bir tane çıkıyor'},
- vaka:{n:'Vaka Dosyası',d:'Metindeki kavramı yeni bir duruma uygula: bu olay hangi türe, hangi kurama örnek?',g:'#b45309',i:'flag',k:'Moral Luck, Learned Helplessness, USM tipi sorular'},
- ana:{n:'Ana Fikir Avı',d:'Paragrafı oku, ana fikri seç. Tuzak: bir detay ya da başka paragrafın fikri.',g:'#6d28d9',i:'search',k:'"What is the writer\'s main point?" soruları'}
+ yer:{n:'Cümle Yerleştir',d:'BUEPT tarzı özgün bir paragraftan bir cümle çıkarıldı. Bağlaçlara ve zamirlere bakarak doğru boşluğu bul.',g:'#0f766e',i:'pen',k:'Her denemede en az bir tane çıkan soru tipi'},
+ vaka:{n:'Vaka Dosyası',d:'Kavramı yeni bir duruma uygula: bu olay hangi türe, hangi kurama örnek?',g:'#b45309',i:'flag',k:'Kavram uygulama soruları'},
+ ana:{n:'Ana Fikir Avı',d:'Paragrafı oku, ana fikri seç. Tuzaklar: dar bir detay, çarpıtılmış bir genelleme, konu dışı bir fikir.',g:'#6d28d9',i:'search',k:'"What is the writer\'s main point?" soruları'}
+};
+/* 20 Boğaziçi deneme sınavından çıkarılan mantık: içerik kopyalanmaz, yalnızca yapı uygulanır */
+const STYLE=`BUEPT ÜSLUP PROFİLİ (20 gerçek Boğaziçi deneme sınavının analizinden; o metinleri KOPYALAMA, yalnızca mantığını uygula):
+- Konu havuzu: psikoloji deneyleri ve kuramları, sosyoloji ve toplumsal hareketler, medya ve ikna, etik/felsefe/hukuk, teknoloji ve yapay zekâ, tarih ve ekonomi, sağlık ve beslenme tarihi, eğitim ve okuma, sinema ve kültür, bilim ve sözde bilim.
+- Paragraf mantığı: konu cümlesi → kavram tanımı ("X refers to") → çalışma ya da düşünür (emin değilsen "one study", "researchers") → somut örnek → karşı görüş ya da sınırlama → değerlendirme.
+- Cümle mantığı: although/while/despite, however/nevertheless, as a result/therefore, for example, in other words, this/such + isim gönderimleri, hedging (may, tend to, is likely to), far less X than Y, It was only after ... that.
+- Dil: C1 akademik ama anlaşılır; uydurma istatistik ve gerçek kişiler hakkında yanlış bilgi yok.`;
+const YER_SYS=`Sen BUEPT okuma sınavı için soru yazan deneyimli bir sınav yazarısın. Öğrencinin kelimeleriyle 6 ÖZGÜN akademik paragraf yaz ve her birinden cümle yerleştirme sorusu hazırla.
+${STYLE}
+Kurallar: her paragraf farklı bir konudan, 5-7 cümle, 90-140 kelime; öğrencinin kelimelerinden her paragrafta 1-3 tanesini doğal biçimde kullan, hepsini en az bir kez kullan. Her paragrafta ilk cümle OLMAYAN bir "çıkarılacak cümle" seç: yeri tek ve net olsun; ya kendisi bağlaç/zamirle önceki cümleye bağlansın (However, For example, As a result, In other words, This/Such + isim) ya da sonraki cümle ona gönderme yapsın. Başka bir yere de uyabilecek cümle seçme.
+YALNIZCA JSON: {"items":[{"title":"İngilizce kısa başlık","ss":["cümle 1","cümle 2","..."],"k":çıkarılacak cümlenin sırası (0'dan; en az 1),"why":"Türkçe 1-2 cümle: hangi bağlaç ya da gönderme cümleyi oraya bağlıyor"}]}`;
+const ANA_SYS=`Sen BUEPT okuma sınavı için soru yazan deneyimli bir sınav yazarısın. Öğrencinin kelimeleriyle 6 ÖZGÜN akademik paragraf yaz ve her biri için "ana fikir" sorusu hazırla.
+${STYLE}
+Kurallar: her paragraf farklı bir konudan, 90-130 kelime; öğrencinin kelimelerinden her paragrafta 1-3 tanesini kullan, hepsini en az bir kez kullan. Paragrafın ana fikri son cümlede ya da birkaç cümlenin birleşiminde olsun, ilk cümleyi aynen tekrar etmesin.
+Her paragraf için 4 TÜRKÇE seçenek yaz, benzer uzunlukta:
+- "ok": paragrafın tamamını kapsayan ana fikir (başka sözlerle)
+- "det": paragrafta geçen DOĞRU ama dar bir detay
+- "wrong": paragrafın kelimelerini kullanan ama anlamı çarpıtan seçenek (aşırı genelleme, ters ilişki, paragrafın reddettiği görüş)
+- "other": konuyla ilgili görünen ama paragrafta olmayan bir fikir
+YALNIZCA JSON: {"items":[{"title":"İngilizce kısa başlık","p":"paragraf","o":[{"t":"...","k":"ok"},{"t":"...","k":"det"},{"t":"...","k":"wrong"},{"t":"...","k":"other"}]}]}`;
+const VAKA_SYS=`Sen BUEPT okuma sınavı için "kavramı yeni bir duruma uygula" soruları yazan deneyimli bir sınav yazarısın.
+${STYLE}
+2 kavram seti hazırla. Her set, sosyal bilimlerde gerçekten var olan ve iyi bilinen bir kavram ailesi olsun (ör. uyma türleri, yükleme hataları, güç türleri, ikna yolları, öğrenme türleri). Her sette 3-4 kavram ve her biri için kısa, kendi sözlerinle İngilizce tanım yaz. Sonra her set için 4 ÖZGÜN durum yaz: 3-5 cümlelik İngilizce bir olay; tam olarak bir kavrama uysun ama kavramın adı geçmesin; öğrencinin kelimelerini durumlarda kullan.
+YALNIZCA JSON: {"sets":[{"src":"alan, ör. Social Psychology","t":"Türkçe set başlığı","c":[["Kavram adı","İngilizce tanım"]],"q":[{"s":"durum","a":doğru kavramın sırası,"why":"Türkçe 1-2 cümle açıklama"}]}]}`;
+const inpOf=ws=>'Öğrencinin kelimeleri:\n'+ws.map(w=>w.en+(w.tr?' = '+w.tr:'')).join('\n');
+const V=KA.src.V;
+async function genYer(ws){return KA.src.ask(YER_SYS,inpOf(ws),j=>{const out=[];(j.items||[]).forEach(x=>{try{const ss=V.arr(x.ss,5,'cümleler').map(String).map(t=>t.trim()).filter(Boolean);const k=V.idx(x.k,ss.length,'k');if(k<1||ss.length<5)return;out.push({title:String(x.title||'Reading'),ss,k,why:String(x.why||'')})}catch(e){}});if(out.length<4)throw new Error('yeterli paragraf yok ('+out.length+')');return out},{ai:{tier:'long',ms:110000}})}
+async function genAna(ws){return KA.src.ask(ANA_SYS,inpOf(ws),j=>{const out=[];(j.items||[]).forEach(x=>{try{const p=V.str(x.p,'paragraf');const o=V.arr(x.o,4,'seçenek').slice(0,4).map(z=>({t:String(z.t||'').trim(),k:['ok','det','wrong','other'].includes(z.k)?z.k:'other'})).filter(z=>z.t);if(o.length<4||o.filter(z=>z.k==='ok').length!==1)return;out.push({title:String(x.title||'Reading'),p,o})}catch(e){}});if(out.length<4)throw new Error('yeterli paragraf yok ('+out.length+')');return out},{ai:{tier:'long',ms:110000}})}
+async function genVaka(ws){return KA.src.ask(VAKA_SYS,inpOf(ws),j=>{const sets=[];(j.sets||[]).forEach(st=>{try{const c=V.arr(st.c,3,'kavram').filter(x=>Array.isArray(x)&&x[0]&&x[1]).map(x=>[String(x[0]),String(x[1])]);if(c.length<3)return;const q=(st.q||[]).filter(x=>x&&x.s&&Number.isInteger(Number(x.a))&&Number(x.a)>=0&&Number(x.a)<c.length).map(x=>({s:String(x.s),a:Number(x.a),why:String(x.why||'')}));if(q.length<2)return;sets.push({src:String(st.src||'Social Science'),t:String(st.t||'Kavramlar'),c,q})}catch(e){}});if(!sets.length)throw new Error('kavram seti kurulamadı');return {sets}},{ai:{tier:'long',ms:110000}})}
+const SRC={
+ yer:{game:'kamp_yer',need:12,min:6,title:'özgün BUEPT tarzı paragraflar',hint:'Her paragrafta kelimelerinden 1-3 tanesi geçer.',gen:genYer,onData:d=>round(d),onDemo:()=>round(DEMO.yer)},
+ ana:{game:'kamp_ana',need:12,min:6,title:'özgün BUEPT tarzı paragraflar',hint:'Her paragrafta kelimelerinden 1-3 tanesi geçer.',gen:genAna,onData:d=>round(d),onDemo:()=>round(DEMO.ana)},
+ vaka:{game:'kamp_vaka',need:8,min:5,title:'yeni kavram setleri ve vakalar',hint:'Kavramlar gerçek sosyal bilim kavramları; vakalar senin kelimelerinle yazılır.',gen:genVaka,onData:d=>round(d.sets),onDemo:()=>round(VK.sets)}
 };
 async function load(){
-  if(!DB){DB=await (await fetch('okuma-db.json?v=1')).json()}
-  if(!VK){VK=await (await fetch('kamp-vaka.json?v=1')).json()}
+  if(!DEMO)DEMO=await (await fetch('kamp-ornek.json?v=1')).json();
+  if(!VK)VK=await (await fetch('kamp-vaka.json?v=1')).json();
 }
 function hub(){
   G=null;if(location.hash)history.replaceState(null,'',location.pathname);const b=best();
-  $('#main').innerHTML=`<section class="card kh"><span class="eyebrow">Oyun Salonu · BUEPT Okuma Kampı</span><h1>Sınavın en sık soru tiplerini çalış</h1><p>20 Boğaziçi deneme sınavında en çok tekrar eden üç soru tipi için hazırlandı. Metinler ve kavramlar bu sınavlardan geliyor; her yanlışın açıklaması metindeki kanıtla birlikte gelir.</p></section>
-  <div class="modes">${Object.entries(MODES).map(([k,m])=>`<button class="card mcard" data-go="${k}" style="--g:${m.g}"><span class="mi">${ic(m.i)}</span><b>${m.n}</b><p>${m.d}</p><small>${m.k}${b[k]!=null?` · En iyi: ${b[k]}/${ROUND}`:''}</small></button>`).join('')}</div>
+  $('#main').innerHTML=`<section class="card kh"><span class="eyebrow">Oyun Salonu · BUEPT Okuma Kampı</span><h1>Sınavın en sık soru tiplerini çalış</h1><p>20 Boğaziçi deneme sınavını inceledim ve en çok tekrar eden üç soru tipini çıkardım. Paragraflar ve vakalar o sınavların konu seçimine, paragraf yapısına ve cümle mantığına göre, senin kelimelerinle <b>sıfırdan</b> yazılır; her tur yenidir.</p></section>
+  <div class="modes">${Object.entries(MODES).map(([k,m])=>`<button class="card mcard" data-go="${k}" style="--g:${m.g}"><span class="mi">${ic(m.i)}</span><b>${m.n}</b><p>${m.d}</p><small>${m.k}${b[k]!=null?` · En iyi: ${b[k]}`:''}</small></button>`).join('')}</div>
   <p class="mut" style="margin-top:16px;font-size:13.5px"><a href="oyunlar.html">← Oyun Salonu</a> · <a href="deneme.html">Tam deneme sınavı oluştur →</a></p>`;
 }
 
-/* ---------- 1. Cümle yerleştir: metin bankasından otomatik ---------- */
-const sentsOf=p=>(p.match(/[^.!?]+(?:[.!?]+["”’)]*|$)\s*/g)||[p]).map(s=>s.trim()).filter(Boolean);
-const CUES=[
- [/^(For example|For instance|To illustrate|e\.g\.)/i,'Örnek veriyor: hemen öncesinde örneklenecek genel bir iddia olmalı.'],
- [/^(However|Yet|Nevertheless|Nonetheless|In contrast|By contrast|On the other hand|Still|Instead|Conversely)/i,'Zıtlık bağlacı: önceki cümle bunun tersini ya da beklenen durumu söylemeli.'],
- [/^(Moreover|Furthermore|In addition|Additionally|Also|Besides|What is more)/i,'Ekleme bağlacı: önceki cümle aynı yönde bir fikir vermeli.'],
- [/^(Therefore|Thus|As a result|Consequently|Hence|Accordingly|So,)/i,'Sonuç bağlacı: önceki cümle bu sonucun nedenini içermeli.'],
- [/^(In other words|That is|Put simply|In short|In sum)/i,'Açıklama/özet: önceki cümleyi başka sözlerle tekrar ediyor.'],
- [/^(Similarly|Likewise|In the same way|By the same token)/i,'Benzerlik: önceki cümlede benzer bir örnek ya da durum olmalı.'],
- [/^(Finally|First|Second|Third|Then|Later|Afterwards|In the following)/i,'Sıralama: önceki cümle sıradaki adımı ya da olayı vermeli.'],
- [/^(This|These|Such|That|Those|It|They|He|She|His|Her|Their|Its)\b/,'Gönderme: cümle bir zamirle başlıyor; zamirin gösterdiği şey önceki cümlede geçmeli.'],
- [/^(Although|While|Whereas|Despite|Even though)/i,'Karşıtlık içeren cümle: önceki cümleyle kurduğu ilişkiye bak.']
-];
-function cueOf(s){for(const [re,t] of CUES)if(re.test(s))return t;return ''}
-function buildYer(){
-  const pool=[];
-  DB.texts.forEach(t=>t.paras.forEach((p,pi)=>{if(!/^[A-Z“"]/.test(p)||/\([A-E]\)/.test(p))return;const ss=sentsOf(p);if(ss.length<5||ss.some(s=>s.split(' ').length>60))return;
-    ss.forEach((s,k)=>{if(k<1||k>ss.length-1)return;const c=cueOf(s);if(!c)return;const w=s.split(' ').length;if(w<7||w>45)return;pool.push({t:t.id,title:t.title,pi,k,ss,s,c})})}));
-  return shuf(pool).slice(0,ROUND).map(x=>{const rest=x.ss.filter((v,i)=>i!==x.k),gaps=[...Array(rest.length+1).keys()].slice(1);let pick=shuf(gaps.filter(g=>g!==x.k)).slice(0,3).concat([x.k]).sort((a,b)=>a-b);return Object.assign(x,{rest,pick,a:pick.indexOf(x.k)})});
+/* ---------- Ortak oyun akışı ---------- */
+async function play(m){
+  location.hash=m;G={m,i:0,ok:0,streak:0,miss:[],q:[]};
+  $('#main').innerHTML=`<div class="gtop"><button class="btn btn-ghost btn-sm" data-a="hub">${ic('back')}Kamp</button><span class="t">${MODES[m].n}</span><span class="hud" id="hud"></span></div><div id="wsrc" style="margin-bottom:12px"></div><div class="card stage" id="stg"><span class="ka-spin"></span> Hazırlanıyor…</div>`;
+  try{await load()}catch(e){$('#stg').innerHTML=`<p class="bad">İçerik yüklenemedi: ${esc(e.message)}</p>`;return}
+  if(!G||G.m!==m)return;
+  BAR=KA.src.bar('#wsrc',SRC[m]);
 }
+function round(data){
+  if(!G)return;const m=G.m;let q;
+  if(m==='vaka'){const all=[];(data||[]).forEach(st=>st.q.forEach(x=>all.push({set:st,q:x})));q=shuf(all).slice(0,ROUND)}
+  else if(m==='yer')q=shuf(data||[]).slice(0,ROUND).map(x=>{const rest=x.ss.filter((v,i)=>i!==x.k),gaps=[...Array(rest.length+1).keys()].slice(1);const pick=shuf(gaps.filter(g=>g!==x.k)).slice(0,3).concat([x.k]).sort((a,b)=>a-b);return Object.assign({},x,{s:x.ss[x.k],rest,pick,a:pick.indexOf(x.k)})});
+  else q=shuf(data||[]).slice(0,ROUND).map(x=>Object.assign({},x,{o:shuf(x.o)}));
+  Object.assign(G,{i:0,ok:0,streak:0,miss:[],q});next();
+}
+function hud(){const h=$('#hud');if(h)h.innerHTML=`<span class="tag">${Math.min(G.i+1,G.q.length)}/${G.q.length}</span><span class="tag" style="background:var(--ok-soft);color:var(--ok)">${ic('check')}${G.ok}</span>${G.streak>=2?`<span class="tag" style="background:var(--acc-soft);color:var(--acc2)">${ic('flame')}${G.streak}</span>`:''}`}
+function stage(h){const s=$('#stg');if(!s)return;s.innerHTML=h;hud()}
+function score(ok){if(ok){G.ok++;G.streak++;KA.sfx.ok();try{KA.addXp(2)}catch(e){}}else{G.streak=0;KA.sfx.bad()}}
+function fb(ok,h,body,miss){if(!ok&&miss)G.miss.push(miss);hud();const f=$('#fb');f.innerHTML=`<div class="fb ${ok?'ok':'no'}"><b class="h">${h}</b>${body}</div><div class="row" style="margin-top:12px"><button class="btn btn-p" data-a="next" id="nx">${G.i+1<G.q.length?'Devam':'Sonucu gör'}${ic('arrow')}</button></div>`;const n=$('#nx');if(n)n.focus({preventScroll:true});f.scrollIntoView({behavior:'smooth',block:'nearest'})}
+function next(){if(!G.q.length){stage('<p class="mut">Bu sette soru kalmadı.</p>');return}if(G.i>=G.q.length)return end();G.lock=0;({yer:drawYer,vaka:drawVaka,ana:drawAna})[G.m]();const s=$('#stg');if(s&&G.i>0)s.scrollIntoView({behavior:'smooth',block:'start'})}
+function end(){
+  const b=best();const sc=G.ok+'/'+G.q.length;if(b[G.m]==null||G.ok>parseInt(b[G.m])){b[G.m]=sc;try{localStorage.setItem(BK,JSON.stringify(b))}catch(e){}}
+  if(G.ok>=G.q.length-1)KA.sfx.win();
+  stage(`<div class="endc"><span class="eyebrow">${MODES[G.m].n}</span><div class="big">${sc}</div><p class="mut">${G.ok===G.q.length?'Kusursuz tur!':G.ok>=G.q.length*.75?'Çok iyi; sınav seviyesindesin.':'Yanlışlarını aşağıda tekrar oku, sonra yeni bir tur dene.'}</p>${G.miss.length?`<div class="miss">${G.miss.map(m=>`<div>${esc(m)}</div>`).join('')}</div>`:''}<div class="row" style="justify-content:center;gap:8px;margin-top:16px"><button class="btn btn-p btn-lg" data-a="again">${ic('reset')}Aynı setle yeni tur</button><button class="btn btn-ghost btn-lg" data-a="hub">Kampa dön</button></div><p class="mut" style="font-size:13px;margin-top:10px">Tamamen yeni paragraflar için yukarıdan <b>Kendi kelimelerim → Yeni kelimelerle üret</b>.</p></div>`);
+}
+
+/* ---------- 1. Cümle yerleştir ---------- */
+const gapB=(l,i)=>`<button class="gap" data-gap="${i}">${l}</button>`;
 function drawYer(){
   const x=G.q[G.i],L='ABCD';let h='';
-  x.rest.forEach((s,i)=>{if(x.pick.includes(i))h+=gapB(L[x.pick.indexOf(i)],x.pick.indexOf(i));h+=esc(s)+' '});
+  x.rest.forEach((s,i)=>{if(x.pick.includes(i))h+=gapB(L[x.pick.indexOf(i)],x.pick.indexOf(i));h+=KA.tokens(s)+' '});
   if(x.pick.includes(x.rest.length))h+=gapB(L[x.pick.indexOf(x.rest.length)],x.pick.indexOf(x.rest.length));
-  stage(`<div class="qlab"><span lang="en">${esc(x.title)}</span> · Paragraf ${x.pi+1} · Eksik cümle nereye?</div><div class="ins"><small>EKSİK CÜMLE</small>${esc(x.s)}</div><div class="psg" id="psg">${h}</div><p class="mut" style="font-size:13px;margin:10px 0 0">Harflerden birine dokun.</p><div id="fb"></div>`);
+  stage(`<div class="qlab"><span lang="en">${esc(x.title)}</span> · Eksik cümle nereye?</div><div class="ins"><small>EKSİK CÜMLE</small>${esc(x.s)}</div><div class="psg" id="psg">${h}</div><p class="mut" style="font-size:13px;margin:10px 0 0">Harflerden birine dokun.</p><div id="fb"></div>`);
 }
-const gapB=(l,i)=>`<button class="gap" data-gap="${i}">${l}</button>`;
 function ansYer(i){
   const x=G.q[G.i];if(G.lock)return;G.lock=1;const ok=i===x.a;score(ok);
   document.querySelectorAll('.gap').forEach(b=>{const k=+b.dataset.gap;b.disabled=true;if(k===x.a)b.classList.add('ok');else if(k===i)b.classList.add('no')});
   const right=document.querySelector(`.gap[data-gap="${x.a}"]`);if(right)right.insertAdjacentHTML('afterend',` <span class="placed">${esc(x.s)}</span>`);
-  const prev=x.rest[x.k-1]||'';
-  fb(ok,ok?'Doğru yer!':'Doğru yer: '+'ABCD'[x.a],`${esc(x.c)}${prev?`<span class="ev">Önceki cümle: “${esc(prev)}”</span>`:''}`,ok?'':`${x.title} · ¶${x.pi+1}: ${x.s}`);
+  const prev=x.rest[x.k-1]||'',nx=x.rest[x.k]||'';
+  fb(ok,ok?'Doğru yer!':'Doğru yer: '+'ABCD'[x.a],`${esc(x.why)}${prev?`<span class="ev">Önceki cümle: “${esc(prev)}”</span>`:''}${nx?`<span class="ev">Sonraki cümle: “${esc(nx)}”</span>`:''}`,ok?'':`${x.title}: ${x.s}`);
 }
-
 /* ---------- 2. Vaka dosyası ---------- */
-function buildVaka(){
-  const all=[];VK.sets.forEach(st=>st.q.forEach(q=>all.push({set:st,q})));
-  return shuf(all).slice(0,ROUND);
-}
 function drawVaka(){
   const {set,q}=G.q[G.i];
-  stage(`<div class="qlab"><span lang="en">${esc(set.src)}</span> · ${esc(set.t)}</div><div class="concepts">${set.c.map(([n,d])=>`<div><b>${esc(n)}</b>${esc(d)}</div>`).join('')}</div><div class="case">${esc(q.s)}</div><p style="font-weight:800;margin:14px 0 0">Bu durum en iyi hangi kavramla açıklanır?</p><div class="opts">${set.c.map(([n],i)=>`<button class="opt" data-o="${i}"><kbd>${'ABCDEF'[i]}</kbd><span>${esc(n)}</span></button>`).join('')}</div><div id="fb"></div>`);
+  stage(`<div class="qlab"><span lang="en">${esc(set.src)}</span> · ${esc(set.t)}</div><div class="concepts">${set.c.map(([n,d])=>`<div><b>${esc(n)}</b>${esc(d)}</div>`).join('')}</div><div class="case">${KA.tokens(q.s)}</div><p style="font-weight:800;margin:14px 0 0">Bu durum en iyi hangi kavramla açıklanır?</p><div class="opts">${set.c.map(([n],i)=>`<button class="opt" data-o="${i}"><kbd>${'ABCDEF'[i]}</kbd><span>${esc(n)}</span></button>`).join('')}</div><div id="fb"></div>`);
 }
 function ansVaka(i){
   const {set,q}=G.q[G.i];if(G.lock)return;G.lock=1;const ok=i===q.a;score(ok);
   document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(k===q.a)b.classList.add('ok');else if(k===i)b.classList.add('no')});
   fb(ok,ok?'Doğru kavram!':'Doğru cevap: '+set.c[q.a][0],esc(q.why),ok?'':`${set.c[q.a][0]}: ${q.s}`);
 }
-
 /* ---------- 3. Ana fikir avı ---------- */
-const cap=s=>{s=String(s).trim();return s.charAt(0).toLocaleUpperCase('tr')+s.slice(1)+(/[.!?]$/.test(s)?'':'.')};
-function buildAna(){
-  return shuf(DB.kursu).slice(0,ROUND).map(k=>{
-    const t=DB.texts.find(x=>x.id===k.t),para=t.paras[k.i];
-    const same=shuf(DB.kursu.filter(o=>o!==k&&o.t===k.t)),other=shuf(DB.kursu.filter(o=>o.t!==k.t));
-    const det=cap(shuf(k.nok)[0]);
-    const opts=[{v:k.ana,w:'ok'},{v:det,w:'det'},{v:(same[0]||other[1]).ana,w:'para'},{v:(other[0]).ana,w:'other'}];
-    return {k,title:t.title,para,opts:shuf(opts)};
-  });
-}
 function drawAna(){
   const x=G.q[G.i];
-  stage(`<div class="qlab"><span lang="en">${esc(x.title)}</span> · Paragraf ${x.k.i+1}</div><div class="psg">${KA.tokens(x.para)}</div><p style="font-weight:800;margin:14px 0 0">Bu paragrafın ana fikri hangisi?</p><div class="opts">${x.opts.map((o,i)=>`<button class="opt" data-o="${i}"><kbd>${'ABCD'[i]}</kbd><span>${esc(o.v)}</span></button>`).join('')}</div><div id="fb"></div>`);
+  stage(`<div class="qlab"><span lang="en">${esc(x.title)}</span></div><div class="psg">${KA.tokens(x.p)}</div><p style="font-weight:800;margin:14px 0 0">Bu paragrafın ana fikri hangisi?</p><div class="opts">${x.o.map((o,i)=>`<button class="opt" data-o="${i}"><kbd>${'ABCD'[i]}</kbd><span>${esc(o.t)}</span></button>`).join('')}</div><div id="fb"></div>`);
 }
-const WHY={det:'Bu paragrafta geçen bir detay; doğru ama paragrafın tamamını kapsamıyor. Ana fikir bütün destekleyici cümleleri toparlamalı.',para:'Bu, aynı metnin başka bir paragrafının fikri. Soru sorulan paragrafın sınırları içinde kal.',other:'Bu başka bir metnin konusundan; paragrafla ilgisi yok.'};
+const WHY={det:'Bu paragrafta geçen doğru bir detay, ama çok dar: paragrafın tamamını kapsamıyor. Ana fikir bütün destekleyici cümleleri toparlamalı.',wrong:'Paragrafın kelimelerini kullanıyor ama anlamı çarpıtıyor (aşırı genelleme ya da ters ilişki). "always, only, all" gibi kesin ifadelere dikkat.',other:'Konuyla ilgili görünüyor ama paragrafta böyle bir fikir yok.'};
 function ansAna(i){
-  const x=G.q[G.i];if(G.lock)return;G.lock=1;const o=x.opts[i],ok=o.w==='ok';score(ok);
-  document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(x.opts[k].w==='ok')b.classList.add('ok');else if(k===i)b.classList.add('no')});
-  fb(ok,ok?'Ana fikri yakaladın!':'Bu ana fikir değil',`${ok?'':esc(WHY[o.w])+'<br>'}<b>Önemli noktalar:</b> ${x.k.nok.map(esc).join(' · ')}`,ok?'':`${x.title} ¶${x.k.i+1}: ${x.k.ana}`);
+  const x=G.q[G.i];if(G.lock)return;G.lock=1;const o=x.o[i],ok=o.k==='ok';score(ok);
+  const right=x.o.find(z=>z.k==='ok');
+  document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(x.o[k].k==='ok')b.classList.add('ok');else if(k===i)b.classList.add('no')});
+  fb(ok,ok?'Ana fikri yakaladın!':'Bu ana fikir değil',ok?'Seçtiğin cümle paragrafın tamamını kapsıyor; detaylar onu destekliyor.':esc(WHY[o.k]),ok?'':`${x.title}: ${right.t}`);
 }
 
-/* ---------- Ortak oyun akışı ---------- */
-async function play(m){
-  location.hash=m;$('#main').innerHTML='<div class="card stage"><span class="ka-spin"></span> Hazırlanıyor…</div>';
-  try{await load()}catch(e){$('#main').innerHTML=`<div class="card stage"><p class="bad">İçerik yüklenemedi: ${esc(e.message)}</p></div>`;return}
-  G={m,i:0,ok:0,streak:0,miss:[],q:m==='yer'?buildYer():m==='vaka'?buildVaka():buildAna()};next();
-}
-function stage(h){const M=MODES[G.m];$('#main').innerHTML=`<div class="gtop"><button class="btn btn-ghost btn-sm" data-a="hub">${ic('back')}Kamp</button><span class="t">${M.n}</span><span class="hud"><span class="tag">${G.i+1}/${G.q.length}</span><span class="tag" style="background:var(--ok-soft);color:var(--ok)">${ic('check')}${G.ok}</span>${G.streak>=2?`<span class="tag" style="background:var(--acc-soft);color:var(--acc2)">${ic('flame')}${G.streak}</span>`:''}</span></div><div class="card stage">${h}</div>`;scrollTo({top:0})}
-function score(ok){if(ok){G.ok++;G.streak++;KA.sfx.ok();try{KA.addXp(2)}catch(e){}}else{G.streak=0;KA.sfx.bad()}}
-function fb(ok,h,body,miss){if(!ok&&miss)G.miss.push(miss);const f=$('#fb');f.innerHTML=`<div class="fb ${ok?'ok':'no'}"><b class="h">${h}</b>${body}</div><div class="row" style="margin-top:12px"><button class="btn btn-p" data-a="next" id="nx">${G.i+1<G.q.length?'Devam':'Sonucu gör'}${ic('arrow')}</button></div>`;const n=$('#nx');if(n)n.focus({preventScroll:true});f.scrollIntoView({behavior:'smooth',block:'nearest'})}
-function next(){
-  if(G.i>=G.q.length)return end();G.lock=0;
-  ({yer:drawYer,vaka:drawVaka,ana:drawAna})[G.m]();
-}
-function end(){
-  const b=best();if(b[G.m]==null||G.ok>b[G.m]){b[G.m]=G.ok;try{localStorage.setItem(BK,JSON.stringify(b))}catch(e){}}
-  if(G.ok>=G.q.length-1)KA.sfx.win();
-  $('#main').innerHTML=`<div class="card endc"><span class="eyebrow">${MODES[G.m].n}</span><div class="big">${G.ok}/${G.q.length}</div><p class="mut">${G.ok===G.q.length?'Kusursuz tur!':G.ok>=G.q.length*.75?'Çok iyi; sınav seviyesindesin.':'Yanlışlarını aşağıda tekrar oku, sonra yeni bir tur dene.'}</p>${G.miss.length?`<div class="miss">${G.miss.map(m=>`<div>${esc(m)}</div>`).join('')}</div>`:''}<div class="row" style="justify-content:center;gap:8px;margin-top:16px"><button class="btn btn-p btn-lg" data-go="${G.m}">${ic('reset')}Yeni tur</button><button class="btn btn-ghost btn-lg" data-a="hub">Kampa dön</button></div></div>`;
-}
 document.addEventListener('click',e=>{
   const t=e.target;
-  const tk=t.closest('.tk');if(tk){const s=(tk.closest('.psg')||tk.parentElement).textContent;KA.lookup(tk.dataset.w,{anchor:tk,context:(s.match(/[^.!?]+[.!?]*/g)||[]).find(z=>z.includes(tk.dataset.w))||''});return}
+  const tk=t.closest('.tk');if(tk){const s=(tk.closest('.psg,.case')||tk.parentElement).textContent;KA.lookup(tk.dataset.w,{anchor:tk,context:(s.match(/[^.!?]+[.!?]*/g)||[]).find(z=>z.includes(tk.dataset.w))||''});return}
   const go=t.closest('[data-go]');if(go){play(go.dataset.go);return}
   const gp=t.closest('[data-gap]');if(gp&&G){ansYer(+gp.dataset.gap);return}
   const o=t.closest('[data-o]');if(o&&G){(G.m==='vaka'?ansVaka:ansAna)(+o.dataset.o);return}
   const a=t.closest('[data-a]');if(!a)return;
-  if(a.dataset.a==='hub')hub();if(a.dataset.a==='next'&&G){G.i++;next()}
+  if(a.dataset.a==='hub')hub();
+  if(a.dataset.a==='next'&&G){G.i++;next()}
+  if(a.dataset.a==='again'&&BAR){BAR.apply()}
 });
-document.addEventListener('keydown',e=>{if(!G||e.metaKey||e.ctrlKey)return;if(e.key==='Enter'&&$('#nx')){e.preventDefault();G.i++;next();return}const k='1234'.indexOf(e.key);if(k>=0&&!G.lock){if(G.m==='yer')ansYer(k);else ansVaka&&(G.m==='vaka'?ansVaka:ansAna)(k)}});
+document.addEventListener('keydown',e=>{if(!G||e.metaKey||e.ctrlKey||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='Enter'&&$('#nx')){e.preventDefault();G.i++;next();return}const k='1234'.indexOf(e.key);if(k>=0&&!G.lock&&G.q.length&&G.i<G.q.length){if(G.m==='yer')ansYer(k);else(G.m==='vaka'?ansVaka:ansAna)(k)}});
 addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(MODES[h]&&(!G||G.m!==h))play(h);else if(!h&&G)hub()});
 KA.nav('oyunlar.html');
 const h=location.hash.slice(1);if(MODES[h])play(h);else hub();

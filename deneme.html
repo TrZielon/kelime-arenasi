@@ -104,7 +104,9 @@ let READY=[],DB=null,EX=null,tick=null,TAB='t';
 const TOPICS=[['rnd','Rastgele'],['psy','Psikoloji deneyleri'],['soc','Sosyoloji ve toplumsal hareketler'],['med','Medya ve ikna'],['tech','Teknoloji ve yapay zekâ'],['eth','Etik, felsefe ve hukuk'],['his','Tarih ve ekonomi'],['hea','Sağlık ve beslenme'],['edu','Eğitim ve öğrenme'],['cul','Sinema, sanat ve kültür']];
 const TOPIC_EN={psy:'psychology experiments and theories (e.g. conformity, motivation, memory, learned behaviour)',soc:'sociology, collective behaviour and social movements',med:'media, advertising, propaganda and persuasion',tech:'technology, artificial intelligence and society',eth:'ethics, moral philosophy and law',his:'history, economics and colonial/post-colonial development',hea:'health, nutrition and public health history',edu:'education, learning and reading habits',cul:'film, art and cultural analysis'};
 const SEC={1:{n:'Reading I',lim:40,w:'950-1150',p:'10-12',q:10},2:{n:'Reading II',lim:50,w:'1200-1450',p:'12-15',q:11}};
-let OPT={topic:'rnd',sec:1};
+let OPT={topic:'rnd',sec:1,pk:''};
+const myPacks=()=>{try{return KA.listPacks().filter(p=>(p.items||[]).filter(x=>x&&x.en).length>=5)}catch(e){return []}};
+function pickWords(pid,n){const p=KA.listPacks().find(x=>x.id===pid);if(!p)return [];const box=(p.prog&&p.prog.box)||{};return shuf((p.items||[]).filter(x=>x&&x.en&&String(x.en).split(/\s+/).length<=3)).sort((a,b)=>(box[a.en]||1)-(box[b.en]||1)).slice(0,n).map(x=>String(x.en).trim())}
 
 /* ---------- Üretim komutları (20 deneme sınavının analizine göre) ---------- */
 const GEN_T=`You are an experienced item writer for the Boğaziçi University English Proficiency Test (BUEPT) reading section. Write ONE ORIGINAL academic reading passage that matches the style of real BUEPT mock exams.
@@ -146,11 +148,12 @@ async function lib(){
   stop();EX=null;location.hash='';
   if(!READY.length){try{READY=await (await fetch('deneme-hazir.json?v=1')).json()}catch(e){READY=[]}}
   const list=all();
-  $('#main').innerHTML=`<div class="dn-hero"><section class="card"><span class="eyebrow">Sınav Odası · Sınav oluştur</span><h1>Yeni bir BUEPT reading sınavı oluştur</h1><p>20 gerçek Boğaziçi deneme sınavını inceledim: metin yapısı, konu seçimi ve soru tipleri bu sınavlarla aynı. Her seferinde konusu benzer ama metni ve soruları yeni bir sınav hazırlanır; süre tutarak çözersin, sonunda her sorunun açıklamasını metinden alıntıyla görürsün.</p>
+  $('#main').innerHTML=`<div class="dn-hero"><section class="card"><span class="eyebrow">Sınav Odası · Sınav oluştur</span><h1>Yeni bir BUEPT reading sınavı oluştur</h1><p>20 gerçek Boğaziçi deneme sınavını inceledim: metin yapısı, konu seçimi ve soru tipleri bu sınavlarla aynı. Her seferinde konusu benzer ama metni ve soruları tamamen yeni bir sınav hazırlanır; istersen kendi kelime listendeki kelimeler metne yerleştirilir; süre tutarak çözersin, sonunda her sorunun açıklamasını metinden alıntıyla görürsün.</p>
    <div class="dn-feat"><div><b>Gerçek soru tipleri</b>NOT true, çıkarım, paragrafın amacı, paragraf ilişkisi, cümle yerleştirme, vaka, I-II-III, kutudan tamamlama, kısa cevap</div><div><b>Gerçek süre</b>Reading I 40 dk · Reading II 50 dk</div><div><b>Açıklamalı sonuç</b>Her sorunun Türkçe açıklaması ve metindeki kanıt cümlesi</div><div><b>Kelimeye dokun</b>Metindeki bilmediğin kelimeye dokununca anlamı açılır</div></div>
    <p class="mut" style="margin:14px 0 0;font-size:13px"><a href="sinav.html">← Kendi sınavını yüklemek için Sınav Odası'na dön</a></p></section>
   <section class="card"><div class="lbl">Konu</div><div class="opt-g">${TOPICS.map(([k,n])=>`<button class="pill ${OPT.topic===k?'on':''}" data-tp="${k}">${n}</button>`).join('')}</div>
    <div class="lbl">Bölüm</div><div class="opt-g">${[1,2].map(k=>`<button class="pill ${OPT.sec===k?'on':''}" data-sec="${k}">${SEC[k].n} · ${SEC[k].lim} dk · ${SEC[k].q} soru</button>`).join('')}</div>
+   <div class="lbl">Kelimeler</div><select class="select" id="dpk" style="margin:8px 0 14px">${[['','Rastgele akademik kelimeler'],...myPacks().map(p=>[p.id,'Listemden: '+(p.name||'Listem')+' · '+p.items.length])].map(([v,n])=>`<option value="${esc(v)}" ${OPT.pk===v?'selected':''}>${esc(n)}</option>`).join('')}</select>
    <button class="btn btn-p btn-lg" data-a="gen" style="width:100%">${ic('spark')}Sınavı oluştur</button>
    <p class="mut" style="font-size:12.5px;margin:10px 0 0">Hazırlanması yaklaşık 30-60 saniye sürer. Yapay zekâ bağlı değilse bugünkü ücretsiz deneme hakların kullanılır.</p></section></div>
   <h2 style="font-size:21px;margin:0 0 10px">Hazır deneme</h2>
@@ -164,13 +167,13 @@ const nrm=s=>String(s||'').toLowerCase().replace(/[’‘`]/g,"'").replace(/[“
 const sentsOf=p=>p.match(/[^.!?]+[.!?]+["”’)]*\s*/g)||[p];
 async function generate(){
   const tp=OPT.topic==='rnd'?shuf(Object.keys(TOPIC_EN))[0]:OPT.topic,sec=SEC[OPT.sec];
-  const idea=shuf(TOPIC_POOL[tp])[0];
+  const idea=shuf(TOPIC_POOL[tp])[0];const WS=OPT.pk?pickWords(OPT.pk,14):[];
   const steps=['Konu ve metin planı','Metin yazılıyor','Sorular yazılıyor','Kontrol ediliyor'];let si=0;
   const draw=(err)=>{$('#main').innerHTML=`<div class="card gen"><span class="eyebrow">${esc(sec.n)} · ${esc(TOPICS.find(t=>t[0]===tp)[1])}</span><h2 style="margin:8px 0 4px">${err?'Sınav oluşturulamadı':'Sınavın hazırlanıyor…'}</h2><p class="mut">${err?esc(err):'Gerçek BUEPT denemelerindeki yapıya göre yeni bir metin ve sorular yazılıyor.'}</p>${err?`<div class="row" style="justify-content:center;gap:8px;margin-top:12px"><button class="btn btn-p" data-a="gen">${ic('reset')}Tekrar dene</button><button class="btn btn-ghost" data-a="lib">Geri dön</button></div>`:`<div class="steps">${steps.map((s,i)=>`<div class="${i<si?'ok':i===si?'on':''}">${i<si?ic('check'):i===si?'<span class="ka-spin"></span>':'·'} ${s}</div>`).join('')}</div>`}</div>`};
   draw();si=1;draw();
   let T=null,err='';
   for(let k=0;k<2&&!T;k++){
-    const r=await KA.askJ(GEN_T+(err?'\nPREVIOUS ATTEMPT FAILED: '+err:''),`Section: BUEPT ${sec.n}. Length: ${sec.w} words in ${sec.p} paragraphs. Topic area: ${TOPIC_EN[tp]}. Suggested focus (you may choose a related angle): ${idea}.`,{tier:'long',ms:110000});
+    const r=await KA.askJ(GEN_T+(err?'\nPREVIOUS ATTEMPT FAILED: '+err:''),`Section: BUEPT ${sec.n}. Length: ${sec.w} words in ${sec.p} paragraphs. Topic area: ${TOPIC_EN[tp]}. Suggested focus (you may choose a related angle): ${idea}.${WS.length?`\nThe student is studying these words. Use at least ${Math.min(10,WS.length)} of them naturally in the passage (inflected forms are fine), spread across different paragraphs: ${WS.join(', ')}.`:''}`,{tier:'long',ms:110000});
     const j=r.json;if(!j){err=r.err||'invalid JSON';continue}
     const paras=(Array.isArray(j.paras)?j.paras:[]).map(p=>String(p).trim().replace(/^\d+[.)]?\s+/,'')).filter(p=>p.split(/\s+/).length>25);
     if(paras.length<8){err='too few paragraphs ('+paras.length+')';continue}
@@ -183,7 +186,7 @@ async function generate(){
   const passage=T.paras.map((p,i)=>`[${i+1}] ${p}`).join('\n\n');
   let Q=[];err='';
   for(let k=0;k<2&&Q.length<sec.q-2;k++){
-    const r=await KA.askJ(GEN_Q+(err?'\nPREVIOUS ATTEMPT FAILED: '+err:''),`Write ${sec.q-(ins?1:0)} questions. Use this mix: ${OPT.sec===2?'1 detail (NOT true), 1 inference, 1 purpose, 1 relation, 1 vocab, 1 case, 1 combo, 1 multi (pick 2), 1 match, 1 short':'1 detail (NOT true/NOT mentioned), 1 inference, 1 purpose or relation, 1 vocab, 1 case, 1 main idea, 1 box, 2 short'}.\n\nTITLE: ${T.title}\n\n${passage}`,{tier:'long',ms:110000});
+    const r=await KA.askJ(GEN_Q+(err?'\nPREVIOUS ATTEMPT FAILED: '+err:''),`Write ${sec.q-(ins?1:0)} questions. ${WS.length?`Where natural, make 1-2 questions (e.g. vocab in context) test these student words: ${WS.join(', ')}. `:''}Use this mix: ${OPT.sec===2?'1 detail (NOT true), 1 inference, 1 purpose, 1 relation, 1 vocab, 1 case, 1 combo, 1 multi (pick 2), 1 match, 1 short':'1 detail (NOT true/NOT mentioned), 1 inference, 1 purpose or relation, 1 vocab, 1 case, 1 main idea, 1 box, 2 short'}.\n\nTITLE: ${T.title}\n\n${passage}`,{tier:'long',ms:110000});
     const j=r.json;if(!j){err=r.err||'invalid JSON';continue}
     Q=cleanQs(j.qs||[],T);if(Q.length<sec.q-2)err='only '+Q.length+' valid questions; follow the JSON format exactly';
   }
@@ -192,7 +195,7 @@ async function generate(){
   if(ins){Q.push(ins);Q.sort((a,b)=>a.p-b.p)}
   if(ins){try{const r=await KA.askJ(INS_WHY,`Paragraf: ${T.paras[ins.p-1]}\nEksik cümle: ${ins.sent}\nDoğru yer: ${ins.o[ins.a]}`,{tier:'quick',ms:20000});if(r.json&&r.json.why)ins.why=String(r.json.why)}catch(e){}}
   Q.forEach((q,i)=>q.n=i+1);
-  const ex={id:'g'+Date.now().toString(36),title:T.title,topic:TOPICS.find(t=>t[0]===tp)[1],sec:OPT.sec,limit:sec.lim,paras:T.paras,heads:T.heads,notes:T.notes,qs:Q,ans:{},elapsed:0,created:Date.now()};
+  const ex={words:WS,id:'g'+Date.now().toString(36),title:T.title,topic:TOPICS.find(t=>t[0]===tp)[1],sec:OPT.sec,limit:sec.lim,paras:T.paras,heads:T.heads,notes:T.notes,qs:Q,ans:{},elapsed:0,created:Date.now()};
   const L=all();L.unshift(ex);putAll(L);KA.sfx&&KA.sfx.win&&KA.sfx.win();
   open(ex.id);
 }
@@ -323,7 +326,7 @@ document.addEventListener('click',e=>{
   const a=t.closest('[data-a]');if(!a)return;
   ({gen:generate,lib,finish:()=>finish(false),redo:()=>{if(!confirm('Cevapların silinip sınav yeniden başlasın mı?'))return;EX.ans={};EX.res=null;EX.elapsed=0;persist();draw();start()}}[a.dataset.a]||(()=>{}))();
 });
-document.addEventListener('change',e=>{const el=e.target.closest('[data-q]');if(el&&EX)setAns(el)});
+document.addEventListener('change',e=>{if(e.target.id==='dpk'){OPT.pk=e.target.value;return}const el=e.target.closest('[data-q]');if(el&&EX)setAns(el)});
 document.addEventListener('input',e=>{const el=e.target.closest('input.input[data-q]');if(el&&EX)setAns(el)});
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.closest('[data-open]'))open(e.target.closest('[data-open]').dataset.open)});
 addEventListener('beforeunload',()=>persist());
