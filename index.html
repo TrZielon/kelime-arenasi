@@ -24,7 +24,7 @@
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=24">
+<link rel="stylesheet" href="ortak.css?v=25">
 <style>
 .hero{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:center;padding:30px 32px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%)}
 .hero h1{font-size:clamp(28px,4vw,40px);margin:8px 0 10px}
@@ -33,6 +33,27 @@
 .rank{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:999px;background:var(--acc-soft);color:var(--acc2);font-weight:800;font-size:12.5px}
 [data-mode="dark"] .rank{color:var(--acc)}
 .rank svg{width:15px;height:15px}
+.hello{font-size:13.5px;color:var(--mut);font-weight:700;margin:4px 2px 10px}
+.today{display:grid;grid-template-columns:1.2fr 1fr;gap:26px;align-items:center;padding:26px 28px;overflow:hidden}
+.today h1{font-size:clamp(26px,3.6vw,36px);margin:6px 0 4px}
+.today .sub{color:var(--ink2);margin:0 0 14px;font-size:15px}
+.today .scene{display:block;width:100%;height:auto;border-radius:18px}
+.today .steps{display:grid;gap:8px;margin:0 0 16px}
+.today .st{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:14px;background:var(--bg);border:0;text-align:left;text-decoration:none;color:var(--ink);font-size:14.5px;width:100%}
+.today .st i{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--p-soft);color:var(--p);flex:none}
+.today .st i svg{width:18px;height:18px}
+.today .st b{display:block;font-weight:800}
+.today .st small{display:block;color:var(--mut);font-weight:600;font-size:12.5px}
+.today .st.done i{background:var(--p);color:var(--p-ink)}
+.today .st.done b{color:var(--mut);text-decoration:line-through;text-decoration-color:var(--line2)}
+.today .st.now{background:var(--acc-soft);box-shadow:inset 0 0 0 1.5px var(--acc)}
+.today .st.now i{background:var(--acc);color:var(--acc-ink)}
+.today .st em{margin-left:auto;color:var(--acc2)}.today .st em svg{width:18px;height:18px}
+.lsel{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.lsel .select{width:auto;min-height:40px;max-width:230px}
+.lname{font-size:13px;font-weight:700}
+@media (max-width:600px){.sec-h:has(.lsel){flex-wrap:wrap;align-items:center}.sec-h .lsel{justify-content:flex-start;width:100%}}
+@media (max-width:900px){.today{grid-template-columns:1fr;padding:20px 18px;gap:14px}.today .vis{order:-1}}
 .arena-vis{position:relative;max-width:360px;justify-self:center;width:100%}
 .arena-vis svg{width:100%;height:auto;display:block}
 .arena-vis .lbl{position:absolute;left:0;right:0;bottom:4px;text-align:center}
@@ -182,7 +203,7 @@
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="home"></div><section id="act" class="act" hidden></section></main>
-<script src="firebase-config.js?v=24"></script><script src="ortak.js?v=24"></script>
+<script src="firebase-config.js?v=25"></script><script src="ortak.js?v=25"></script>
 <script>
 (function(){
 'use strict';
@@ -310,23 +331,23 @@ YALNIZCA geçerli JSON döndür:
 
 /* ---------- Modlar ---------- */
 const MIC={
-  kart:'<path d="M4.5 21V10.5a7.5 7.5 0 0 1 15 0V21"/><path d="M2.5 21h19"/><path d="M8 21V10.8l6.5-2.3V21"/><circle cx="12.6" cy="15" r=".9" fill="currentColor" stroke="none"/>',
-  esle:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M12 15v6M3 12h6M15 12h6M5.6 5.6l4.3 4.3M14.1 14.1l4.3 4.3M18.4 5.6l-4.3 4.3M9.9 14.1l-4.3 4.3"/>',
-  sec:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
-  yaz:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
-  boss:'<path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6z"/><path d="m9 10 6 4M15 10l-6 4"/>',
-  cumle:'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
-  para:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7M8 11h7M8 15h4"/>'
+  kart:'<circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 12H3a9 9 0 0 0 18 0h-2M8 11h8"/>',
+  esle:'<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
+  sec:'<circle cx="6.5" cy="15.5" r="3.5"/><circle cx="17.5" cy="15.5" r="3.5"/><path d="M10 15.5h4M5 12l2-7h3l1 6M19 12l-2-7h-3l-1 6"/>',
+  yaz:'<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h6M9 13h4"/>',
+  boss:'<path d="M7 15a4 4 0 0 1-.5-8A5.5 5.5 0 0 1 17 8a3.5 3.5 0 0 1 0 7"/><path d="m12.5 12-2.5 4h4l-2.5 4"/>',
+  cumle:'<circle cx="12" cy="12" r="2"/><path d="M8 8a5.6 5.6 0 0 0 0 8M16 8a5.6 5.6 0 0 1 0 8M5 5a10 10 0 0 0 0 14M19 5a10 10 0 0 1 0 14"/>',
+  para:'<path d="M9 21l1-11h4l1 11M7.5 21h9M10 10V7h4v3M12 4v3M16.5 6.5l3-1.5M16.5 9l3 1"/>'
 };
 const mic=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${MIC[k]}</svg>`;
 const MODES=[
-  {k:'kart',n:'Kapı',d:'Kelimeyi gör, ne kadar emin olduğunu söyle, kapı açılıp anlamı göstersin. Bilmediklerin geri döner.',x:15},
-  {k:'esle',n:'Çark',d:'Ortadaki anlamın kelimesini çarktan seç. Altı dilim yanınca çark döner.',x:20},
-  {k:'sec',n:'Nişan',d:'Dört şıktan doğru anlamı vur. Listedeki bütün kelimeler; yanlış bildiğin sona eklenir.',x:20},
-  {k:'yaz',n:'Kalem',d:'Türkçesini gör, İngilizcesini yaz. İlk hatada ipucu alırsın.',x:25},
-  {k:'boss',n:'Bekçi',d:'En zayıf kelimelerin kemerin taşları. Hepsini düşür; üç canın var, kaçırdığın taş yerine geri oturur.',x:40},
-  {k:'cumle',n:'Tercüman',d:'Akademik cümleleri oku, doğru Türkçe anlamını seç.',x:25},
-  {k:'para',n:'Kürsü',d:'Paragrafı oku, kabataslak özetini çıkar, bot puanlasın.',x:35}
+  {k:'kart',n:'Liman',d:'Yolculuk burada başlar. Kelimeyi gör, ne kadar emin olduğunu söyle, kitap açılıp anlamı göstersin. Bilmediklerin geri döner.',x:15},
+  {k:'esle',n:'Pusula',d:'Ortadaki anlamın kelimesini pusuladan seç. Altı yön yanınca pusula döner.',x:20},
+  {k:'sec',n:'Dürbün',d:'Dört şık arasından doğru anlamı seç. Yanlış bildiğin kelime sona eklenir.',x:20},
+  {k:'yaz',n:'Seyir Defteri',d:'Türkçesini gör, İngilizcesini deftere yaz. İlk hatada ipucu alırsın.',x:25},
+  {k:'boss',n:'Fırtına',d:'En zayıf kelimelerin fırtınanın bulutları. Hepsini dağıt; üç canın var, kaçırdığın bulut geri gelir.',x:40},
+  {k:'cumle',n:'Sinyal',d:'Akademik cümlenin sinyalini çöz, doğru Türkçe anlamını seç.',x:25},
+  {k:'para',n:'Fener',d:'Paragrafı oku, kabataslak özetini çıkar ve feneri yak. Rotanın son durağı.',x:35}
 ];
 const ROMAN=['I','II','III','IV','V','VI','VII'];
 
@@ -418,28 +439,45 @@ const save=(now)=>{if(cur)KA.savePack(cur,now)};
 const bx=x=>cur.prog.box[x.en]||1;
 const withTr=()=>cur.items.filter(x=>x.tr&&MEANT(x).length);
 const sentOf=()=>cur.items.filter(x=>x.tr&&x.s&&x.st);
-function addXp(n){cur.prog.xp=(cur.prog.xp||0)+n;KA.markDay();save();KA.refreshChips()}
+function addXp(n){cur.prog.xp=(cur.prog.xp||0)+n;KA.markDay();KA.logDay(n,'kelime');save();KA.refreshChips()}
 let COMBO=0;function comboFx(ok){COMBO=ok?COMBO+1:0;const c=$('#combo');if(!c)return;c.hidden=false;c.textContent='Seri ×'+COMBO;c.classList.remove('pop','brk');void c.offsetWidth;c.classList.add(ok?'pop':'brk')}
 function tally(ok){comboFx(ok);const m=KA.meta();m.tot=(m.tot||0)+1;if(ok)m.ok=(m.ok||0)+1;KA.saveMeta(m)}
 function missing(p){const tr=p.items.filter(x=>!x.tr).length,s=p.items.filter(x=>x.tr&&!x.s).length,cov=new Set(p.groups.filter(g=>g.text).flatMap(g=>g.w));return {tr,s,g:p.items.filter(x=>x.tr&&!cov.has(x.en)).length}}
-function rankOf(xp){const R=[[0,'Çaylak Savaşçı'],[150,'Arena Adayı'],[400,'Gladyatör'],[900,'Şampiyon'],[1800,'Arena Efsanesi']];let r=R[0][1];R.forEach(([t,n])=>{if(xp>=t)r=n});return r}
+function rankOf(xp){const R=[[0,'Yolcu'],[150,'Gözcü'],[400,'Dümenci'],[900,'Kaptan'],[1800,'Fener Ustası']];let r=R[0][1];R.forEach(([t,n])=>{if(xp>=t)r=n});return r}
 function nextMode(){const s=cur.prog.steps;const i=s.findIndex(v=>!v);return i<0?0:i}
 
 /* ---------- Ana sayfa ---------- */
-function arenaSvg(steps){
-  const n=steps.filter(Boolean).length,next=steps.findIndex(v=>!v);
-  let arcs='';
-  for(let i=0;i<7;i++){
-    const r=132-i*17,c=steps[i]?'var(--acc)':(i===next?'var(--p)':'var(--line)');
-    arcs+=`<path d="M${150-r} 156 A${r} ${r} 0 0 1 ${150+r} 156" fill="none" stroke="${c}" stroke-width="11" stroke-linecap="round"/>`;
-  }
-  return `<svg viewBox="0 0 300 170" role="img" aria-label="${n} / 7 ring tamamlandı">${arcs}</svg><div class="lbl"><b>${n}/7</b><span>Ring tamam</span></div>`;
+function sceneSvg(lit){
+  const o=v=>(v*lit+.06).toFixed(2);
+  return `<svg class="scene" viewBox="0 0 320 150" role="img" aria-label="Fener · bugünkü ışık ${Math.round(lit*100)}%"><rect width="320" height="150" fill="var(--sky)"/>
+  <path d="M150 46L320 0V98Z" fill="var(--acc)" opacity="${o(.3)}"/><path d="M150 46L320 24V68Z" fill="var(--acc)" opacity="${o(.45)}"/>
+  <path d="M0 118c20-6 40-6 60 0s40 6 60 0 40-6 60 0 40 6 60 0 40-6 60 0 40 6 60 0V150H0Z" fill="var(--sea)"/><path d="M0 130c20-5 40-5 60 0s40 5 60 0 40-5 60 0 40 5 60 0 40-5 60 0 40 5 60 0V150H0Z" fill="var(--p)" opacity=".18"/>
+  <path d="M96 122h76l-6-10H102z" fill="var(--ink)" opacity=".85"/><path d="M118 112l6-56h20l6 56z" fill="var(--card)" stroke="var(--ink)" stroke-width="2"/>
+  <path d="M121 90h26l1 10h-28zM123 68h22l1 9h-24z" fill="var(--p)"/><rect x="122" y="40" width="24" height="16" rx="2" fill="${lit>0?'var(--acc)':'var(--line2)'}"/>
+  <path d="M118 40h32l-16-12z" fill="var(--ink)"/><rect x="118" y="55" width="32" height="3" fill="var(--ink)"/>
+  <circle cx="230" cy="24" r="1.4" fill="var(--mut)"/><circle cx="40" cy="30" r="1.2" fill="var(--mut)"/><circle cx="70" cy="16" r="1" fill="var(--mut)"/></svg>`;
+}
+function todayHtml(nx){
+  const d=KA.dayLog(),KG=20,r=sessLabel();
+  const S=[
+    {k:'kelime',ok:d.kelime>=KG,ic:'anchor',t:r?'Kaldığın yerden devam et':'Kelime tekrarı',s:r?esc(r.txt):(d.kelime?`${Math.min(d.kelime,KG)}/${KG} XP · ${MODES[nx].n}`:`${MODES[nx].n} durağı · 20 XP topla`),attr:`data-m="${r?r.i:nx}"`},
+    {k:'okuma',ok:d.okuma>0,ic:'read',t:'Bir metin oku',s:'Okuma Kampı, haber ya da okuma oyunu',attr:'href="kamp.html"'},
+    {k:'konus',ok:d.konus>0,ic:'chat',t:'Biraz konuş',s:'Konuşma Koçu ya da dinleme',attr:'href="konus.html"'}
+  ];
+  const n=S.filter(x=>x.ok).length,nowI=S.findIndex(x=>!x.ok),lit=n/3;
+  const h=new Date().getHours(),hi=h<6?'İyi geceler':h<12?'Günaydın':h<18?'İyi günler':'İyi akşamlar',st=KA.streak(KA.meta());
+  const title=n===3?'Fener yandı':n?'Işık güçleniyor':'Feneri yak';
+  const sub=n===3?'Bugünkü rotayı tamamladın. İstersen kelime rotasında ilerlemeye devam et.':n?`${3-n} adım kaldı. Her adım fenerin ışığını güçlendiriyor.`:'Üç kısa adım: kelime, okuma, konuşma. Yaklaşık 15 dakika.';
+  const step=(x,i)=>{const tag=x.attr.startsWith('href')?'a':'button';return `<${tag} class="st ${x.ok?'done':''} ${i===nowI?'now':''}" ${x.attr}><i>${ic(x.ok?'check':x.ic)}</i><span><b>${x.t}</b><small>${x.ok?'Bugün tamamlandı':x.s}</small></span>${i===nowI?`<em>${ic('arrow')}</em>`:''}</${tag}>`};
+  const nx2=S[nowI];
+  const cta=n===3?`<button class="btn btn-p btn-lg" data-m="${nx}">${ic('play')}Rotaya devam · ${MODES[nx].n}</button>`:nx2.attr.startsWith('href')?`<a class="btn btn-p btn-lg" ${nx2.attr}>${ic('play')}${nx2.k==='okuma'?'Okumaya başla':'Konuşmaya başla'}</a>`:`<button class="btn btn-p btn-lg" ${nx2.attr}>${ic('play')}${r?'Devam et · '+esc(MODES[r.i].n):(d.kelime?'Devam et':'Başla')+' · '+MODES[nx].n}</button>`;
+  return `<p class="hello">${hi}${st?` · ${st} günlük ışık serin var`:''}</p><section class="card today ka-fold"><div class="tx"><span class="eyebrow">Bugünkü rota · ${n} / 3</span><h1>${title}</h1><p class="sub">${sub}</p><div class="steps">${S.map(step).join('')}</div>${cta}</div><div class="vis">${sceneSvg(lit)}</div></section>`;
 }
 function renderHome(){
   mode=-1;$('#act').hidden=true;const H=$('#home');H.hidden=false;KA.closeLookup();
   packs=KA.listPacks().map(KA.normPack);
   if(!packs.length){
-    H.innerHTML=`<section class="card empty"><img src="favicon.svg" width="72" height="72" alt=""><h2>Kendi kelime arenanı kur</h2><p>Öğrenmek istediğin kelimeleri yapıştır ya da PDF, Word veya metin dosyası olarak yükle. Anlamlar, akademik örnek cümleler ve paragraflar senin listen için hazırlansın.</p><div class="row" style="justify-content:center"><button class="btn btn-p btn-lg" data-a="new">${ic('plus')}Kelime listesi oluştur</button><button class="btn btn-ghost btn-lg" data-a="sample">${ic('book')}Örnek akademik liste</button></div><p class="mut" style="font-size:13px;margin:14px 0 0">Listen olmadan da başlayabilirsin: aşağıdaki bölümler hemen çalışır.</p></section>${hubHtml()}${pwaHtml()}`;
+    H.innerHTML=`<section class="card empty"><img src="favicon.svg" width="72" height="72" alt=""><h2>İlk rotanı çiz</h2><p>Öğrenmek istediğin kelimeleri yapıştır ya da PDF, Word veya metin dosyası olarak yükle. Anlamlar, akademik örnek cümleler ve paragraflar senin listen için hazırlansın.</p><div class="row" style="justify-content:center"><button class="btn btn-p btn-lg" data-a="new">${ic('plus')}Kelime listesi oluştur</button><button class="btn btn-ghost btn-lg" data-a="sample">${ic('book')}Örnek akademik liste</button></div><p class="mut" style="font-size:13px;margin:14px 0 0">Listen olmadan da başlayabilirsin: aşağıdaki bölümler hemen çalışır.</p></section>${hubHtml()}${pwaHtml()}`;
     return;
   }
   const aid=KA.activeId();cur=packs.find(p=>p.id===aid)||packs[0];KA.activeId(cur.id);fixPack(cur);
@@ -451,36 +489,28 @@ function renderHome(){
   const learned=cur.items.filter(x=>bx(x)>=3).length,acc=meta.tot?Math.round(meta.ok/meta.tot*100)+'%':'—';
   const ms=missing(cur),needs=ms.tr+ms.s+ms.g>0;
   const tiers=[5,4,3,2,1].map(b=>({b,n:cur.items.filter(x=>bx(x)===b).length}));
-  const tn={5:'Efsane',4:'Şampiyon',3:'Gladyatör',2:'Savaşçı',1:'Başlangıç'};
+  const tn={5:'Yıldız',4:'Işık',3:'Lamba',2:'Alev',1:'Kıvılcım'};
   const maxT=Math.max(1,...tiers.map(t=>t.n));
-  const badges=[['İlk kapı','kart',st[0]||meta.kart>0],['Keskin nişancı','sec',meta.tot>=30&&meta.ok/meta.tot>=.9],['7 gün seri','flame',KA.streak(meta)>=7],['Bekçiyi geçen','boss',!!st[4]],['Yazar','yaz',!!st[3]],['Paragraf ustası','para',!!st[6]]];
+  const badges=[['İlk liman','kart',st[0]||meta.kart>0],['Keskin göz','sec',meta.tot>=30&&meta.ok/meta.tot>=.9],['7 gün seri','flame',KA.streak(meta)>=7],['Fırtınayı atlatan','boss',!!st[4]],['Yazar','yaz',!!st[3]],['Feneri yakan','para',!!st[6]]];
   H.innerHTML=`
   ${audCard||(needs?'':styCard)}${!audCard&&needs?`<div class="card prep" id="prep"><span style="color:var(--acc2)">${ic('spark')}</span><p id="prepTxt">${BUSY?'Hazırlanıyor…':`Bu listede ${[ms.tr&&ms.tr+' kelimenin anlamı',ms.s&&ms.s+' kelimenin örnek cümlesi',ms.g&&ms.g+' kelimenin paragrafı'].filter(Boolean).join(', ')} eksik.`}</p><button class="btn btn-acc btn-sm" data-a="prep" ${BUSY?'disabled':''}>${ic('spark')}Hazırla</button></div>`:''}
-  <section class="card hero">
-    <div>
-      <div class="row" style="gap:8px"><span class="eyebrow">Aktif liste</span><span class="rank">${ic('crown')}${rankOf(cur.prog.xp||0)}</span></div>
-      <h1>${esc(cur.name)}</h1>
-      <p class="sub">${cur.items.length} kelime · ${done===7?'Bütün ringler tamamlandı. Tekrar turu için istediğin ringe gir.':`Sıradaki ring: <b>${MODES[nx].n}</b>. ${MODES[nx].d}`}</p>
-      <div class="row">${(()=>{const r=sessLabel();return r?`<button class="btn btn-acc btn-lg" data-m="${r.i}">${ic('play')}Kaldığın yerden · ${esc(r.txt)}</button>`:''})()}<button class="btn ${sessLabel()?'btn-ghost':'btn-p'} btn-lg" data-m="${nx}">${ic('play')}${done?'Devam et':'Başla'} · ${MODES[nx].n}</button>${packs.length>1?`<select class="select" id="pk" style="width:auto;min-height:52px" aria-label="Liste seç">${packs.map(p=>`<option value="${esc(p.id)}" ${p.id===cur.id?'selected':''}>${esc(p.name)} (${p.items.length})</option>`).join('')}</select>`:''}</div>
-    </div>
-    <div class="arena-vis">${arenaSvg(st)}</div>
-  </section>
-  <div class="sec-h"><h2><span class="sq">Arena yolu<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M1 6 C 12 1, 20 9, 32 5 S 52 1, 64 5 S 86 9, 99 3"/></svg></span></h2><span class="mut" style="font-size:13.5px;font-weight:700">İstediğin ringe istediğin sırayla gir</span></div>
+  ${todayHtml(nx)}
+  <div class="sec-h"><h2 class="ka-ray">${ic('ray','ry')}Kelime rotası</h2><div class="lsel"><span class="rank">${ic('lh')}${rankOf(cur.prog.xp||0)}</span>${packs.length>1?`<select class="select" id="pk" aria-label="Liste seç">${packs.map(p=>`<option value="${esc(p.id)}" ${p.id===cur.id?'selected':''}>${esc(p.name)} (${p.items.length})</option>`).join('')}</select>`:`<span class="mut lname">${esc(cur.name)} · ${cur.items.length} kelime</span>`}</div></div>
   ${roadHtml(st,nx)}
   ${hubHtml()}
   <section class="stats">
     ${ticketHtml(meta,learned)}
-    <div class="card stat"><i>${ic('star')}</i><div><b>${KA.totalXp()}</b><span>Toplam XP</span></div></div>
+    <div class="card stat"><i>${ic('ray')}</i><div><b>${KA.totalXp()}</b><span>Toplam XP</span></div></div>
     <div class="card stat"><i>${mic('sec')}</i><div><b>${acc}</b><span>İsabet oranı</span></div></div>
   </section>
   ${extrasHtml()}
-  <details class="progx" ${(()=>{try{return localStorage.getItem('ka_progx')==='1'?'open':''}catch(e){return ''}})()}><summary class="card"><span><b>İlerleme ve liste ayarları</b><small>Kelime listesi araçları, ustalaşma kulesi, rozetler</small></span><i>${ic('arrow')}</i></summary>
+  <details class="progx" ${(()=>{try{return localStorage.getItem('ka_progx')==='1'?'open':''}catch(e){return ''}})()}><summary class="card"><span><b>İlerleme ve liste ayarları</b><small>Kelime listesi araçları, ışık kulesi, rozetler</small></span><i>${ic('arrow')}</i></summary>
   <section class="split" style="margin-top:12px">
     <div class="card box"><span class="eyebrow">Kelime listesi</span><h3>${esc(cur.name)}</h3>
       <div class="counts"><span class="tag">${cur.items.length} kelime</span><span class="tag">${cur.items.filter(x=>x.tr).length} anlam</span><span class="tag">${cur.items.filter(x=>x.s).length} örnek cümle</span><span class="tag">${cur.groups.filter(g=>g.text).length} paragraf</span></div>
       <div class="row"><button class="btn btn-ghost btn-sm" data-a="explore">${ic('search')}Kelime gezgini</button><button class="btn btn-ghost btn-sm" data-a="sents">${ic('book')}Örnek cümleler</button><button class="btn btn-ghost btn-sm" data-a="new">${ic('plus')}Yeni liste</button><button class="btn btn-ghost btn-sm" data-a="export">${ic('download')}Dışa aktar</button><button class="btn btn-ghost btn-sm" data-a="reset">${ic('reset')}İlerlemeyi sıfırla</button><button class="btn btn-bad btn-sm" data-a="del">${ic('trash')}Listeyi sil</button></div>
     </div>
-    <div class="card box"><span class="eyebrow">Ustalaşma kulesi</span><h3>Kelimelerin hangi katta?</h3><div class="tower">${tiers.map(t=>`<button class="tier" data-tier="${t.b}"><span>${t.b}. ${tn[t.b]}</span><div class="bar"><i style="width:${t.n/maxT*100}%"></i></div><b>${t.n}</b></button>`).join('')}</div></div>
+    <div class="card box"><span class="eyebrow">Işık kulesi</span><h3>Kelimelerin hangi katta?</h3><div class="tower">${tiers.map(t=>`<button class="tier" data-tier="${t.b}"><span>${t.b}. ${tn[t.b]}</span><div class="bar"><i style="width:${t.n/maxT*100}%"></i></div><b>${t.n}</b></button>`).join('')}</div></div>
   </section>
   <section class="card box" style="margin-top:16px"><span class="eyebrow">Rozetler</span><div class="badges">${badges.map(([n,k,on])=>`<div class="badge ${on?'on':''}"><div>${k==='flame'?ic('flame'):mic(k)}</div>${n}</div>`).join('')}</div></section>
   </details>
@@ -512,14 +542,14 @@ const SKILL=['Anlamı hatırla','Anlamdan kelimeyi bul','Doğru anlamı seç','�
 function ringMeta(i){return SKILL[i]+' · '+ringMeta0(i)}
 function ringMeta0(i){
   const n=withTr().length;
-  if(i===4)return '12 taş · 3 can';
+  if(i===4)return '12 bulut · 3 can';
   if(i===5){if(srcOf(5)==='bu')return 'BUEPT metinleri · 150 cümle';const s=sentOf().length;return s?s+' cümle':'Cümle hazır değil'}
   if(i===6){if(srcOf(6)==='bu')return 'BUEPT metinleri · 18 metin';const g=cur.groups.filter(g=>g.text).length;return g?g+' paragraf':'Paragraf hazır değil'}
   return n+' kelime';
 }
 function hubHtml(){
-  const L=[['kamp.html','book','BUEPT Okuma Kampı','Cümle yerleştirme, vaka, ana fikir'],['deneme.html','exam','Sınav oluştur','Süreli, tam reading denemesi'],['konus.html','chat','Konuşma koçu','IELTS tarzı sınav ya da sohbet'],['dinle.html','ear','Dinleme','Ders salonu, dikte, TED'],['haber.html','news','Haber oku','Güncel haberle okuma pratiği'],['lab.html','spark','Okuma Oyunları','Mimar, Sempozyum, Tuzak, Radar, Bütçe']];
-  return `<div class="sec-h"><h2>Çalışma merkezi</h2><span class="mut ka-hide-sm" style="font-size:13.5px;font-weight:700">Kelimenin ötesinde: okuma, sınav, dinleme, konuşma</span></div><nav class="hubg" aria-label="Çalışma bölümleri">${L.map(([h,i,n,d])=>`<a class="card" href="${h}"><span class="hi">${ic(i)}</span><span><b>${n}</b><small>${d}</small></span></a>`).join('')}</nav>`;
+  const L=[['kamp.html','read','BUEPT Okuma Kampı','Cümle yerleştirme, vaka, ana fikir'],['deneme.html','exam','Sınav oluştur','Süreli, tam reading denemesi'],['konus.html','chat','Konuşma koçu','IELTS tarzı sınav ya da sohbet'],['dinle.html','ear','Dinleme','Ders salonu, dikte, TED'],['haber.html','news','Haber oku','Güncel haberle okuma pratiği'],['lab.html','spark','Okuma Oyunları','Mimar, Sempozyum, Tuzak, Radar, Bütçe']];
+  return `<div class="sec-h"><h2 class="ka-ray">${ic('ray','ry')}Çalışma merkezi</h2><span class="mut ka-hide-sm" style="font-size:13.5px;font-weight:700">Kelimenin ötesinde: okuma, sınav, dinleme, konuşma</span></div><nav class="hubg" aria-label="Çalışma bölümleri">${L.map(([h,i,n,d])=>`<a class="card" href="${h}"><span class="hi">${ic(i)}</span><span><b>${n}</b><small>${d}</small></span></a>`).join('')}</nav>`;
 }
 function pwaHtml(){
   if(matchMedia('(display-mode: standalone)').matches)return '';
@@ -569,7 +599,7 @@ const prog=(a,b)=>{setTimeout(sessSnap,0);const p=$('#pb');if(p)p.style.width=(b
 function finish(i,title,sub){
   sessClear(i);const first=!cur.prog.steps[i];cur.prog.steps[i]=1;addXp(MODES[i].x);save(true);KA.sfx.win();
   const nx=cur.prog.steps.findIndex(v=>!v);
-  ST().innerHTML=`<div class="card done-card"><div class="bigic">${ic('check')}</div><h2>${title}</h2><p class="mut">${sub} · +${MODES[i].x} XP${first?' · Ring tamamlandı':''}</p><div class="endb"><div class="eb" style="--r:-8deg;--dl:.45s"><b>+${MODES[i].x}</b><span>XP</span></div><div class="eb" style="--r:5deg;--dl:.62s"><b>${cur.prog.steps.filter(Boolean).length}/7</b><span>ring</span></div><div class="eb" style="--r:-3deg;--dl:.79s"><b>${KA.streak(KA.meta())}</b><span>gün seri</span></div></div><div class="row" style="justify-content:center;margin-top:18px"><button class="btn btn-ghost" data-m="${i}">${ic('reset')}Tekrar oyna</button>${nx>=0?`<button class="btn btn-p" data-m="${nx}">${MODES[nx].n} ringine geç${ic('arrow')}</button>`:`<button class="btn btn-p" data-a="home">Ana sayfa</button>`}</div></div>`;
+  ST().innerHTML=`<div class="card done-card"><div class="bigic">${ic('check')}</div><h2>${title}</h2><p class="mut">${sub} · +${MODES[i].x} XP${first?' · Durak tamamlandı':''}</p><div class="endb"><div class="eb" style="--r:-8deg;--dl:.45s"><b>+${MODES[i].x}</b><span>XP</span></div><div class="eb" style="--r:5deg;--dl:.62s"><b>${cur.prog.steps.filter(Boolean).length}/7</b><span>durak</span></div><div class="eb" style="--r:-3deg;--dl:.79s"><b>${KA.streak(KA.meta())}</b><span>gün seri</span></div></div><div class="row" style="justify-content:center;margin-top:18px"><button class="btn btn-ghost" data-m="${i}">${ic('reset')}Tekrar oyna</button>${nx>=0?`<button class="btn btn-p" data-m="${nx}">${MODES[nx].n} ringine geç${ic('arrow')}</button>`:`<button class="btn btn-p" data-a="home">Ana sayfa</button>`}</div></div>`;
   prog(1,1);
 }
 const emptyMsg=(t,act)=>{ST().innerHTML=`<div class="card done-card"><div class="bigic bad">${ic('spark')}</div><h2 style="font-size:24px">${t}</h2>${act?`<div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-acc" data-a="prep">${ic('spark')}Hazırla</button><button class="btn btn-ghost" data-a="home">Ana sayfa</button></div>`:''}</div>`};
@@ -583,16 +613,16 @@ function startKart(){
   K={q:s,total:s.length,known:0,flip:false};drawKart();
 }
 function drawKart(){
-  if(!K.q.length){const m=KA.meta();m.kart=(m.kart||0)+K.total;KA.saveMeta(m);return finish(0,'Bütün kapıları açtın','Kapı ringi')}
+  if(!K.q.length){const m=KA.meta();m.kart=(m.kart||0)+K.total;KA.saveMeta(m);return finish(0,'Limandaki bütün kelimelerle tanıştın','Liman')}
   const x=K.q[0];prog(K.known,K.total);
   const open=K.stage==='open',ajar=K.stage==='hint',cf=K.conf;
   // ipucu: Türkçe anlamın her kelimesinin ilk harfi görünür, gerisi gizli; varsa bir eş anlamlı
   const mask=t=>String(t).split(/(\s+|,|\/)/).map(w=>/^[\wçğıöşüÇĞİÖŞÜ]+$/i.test(w)&&w.length>1?w[0]+'·'.repeat(w.length-1):w).join('');
   const hint=ajar?`<span class="slab">İpucu</span><div class="tr hintw">${esc(mask(x.tr))}</div>${x.syn&&x.syn[0]?`<span class="hsyn">eş anlamlısı: <b>${esc(x.syn[0])}</b></span>`:''}`:'';
   const extra=open?`${x.syn&&x.syn.length?`<div class="syns"><span class="slab">Eş anlamlılar</span>${x.syn.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>`:''}${x.s?`<div class="sentbox" data-stop><div class="row" style="justify-content:space-between;gap:8px;margin-bottom:4px"><span class="slab">Örnek cümle</span><button class="ka-icon-btn" data-say="${esc(x.s)}" aria-label="Cümleyi dinle">${ic('sound')}</button></div>${KA.tokens(x.s)}${x.st?`<div class="st">${esc(x.st)}</div>`:''}</div>`:''}`:'';
-  ST().innerHTML=`<div class="card qcard gk ${open?'open':'ask'}" id="gk"><span class="hint">${open?(cf===2?'Emindin':cf===1?'Tahmin ettin':'Bilmiyordun')+' · kapı açıldı':(ajar?'Kapı aralandı. İpucu yetti mi?':'Anlamı kapının ardında. Ne kadar eminsin?')}</span><div class="qword">${esc(x.en)}</div><div class="row" style="justify-content:center;gap:8px"><span class="tag">Kat ${bx(x)}</span><button class="btn btn-ghost btn-sm" data-say="${esc(x.en)}">${ic('sound')}Dinle</button></div>
+  ST().innerHTML=`<div class="card qcard gk ${open?'open':'ask'}" id="gk"><span class="hint">${open?(cf===2?'Emindin':cf===1?'Tahmin ettin':'Bilmiyordun')+' · kitap açıldı':(ajar?'Kitap aralandı. İpucu yetti mi?':'Anlamı kitabın içinde. Ne kadar eminsin?')}</span><div class="qword">${esc(x.en)}</div><div class="row" style="justify-content:center;gap:8px"><span class="tag">Kat ${bx(x)}</span><button class="btn btn-ghost btn-sm" data-say="${esc(x.en)}">${ic('sound')}Dinle</button></div>
     <div class="arch ${ajar?'ajar':''}"><div class="inside">${ajar?hint:`<span class="slab">Türkçe anlamı</span><div class="tr">${open?esc(x.tr):''}</div>`}</div><i class="leaf l"><u></u><u></u></i><i class="leaf r"><u></u><u></u></i><span class="lintel"></span></div>${extra}</div>
-  <div class="cardbtns gkb">${ajar?`<button class="btn btn-ok btn-lg" data-conf="1" data-go="1" style="grid-column:span 2">Hatırladım, kapıyı aç</button><button class="btn btn-ghost btn-lg" data-conf="0">Yine de bilmiyorum</button>`:!open?`<button class="btn btn-ok btn-lg" data-conf="2">Eminim</button><button class="btn btn-acc btn-lg" data-conf="1">Sanırım</button><button class="btn btn-ghost btn-lg" data-conf="0">Bilmiyorum</button>`
+  <div class="cardbtns gkb">${ajar?`<button class="btn btn-ok btn-lg" data-conf="1" data-go="1" style="grid-column:span 2">Hatırladım, kitabı aç</button><button class="btn btn-ghost btn-lg" data-conf="0">Yine de bilmiyorum</button>`:!open?`<button class="btn btn-ok btn-lg" data-conf="2">Eminim</button><button class="btn btn-acc btn-lg" data-conf="1">Sanırım</button><button class="btn btn-ghost btn-lg" data-conf="0">Bilmiyorum</button>`
     :cf===0?`<button class="btn btn-p btn-lg" data-k="0" style="grid-column:1/-1">Öğrendim, sonra tekrar sor${ic('arrow')}</button>`
     :`<button class="btn btn-bad btn-lg" data-k="0">Yanılmışım</button><button class="btn btn-ok btn-lg" data-k="1" style="grid-column:span 2">Doğru bildim</button>`}</div>`;
 }
@@ -605,21 +635,21 @@ function answerKart(ok){
 /* ---------- 2. Eşleştir ---------- */
 let M=null;
 function startEsle(){
-  const all=withTr();if(all.length<2)return emptyMsg('Çark için en az iki anlamlı kelime gerekli.',true);
+  const all=withTr();if(all.length<2)return emptyMsg('Pusula için en az iki anlamlı kelime gerekli.',true);
   const done=new Set(cur.prog.mdone||[]);if(all.every(x=>done.has(x.en)))cur.prog.mdone=[];
   M={all:all.length};roundEsle();
 }
 function roundEsle(){
   const done=new Set(cur.prog.mdone||[]),rem=withTr().filter(x=>!done.has(x.en));
-  if(!rem.length){cur.prog.mdone=[];return finish(1,'Bütün çarkları döndürdün','Çark ringi')}
+  if(!rem.length){cur.prog.mdone=[];return finish(1,'Pusula her yönü gösterdi','Pusula')}
   const r=[];shuf(rem).forEach(o=>{if(r.length<6&&!r.some(y=>MEAN(y).some(v=>sharesM(o,v))))r.push(o)});if(r.length<2)r.push(...shuf(rem).filter(o=>!r.includes(o)).slice(0,2-r.length));M.r=r;M.mm=r.map(pickM);M.ok=new Set();M.order=shuf(r.map((_,i)=>i));M.pos=shuf(r.map((_,i)=>i));M.pi=0;M.lock=false;M.fresh=true;
   prog(M.all-rem.length,M.all);drawEsle();
 }
 function drawEsle(){
   const n=M.r.length,t=M.order[M.pi],done=M.ok.size===n,C=2*Math.PI*46,g=4;
   const arcs=M.pos.map((wi,k)=>`<circle class="${M.ok.has(wi)?'on':''}" cx="50" cy="50" r="46" pathLength="${n*100}" stroke-dasharray="${100-g} ${n*100-100+g}" stroke-dashoffset="${-(k*100)+50-g/2}"/>`).join('');
-  ST().innerHTML=`<p class="qlab" style="text-align:center;margin:0 0 6px">Ortadaki anlamın kelimesini çarktan seç</p><div class="wheel ${M.fresh?'in':''} ${done?'done':''}" style="--n:${n}"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(-90 50 50)">${arcs}</g></svg>
-    <div class="hub"><span>${done?'Çark tamam':'Anlamı'}</span><b>${done?ic('check'):esc(M.mm?M.mm[t]:M.r[t].tr)}</b><small>${M.ok.size} / ${n}</small></div>
+  ST().innerHTML=`<p class="qlab" style="text-align:center;margin:0 0 6px">Ortadaki anlamın kelimesini pusuladan seç</p><div class="wheel ${M.fresh?'in':''} ${done?'done':''}" style="--n:${n}"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(-90 50 50)">${arcs}</g></svg>
+    <div class="hub"><span>${done?'Pusula tamam':'Anlamı'}</span><b>${done?ic('check'):esc(M.mm?M.mm[t]:M.r[t].tr)}</b><small>${M.ok.size} / ${n}</small></div>
     ${M.pos.map((wi,k)=>`<button class="wtile ${M.ok.has(wi)?'gone':''}" data-mw="${wi}" style="--a:${(k/n*360).toFixed(1)}deg;--k:${k}" ${M.ok.has(wi)?'disabled':''}>${esc(M.r[wi].en)}</button>`).join('')}</div>`;
   M.fresh=false;
 }
@@ -666,7 +696,7 @@ function sentOpts(x){
 }
 function startQuiz(m){
   const pool=m==='yaz'?withTr().filter(x=>!/(^|[-\s])x($|[-\s])/i.test(x.en)):withTr();
-  if(pool.length<4)return emptyMsg('Bu ring için en az 4 anlamlı kelime gerekli.',true);
+  if(pool.length<4)return emptyMsg('Bu durak için en az 4 anlamlı kelime gerekli.',true);
   Q={m,q:shuf(pool),total:pool.length,solved:0,cur:null,tries:0,locked:false};nextQ();
 }
 function quizWord(k){
@@ -866,7 +896,7 @@ function auditLog(){
 /* ---------- 5. Bekçi: en zayıf 12 kelime kemerin taşları, 3 can ---------- */
 let B=null;const BOSS_MOVES=12,LIVES=3;
 function startBoss(){
-  const pool=withTr();if(pool.length<4)return emptyMsg('Bekçi için en az 4 anlamlı kelime gerekli.',true);
+  const pool=withTr();if(pool.length<4)return emptyMsg('Fırtına için en az 4 anlamlı kelime gerekli.',true);
   const pick=shuf(pool).sort((a,b)=>bx(a)-bx(b)).slice(0,Math.min(BOSS_MOVES,pool.length));
   const hasS=sentOf().length>=4,noType=x=>/(^|[-\s])x($|[-\s])/i.test(x.en);
   const q=shuf(pick).map(x=>{const r=Math.random();let t=r<.4?'sec':r<.65?'ters':r<.82?'yaz':'cumle';if(t==='cumle'&&!(hasS&&x.s&&x.st))t='sec';if(t==='yaz'&&noType(x))t='ters';return {x,t}});
@@ -883,7 +913,7 @@ function archSvg(){
     const k=B.ord.indexOf(i),cls=k<B.hits?(k===B.fell?'fall':'gone'):k===B.hits?'cur':'';
     return `<path class="st ${cls}" d="M${x1} ${y1}L${x2} ${y2}A${r2} ${r2} 0 0 1 ${x3} ${y3}L${x4} ${y4}A${r1} ${r1} 0 0 0 ${x1} ${y1}Z"/>`}).join('');
   const left=B.total-B.hits;
-  return `<div class="keeper ${B.hurt?'hurt':''} ${B.fell>=0?'hit':''}"><svg viewBox="0 0 320 160" aria-hidden="true">${stones}<path class="gr" d="M8 152h304"/></svg><div class="kin"><i>${mic('boss')}</i><b>${left} taş</b><span>${B.q[0]&&B.q[0].key&&left===1?'Kilit taşı · son darbe':B.q[0]&&B.q[0].again?'Geri dönen taş':'Kemer Bekçisi'}</span></div></div>`;
+  return `<div class="keeper ${B.hurt?'hurt':''} ${B.fell>=0?'hit':''}"><svg viewBox="0 0 320 160" aria-hidden="true">${stones}<path class="gr" d="M8 152h304"/></svg><div class="kin"><i>${mic('boss')}</i><b>${left} bulut</b><span>${B.q[0]&&B.q[0].key&&left===1?'Son bulut · son darbe':B.q[0]&&B.q[0].again?'Geri dönen bulut':'Fırtına'}</span></div></div>`;
 }
 function nextBoss(){
   KA.closeLookup();
@@ -891,7 +921,7 @@ function nextBoss(){
   if(!B.q.length)return bossEnd(true);
   B.locked=false;prog(B.hits,B.total);
   B.fell=-1;B.hurt=false;const {x,t}=B.q[0],top=archSvg();
-  const lab=`Taş ${B.hits+1}/${B.total} · `;
+  const lab=`Bulut ${B.hits+1}/${B.total} · `;
   if(t==='yaz'){
     B.cur={x,ans:x.en,t,m:pickM(x)};
     ST().innerHTML=top+`<div class="card qcard"><div class="qlab">${lab}${B.q[0].key?'Son darbe · yaz':'Yaz'}</div><div class="qword">${esc(B.cur.m)}</div><input class="input yin" id="yin" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="İngilizcesini yaz"><div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-p btn-lg" data-a="bcheck">Vur</button></div><div id="fb"></div></div>`;
@@ -910,16 +940,16 @@ function bossResolve(ok,shown){
   save();prog(B.hits,B.total);
   const k=document.querySelector('.keeper');if(k)k.outerHTML=archSvg();
   const dead=B.lives<=0,won=!B.q.length;
-  feedback(ok,ok?(won?'Kilit taşı düştü, kemer açıldı!':'Taş düştü!'):'Bekçi taşı yerine oturttu',ok?esc(x.en)+' = '+esc(x.tr):'Doğru cevap: '+esc(shown)+(dead?'':' · bu taş birazdan yine gelecek · '+B.lives+' can'),dead?'Sonucu gör':(won?'Kemerden geç':'Sıradaki taş'));
+  feedback(ok,ok?(won?'Son bulut dağıldı, fener göründü!':'Bulut dağıldı!'):'Fırtına sertleşti',ok?esc(x.en)+' = '+esc(x.tr):'Doğru cevap: '+esc(shown)+(dead?'':' · bu bulut birazdan yine gelecek · '+B.lives+' can'),dead?'Sonucu gör':(won?'Limana dön':'Sıradaki bulut'));
 }
 function bossMC(i){const q=B.cur;if(!q||B.locked||!q.opts)return;const ok=q.opts[i]===q.ans;document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(q.opts[k]===q.ans)b.classList.add('ok');else if(k===i)b.classList.add('no')});bossResolve(ok,q.ans)}
 async function bossYaz(){const q=B.cur;if(!q||B.locked||B.busy)return;const inp=$('#yin'),v=String(inp&&inp.value||'').trim();if(!v)return;B.busy=true;inp.disabled=true;let r={ok:false};try{r=await judgeEn(v,q.x,q.m,$('#fb'))}finally{B.busy=false}if(B.cur!==q)return;bossResolve(r.ok,q.x.en);if(r.ok&&r.how!=='exact'){const s2=document.querySelector('#fb .msg span');if(s2)s2.innerHTML=`${esc(HOW[r.how])} · listendeki kelime: <b>${esc(q.x.en)}</b>`}}
 function bossEnd(won){
   sessClear(4);$('#hearts').hidden=true;
-  const rev=B.miss.length?`<div class="brev"><span class="eyebrow">Bekçinin seni yakaladığı kelimeler</span>${B.miss.map(x=>`<div><button class="ka-icon-btn" data-say="${esc(x.en)}" aria-label="Dinle">${ic('sound')}</button><b>${esc(x.en)}</b><span>${esc(x.tr)}</span></div>`).join('')}</div>`:'';
-  if(won){finish(4,'Kemerden geçtin!',`${B.total} taş · ${B.lives} can kaldı${B.miss.length?'':' · kusursuz'}`);if(rev)ST().querySelector('.done-card').insertAdjacentHTML('beforeend',rev);return}
+  const rev=B.miss.length?`<div class="brev"><span class="eyebrow">Fırtınada zorlandığın kelimeler</span>${B.miss.map(x=>`<div><button class="ka-icon-btn" data-say="${esc(x.en)}" aria-label="Dinle">${ic('sound')}</button><b>${esc(x.en)}</b><span>${esc(x.tr)}</span></div>`).join('')}</div>`:'';
+  if(won){finish(4,'Fırtınayı atlattın!',`${B.total} bulut · ${B.lives} can kaldı${B.miss.length?'':' · kusursuz'}`);if(rev)ST().querySelector('.done-card').insertAdjacentHTML('beforeend',rev);return}
   KA.sfx.bad();prog(B.hits,B.total);
-  ST().innerHTML=`<div class="card done-card"><div class="bigic bad">${mic('boss')}</div><h2>Bekçi geçit vermedi</h2><p class="mut">${B.hits}/${B.total} taşı düşürdün. Aşağıdaki kelimelere bir bak, sonra tekrar dene.</p>${rev}<div class="row" style="justify-content:center;margin-top:18px"><button class="btn btn-p btn-lg" data-m="4">${ic('reset')}Tekrar dene</button><button class="btn btn-ghost" data-m="0">Kapı ile tekrar et</button></div></div>`;
+  ST().innerHTML=`<div class="card done-card"><div class="bigic bad">${mic('boss')}</div><h2>Fırtına bu sefer güçlü çıktı</h2><p class="mut">${B.hits}/${B.total} bulutu dağıttın. Aşağıdaki kelimelere bir bak, sonra tekrar dene.</p>${rev}<div class="row" style="justify-content:center;margin-top:18px"><button class="btn btn-p btn-lg" data-m="4">${ic('reset')}Tekrar dene</button><button class="btn btn-ghost" data-m="0">Liman ile tekrar et</button></div></div>`;
 }
 
 /* ---------- 6. Cümle: bütün cümleler, onar onar ---------- */
@@ -1285,8 +1315,8 @@ function modalSents(){
   KA.modal(`<span class="eyebrow">Örnek cümleler</span><h2 style="margin:6px 0 12px">${s.length} akademik cümle</h2>${s.length?s.map(x=>`<div style="padding:12px 0;border-bottom:1px solid var(--line)"><div class="row" style="justify-content:space-between"><b>${esc(x.en)}</b><button class="ka-icon-btn" data-say="${esc(x.s)}" aria-label="Dinle">${ic('sound')}</button></div><div class="serif" style="font-size:17px;margin:4px 0">${KA.tokens(x.s)}</div><div class="mut" style="font-size:14px">${esc(x.st)}</div></div>`).join(''):'<p class="mut">Henüz örnek cümle yok. Ana sayfadaki Hazırla düğmesine bas.</p>'}`,{wide:true});
 }
 function modalTier(b){
-  const t={5:'Efsane',4:'Şampiyon',3:'Gladyatör',2:'Savaşçı',1:'Başlangıç'}[b],w=cur.items.filter(x=>bx(x)===b);
-  KA.modal(`<span class="eyebrow">Ustalaşma kulesi · ${b}. kat</span><h2 style="margin:6px 0 12px">${t} · ${w.length} kelime</h2><div class="row" style="gap:6px">${w.map(x=>`<button class="pill" data-say="${esc(x.en)}">${esc(x.en)} <span class="mut">· ${esc(x.tr)}</span></button>`).join('')||'<span class="mut">Bu katta henüz kelime yok.</span>'}</div>`);
+  const t={5:'Yıldız',4:'Işık',3:'Lamba',2:'Alev',1:'Kıvılcım'}[b],w=cur.items.filter(x=>bx(x)===b);
+  KA.modal(`<span class="eyebrow">Işık kulesi · ${b}. kat</span><h2 style="margin:6px 0 12px">${t} · ${w.length} kelime</h2><div class="row" style="gap:6px">${w.map(x=>`<button class="pill" data-say="${esc(x.en)}">${esc(x.en)} <span class="mut">· ${esc(x.tr)}</span></button>`).join('')||'<span class="mut">Bu katta henüz kelime yok.</span>'}</div>`);
 }
 let deferredInstall=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e});
 function modalPwa(){

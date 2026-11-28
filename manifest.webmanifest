@@ -57,7 +57,7 @@
       ]
     },
     {
-      "name": "Arena Fethi",
+      "name": "Takımada",
       "url": "/fetih.html",
       "icons": [
         {
@@ -90,7 +90,7 @@
       "sizes": "1080x1920",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Arena Fethi"
+      "label": "Takımada"
     },
     {
       "src": "/screenshots/genis-1.png",

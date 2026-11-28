@@ -4,7 +4,7 @@
 /* Vercel'in her yüklemede verdiği geçici adresler (…-xxxx-hasan-2037.vercel.app) ana adrese yönlendirilir.
    Böylece Google girişi her zaman yetkili adreste çalışır. İsim değişirse burayı güncelle. */
 const KA_HOST='kelime-arenasi-d8zm.vercel.app';
-if(location.hostname!==KA_HOST&&/^kelime-arenasi-d8zm-.+\.vercel\.app$/.test(location.hostname)){location.replace('https://'+KA_HOST+location.pathname+location.search+location.hash);return}
+if(location.hostname!==KA_HOST&&!/-git-/.test(location.hostname)&&/^kelime-arenasi-d8zm-.+\.vercel\.app$/.test(location.hostname)){location.replace('https://'+KA_HOST+location.pathname+location.search+location.hash);return}
 const KA=window.KA={};
 const $=KA.$=(s,r)=>(r||document).querySelector(s);
 const esc=KA.esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -61,7 +61,12 @@ KA.saveMeta=m=>S.set(pre()+'meta',m);
 KA.streak=m=>{const set=new Set(m.days||[]);let s=0;const d=new Date();if(!set.has(dayKey(d)))d.setDate(d.getDate()-1);while(set.has(dayKey(d))){s++;d.setDate(d.getDate()-1)}return s};
 KA.markDay=()=>{const m=KA.meta();m.days=[...new Set([...(m.days||[]),dayKey(new Date())])].sort().slice(-120);m.streak=KA.streak(m);KA.saveMeta(m);return m};
 KA.totalXp=()=>{let t=KA.meta().xp||0;KA.listPacks().forEach(p=>{t+=(p.prog&&p.prog.xp)||0});return t};
-KA.addXp=(n,where)=>{const m=KA.markDay();m.xp=(m.xp||0)+n;KA.saveMeta(m);KA.refreshChips()};
+KA.addXp=(n,where)=>{const m=KA.markDay();m.xp=(m.xp||0)+n;KA.saveMeta(m);KA.logDay(n,where);KA.refreshChips()};
+/* Bugünkü rota: hangi alanda bugün ne kadar çalışıldı (kelime / okuma / konuşma) */
+KA.dayArea=w=>{if(w)return w;const p=(location.pathname.split('/').pop()||'index.html').replace('.html','')||'index';
+  if(/^(konus|dinle)$/.test(p))return 'konus';if(/^(kamp|deneme|sinav|haber|atolye|lab|dava|ravenwood)$/.test(p))return 'okuma';return 'kelime'};
+KA.dayLog=()=>{const t=dayKey(new Date()),d=S.get(pre()+'daylog',{});return d.d===t?d:{d:t,kelime:0,okuma:0,konus:0}};
+KA.logDay=(n,where)=>{const d=KA.dayLog(),a=KA.dayArea(where);d[a]=(d[a]||0)+Math.max(1,+n||1);S.set(pre()+'daylog',d)};
 
 /* ---------- "Bilmediklerim" listesi ---------- */
 KA.findWord=k=>{k=String(k||'').toLowerCase();for(const p of KA.listPacks()){const it=(p.items||[]).find(x=>KA.forms(x.en).includes(k));if(it)return {pack:p,item:it}}return null};
@@ -269,20 +274,30 @@ const IC={
   clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
   list:'<path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/>',
   shield:'<path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6z"/>',
-  crown:'<path d="m3 8 4 4 5-7 5 7 4-4-2 11H5z"/>'
+  crown:'<path d="m3 8 4 4 5-7 5 7 4-4-2 11H5z"/>',
+  ray:'<path d="M8 3v5M15 6l-3 3M20 12h-5"/>',
+  lh:'<path d="M9 21l1-11h4l1 11M7.5 21h9M10 10V7h4v3M12 4v3M16.5 6.5l3-1.5M16.5 9l3 1"/>',
+  game:'<rect x="3" y="7" width="18" height="11" rx="4"/><path d="M8 11v3M6.5 12.5h3M15.5 12h.01M18 13.5h.01"/>',
+  anchor:'<circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 12H3a9 9 0 0 0 18 0h-2M8 11h8"/>',
+  compass:'<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
+  bino:'<circle cx="6.5" cy="15.5" r="3.5"/><circle cx="17.5" cy="15.5" r="3.5"/><path d="M10 15.5h4M5 12l2-7h3l1 6M19 12l-2-7h-3l-1 6"/>',
+  log:'<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h6M9 13h4"/>',
+  storm:'<path d="M7 15a4 4 0 0 1-.5-8A5.5 5.5 0 0 1 17 8a3.5 3.5 0 0 1 0 7"/><path d="m12.5 12-2.5 4h4l-2.5 4"/>',
+  signal:'<circle cx="12" cy="12" r="2"/><path d="M8 8a5.6 5.6 0 0 0 0 8M16 8a5.6 5.6 0 0 1 0 8M5 5a10 10 0 0 0 0 14M19 5a10 10 0 0 1 0 14"/>',
+  read:'<path d="M3 5c3-1 6-1 9 1 3-2 6-2 9-1v14c-3-1-6-1-9 1-3-2-6-2-9-1z"/><path d="M12 6v14"/>'
 };
 KA.ic=(n,cls)=>`<svg class="${cls||''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||''}</svg>`;
 
 /* ---------- Gezinme çubuğu (tek kaynak) ---------- */
-const LINKS=[['index.html','Ana sayfa','home'],['haber.html','Haber','news'],['oyunlar.html','Oyunlar','sword'],['sinav.html','Sınav','exam'],['sozluk.html','Sözlük','book'],['dinle.html','Dinle','ear','Dinle & Konuş']];
+const LINKS=[['index.html','Ana sayfa','home'],['kamp.html','Oku','read','Okuma'],['dinle.html','Konuş','chat','Dinle & Konuş'],['sinav.html','Sınav','exam'],['sozluk.html','Sözlük','book'],['oyunlar.html','Oyun','game','Oyunlar']];
 KA.nav=(active,o={})=>{
   const links=LINKS.map(([h,t,i,lg])=>`<a href="${h==='index.html'?'./':h}" class="${h===active?'on':''}" ${h===active?'aria-current="page"':''}>${KA.ic(i)}<span>${lg?`<span class="nlg">${lg}</span><span class="nsm">${t}</span>`:t}</span></a>`).join('');
   const m=KA.mode();
   const html=`<nav class="ka-nav" aria-label="Ana gezinme"><div class="ka-nav-in">
-    <a class="ka-brand" href="./" aria-label="Pharos ana sayfa"><img src="favicon.svg?v=24" alt="" width="34" height="34"><svg class="ka-wm" viewBox="-6 -6 270 92" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="9.5" stroke-linejoin="round"><path transform="translate(0 0)" d="M4.5 20V80M8.5 40A15.5 15.5 0 1 0 8.5 39.99"/><path transform="translate(51 0)" d="M4.5 0V60M4.5 60V40A15.5 15.5 0 0 1 35.5 40V60"/><path transform="translate(98 0)" d="M35.5 20V60M35.5 40A15.5 15.5 0 1 0 35.5 40.01"/><path transform="translate(145 0)" d="M4.5 20V60M4.5 44C4.5 31 12 24.5 25 24.5"/><path transform="translate(176 0)" d="M4.5 40A15.5 15.5 0 1 0 35.5 40A15.5 15.5 0 1 0 4.5 40Z"/><path transform="translate(223 0)" d="M31 28.5C28.5 24 24 21 17.5 21C10 21 6 25 6 30.5C6 36.5 12 38 17.5 39.3C24.5 41 30.5 43 30.5 49.5C30.5 55.5 25.5 59 17.5 59C11 59 6.5 56 4 51.5"/></g></svg></a>
+    <a class="ka-brand" href="./" aria-label="Pharos ana sayfa"><img src="favicon.svg?v=25" alt="" width="34" height="34"><svg class="ka-wm" viewBox="-6 -6 270 92" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="9.5" stroke-linejoin="round"><path transform="translate(0 0)" d="M4.5 20V80M8.5 40A15.5 15.5 0 1 0 8.5 39.99"/><path transform="translate(51 0)" d="M4.5 0V60M4.5 60V40A15.5 15.5 0 0 1 35.5 40V60"/><path transform="translate(98 0)" d="M35.5 20V60M35.5 40A15.5 15.5 0 1 0 35.5 40.01"/><path transform="translate(145 0)" d="M4.5 20V60M4.5 44C4.5 31 12 24.5 25 24.5"/><path transform="translate(176 0)" d="M4.5 40A15.5 15.5 0 1 0 35.5 40A15.5 15.5 0 1 0 4.5 40Z"/><path transform="translate(223 0)" d="M31 28.5C28.5 24 24 21 17.5 21C10 21 6 25 6 30.5C6 36.5 12 38 17.5 39.3C24.5 41 30.5 43 30.5 49.5C30.5 55.5 25.5 59 17.5 59C11 59 6.5 56 4 51.5"/></g></svg></a>
     <div class="ka-links">${links}</div>
     <div class="ka-tools">
-      ${o.stats?`<span class="ka-chip ka-hide-sm" title="Günlük seri"><span style="color:var(--acc2)">${KA.ic('flame')}</span><b id="kaStreak">0</b><small>gün</small></span><span class="ka-chip" title="Toplam XP"><span style="color:var(--acc)">${KA.ic('star')}</span><b id="kaXp">0</b><small class="kl">XP</small></span>`:''}
+      ${o.stats?`<span class="ka-chip ka-hide-sm" title="Günlük seri"><span style="color:var(--acc2)">${KA.ic('flame')}</span><b id="kaStreak">0</b><small>gün</small></span><span class="ka-chip" title="Toplam XP"><span style="color:var(--acc)">${KA.ic('ray')}</span><b id="kaXp">0</b><small class="kl">XP</small></span>`:''}
       <div class="ka-mode" role="group" aria-label="Görünüm modu"><button data-m="light" class="${m!=='dark'?'on':''}" title="Açık Akdeniz">${KA.ic('sun')}<span>Açık</span></button><button data-m="dark" class="${m==='dark'?'on':''}" title="Koyu Akdeniz">${KA.ic('moon')}<span>Koyu</span></button></div>
       <button class="ka-icon-btn ka-snd-top" data-ka-snd title="${muted?'Sesi aç':'Sesi kapat'}">${KA.ic(muted?'mute':'sound')}</button>
       <button class="ka-icon-btn ka-more" type="button" aria-label="Ayarlar" aria-expanded="false"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>

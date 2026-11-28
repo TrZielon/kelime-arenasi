@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Arena Fethi · Pharos</title>
+<title>Takımada · Pharos</title>
 <meta name="description" content="Kelimelerinle Akdeniz'i fethet: her maçta yeni harita, jokerler, düellolar ve başkent kuşatmaları.">
 <meta name="theme-color" content="#0f766e">
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -18,7 +18,7 @@
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=24">
+<link rel="stylesheet" href="ortak.css?v=25">
 <style>
 :root{--c0:#0f766e;--c1:#c0392b;--c2:#c98a0b;--sand:#efe2c0;--sand-ink:#5b4a22;--sea1:#cdebe7;--sea2:#94cfc8;--coast:#8a7442;--bord:rgba(70,52,18,.38);--gold:#f59e0b}
 [data-mode="dark"]{--c0:#1fb8a4;--c1:#e5574a;--c2:#e9a92c;--sand:#4a5541;--sand-ink:#d6dccf;--sea1:#0d302e;--sea2:#071d1c;--coast:#0b1716;--bord:rgba(0,0,0,.5)}
@@ -244,20 +244,20 @@ body.ingame .ka-tabbar{display:none}
 </head>
 <body>
 <main class="ka-wrap" id="main"></main>
-<script src="firebase-config.js?v=24"></script><script src="ortak.js?v=24"></script>
+<script src="firebase-config.js?v=25"></script><script src="ortak.js?v=25"></script>
 <script>
 (function(){
 'use strict';
 const {$,esc,forms}=KA;const ic=KA.ic;
 const SAMPLE=`rule - Yönetmek, hükmetmek|ally - Müttefik|alliance - İttifak|boundary - Sınır|rationale - Gerekçe|hinder - Engellemek|hesitate - Tereddüt etmek|prevail - Galip gelmek, yaygın olmak|prevalent - Yaygın|fallacy - Yanlış inanç|assume - Varsaymak|assumption - Varsayım|rival - Rakip|treaty - Antlaşma|legitimacy - Meşruluk|dynasty - Hanedan|successor - Varis|expand - Genişlemek|overt - Açık, aleni|covert - Gizli, örtülü|retain - Elinde tutmak|trace - İz|vulnerable - Savunmasız|remark - Söz, yorum|instant - Anında|extract - Çıkarmak|fraction - Küçük parça|fabricate - Uydurmak, sahtesini yapmak|worrisome - Endişe verici|deceive - Kandırmak|tangible - Somut|invasion - İşgal|reveal - Ortaya çıkarmak|consent - Rıza, izin|surveillance - Gözetim|harvest - Hasat|retail - Perakende|leftover - Artık|expire - Süresi dolmak|fertilizer - Gübre|quantity - Miktar|trivial - Önemsiz|annual - Yıllık|discard - Atmak|equivalent - Eşdeğer|finite - Sınırlı|impeccable - Kusursuz|evaluate - Değerlendirmek|dispute - Anlaşmazlık|compensate - Telafi etmek|yield - Verim|unprecedented - Eşi benzeri görülmemiş|urgency - Aciliyet|allocate - Tahsis etmek|shrink - Küçülmek`;
 const PLACES=['Truva','Efes','Rodos','Girit','Kıbrıs','Atina','Sparta','Korint','Delfi','Milet','Bergama','Halikarnas','Knidos','Sardes','Side','Kartaca','Sicilya','Napoli','Midilli','Sakız','Likya','Patara','Olimpos','Perge','Myra','Teos','Smyrna','Pamfilya','Kapadokya','Fokaia'];
-const DIFF={easy:{n:'Çaylak',d:'Rakipler yavaş ve sık yanılır',acc:.55,t:[4.5,10.5],lim:15},mid:{n:'Gladyatör',d:'Dengeli bir meydan okuma',acc:.72,t:[3,8.5],lim:12},hard:{n:'Cihan Fatihi',d:'Hızlı ve isabetli rakipler',acc:.86,t:[2,6.5],lim:11}};
-const MODES={full:{n:'Tam Fetih',d:'Tek ordu kalana kadar savaş · ~12 dk',war:9,full:1,ic:'crown'},classic:{n:'Klasik Fetih',d:'Yayılma + 3 savaş turu · ~7 dk',war:3,ic:'sword'},quick:{n:'Hızlı Maç',d:'Yayılma + 1 savaş turu · ~3 dk',war:1,ic:'flame'},daily:{n:'Günün Fethi',d:'Herkese aynı harita ve kelimeler',war:2,ic:'star'}};
-const RANKS=[[0,'Er'],[120,'Onbaşı'],[320,'Çavuş'],[650,'Yüzbaşı'],[1100,'Binbaşı'],[1700,'Albay'],[2500,'Komutan'],[3600,'Paşa'],[5000,'Fatih']];
+const DIFF={easy:{n:'Miço',d:'Rakipler yavaş ve sık yanılır',acc:.55,t:[4.5,10.5],lim:15},mid:{n:'Kaptan',d:'Dengeli bir meydan okuma',acc:.72,t:[3,8.5],lim:12},hard:{n:'Amiral',d:'Hızlı ve isabetli rakipler',acc:.86,t:[2,6.5],lim:11}};
+const MODES={full:{n:'Tam Fetih',d:'Tek filo kalana kadar savaş · ~12 dk',war:9,full:1,ic:'crown'},classic:{n:'Klasik Fetih',d:'Yayılma + 3 savaş turu · ~7 dk',war:3,ic:'sword'},quick:{n:'Hızlı Maç',d:'Yayılma + 1 savaş turu · ~3 dk',war:1,ic:'flame'},daily:{n:'Günün Fethi',d:'Herkese aynı harita ve kelimeler',war:2,ic:'star'}};
+const RANKS=[[0,'Miço'],[120,'Tayfa'],[320,'Gözcü'],[650,'Dümenci'],[1100,'Lostromo'],[1700,'İkinci Kaptan'],[2500,'Kaptan'],[3600,'Amiral'],[5000,'Takımada Hâkimi']];
 const JOK={yari:{n:'Yarı yarıya',ic:'half'},kalkan:{n:'Kalkan',ic:'shield'},cift:{n:'Çift saldırı',ic:'sword'}};
 const CFG=Object.assign({mode:'classic',diff:'mid',pack:''},KA.store.get('ka_fetih_cfg',{}));if(!CFG.v2){CFG.v2=1;CFG.mode='full'}if(!MODES[CFG.mode])CFG.mode='full';if(!DIFF[CFG.diff])CFG.diff='mid';
 const REC=Object.assign({games:0,wins:0,best:0,xp:0,streak:0,daily:{}},KA.store.get('ka_fetih',{}));
-const PL=[{n:'Sen',ic:'star'},{n:'Kızıl Lejyon',ic:'sword',agg:.7},{n:'Altın Muhafız',ic:'crown',agg:.45}];
+const PL=[{n:'Sen',ic:'star'},{n:'Kızıl Filo',ic:'anchor',agg:.7},{n:'Altın Filo',ic:'compass',agg:.45}];
 const ICP={star:'M12 4.5l2.3 4.8 5.2.6-3.9 3.5 1.1 5.1L12 16l-4.7 2.5 1.1-5.1L4.5 9.9l5.2-.6z',sword:'M6 18l9-9m0 0l2-5 1 1-5 2m-7 9l-2 2m3-1l-3-3',crown:'M5 16h14l1-8-4 3-4-6-4 6-4-3z',half:'M12 4a8 8 0 1 0 0 16z',shield:'M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'};
 const svgI=(n,c)=>`<svg viewBox="0 0 24 24" fill="${n==='half'?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${c?` class="${c}"`:''}><path d="${ICP[n]}"/>${n==='half'?'<circle cx="12" cy="12" r="8" fill="none"/>':''}</svg>`;
 const col=i=>`var(--c${i})`;
@@ -315,7 +315,7 @@ function genMap(R){
 function mapSVG(M,id){
   const tp=t=>[0,1,2,3,4,5].map(k=>{const a=Math.PI/180*(60*k-30);return f1(t.x+(S+.45)*Math.cos(a))+','+f1(t.y+(S+.45)*Math.sin(a))}).join(' ');
   const tex=M.land.filter(t=>(t.i*7919)%5<2).map(t=>`<polygon points="${tp(t)}" fill="${(t.i*31)%3?'#000':'#fff'}" opacity="${(t.i*31)%3?.045:.07}"/>`).join('');
-  return `<svg viewBox="0 0 ${f1(MW)} ${f1(MH)}" ${id?`id="${id}"`:''} role="img" aria-label="Arena haritası">
+  return `<svg viewBox="0 0 ${f1(MW)} ${f1(MH)}" ${id?`id="${id}"`:''} role="img" aria-label="Takımada haritası">
   <defs><radialGradient id="seaG" cx="50%" cy="45%" r="75%"><stop offset="0" style="stop-color:var(--sea1)"/><stop offset="1" style="stop-color:var(--sea2)"/></radialGradient>
   <pattern id="wv" width="34" height="16" patternUnits="userSpaceOnUse"><path class="wvp" d="M2 9q6-5 12 0t12 0" fill="none" stroke="#fff" stroke-width="1.1"/></pattern>
   <filter id="lsh" x="-5%" y="-5%" width="110%" height="115%"><feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#0b2e2a" flood-opacity=".35"/></filter>
@@ -505,9 +505,9 @@ function newGame(){
   document.body.classList.add('ingame');
   $('#main').innerHTML=`<div class="game"><div><div class="pls" id="pls"></div>
   <section class="card board" id="board"><div class="bhead"><div><span class="eyebrow" id="ph">Hazırlık</span><b id="rd">${esc(MODES[CFG.mode].n)} · ${esc(DIFF[CFG.diff].n)}</b></div><div class="row" style="gap:8px;flex-wrap:nowrap"><div class="joks" id="jk"></div><button class="ka-icon-btn" data-a="quit" title="Oyundan çık" aria-label="Oyundan çık">${ic('x')}</button></div></div>
-  <div class="mapw">${mapSVG(M,'map')}<div class="banner" id="bn"></div></div><div class="logline" id="log">${ic('flag')}<span>Ordular hazır. Kaleli bölge senin başkentin.</span></div></section></div>
+  <div class="mapw">${mapSVG(M,'map')}<div class="banner" id="bn"></div></div><div class="logline" id="log">${ic('flag')}<span>Filolar hazır. Kaleli bölge senin başkentin.</span></div></section></div>
   <aside class="card panel" id="panel"></aside></div>`;
-  refresh();idle('Arenaya hoş geldin','Her doğru cevap topraklarını büyütür. Hızlı ol, rakipler de cevaplıyor.');
+  refresh();idle('Takımadaya hoş geldin','Her doğru cevap topraklarını büyütür. Hızlı ol, rakipler de cevaplıyor.');
   play(G);
 }
 async function play(g){
@@ -538,7 +538,7 @@ async function play(g){
   for(let w=1;w<=W;w++){
     const order=alive().sort((a,b)=>score(a)-score(b));
     const hot=full&&w>=4,last=full&&w===W;
-    await banner(last?'Son hesaplaşma':hot?`Kızışma · ${w}. tur`:W>1?`Savaş · ${w}. tur`:'Savaş',last?'Son tur: herkes iki kez saldırır':hot?'Artık herkes iki kez saldırıyor':w===1?(full?'Tek ordu kalana kadar savaş sürer. Başkentleri kuşat':'Komşu düşman bölgelerine saldır, başkentleri kuşat'):'Sıra puanı düşük olandan başlar');if(stopped(g))return;
+    await banner(last?'Son hesaplaşma':hot?`Kızışma · ${w}. tur`:W>1?`Savaş · ${w}. tur`:'Savaş',last?'Son tur: herkes iki kez saldırır':hot?'Artık herkes iki kez saldırıyor':w===1?(full?'Tek filo kalana kadar savaş sürer. Başkentleri kuşat':'Komşu düşman bölgelerine saldır, başkentleri kuşat'):'Sıra puanı düşük olandan başlar');if(stopped(g))return;
     for(const p of order){
       if(!G.pl[p].alive)continue;if(alive().length<2||!G.pl[0].alive)break;
       let attacks=hot?2:1;
@@ -558,7 +558,7 @@ async function play(g){
     if(alive().length<2||!G.pl[0].alive)break;
     // süreli modlarda maç tam ısınmışken bitmesin: uzatma teklifi
     if(w===W&&!full&&!G.ext){
-      const more=await choice('Maç bitmek üzere',`Puanın ${score(0)}. İstersen tek ordu kalana kadar devam edebilirsin.`,[['go','Savaşa devam et','p'],['end','Maçı bitir','ghost']]);if(stopped(g))return;
+      const more=await choice('Maç bitmek üzere',`Puanın ${score(0)}. İstersen tek filo kalana kadar devam edebilirsin.`,[['go','Savaşa devam et','p'],['end','Maçı bitir','ghost']]);if(stopped(g))return;
       if(more==='go'){G.ext=1;W=w+6}
     }
   }
@@ -569,7 +569,7 @@ async function duel(a,h,g){
   const dist=x=>Math.hypot(R[x].lx-R[h].lx,R[x].ly-R[h].ly);
   const from=R[h].nb.filter(n=>G.owner[n]===a).sort((x,y)=>dist(x)-dist(y))[0];
   refresh([h],'tg');const rm=from!=null?arrow(from,h,a):()=>{};KA.sfx.hit();
-  log(`${G.pl[a].n}, ${G.pl[d].n} ordusunun ${isCap?'başkentine':R[h].name+' bölgesine'} saldırıyor!`,a);
+  log(`${G.pl[a].n}, ${G.pl[d].n} filosunun ${isCap?'başkentine':R[h].name+' bölgesine'} saldırıyor!`,a);
   const spectate=a!==0&&d!==0&&G.pl[0].alive;
   const lab=a===0?'Saldırı düellosu · rakipten hızlı ve doğru ol':d===0?'Savunma düellosu · bölgeni koru':'Seyirci sorusu · bilirsen +50 puan';
   const {out}=await ask(makeQ('mc'),[a,d],{duel:{a,d,cap:isCap},spectate,defend:d===0,label:lab});
@@ -582,7 +582,7 @@ async function duel(a,h,g){
       G.pl[d].tw--;const b=$('#board');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');KA.sfx.hit();floatAt(h,'−1 kule','r');
       if(G.pl[d].tw<=0){
         G.pl[d].alive=0;own(d).forEach(r=>{G.owner[r]=a});if(a===0)G.stats.razed++;if(d===0)G.stats.lost++;
-        refresh();await banner(`${G.pl[d].n} düştü!`,`Bütün toprakları ${G.pl[a].n} ordusuna geçti`,1800);
+        refresh();await banner(`${G.pl[d].n} düştü!`,`Bütün toprakları ${G.pl[a].n} filosuna geçti`,1800);
         log(`${G.pl[a].n} başkenti düşürdü, ${G.pl[d].n} oyundan çıktı.`,a);
       }else log(`${G.pl[d].n} başkentinin bir kulesi yıkıldı (${G.pl[d].tw} kule kaldı).`,a);
     }else{if(a===0)G.stats.caps++;if(d===0)G.stats.lost++;claim(a,h);log(`${G.pl[a].n} ${R[h].name} bölgesini fethetti.`,a)}
@@ -598,7 +598,7 @@ function end(){
   KA.closeLookup();document.body.classList.remove('ingame');
   const order=[0,1,2].sort((a,b)=>score(b)-score(a)),won=order[0]===0,my=score(0),st=G.stats;
   const medals=[];
-  if(won)medals.push(['crown','Arenanın Fatihi']);
+  if(won)medals.push(['crown','Takımadanın Hâkimi']);
   if(st.tot>=8&&st.ok===st.tot)medals.push(['star','Kusursuz']);
   if(st.best>=5)medals.push(['flame','Seri Ustası']);
   if(st.razed)medals.push(['sword','Kale Yıkan']);
@@ -612,7 +612,7 @@ function end(){
   won?KA.sfx.win():KA.sfx.bad();if(won)confetti();
   const missed=[...new Map(G.missed.map(x=>[x.en,x])).values()];
   const hgt=[132,104,86],acc=st.tot?Math.round(st.ok/st.tot*100):0;
-  $('#main').innerHTML=`<section class="card end"><span class="eyebrow">${esc(MODES[CFG.mode].n)} · ${esc(DIFF[CFG.diff].n)}</span><h1>${won?(alive().length<2?'Bütün harita senin!':'Arenanın fatihi sensin!'):!G.pl[0].alive?'Başkentin düştü':order[1]===0?'İkinci oldun, az kaldı':'Bu sefer olmadı'}</h1>
+  $('#main').innerHTML=`<section class="card end"><span class="eyebrow">${esc(MODES[CFG.mode].n)} · ${esc(DIFF[CFG.diff].n)}</span><h1>${won?(alive().length<2?'Bütün harita senin!':'Takımadanın hâkimi sensin!'):!G.pl[0].alive?'Başkentin düştü':order[1]===0?'İkinci oldun, az kaldı':'Bu sefer olmadı'}</h1>
   <p class="mut" style="margin:0">${my} puan · +${xp} XP${after.i>before.i?` · <b style="color:var(--acc2)">Yeni rütbe: ${esc(after.n)}</b>`:` · Rütben: ${esc(after.n)}`}</p>
   <div class="podium">${[order[1],order[0],order[2]].map((i,k)=>`<div style="background:${col(i)};min-height:${hgt[[1,0,2][k]]}px">${emblem(i,1)}<b>${score(i)}</b><small>${['2.','1.','3.'][k]} · ${esc(G.pl[i].n)}</small></div>`).join('')}</div>
   ${medals.length?`<div class="medals">${medals.map(([i,n],k)=>`<span class="medal" style="animation-delay:${k*.12}s"><i>${ic(i)}</i>${esc(n)}</span>`).join('')}</div>`:''}
@@ -643,8 +643,8 @@ function setup(){
   const M=genMap(CFG.mode==='daily'?seeded(daySeed()+11):Math.random);
   $('#main').innerHTML=`<div class="setup">
   <section class="card hero"><div class="hero-map" id="pv">${M?mapSVG(M):''}</div>
-    <div class="hero-txt"><span class="eyebrow">Strateji · kelime · hız</span><h1>Arena Fethi</h1><p>Kelimelerin senin ordun. Her maçta yeni bir Akdeniz haritası kurulur: hızlı cevaplarla toprak kap, jokerlerini doğru anda kullan, rakip başkentlerin kulelerini tek tek yık.</p></div>
-    <div class="steps"><div><b>${ic('flag')}Yayılma</b>Herkes aynı soruyu cevaplar. En hızlı doğru 2, ikinci 1 bölge alır.</div><div><b>${ic('sword')}Düello</b>Komşu düşmana saldır. Hızlı ve doğru olan bölgeyi kazanır.</div><div><b>${ic('shield')}Jokerler</b>Yarı yarıya, Kalkan ve Çift saldırı. Her 3'lü seri yeni joker verir.</div><div><b>${ic('crown')}Başkent</b>3 kuleyi yıkan, o ordunun bütün topraklarını alır.</div><div><b>${ic('reset')}Rövanş</b>Kaçırdığın kelime birkaç soru sonra geri gelir; bilirsen +100 puan.</div></div>
+    <div class="hero-txt"><span class="eyebrow">Strateji · kelime · hız</span><h1>Takımada</h1><p>Kelimelerin senin filon. Her maçta yeni bir Akdeniz haritası kurulur: hızlı cevaplarla toprak kap, jokerlerini doğru anda kullan, rakip başkentlerin kulelerini tek tek yık.</p></div>
+    <div class="steps"><div><b>${ic('flag')}Yayılma</b>Herkes aynı soruyu cevaplar. En hızlı doğru 2, ikinci 1 bölge alır.</div><div><b>${ic('sword')}Düello</b>Komşu düşmana saldır. Hızlı ve doğru olan bölgeyi kazanır.</div><div><b>${ic('shield')}Jokerler</b>Yarı yarıya, Kalkan ve Çift saldırı. Her 3'lü seri yeni joker verir.</div><div><b>${ic('crown')}Başkent</b>3 kuleyi yıkan, o filonun bütün topraklarını alır.</div><div><b>${ic('reset')}Rövanş</b>Kaçırdığın kelime birkaç soru sonra geri gelir; bilirsen +100 puan.</div></div>
     <div class="rankcard">${emblem(0)}<div class="rk"><span class="eyebrow" style="margin:0">Rütben</span><b>${esc(R.n)}</b><div class="xpbar"><i style="width:${pct}%"></i></div><div class="recs"><span>${REC.xp} XP${R.next!=='—'?` · ${esc(R.next)} için ${R.hi-REC.xp} XP`:''}</span></div></div>
       <div class="recs" style="flex-direction:column;gap:2px;text-align:right"><span><b>${REC.games}</b> maç</span><span><b>${REC.games?Math.round(REC.wins/REC.games*100)+'%':'—'}</b> galibiyet</span><span><b>${REC.best}</b> en iyi</span></div></div>
   </section>
@@ -652,8 +652,8 @@ function setup(){
     <div><h3>Oyun modu</h3><div class="opts3">${Object.entries(MODES).map(([k,m])=>`<button class="choice ${CFG.mode===k?'on':''}" data-gm="${k}"><b>${ic(m.ic)}${m.n}</b><span>${m.d}${k==='daily'&&REC.daily[today()]!=null?` · bugün: ${REC.daily[today()]}`:''}</span></button>`).join('')}</div></div>
     <div><h3>Rakip seviyesi</h3><div class="opts3">${Object.entries(DIFF).map(([k,m])=>`<button class="choice ${CFG.diff===k?'on':''}" data-diff="${k}"><b>${m.n}</b><span>${m.d} · ${m.lim} sn</span></button>`).join('')}</div></div>
     <div><h3>Kelimeler</h3>${CFG.mode==='daily'?'<p class="mut" style="margin:0;font-size:14px">Günün Fethi herkes için aynı harita ve akademik kelimelerle oynanır.</p>':packs.length?`<select class="select" id="pk">${packs.map(p=>`<option value="${esc(p.id)}" ${p.id===CFG.pack?'selected':''}>${esc(p.name)} · ${(p.items||[]).filter(x=>x.tr).length} kelime</option>`).join('')}</select>`:'<p class="mut" style="margin:0;font-size:14px">Henüz en az 8 anlamlı kelimesi olan bir listen yok; hazır akademik kelimelerle oynayacaksın. <a href="./">Liste oluştur</a></p>'}</div>
-    <div><h3>Ordular</h3><div class="row" style="gap:12px">${PL.map((p,i)=>`<span class="row" style="gap:6px;font-weight:800;font-size:13.5px;flex-wrap:nowrap"><span style="width:22px;height:25px;display:inline-flex">${emblem(i)}</span>${esc(p.n)}</span>`).join('')}</div></div>
-    <button class="btn btn-p btn-lg startbtn" data-a="start">${ic('sword')}Arenaya gir</button>
+    <div><h3>Filolar</h3><div class="row" style="gap:12px">${PL.map((p,i)=>`<span class="row" style="gap:6px;font-weight:800;font-size:13.5px;flex-wrap:nowrap"><span style="width:22px;height:25px;display:inline-flex">${emblem(i)}</span>${esc(p.n)}</span>`).join('')}</div></div>
+    <button class="btn btn-p btn-lg startbtn" data-a="start">${ic('anchor')}Denize açıl</button>
   </section></div>`;
   if(M){const pv=$('#pv svg');M.caps.forEach((r,i)=>{pv.querySelector(`.rg[data-r="${r}"]`).classList.add('o'+i);const C=M.regs[r];pv.querySelector('.lbs').insertAdjacentHTML('beforeend',castle(C.lx,C.ly+4,'#fff'))});
     pv.querySelector('.lbs').insertAdjacentHTML('beforeend',M.regs.filter(r=>!M.caps.includes(r.i)).map(r=>`<text class="lb lbn" x="${f1(r.lx)}" y="${f1(r.ly+3)}">${esc(r.name)}</text>`).join(''))}

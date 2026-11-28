@@ -656,3 +656,57 @@ body:has(.ka-modal) .aiw-ban,body:has(.aiw) .aiw-ban{display:none}
 }
 
 .ka-menu .ka-mode button{display:flex!important}
+
+/* =========================================================
+   Pharos görsel dili: kıvrık sayfa, ışık, deniz
+   ========================================================= */
+:root,[data-mode="light"]{--sea:#d3ebe6;--sky:#eef7f5;--hl:#fde68a;--storm:#9fb4b1}
+[data-mode="dark"]{--sea:#0b2d29;--sky:#0a1c1a;--hl:#5c4a12;--storm:#2b4743}
+.eyebrow{color:var(--acc2)}
+[data-mode="dark"] .eyebrow{color:var(--acc)}
+/* kıvrık köşe: öne çıkan kart ya da sıradaki adım */
+.ka-fold{position:relative}
+.ka-fold::after{content:"";position:absolute;top:-1px;right:-1px;width:30px;height:30px;background:linear-gradient(225deg,var(--bg) 50%,var(--acc) 50%);border-radius:0 22px 0 9px;pointer-events:none;z-index:2}
+/* bölüm başlığı ışın işareti */
+.ka-ray{display:inline-flex;align-items:center;gap:8px}
+.ka-ray>svg.ry{width:20px;height:20px;color:var(--acc);flex:none}
+.sq path{stroke:var(--acc)}
+/* dalga ayracı (alt bilgi üstü) */
+.ka-foot{position:relative;padding-top:34px}
+.ka-foot::before{content:"";position:absolute;left:50%;top:6px;translate:-50% 0;width:120px;height:14px;background:no-repeat center/120px 14px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'%3E%3Cpath d='M2 7c10-6 18-6 28 0s18 6 28 0 18-6 28 0 18 6 28 0' fill='none' stroke='%2314b8a6' stroke-width='3' stroke-linecap='round' opacity='.55'/%3E%3C/svg%3E")}
+/* sekme çubuğu: seçili sekmenin üstünde ışın */
+.ka-tabbar a{position:relative}
+.ka-tabbar a.on::before{content:"";position:absolute;top:-1px;left:50%;translate:-50% 0;width:18px;height:3px;border-radius:0 0 3px 3px;background:var(--acc)}
+
+/* ---------- Liman (eski Kapı): kartlar kitap kapağı gibi açılır ---------- */
+.arch{border-radius:16px;height:180px;padding:8px;background:color-mix(in srgb,var(--p) 30%,var(--line2));box-shadow:0 6px 0 -1px color-mix(in srgb,var(--p) 45%,#000)}
+.arch::before{inset:8px;border-radius:10px;background:repeating-linear-gradient(180deg,transparent 0 26px,color-mix(in srgb,var(--line) 80%,transparent) 26px 27px),var(--card2)}
+.arch .inside{inset:8px;padding:24px 18px 14px}
+.arch .leaf{top:8px;bottom:8px;width:calc(50% - 8px);padding:22px 14px;gap:9px;background:linear-gradient(90deg,color-mix(in srgb,var(--p) 86%,#000),var(--p) 50%,color-mix(in srgb,var(--p) 82%,#000))}
+.arch .leaf.l{left:8px;border-radius:10px 3px 3px 10px;box-shadow:inset -3px 0 0 color-mix(in srgb,var(--p) 55%,#000)}
+.arch .leaf.r{right:8px;border-radius:3px 10px 10px 3px;box-shadow:inset 3px 0 0 color-mix(in srgb,var(--p) 55%,#000)}
+.arch .leaf u,.arch .leaf.l u:first-child,.arch .leaf.r u:first-child{height:6px;border:0;border-radius:4px;background:color-mix(in srgb,var(--p-ink) 30%,transparent)}
+.arch .leaf u:last-child{width:62%}
+.arch .leaf::after{top:auto;bottom:16px;width:22px;height:22px;border-radius:0 0 0 6px;background:linear-gradient(225deg,transparent 50%,var(--acc) 50%);box-shadow:none}
+.arch .leaf.l::after{display:none}.arch .leaf.r::after{right:0;left:auto;bottom:auto;top:0;border-radius:0 10px 0 6px;background:linear-gradient(225deg,var(--card2) 50%,var(--acc) 50%)}
+.arch .lintel{top:0;width:16px;height:34px;border-radius:0;background:var(--acc);box-shadow:none;clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%)}
+@media (max-width:520px){.arch{height:165px}}
+
+/* ---------- Pusula (eski Çark) ---------- */
+.wheel::before{content:"N";position:absolute;left:50%;top:3%;translate:-50% 0;font:800 13px/1 "Plus Jakarta Sans",sans-serif;color:var(--acc2);letter-spacing:.1em}
+.wheel::after{content:"";position:absolute;inset:8%;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--line2) 70%,transparent);pointer-events:none}
+.wheel .hub::before{content:"";position:absolute;left:50%;top:-14px;translate:-50% 0;border:9px solid transparent;border-bottom:16px solid var(--acc);border-top:0}
+.wheel circle.on{stroke:var(--acc)}
+
+/* ---------- Fırtına (eski Bekçi): bulutlar dağıldıkça fener görünür ---------- */
+.keeper .st{fill:var(--storm);stroke:color-mix(in srgb,var(--storm) 70%,#000)}
+.keeper .st.cur{fill:color-mix(in srgb,var(--storm) 70%,#1e293b);stroke:var(--acc)}
+.keeper .st.gone{fill:color-mix(in srgb,var(--acc) 16%,transparent);stroke:var(--acc);opacity:.6}
+.keeper .st.fall{fill:var(--storm)}
+.keeper .gr{stroke:var(--p2);opacity:.5;stroke-dasharray:14 8}
+.keeper .kin i{background:var(--acc-soft);color:var(--acc2)}
+.keeper.hurt .kin i{background:var(--storm);color:#fff}
+
+/* ---------- Okuma metinleri: dar sütun, rahat satır ---------- */
+.ka-read{max-width:65ch;font-family:Fraunces,Georgia,serif;font-weight:500;font-size:17px;line-height:1.75}
+mark{background:var(--hl);color:inherit;border-radius:3px;padding:0 2px}
