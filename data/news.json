@@ -1,6 +1,444 @@
 {
-  "updated": "2026-11-25T06:20:20.911Z",
+  "updated": "2026-11-28T06:20:21.739Z",
   "items": [
+    {
+      "id": "mx00tvlrbksv",
+      "date": "2026-11-28",
+      "category": "World",
+      "title": "Spanish PM and Rivals Rally Supporters in Final Pitch for Votes",
+      "src": "https://www.bbc.co.uk/news/articles/c8wy5p4gdnwvo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/1bb1/live/dd63ff10-ea99-11f1-a094-5fdc692f3e33.jpg",
+      "levels": {
+        "1": {
+          "text": "Spanish Prime Minister Pedro Sánchez is asking people for their votes. He wants to win the election. But polls show that he might lose. Sánchez wants to defy these polls and win anyway. His main rivals are very angry with him. They accuse him of not telling the truth to the public. They also say he committed a \"betrayal\" against the country. Now, the leaders are giving their final speeches to get more supporters before the people vote.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "Pedro Sánchez decided to leave the election early.",
+                "Spain is having an election with only one political party.",
+                "Prime Minister Pedro Sánchez and his rivals are making a final push for election votes.",
+                "The polls show Pedro Sánchez is guaranteed to win."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word \"defy\" mean in the story?",
+              "opts": [
+                "To go against or resist",
+                "To ask for help",
+                "To create a new law",
+                "To agree with everything"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What do rivals accuse Pedro Sánchez of doing?",
+              "opts": [
+                "Traveling to another country",
+                "Refusing to speak to supporters",
+                "Spending too much money",
+                "Not telling the truth and betrayal"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "True or false: Pedro Sánchez's rivals are happy with his actions.",
+              "opts": [
+                "False",
+                "Only his supporters are unhappy",
+                "True",
+                "The story does not say"
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "Spanish Prime Minister Pedro Sánchez is making a strong final pitch to voters as the election approaches. Current polls suggest that he may lose, but Sánchez hopes to defy these predictions and secure a victory. Meanwhile, his main political rivals are fiercely attacking his record. They publicly accuse him of not telling the truth to the Spanish people. Furthermore, these rivals claim that his actions amount to a \"betrayal\" of the country. With the voting day close, all political leaders are holding major rallies to persuade undecided citizens and rally their core supporters for the final vote.",
+          "quiz": [
+            {
+              "q": "What is the main focus of the news article?",
+              "opts": [
+                "A new law about political rallies in Spain",
+                "Pedro Sánchez retiring from his position as prime minister",
+                "A description of how polls are calculated in Spain",
+                "Spanish political leaders trying to win votes right before the election"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "In this story, what does the word \"rivals\" mean?",
+              "opts": [
+                "News reporters covering the event",
+                "Competitors or opponents in an election",
+                "Close friends and advisers",
+                "Voters who cannot decide"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What do polls currently suggest about Pedro Sánchez?",
+              "opts": [
+                "He might lose the election.",
+                "He will win easily.",
+                "He has the support of all rivals.",
+                "He is not allowed to run."
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is TRUE according to the text?",
+              "opts": [
+                "Pedro Sánchez agrees with the poll predictions.",
+                "Rivals say Sánchez told the truth to citizens.",
+                "The election has already finished.",
+                "Rivals accuse Sánchez of betrayal."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "3": {
+          "text": "As Spain prepares to vote, Prime Minister Pedro Sánchez and his main political rivals are making their final push to rally supporters across the country. Facing challenging poll numbers, Sánchez remains determined to defy expectations and pull off an election victory. However, his opponents are ramping up their criticisms in these final hours. They accuse the Prime Minister of repeatedly failing to tell the truth to the electorate. In addition, his main rivals have sharply condemned his leadership, accusing him of \"betrayal.\" Both sides are using their remaining campaign time to energize their bases and persuade any last-minute undecided voters before ballots are cast.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the text?",
+              "opts": [
+                "A complete guide to the Spanish voting system",
+                "The final campaign efforts of Pedro Sánchez and his political opponents",
+                "How opinion polls accurately predict election results",
+                "Pedro Sánchez's announcement of a new government policy"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word \"electorate\" refer to in context?",
+              "opts": [
+                "The people who are eligible to vote",
+                "The pollsters making predictions",
+                "The journalists covering the election",
+                "The members of parliament"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What does Pedro Sánchez hope to do regarding the poll results?",
+              "opts": [
+                "Defy them and win",
+                "Accept them and resign",
+                "Change the poll numbers himself",
+                "Cancel the upcoming election"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Which statement is FALSE based on the text?",
+              "opts": [
+                "Rivals accuse Sánchez of committing a \"betrayal.\"",
+                "Political rivals accuse Sánchez of not telling the truth.",
+                "Sánchez is currently facing difficult poll numbers.",
+                "Pedro Sánchez's opponents are helping him rally voters."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mx00tw17d447",
+      "date": "2026-11-28",
+      "category": "World",
+      "title": "Turkish Officials Raid Pro-Opposition TV Channel",
+      "src": "https://www.bbc.co.uk/news/articles/cq36gk151xkdo?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/3aaf/live/e29d41d0-ead0-11f1-b97f-cdd549897b30.jpg",
+      "levels": {
+        "1": {
+          "text": "Last month, Turkish officials raided the headquarters of Halk TV. Halk TV is a pro-opposition news channel in Turkey. The channel's owner spoke to the BBC about this event. He said that Turkish officials destroyed the TV channel. This raid is not the first one. It is the latest event in a series of crackdowns on news sources in Turkey. The Turkish government acts against news sources that it deems critical of its work. The owner feels that the government wants to stop their reporting.",
+          "quiz": [
+            {
+              "q": "What is the main idea of the story?",
+              "opts": [
+                "The BBC bought a Turkish TV channel.",
+                "Halk TV opened a new office last month.",
+                "A TV channel changed its name last month.",
+                "Turkish officials raided the headquarters of a TV channel."
+              ],
+              "ans": 3
+            },
+            {
+              "q": "What does the word 'raided' mean in the text?",
+              "opts": [
+                "Entered forcefully to take action",
+                "Repaired a broken building",
+                "Visited friendly people",
+                "Bought a new company"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "Who did the owner of Halk TV speak to?",
+              "opts": [
+                "Turkish officials",
+                "The BBC",
+                "Halk TV viewers",
+                "A local court"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which of the following statements is TRUE based on the text?",
+              "opts": [
+                "Halk TV supports the Turkish government.",
+                "The raid happened last week.",
+                "The government helped Halk TV build a new studio.",
+                "The raid is part of a series of crackdowns on critical news sources."
+              ],
+              "ans": 3
+            }
+          ]
+        },
+        "2": {
+          "text": "Turkish officials recently raided the headquarters of Halk TV, a pro-opposition television channel. Speaking to the BBC, the owner of the channel stated that officials effectively destroyed the station. This raid happened last month and marks the latest incident in a growing series of government crackdowns on independent news sources in Turkey. The Turkish government has been targeting media outlets that it deems critical of its leadership and policies. According to the owner, these actions aim to silence opposition voices and control the news. Journalists and media workers face increasing pressure as the government continues to act against news organizations that express disagreement with official actions. The situation highlights ongoing challenges for free reporting in the country.",
+          "quiz": [
+            {
+              "q": "What is the main topic of Level 2?",
+              "opts": [
+                "New television programs on Halk TV",
+                "The BBC opening a new station in Turkey",
+                "A financial report about Turkish media",
+                "Government actions against a critical Turkish TV channel"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "In the text, what does 'deems' mean?",
+              "opts": [
+                "Ignores or forgets",
+                "Considers or judges",
+                "Protects or saves",
+                "Builds or creates"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "When did the raid on Halk TV headquarters occur?",
+              "opts": [
+                "Last year",
+                "Last month",
+                "Yesterday",
+                "Last week"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE according to the passage?",
+              "opts": [
+                "The Turkish government targets news sources it considers critical.",
+                "The raid on Halk TV is an isolated event with no other similar incidents.",
+                "Halk TV is a pro-government channel.",
+                "The owner spoke directly to Turkish officials about the raid."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "3": {
+          "text": "The owner of Halk TV has told the BBC that Turkish officials 'destroyed' the pro-opposition television channel following a raid on its headquarters last month. The intervention represents the latest incident in a broader series of government crackdowns directed at news sources deemed critical of the current Turkish administration. Over recent months, independent media outlets in Turkey have faced heightened scrutiny and official hostility when reporting on government actions. Halk TV, known for its critical coverage of official policies, was targeted as part of this ongoing pressure on non-governmental media. The channel's owner expressed severe concern over the state of press freedom, warning that the raid signals a dangerous escalation in suppressing opposition viewpoints. As authorities continue to crack down on press freedom, independent journalists in the country encounter significant obstacles in delivering news that challenges official narratives.",
+          "quiz": [
+            {
+              "q": "What is the main focus of the Level 3 text?",
+              "opts": [
+                "The expansion of pro-government media in Turkey",
+                "The legal defense of Turkish TV channels",
+                "A raid on Halk TV amidst government crackdowns on critical media",
+                "A dispute between the BBC and Halk TV"
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does the word 'crackdowns' mean in this context?",
+              "opts": [
+                "Celebrations of new government laws",
+                "Financial investments in private companies",
+                "Public debates between opposing political parties",
+                "Severe measures taken to restrict or suppress activities"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which organization reported the owner's statement about the channel being 'destroyed'?",
+              "opts": [
+                "The Turkish government",
+                "Halk TV",
+                "An independent press agency",
+                "The BBC"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE based on the text?",
+              "opts": [
+                "Halk TV was raided because it supports the government.",
+                "The raid on Halk TV headquarters took place last month.",
+                "Turkish officials denied that the raid ever happened.",
+                "Halk TV is a brand new station owned by the BBC."
+              ],
+              "ans": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mx00tv1uaobs",
+      "date": "2026-11-28",
+      "category": "World",
+      "title": "Eight killed in Peruvian military helicopter crash",
+      "src": "https://www.bbc.co.uk/news/articles/cwp9d85mlp88o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC News",
+      "img": "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/faea/live/b54be270-eadc-11f1-81da-2ff518b71d00.jpg",
+      "levels": {
+        "1": {
+          "text": "A Peruvian military helicopter crashed in a remote area. The area is known for drug trafficking. The helicopter was on a rescue mission when the accident happened. Eight people died in the crash. The pilot was the only person who survived. Officials are looking into the accident. Emergency workers went to the crash site to help. This tragedy shows how dangerous rescue work can be in hard areas. People in Peru are sad about the lost lives. Safety is very important for all military flights.",
+          "quiz": [
+            {
+              "q": "What is the main idea of this story?",
+              "opts": [
+                "Drug traffickers built a new airport.",
+                "A pilot flew to a new city safely.",
+                "Eight people died in a military helicopter crash in Peru.",
+                "Rescue workers saved eight people from a mountain."
+              ],
+              "ans": 2
+            },
+            {
+              "q": "What does 'survived' mean in this text?",
+              "opts": [
+                "Traveled to a far country",
+                "Lived through a dangerous event",
+                "Lost a job",
+                "Fell asleep quickly"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "How many people died in the crash?",
+              "opts": [
+                "One",
+                "Two",
+                "Ten",
+                "Eight"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is TRUE according to the story?",
+              "opts": [
+                "The helicopter was on a rescue mission.",
+                "No one died in the accident.",
+                "Eight pilots survived the crash.",
+                "The crash happened in a city center."
+              ],
+              "ans": 0
+            }
+          ]
+        },
+        "2": {
+          "text": "A Peruvian military helicopter has crashed during a rescue mission in a remote region of the country. Tragically, eight people were killed in the accident. The pilot was the sole survivor of the crash. The event took place in an isolated area that is well known for drug trafficking. Authorities are working to understand what caused the helicopter to go down during the mission. Rescue teams quickly traveled to the site to assist, but most of the people on board could not be saved. This sad event highlights the great risks military personnel face when conducting emergency operations in difficult and dangerous locations.",
+          "quiz": [
+            {
+              "q": "What is the main topic of the news report?",
+              "opts": [
+                "A new rescue team in a big city",
+                "A fatal military helicopter crash in Peru",
+                "A successful drug raid by Peruvian police",
+                "The training of new military pilots"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "What does the word 'sole' mean in the text?",
+              "opts": [
+                "Only",
+                "Fastest",
+                "Youngest",
+                "First"
+              ],
+              "ans": 0
+            },
+            {
+              "q": "What was the helicopter doing when it crashed?",
+              "opts": [
+                "Taking tourists on a tour",
+                "Testing new military equipment",
+                "Carrying drug traffickers",
+                "Performing a rescue mission"
+              ],
+              "ans": 3
+            },
+            {
+              "q": "Which statement is FALSE according to the text?",
+              "opts": [
+                "Eight people lost their lives in the crash.",
+                "All passengers and crew survived the crash.",
+                "The crash happened in a remote area.",
+                "The region is known for drug trafficking."
+              ],
+              "ans": 1
+            }
+          ]
+        },
+        "3": {
+          "text": "Eight people have lost their lives following the crash of a Peruvian military helicopter in a remote area of the country. According to official reports, the aircraft was carrying out a rescue mission when the tragic incident occurred. The pilot was the sole survivor of the devastating crash. The accident took place in an isolated region that is widely known for drug trafficking activities. Investigators are currently attempting to determine the exact circumstances that led to the helicopter going down. Emergency services were dispatched to the remote location shortly after the crash was reported. This tragic accident underscores the hazardous conditions and extreme dangers that military crews frequently encounter while performing life-saving rescue operations in remote and challenging terrains across Peru.",
+          "quiz": [
+            {
+              "q": "Which headline best summarizes the article?",
+              "opts": [
+                "New Safety Rules Announced for Peruvian Military Flights",
+                "Eight Dead After Peruvian Military Helicopter Crashes During Rescue Mission",
+                "Military Aircraft Stops Drug Trafficking in Remote Peru",
+                "Peruvian Pilot Rescues Eight People in Remote Area"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "In the text, what does 'hazardous' mean?",
+              "opts": [
+                "Simple",
+                "Dangerous",
+                "Quiet",
+                "Comfortable"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Who was the only person to survive the crash?",
+              "opts": [
+                "A passenger",
+                "The pilot",
+                "A police officer",
+                "A doctor"
+              ],
+              "ans": 1
+            },
+            {
+              "q": "Which statement is TRUE based on the summary?",
+              "opts": [
+                "The pilot was among the eight people killed.",
+                "There were no fatalities in the helicopter crash.",
+                "The crash occurred in a busy urban center.",
+                "The helicopter was engaged in a rescue mission."
+              ],
+              "ans": 3
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "mwvqibe7ydoe",
       "date": "2026-11-25",
@@ -3942,444 +4380,6 @@
         }
       },
       "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/c16a/live/65ee22f0-df02-11f1-b6e1-5b169363fed4.jpg"
-    },
-    {
-      "id": "mwd5sancsfkc",
-      "date": "2026-11-12",
-      "category": "World",
-      "title": "Ukraine's Power Supply Close to Critical as Russian Strikes Bring Darkness and Cold",
-      "src": "https://www.bbc.co.uk/news/articles/cr1ewpd95d21o?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "Life is very hard for many families in parts of Ukraine. Russian strikes damage the power supply. Because of this, the power supply is close to critical. Parents try to lead a normal family life, but they face dark and cold days. They only have a few hours of power each day. This big problem is taking its toll on the parents. They must care for their children with very little electricity every day. It is difficult to live without regular heat and light.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "Parents in Ukraine face hard times with very little daily power.",
-                "Children in Ukraine spend all day in warm schools.",
-                "Ukraine built new power stations for families.",
-                "Russian families are moving to Ukraine for work."
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What does the word 'critical' mean in the text?",
-              "opts": [
-                "In a dangerous or serious state",
-                "Easy to fix",
-                "Safe and happy",
-                "Very bright and warm"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "How many hours of power do parents have each day?",
-              "opts": [
-                "No hours at all",
-                "12 hours",
-                "Just a few hours",
-                "24 hours"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "True or False: The text says Ukrainian families have regular heat every day.",
-              "opts": [
-                "True",
-                "The text says it is summer",
-                "False",
-                "The text says heat is not needed"
-              ],
-              "ans": 2
-            }
-          ]
-        },
-        "2": {
-          "text": "Russian strikes have caused severe damage to the power supply in Ukraine. As a result, the nation's energy system is now close to a critical state. This situation brings intense darkness and cold to many regions. For parents living in parts of Ukraine, managing a normal family life has become a major challenge. They must navigate daily routines while receiving only a few hours of electricity each day. Trying to take care of a household under these dark and freezing conditions is taking a heavy toll on parents. Families are forced to adapt to living with very little power while facing the harsh winter weather.",
-          "quiz": [
-            {
-              "q": "What is the main topic of this passage?",
-              "opts": [
-                "The weather forecast for winter in Europe",
-                "New energy technology used by parents in Ukraine",
-                "How Russian strikes on power supplies impact Ukrainian families",
-                "The cost of electricity in Ukrainian cities"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "What does the phrase 'taking its toll' mean in this context?",
-              "opts": [
-                "Repairing broken lights",
-                "Making things much faster",
-                "Earning a lot of money",
-                "Causing suffering or a negative effect"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Why is the energy system in Ukraine close to critical?",
-              "opts": [
-                "Because parents use too much power",
-                "Because of high electricity bills",
-                "Because of severe summer heat",
-                "Because of Russian strikes"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which statement is TRUE according to the text?",
-              "opts": [
-                "Parents get power for most of the day.",
-                "The strikes bring darkness and cold.",
-                "Families are moving to other countries.",
-                "The energy system is completely fixed."
-              ],
-              "ans": 1
-            }
-          ]
-        },
-        "3": {
-          "text": "Russian strikes against energy infrastructure have pushed Ukraine's power supply close to a critical level, leaving many regions facing extreme darkness and cold. The persistent lack of electricity creates severe daily hardships across affected areas. For parents residing in parts of Ukraine, the struggle to maintain a normal family life under these conditions is taking its toll. Household routines must be managed within the strict constraints of receiving just a few hours of power each day. Parents face the daunting task of keeping their children warm, fed, and comforted while navigating long periods without light or heat. As winter conditions persist, the continuous shortages of electricity severely disrupt normal domestic life, placing immense pressure on families who are forced to cope with the ongoing dark and freezing environment caused by the damaged energy grid.",
-          "quiz": [
-            {
-              "q": "What is the main focus of the news article?",
-              "opts": [
-                "Government plans to reduce family electricity bills",
-                "The heavy strain on Ukrainian families due to critical power shortages from Russian strikes",
-                "A report on cold weather patterns in Eastern Europe",
-                "Efforts to build new power lines across Europe"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "In the text, what does the word 'constraints' mean?",
-              "opts": [
-                "Useful tools",
-                "Limitations or restrictions",
-                "Clear instructions",
-                "Extra gifts"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What causes the extreme darkness and cold mentioned in the text?",
-              "opts": [
-                "A sudden change in the wind direction",
-                "A natural solar eclipse",
-                "Parents turning off their lights",
-                "Russian strikes on energy infrastructure"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which of the following statements is FALSE based on the text?",
-              "opts": [
-                "Ukraine's power supply is near a critical level.",
-                "Russian strikes have affected the energy grid.",
-                "Parents receive only a few hours of power daily.",
-                "Parents find it very easy to keep a normal family life."
-              ],
-              "ans": 3
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/2a2c/live/a70e9220-de61-11f1-a701-fddedf244c16.jpg"
-    },
-    {
-      "id": "mwd5sactco1z",
-      "date": "2026-11-12",
-      "category": "World",
-      "title": "Democrat Scott Colom Wins Mississippi Senate Race",
-      "src": "https://www.bbc.co.uk/news/articles/cw7vppyr80eeo?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "Scott Colom won a big election in Mississippi. He is a Democrat. He won a seat in the US Senate. This win is very important. Scott Colom is the first black person from Mississippi to be elected to the US Senate in over 140 years. People call this a historic win for the southern state. Many people watched this Mississippi Senate race closely.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "Scott Colom won a historic US Senate race in Mississippi.",
-                "A Senate election happens every year.",
-                "Mississippi is a southern state in the US.",
-                " Scott Colom lost his race in Mississippi."
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What does the word 'historic' mean in this text?",
-              "opts": [
-                "Very boring",
-                "Very recent",
-                "Fast and easy",
-                "Important in history"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Which state did Scott Colom win his Senate seat in?",
-              "opts": [
-                "Texas",
-                "California",
-                "New York",
-                "Mississippi"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Is the following statement true or false? Scott Colom is a Republican.",
-              "opts": [
-                "True",
-                "He is from another country",
-                "False",
-                "The text does not say"
-              ],
-              "ans": 2
-            }
-          ]
-        },
-        "2": {
-          "text": "Democrat Scott Colom has achieved a historic victory in Mississippi. He won a seat to represent the southern state in the US Senate. This election is very special because of its history. Scott Colom is the first black person elected to the US Senate from Mississippi in more than 140 years. Because of this, his victory is seen as a major historic moment for both the state and the country. People across the United States followed the Mississippi Senate race to see the outcome of this important vote.",
-          "quiz": [
-            {
-              "q": "What is the main subject of the news article?",
-              "opts": [
-                "A new law in Mississippi",
-                "A political debate between two candidates",
-                "The history of elections in the US",
-                "Scott Colom's historic Senate win in Mississippi"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "What does the word 'victory' mean in the text?",
-              "opts": [
-                "A loss in an election",
-                "A success or win",
-                "A long discussion",
-                "A new candidate"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "How long has it been since a black person from Mississippi was elected to the US Senate?",
-              "opts": [
-                "Exactly 50 years",
-                "Less than 10 years",
-                "100 years",
-                "Over 140 years"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Is the following statement true or false? Scott Colom belongs to the Democratic party.",
-              "opts": [
-                "False",
-                "The text does not mention his party",
-                "He is an independent candidate",
-                "True"
-              ],
-              "ans": 3
-            }
-          ]
-        },
-        "3": {
-          "text": "Democrat Scott Colom has sealed a historic victory in the Mississippi Senate race, marking a major political milestone for the southern state. With this election result, Colom becomes the first black person from Mississippi to be elected to the US Senate in over 140 years. The race attracted significant national attention due to the long period of time since a black senator last represented the state. Colom's achievement breaks a historic streak that had lasted for more than a century, securing his place in both Mississippi and US political history as he prepares to take his seat in the Senate.",
-          "quiz": [
-            {
-              "q": "What is the main focus of this news report?",
-              "opts": [
-                "The retirement of a long-serving politician in Mississippi",
-                "Scott Colom's historic election as the first black US senator from Mississippi in over 140 years",
-                "A detailed breakdown of voter turnout in the US Senate race",
-                "The changing political views of voters in southern US states"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "In this context, what does the word 'sealed' mean?",
-              "opts": [
-                "Secured or finalized a win",
-                "Closed an envelope tightly",
-                "Delayed an announcement",
-                "Cancelled an event"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "Which political party does Scott Colom belong to?",
-              "opts": [
-                "Libertarian Party",
-                "Republican Party",
-                "Democratic Party",
-                "Green Party"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Is the following statement true or false? Another black person was elected to the US Senate from Mississippi 50 years ago.",
-              "opts": [
-                "The text says it was 100 years ago",
-                "True",
-                "The text says it was 14 years ago",
-                "False"
-              ],
-              "ans": 3
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/884a/live/97210150-de3d-11f1-a9ed-658311f31da9.jpg"
-    },
-    {
-      "id": "mwd5sdj8ncv4",
-      "date": "2026-11-12",
-      "category": "World",
-      "title": "Israeli Strike Hits Gaza Hospital Surgery Department",
-      "src": "https://www.bbc.co.uk/news/articles/ckzd9p7e4eqeo?at_medium=RSS&at_campaign=rss",
-      "source": "BBC News",
-      "levels": {
-        "1": {
-          "text": "A strike hit a hospital in Gaza. The hit happened in Khan Younis. It struck the surgery department of the hospital. The Gaza civil defence agency spoke about the event. A spokesperson said the strike killed at least five Palestinians. At least 20 people were injured in the strike. The attack also caused extensive damage to the hospital. People were hurt and the building was badly damaged. The civil defence agency shared these details about the strike.",
-          "quiz": [
-            {
-              "q": "What is the main idea of the story?",
-              "opts": [
-                "A new hospital opened in Khan Younis.",
-                "A strike on a hospital in Khan Younis killed and injured people.",
-                "Twenty doctors moved to a hospital in Gaza.",
-                "The Gaza civil defence agency rebuilt a damaged building."
-              ],
-              "ans": 1
-            },
-            {
-              "q": "What does 'injured' mean in the text?",
-              "opts": [
-                "Hurt",
-                "Happy",
-                "Cleaned",
-                "Rescued"
-              ],
-              "ans": 0
-            },
-            {
-              "q": "How many people were killed at least, according to the spokesperson?",
-              "opts": [
-                "20",
-                "10",
-                "15",
-                "5"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "True or False: The strike caused extensive damage to the surgery department.",
-              "opts": [
-                "True",
-                "False",
-                "The text does not say",
-                "Only the windows were damaged"
-              ],
-              "ans": 0
-            }
-          ]
-        },
-        "2": {
-          "text": "An Israeli strike hit a hospital located in Khan Younis, Gaza. According to a spokesperson for the Gaza civil defence agency, the strike hit the surgery department of the facility. The attack killed at least five Palestinians and injured at least 20 others. The spokesperson also reported that the strike caused extensive damage to the building. The civil defence agency provided these details following the hit on the medical center. This event caused harm to many people inside the department and left the facility severely damaged.",
-          "quiz": [
-            {
-              "q": "What main event is described in the article?",
-              "opts": [
-                "A hospital surgery department in Khan Younis was struck, causing casualties and damage.",
-                "A civil defence agency opened a new facility in Gaza.",
-                "Five patients were moved to another surgical department.",
-                "At least 20 doctors arrived in Khan Younis to help patients."
-              ],
-              "ans": 0
-            },
-            {
-              "q": "In this text, what does 'extensive' mean?",
-              "opts": [
-                "Temporary",
-                "Large in amount or scale",
-                "Very small",
-                "Slow and careful"
-              ],
-              "ans": 1
-            },
-            {
-              "q": "Which part of the hospital was hit by the strike?",
-              "opts": [
-                "The roof garden",
-                "The parking area",
-                "The surgery department",
-                "The main entrance"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Which statement is TRUE according to the text?",
-              "opts": [
-                "At least 20 people were injured in the strike.",
-                "The strike happened outside the hospital grounds.",
-                "The civil defence agency did not comment on the damage.",
-                "No one died in the strike."
-              ],
-              "ans": 0
-            }
-          ]
-        },
-        "3": {
-          "text": "An Israeli strike targeted a hospital in Khan Younis, resulting in casualties and heavy destruction. A spokesperson for the Gaza civil defence agency stated that the strike directly hit the surgery department of the facility. The attack killed at least five Palestinians and left at least 20 people injured. In addition to the casualties, the strike caused extensive damage to the surgical area. The official report from the civil defence spokesperson confirmed the loss of life, the number of injured individuals, and the severe physical harm done to the medical facility.",
-          "quiz": [
-            {
-              "q": "What is the main topic of this news report?",
-              "opts": [
-                "An Israeli strike on a hospital surgery department in Khan Younis caused deaths, injuries, and major damage.",
-                "Five doctors made a statement about hospital safety in Gaza.",
-                "Twenty injured people were safely evacuated from Khan Younis.",
-                "A new medical department was constructed by the Gaza civil defence agency."
-              ],
-              "ans": 0
-            },
-            {
-              "q": "What is the meaning of 'casualties' as used in the context of the story?",
-              "opts": [
-                "Official statements",
-                "Surgical equipment",
-                "Building repairs",
-                "People killed or injured"
-              ],
-              "ans": 3
-            },
-            {
-              "q": "Who provided the details regarding the strike and the damage?",
-              "opts": [
-                "A local news reporter",
-                "The international Red Cross",
-                "A spokesperson for the Gaza civil defence agency",
-                "The hospital's chief surgeon"
-              ],
-              "ans": 2
-            },
-            {
-              "q": "Which of the following statements is FALSE based on the text?",
-              "opts": [
-                "At least 20 people were injured.",
-                "The hit occurred in Khan Younis.",
-                "The surgery department suffered extensive damage.",
-                "The strike resulted in zero deaths."
-              ],
-              "ans": 3
-            }
-          ]
-        }
-      },
-      "img": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/d247/live/940d6f30-de7e-11f1-b88b-3f1671ea859d.jpg"
     }
   ]
 }
