@@ -638,3 +638,18 @@ body:has(.ka-modal) .aiw-ban,body:has(.aiw) .aiw-ban{display:none}
 .ka-links .nsm{display:none}.ka-tabbar .nlg{display:none}.ka-tabbar .nsm{display:inline}
 
 .ka-chip small.kl{display:inline!important;font-size:11px;font-weight:800;margin-left:1px}
+
+/* mobil üst çubuk: tema, ses ve YZ durumu tek menüde */
+.ka-more{display:none}
+.ka-acc img{object-fit:cover}
+.ka-menu{position:fixed;z-index:120;min-width:240px;padding:8px;border-radius:18px;background:var(--card);border:1px solid var(--line2);box-shadow:var(--sh2);display:grid;gap:4px;animation:kaFade .12s}
+.km-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 10px;border-radius:12px;font:700 14px var(--sans,inherit);color:var(--ink);background:transparent;border:0;text-align:left;width:100%}
+.km-ai{cursor:pointer;flex-direction:column;align-items:flex-start;gap:1px}.km-ai:hover{background:var(--soft)}.km-ai small{color:var(--mut);font-weight:600;font-size:12.5px}
+.ka-menu .ka-mode button span{display:inline!important}.ka-menu .ka-mode button{padding:0 10px!important}
+@media (max-width:560px){
+  .ka-tools>.ka-mode,.ka-tools>.ka-snd-top,.ka-tools>.ka-ai:not(.low){display:none}
+  .ka-more{display:grid}
+  .ka-tools .ka-icon-btn{width:36px;height:36px}
+}
+
+.ka-menu .ka-mode button{display:flex!important}

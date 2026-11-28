@@ -16,7 +16,7 @@
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=22">
+<link rel="stylesheet" href="ortak.css?v=23">
 <style>
 .hero{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:center;padding:30px 32px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%)}
 .hero h1{font-size:clamp(28px,4vw,40px);margin:8px 0 10px}
@@ -71,7 +71,8 @@
 .badge div{width:38px;height:38px;margin:0 auto 6px;border-radius:12px;display:grid;place-items:center;background:var(--card);color:var(--acc2)}
 .badge div svg{width:20px;height:20px}
 .prep{display:flex;align-items:center;gap:14px;padding:14px 18px;margin-bottom:16px;border-color:color-mix(in srgb,var(--acc) 45%,var(--line));background:var(--acc-soft)}
-.prep p{margin:0;flex:1;font-size:14px;font-weight:600}
+.prep p{margin:0;flex:1;font-size:14px;font-weight:600;line-height:1.45}
+@media (max-width:560px){.prep{flex-wrap:wrap;gap:10px;padding:14px 16px}.prep>span:first-child{display:none}.prep p{flex:1 1 100%}.prep>.btn,.prep>.row{margin-left:auto}}
 .empty{text-align:center;padding:48px 24px}
 .empty h2{font-size:30px;margin:10px 0}
 .empty p{color:var(--ink2);max-width:560px;margin:0 auto 22px}
@@ -173,7 +174,7 @@
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="home"></div><section id="act" class="act" hidden></section></main>
-<script src="firebase-config.js?v=22"></script><script src="ortak.js?v=22"></script>
+<script src="firebase-config.js?v=23"></script><script src="ortak.js?v=23"></script>
 <script>
 (function(){
 'use strict';
@@ -435,7 +436,7 @@ function renderHome(){
   }
   const aid=KA.activeId();cur=packs.find(p=>p.id===aid)||packs[0];KA.activeId(cur.id);fixPack(cur);
   if(!cur.aud&&!AUD_RUN.has(cur.id)&&cur.id!=='def'&&cur.id!=='unk')setTimeout(()=>runAudit(cur),300);
-  const styCard=(!AUD_RUN.has(cur.id)&&!BUSY&&cur.sty!==2&&cur.id!=='unk'&&cur.items.some(x=>x.s))?`<div class="card prep"><span style="color:var(--acc2)">${ic('spark')}</span><p><b>Yeni BUEPT üslubu hazır.</b> Tercüman cümleleri ve Kürsü paragrafları artık 20 Boğaziçi deneme sınavının konu, paragraf ve cümle mantığıyla, senin kelimelerinle özgün olarak yazılıyor. Bu listeyi de yenileyelim mi? İlerlemen korunur.</p><div class="row" style="gap:6px"><button class="btn btn-acc btn-sm" data-a="styup">${ic('reset')}Yenile</button><button class="btn btn-ghost btn-sm" data-a="styno">Şimdilik kalsın</button></div></div>`:'';
+  const styCard=(!AUD_RUN.has(cur.id)&&!BUSY&&cur.sty!==2&&cur.id!=='unk'&&cur.items.some(x=>x.s))?`<div class="card prep"><span style="color:var(--acc2)">${ic('spark')}</span><p><b>Yeni BUEPT üslubu hazır.</b> Bu listenin cümle ve paragraflarını yenileyelim mi? İlerlemen korunur.</p><div class="row" style="gap:6px"><button class="btn btn-acc btn-sm" data-a="styup">${ic('reset')}Yenile</button><button class="btn btn-ghost btn-sm" data-a="styno">Şimdilik kalsın</button></div></div>`:'';
   const audCard=AUD_RUN.has(cur.id)?`<div class="card prep"><span class="ka-spin"></span><p>Yapay zekâ kartlarını denetliyor: yer değiştirmiş, karışmış ya da yanlış anlamlı kartlar düzeltiliyor…</p></div>`:
     (cur.audLog&&cur.audLog.length&&!cur.audSeen)?`<div class="card prep"><span style="color:var(--acc2)">${ic('spark')}</span><p>Yapay zekâ listende <b>${cur.audLog.length} kartı</b> düzeltti (yer değiştirmiş dil, aynı satıra karışmış kelimeler, yanlış anlam).</p><div class="row" style="gap:6px"><button class="btn btn-ghost btn-sm" data-a="audlog">Neleri düzeltti?</button>${cur.bak?'<button class="btn btn-ghost btn-sm" data-a="audundo">Geri al</button>':''}<button class="btn btn-acc btn-sm" data-a="audok">Tamam</button></div></div>`:'';
   const st=cur.prog.steps,done=st.filter(Boolean).length,nx=nextMode(),meta=KA.meta();
@@ -446,7 +447,7 @@ function renderHome(){
   const maxT=Math.max(1,...tiers.map(t=>t.n));
   const badges=[['İlk kapı','kart',st[0]||meta.kart>0],['Keskin nişancı','sec',meta.tot>=30&&meta.ok/meta.tot>=.9],['7 gün seri','flame',KA.streak(meta)>=7],['Bekçiyi geçen','boss',!!st[4]],['Yazar','yaz',!!st[3]],['Paragraf ustası','para',!!st[6]]];
   H.innerHTML=`
-  ${audCard}${styCard}${needs?`<div class="card prep" id="prep"><span style="color:var(--acc2)">${ic('spark')}</span><p id="prepTxt">${BUSY?'Hazırlanıyor…':`Bu listede ${[ms.tr&&ms.tr+' kelimenin anlamı',ms.s&&ms.s+' kelimenin örnek cümlesi',ms.g&&ms.g+' kelimenin paragrafı'].filter(Boolean).join(', ')} eksik.`}</p><button class="btn btn-acc btn-sm" data-a="prep" ${BUSY?'disabled':''}>${ic('spark')}Hazırla</button></div>`:''}
+  ${audCard||(needs?'':styCard)}${!audCard&&needs?`<div class="card prep" id="prep"><span style="color:var(--acc2)">${ic('spark')}</span><p id="prepTxt">${BUSY?'Hazırlanıyor…':`Bu listede ${[ms.tr&&ms.tr+' kelimenin anlamı',ms.s&&ms.s+' kelimenin örnek cümlesi',ms.g&&ms.g+' kelimenin paragrafı'].filter(Boolean).join(', ')} eksik.`}</p><button class="btn btn-acc btn-sm" data-a="prep" ${BUSY?'disabled':''}>${ic('spark')}Hazırla</button></div>`:''}
   <section class="card hero">
     <div>
       <div class="row" style="gap:8px"><span class="eyebrow">Aktif liste</span><span class="rank">${ic('crown')}${rankOf(cur.prog.xp||0)}</span></div>

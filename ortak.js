@@ -202,6 +202,16 @@ const unlock=()=>{document.removeEventListener('pointerdown',unlock,true);docume
   try{if(synth&&!synth.speaking){const u=new SpeechSynthesisUtterance(' ');u.volume=0;synth.speak(u)}}catch(e){}
   pickVoice()};
 document.addEventListener('pointerdown',unlock,true);document.addEventListener('keydown',unlock,true);
+KA.moreMenu=btn=>{
+  const old=document.querySelector('.ka-menu');if(old){old.remove();btn.setAttribute('aria-expanded','false');return}
+  const m=KA.mode(),ai=document.getElementById('kaAi');
+  const d=document.createElement('div');d.className='ka-menu';d.setAttribute('role','menu');
+  d.innerHTML=`<div class="km-row"><span>Görünüm</span><div class="ka-mode"><button data-m="light" class="${m!=='dark'?'on':''}">${KA.ic('sun')}<span>Açık</span></button><button data-m="dark" class="${m==='dark'?'on':''}">${KA.ic('moon')}<span>Koyu</span></button></div></div>
+  <div class="km-row"><span>Sesler</span><button class="ka-icon-btn" data-ka-snd title="${muted?'Sesi aç':'Sesi kapat'}">${KA.ic(muted?'mute':'sound')}</button></div>
+  ${ai?`<button class="km-row km-ai" data-ka-aiw><span>Yapay zekâ</span><small>${ai.classList.contains('on')?'Kendi anahtarın bağlı':'Bugün '+(KA.aiLeft?KA.aiLeft():'')+' ücretsiz hak kaldı · bağla'}</small></button>`:''}`;
+  document.body.appendChild(d);btn.setAttribute('aria-expanded','true');
+  const r=btn.getBoundingClientRect();d.style.top=(r.bottom+8)+'px';d.style.right=Math.max(8,innerWidth-r.right)+'px';
+};
 KA.muted=v=>{if(v!==undefined){muted=!!v;S.set('ka_mute',muted?'1':'0');if(muted)KA.stopSpeak();document.querySelectorAll('[data-ka-snd]').forEach(b=>{b.innerHTML=KA.ic(muted?'mute':'sound');b.title=muted?'Sesi aç':'Sesi kapat'})}return muted};
 let ac=null;
 function tone(fs,d,ty,vol){if(muted)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();const t=ac.currentTime+.005;fs.forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain(),s=t+i*d;o.type=ty;o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(1e-4,s);g.gain.exponentialRampToValueAtTime(vol||.12,s+.012);g.gain.exponentialRampToValueAtTime(1e-4,s+d);o.start(s);o.stop(s+d+.03)})}catch(e){}}
@@ -274,7 +284,8 @@ KA.nav=(active,o={})=>{
     <div class="ka-tools">
       ${o.stats?`<span class="ka-chip ka-hide-sm" title="Günlük seri"><span style="color:var(--acc2)">${KA.ic('flame')}</span><b id="kaStreak">0</b><small>gün</small></span><span class="ka-chip" title="Toplam XP"><span style="color:var(--acc)">${KA.ic('star')}</span><b id="kaXp">0</b><small class="kl">XP</small></span>`:''}
       <div class="ka-mode" role="group" aria-label="Görünüm modu"><button data-m="light" class="${m!=='dark'?'on':''}" title="Açık Akdeniz">${KA.ic('sun')}<span>Açık</span></button><button data-m="dark" class="${m==='dark'?'on':''}" title="Koyu Akdeniz">${KA.ic('moon')}<span>Koyu</span></button></div>
-      <button class="ka-icon-btn" data-ka-snd title="${muted?'Sesi aç':'Sesi kapat'}">${KA.ic(muted?'mute':'sound')}</button>
+      <button class="ka-icon-btn ka-snd-top" data-ka-snd title="${muted?'Sesi aç':'Sesi kapat'}">${KA.ic(muted?'mute':'sound')}</button>
+      <button class="ka-icon-btn ka-more" type="button" aria-label="Ayarlar" aria-expanded="false"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>
     </div></div></nav>`;
   document.body.insertAdjacentHTML('afterbegin',html);
   document.body.insertAdjacentHTML('beforeend',`<nav class="ka-tabbar" aria-label="Sekmeler">${links}</nav>`);
@@ -909,6 +920,9 @@ KA.src={packs,words,ask,bar,V,shape,cur:()=>{const v=S.raw(SK,'demo');return v},
 /* ---------- Başlangıç ---------- */
 document.addEventListener('click',e=>{
   const mb=e.target.closest('.ka-mode button');if(mb){KA.fxMode?KA.fxMode(mb,mb.dataset.m):KA.mode(mb.dataset.m);return}
-  if(e.target.closest('[data-ka-snd]')){KA.muted(!muted);return}
+  const mo=e.target.closest('.ka-more');if(mo){KA.moreMenu(mo);return}
+  if(e.target.closest('[data-ka-aiw]')){document.querySelector('.ka-menu')?.remove();KA.aiWizard&&KA.aiWizard('');return}
+  if(!e.target.closest('.ka-menu')){const mm=document.querySelector('.ka-menu');if(mm){mm.remove();document.querySelector('.ka-more')?.setAttribute('aria-expanded','false')}}
+  if(e.target.closest('[data-ka-snd]')){KA.muted(!muted);const l=document.querySelector('.ka-menu [data-ka-snd] + small');return}
 });
 })();
