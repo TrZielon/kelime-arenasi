@@ -16,7 +16,7 @@
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=19">
+<link rel="stylesheet" href="ortak.css?v=22">
 <style>
 .dn-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:18px;margin-bottom:22px}
 .dn-hero .card{padding:26px}
@@ -93,7 +93,7 @@
 </head>
 <body>
 <main class="ka-wrap" id="main"></main>
-<script src="firebase-config.js?v=19"></script><script src="ortak.js?v=19"></script>
+<script src="firebase-config.js?v=22"></script><script src="ortak.js?v=22"></script>
 <script>
 (()=>{
 const {$,esc,shuf}=KA,ic=KA.ic;
@@ -148,7 +148,7 @@ async function lib(){
   stop();EX=null;location.hash='';
   if(!READY.length){try{READY=await (await fetch('deneme-hazir.json?v=1')).json()}catch(e){READY=[]}}
   const list=all();
-  $('#main').innerHTML=`<div class="dn-hero"><section class="card"><span class="eyebrow">Sınav Odası · Sınav oluştur</span><h1>Yeni bir BUEPT reading sınavı oluştur</h1><p>20 gerçek Boğaziçi deneme sınavını inceledim: metin yapısı, konu seçimi ve soru tipleri bu sınavlarla aynı. Her seferinde konusu benzer ama metni ve soruları tamamen yeni bir sınav hazırlanır; istersen kendi kelime listendeki kelimeler metne yerleştirilir; süre tutarak çözersin, sonunda her sorunun açıklamasını metinden alıntıyla görürsün.</p>
+  $('#main').innerHTML=`<div style="margin-bottom:10px"><a class="btn btn-ghost btn-sm" href="sinav.html">${ic('back')}Sınav Odası</a></div><div class="dn-hero"><section class="card"><span class="eyebrow">Sınav Odası · Sınav oluştur</span><h1>Yeni bir BUEPT reading sınavı oluştur</h1><p>20 gerçek Boğaziçi deneme sınavını inceledim: metin yapısı, konu seçimi ve soru tipleri bu sınavlarla aynı. Her seferinde konusu benzer ama metni ve soruları tamamen yeni bir sınav hazırlanır; istersen kendi kelime listendeki kelimeler metne yerleştirilir; süre tutarak çözersin, sonunda her sorunun açıklamasını metinden alıntıyla görürsün.</p>
    <div class="dn-feat"><div><b>Gerçek soru tipleri</b>NOT true, çıkarım, paragrafın amacı, paragraf ilişkisi, cümle yerleştirme, vaka, I-II-III, kutudan tamamlama, kısa cevap</div><div><b>Gerçek süre</b>Reading I 40 dk · Reading II 50 dk</div><div><b>Açıklamalı sonuç</b>Her sorunun Türkçe açıklaması ve metindeki kanıt cümlesi</div><div><b>Kelimeye dokun</b>Metindeki bilmediğin kelimeye dokununca anlamı açılır</div></div>
    <p class="mut" style="margin:14px 0 0;font-size:13px"><a href="sinav.html">← Kendi sınavını yüklemek için Sınav Odası'na dön</a></p></section>
   <section class="card"><div class="lbl">Konu</div><div class="opt-g">${TOPICS.map(([k,n])=>`<button class="pill ${OPT.topic===k?'on':''}" data-tp="${k}">${n}</button>`).join('')}</div>
@@ -169,7 +169,7 @@ async function generate(){
   const tp=OPT.topic==='rnd'?shuf(Object.keys(TOPIC_EN))[0]:OPT.topic,sec=SEC[OPT.sec];
   const idea=shuf(TOPIC_POOL[tp])[0];const WS=OPT.pk?pickWords(OPT.pk,14):[];
   const steps=['Konu ve metin planı','Metin yazılıyor','Sorular yazılıyor','Kontrol ediliyor'];let si=0;
-  const draw=(err)=>{$('#main').innerHTML=`<div class="card gen"><span class="eyebrow">${esc(sec.n)} · ${esc(TOPICS.find(t=>t[0]===tp)[1])}</span><h2 style="margin:8px 0 4px">${err?'Sınav oluşturulamadı':'Sınavın hazırlanıyor…'}</h2><p class="mut">${err?esc(err):'Gerçek BUEPT denemelerindeki yapıya göre yeni bir metin ve sorular yazılıyor.'}</p>${err?`<div class="row" style="justify-content:center;gap:8px;margin-top:12px"><button class="btn btn-p" data-a="gen">${ic('reset')}Tekrar dene</button><button class="btn btn-ghost" data-a="lib">Geri dön</button></div>`:`<div class="steps">${steps.map((s,i)=>`<div class="${i<si?'ok':i===si?'on':''}">${i<si?ic('check'):i===si?'<span class="ka-spin"></span>':'·'} ${s}</div>`).join('')}</div>`}</div>`};
+  const draw=(err)=>{$('#main').innerHTML=`<div class="card gen"><span class="eyebrow">${esc(sec.n)} · ${esc(TOPICS.find(t=>t[0]===tp)[1])}</span><h2 style="margin:8px 0 4px">${err?'Sınav oluşturulamadı':'Sınavın hazırlanıyor…'}</h2><p class="mut">${err?esc(err):'Gerçek BUEPT denemelerindeki yapıya göre yeni bir metin ve sorular yazılıyor.'}</p>${err?`<div class="row" style="justify-content:center;gap:8px;margin-top:12px"><button class="btn btn-p" data-a="gen">${ic('reset')}Tekrar dene</button><button class="btn btn-ghost" data-a="lib">${ic('back')}Sınavlara dön</button></div>`:`<div class="steps">${steps.map((s,i)=>`<div class="${i<si?'ok':i===si?'on':''}">${i<si?ic('check'):i===si?'<span class="ka-spin"></span>':'·'} ${s}</div>`).join('')}</div>`}</div>`};
   draw();si=1;draw();
   let T=null,err='';
   for(let k=0;k<2&&!T;k++){

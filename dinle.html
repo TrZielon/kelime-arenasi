@@ -18,7 +18,7 @@
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=19">
+<link rel="stylesheet" href="ortak.css?v=22">
 <style>
 .dhero{padding:26px 28px 24px;background:linear-gradient(150deg,var(--card),var(--card2))}
 .dhero h1{font-size:clamp(28px,4vw,40px);margin:6px 0 4px}
@@ -194,6 +194,7 @@ body[data-long="1"] .side{position:sticky;top:84px}
 .tst{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--ink2)}.tst.ok{color:var(--ok)}.tst.bad{color:var(--bad)}.tst svg{width:18px;height:18px}
 @media (max-width:900px){body[data-long="1"] .lay{grid-template-columns:1fr}body[data-long="1"] .side{position:static}.notes{min-height:200px}.modes{grid-template-columns:repeat(3,minmax(0,1fr))}.mode .nw{display:block;margin:4px auto 0;width:max-content}}
 @media (max-width:600px){.player{gap:12px;padding:12px}.player .bigplay{width:64px;height:64px;flex-basis:64px}.qq{padding:12px;gap:10px}.ra,.rq blockquote{padding-left:0;margin-left:0}.rtop h2{font-size:34px}.tgrid{grid-template-columns:1fr 1fr}.tth{height:64px}.ttb b{font-size:13.5px}}
+@media (max-width:600px){.modes{display:flex!important;overflow-x:auto;gap:8px;padding:2px 2px 8px;margin:0 -2px;scroll-snap-type:x proximity;scrollbar-width:none}.modes::-webkit-scrollbar{display:none}.mode{flex:0 0 96px;scroll-snap-align:start;padding:10px 8px!important;font-size:13px}.mode b{font-size:12.5px;line-height:1.25}.mode .nw{font-size:9.5px}}
 </style>
 </head>
 <body>
@@ -210,7 +211,7 @@ body[data-long="1"] .side{position:sticky;top:84px}
     <aside class="card side" id="side"></aside>
   </div>
 </main>
-<script src="firebase-config.js?v=19"></script><script src="ortak.js?v=19"></script>
+<script src="firebase-config.js?v=22"></script><script src="ortak.js?v=22"></script>
 <script>
 (function(){
 'use strict';
@@ -293,7 +294,7 @@ function wordAlign(heard,target){
   return {html:T.map((w,k)=>`<span class="wd ${ok[k]?'g':'r'}">${esc(w)}</span>`).join(' '),score:ok.filter((v,k)=>v&&Tn[k]).length/cnt};
 }
 /* ---------- Çizim ---------- */
-const MODES=[['dict','Dinle ve yaz',"Sesi duy, kelimeyi ya da cümleyi yaz",I.pen],['speak','Sesli oku','Kelimeyi söyle, telaffuz puanını gör',I.mic],['pairs','Ses ayrımı','ship mi sheep mi? Benzer sesleri ayırt et',I.pairs],['nums','Sayılar','Yıl, fiyat, saat, tarih ve isim diktesi',I.hash,1],['lec','Ders salonu','BUEPT gibi ders dinle, not al, soruları çöz',I.lec,1],['ted','Video salonu','TED konuşması izle, konuşmaya özel quiz',I.vid,1]];
+const MODES=[['dict','Dinle ve yaz',"Sesi duy, kelimeyi ya da cümleyi yaz",I.pen],['speak','Sesli oku','Kelimeyi söyle, telaffuz puanını gör',I.mic],['pairs','Ses ayrımı','ship mi sheep mi? Benzer sesleri ayırt et',I.pairs],['nums','Sayılar','Yıl, fiyat, saat, tarih ve isim diktesi',I.hash,1],['lec','Ders salonu','BUEPT gibi ders dinle, not al, soruları çöz',I.lec,1],['ted','Video salonu','TED konuşması izle, konuşmaya özel quiz',I.vid,1],['kon','Konuşma koçu','Yapay zekâyla konuş: IELTS tarzı sınav ya da sohbet','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8 11h8M8 14h5"/></svg>',1]];
 function drawTop(){
   $('#modes').innerHTML=MODES.map(([k,t,d,svg,nw])=>`<button type="button" class="mode ${CFG.mode===k?'on':''}" data-dm="${k}"><span class="mi">${svg}</span><div><b>${t}${nw?'<em class="nw">Yeni</em>':''}</b><span>${d}</span></div></button>`).join('');
   const ps=packs();
@@ -756,7 +757,7 @@ function drawEnd(){
 }
 document.addEventListener('click',e=>{
   const t=e.target;
-  const m=t.closest("[data-dm]");if(m){if(REC)stopRec();CFG.mode=m.dataset.dm;save();return newSession()}
+  const m=t.closest("[data-dm]");if(m&&m.dataset.dm==='kon'){location.href='konus.html';return}if(m){if(REC)stopRec();CFG.mode=m.dataset.dm;save();return newSession()}
   const u=t.closest('[data-unit]');if(u){CFG.unit=u.dataset.unit;save();return newSession()}
   const r=t.closest('[data-rate]');if(r){CFG.rate=+r.dataset.rate;save();drawTop();return}
   const tp=t.closest('[data-topic]');if(tp){LEC.topic=+tp.dataset.topic;return draw()}

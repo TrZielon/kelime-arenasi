@@ -16,7 +16,7 @@
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=19">
+<link rel="stylesheet" href="ortak.css?v=22">
 <style>
 .hero{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:center;padding:30px 32px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%)}
 .hero h1{font-size:clamp(28px,4vw,40px);margin:8px 0 10px}
@@ -161,11 +161,19 @@
 .drop.over{border-color:var(--p);background:var(--p-soft)}
 @media (max-width:900px){.hero{grid-template-columns:1fr;padding:24px 20px}.arena-vis{max-width:300px}.stats{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}.badges{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:520px){.qcard{padding:20px 16px}.mgrid{gap:8px}.cardbtns{grid-template-columns:1fr 1fr}.cardbtns .back{grid-column:1/-1}.score{grid-template-columns:1fr;justify-items:center;text-align:center}.tier{grid-template-columns:110px 1fr 34px}}
+.progx{margin-top:16px}.progx>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;cursor:pointer}.progx>summary::-webkit-details-marker{display:none}.progx>summary span{display:flex;flex-direction:column;gap:2px}.progx>summary small{color:var(--mut);font-size:13px}.progx>summary i{transition:transform .2s;display:grid}.progx[open]>summary i{transform:rotate(90deg)}
+.hubg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 4px}
+.hubg a{display:flex;gap:12px;align-items:center;padding:14px 16px;text-decoration:none;color:var(--ink);transition:transform .2s}
+.hubg a:hover{transform:translateY(-2px);box-shadow:0 0 0 1.5px var(--p) inset}
+.hubg .hi{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:var(--p-soft);color:var(--p);flex:0 0 auto}.hubg .hi svg{width:22px;height:22px}
+.hubg b{display:block;font-size:15px}.hubg small{display:block;color:var(--mut);font-size:12.5px;margin-top:2px;line-height:1.35}
+.card.pwa{position:relative}.pwax{position:absolute;top:8px;right:8px;width:30px;height:30px}
+@media (max-width:760px){.hubg{grid-template-columns:1fr 1fr;gap:8px}.hubg a{flex-direction:column;align-items:flex-start;gap:8px;padding:12px}.arena-vis{max-width:220px;margin:4px auto 0}}
 </style>
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="home"></div><section id="act" class="act" hidden></section></main>
-<script src="firebase-config.js?v=19"></script><script src="ortak.js?v=19"></script>
+<script src="firebase-config.js?v=22"></script><script src="ortak.js?v=22"></script>
 <script>
 (function(){
 'use strict';
@@ -422,7 +430,7 @@ function renderHome(){
   mode=-1;$('#act').hidden=true;const H=$('#home');H.hidden=false;KA.closeLookup();
   packs=KA.listPacks().map(KA.normPack);
   if(!packs.length){
-    H.innerHTML=`<section class="card empty"><img src="favicon.svg" width="72" height="72" alt=""><h2>Kendi kelime arenanı kur</h2><p>Öğrenmek istediğin kelimeleri yapıştır ya da PDF, Word veya metin dosyası olarak yükle. Anlamlar, akademik örnek cümleler ve paragraflar senin listen için hazırlansın.</p><div class="row" style="justify-content:center"><button class="btn btn-p btn-lg" data-a="new">${ic('plus')}Kelime listesi oluştur</button><button class="btn btn-ghost btn-lg" data-a="sample">${ic('book')}Örnek akademik liste</button></div></section>${pwaHtml()}`;
+    H.innerHTML=`<section class="card empty"><img src="favicon.svg" width="72" height="72" alt=""><h2>Kendi kelime arenanı kur</h2><p>Öğrenmek istediğin kelimeleri yapıştır ya da PDF, Word veya metin dosyası olarak yükle. Anlamlar, akademik örnek cümleler ve paragraflar senin listen için hazırlansın.</p><div class="row" style="justify-content:center"><button class="btn btn-p btn-lg" data-a="new">${ic('plus')}Kelime listesi oluştur</button><button class="btn btn-ghost btn-lg" data-a="sample">${ic('book')}Örnek akademik liste</button></div><p class="mut" style="font-size:13px;margin:14px 0 0">Listen olmadan da başlayabilirsin: aşağıdaki bölümler hemen çalışır.</p></section>${hubHtml()}${pwaHtml()}`;
     return;
   }
   const aid=KA.activeId();cur=packs.find(p=>p.id===aid)||packs[0];KA.activeId(cur.id);fixPack(cur);
@@ -450,13 +458,15 @@ function renderHome(){
   </section>
   <div class="sec-h"><h2><span class="sq">Arena yolu<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M1 6 C 12 1, 20 9, 32 5 S 52 1, 64 5 S 86 9, 99 3"/></svg></span></h2><span class="mut" style="font-size:13.5px;font-weight:700">İstediğin ringe istediğin sırayla gir</span></div>
   ${roadHtml(st,nx)}
+  ${hubHtml()}
   <section class="stats">
     ${ticketHtml(meta,learned)}
     <div class="card stat"><i>${ic('star')}</i><div><b>${KA.totalXp()}</b><span>Toplam XP</span></div></div>
     <div class="card stat"><i>${mic('sec')}</i><div><b>${acc}</b><span>İsabet oranı</span></div></div>
   </section>
   ${extrasHtml()}
-  <section class="split" style="margin-top:16px">
+  <details class="progx" ${(()=>{try{return localStorage.getItem('ka_progx')==='1'?'open':''}catch(e){return ''}})()}><summary class="card"><span><b>İlerleme ve liste ayarları</b><small>Kelime listesi araçları, ustalaşma kulesi, rozetler</small></span><i>${ic('arrow')}</i></summary>
+  <section class="split" style="margin-top:12px">
     <div class="card box"><span class="eyebrow">Kelime listesi</span><h3>${esc(cur.name)}</h3>
       <div class="counts"><span class="tag">${cur.items.length} kelime</span><span class="tag">${cur.items.filter(x=>x.tr).length} anlam</span><span class="tag">${cur.items.filter(x=>x.s).length} örnek cümle</span><span class="tag">${cur.groups.filter(g=>g.text).length} paragraf</span></div>
       <div class="row"><button class="btn btn-ghost btn-sm" data-a="explore">${ic('search')}Kelime gezgini</button><button class="btn btn-ghost btn-sm" data-a="sents">${ic('book')}Örnek cümleler</button><button class="btn btn-ghost btn-sm" data-a="new">${ic('plus')}Yeni liste</button><button class="btn btn-ghost btn-sm" data-a="export">${ic('download')}Dışa aktar</button><button class="btn btn-ghost btn-sm" data-a="reset">${ic('reset')}İlerlemeyi sıfırla</button><button class="btn btn-bad btn-sm" data-a="del">${ic('trash')}Listeyi sil</button></div>
@@ -464,6 +474,7 @@ function renderHome(){
     <div class="card box"><span class="eyebrow">Ustalaşma kulesi</span><h3>Kelimelerin hangi katta?</h3><div class="tower">${tiers.map(t=>`<button class="tier" data-tier="${t.b}"><span>${t.b}. ${tn[t.b]}</span><div class="bar"><i style="width:${t.n/maxT*100}%"></i></div><b>${t.n}</b></button>`).join('')}</div></div>
   </section>
   <section class="card box" style="margin-top:16px"><span class="eyebrow">Rozetler</span><div class="badges">${badges.map(([n,k,on])=>`<div class="badge ${on?'on':''}"><div>${k==='flame'?ic('flame'):mic(k)}</div>${n}</div>`).join('')}</div></section>
+  </details>
   ${pwaHtml()}`;
 }
 function roadHtml(st,nx){
@@ -488,16 +499,23 @@ function ticketHtml(meta,learned){
   const tot=cur.items.length,left=Math.max(0,tot-learned),pct=tot?learned/tot*100:0;
   return `<div class="card tkt"><div class="tk-main"><div class="tring"><svg viewBox="0 0 40 40"><circle class="t" cx="20" cy="20" r="15.9"/><circle class="v" pathLength="100" cx="20" cy="20" r="15.9" style="stroke-dashoffset:${(100-pct).toFixed(1)}"/></svg><div><b>${learned}</b><span>/ ${tot}</span></div></div><div class="tk-txt"><span class="eyebrow">Öğrenilen kelime</span><h3>${left?left+' kelime kaldı':'Hepsi öğrenildi'}</h3><div class="week" aria-label="Bu hafta çalıştığın günler">${week}</div></div></div><div class="tk-stub"><div>${ic('flame')}<b>${KA.streak(meta)}</b><span>gün seri</span></div></div></div>`;
 }
-function ringMeta(i){
+const SKILL=['Anlamı hatırla','Anlamdan kelimeyi bul','Doğru anlamı seç','İngilizcesini yaz','Zayıf kelimeler','Cümle çevirisi','Paragraf özeti'];
+function ringMeta(i){return SKILL[i]+' · '+ringMeta0(i)}
+function ringMeta0(i){
   const n=withTr().length;
   if(i===4)return '12 taş · 3 can';
   if(i===5){if(srcOf(5)==='bu')return 'BUEPT metinleri · 150 cümle';const s=sentOf().length;return s?s+' cümle':'Cümle hazır değil'}
   if(i===6){if(srcOf(6)==='bu')return 'BUEPT metinleri · 18 metin';const g=cur.groups.filter(g=>g.text).length;return g?g+' paragraf':'Paragraf hazır değil'}
   return n+' kelime';
 }
+function hubHtml(){
+  const L=[['kamp.html','book','BUEPT Okuma Kampı','Cümle yerleştirme, vaka, ana fikir'],['deneme.html','exam','Sınav oluştur','Süreli, tam reading denemesi'],['konus.html','chat','Konuşma koçu','IELTS tarzı sınav ya da sohbet'],['dinle.html','ear','Dinleme','Ders salonu, dikte, TED'],['haber.html','news','Haber oku','Güncel haberle okuma pratiği'],['lab.html','spark','Okuma Oyunları','Mimar, Sempozyum, Tuzak, Radar, Bütçe']];
+  return `<div class="sec-h"><h2>Çalışma merkezi</h2><span class="mut ka-hide-sm" style="font-size:13.5px;font-weight:700">Kelimenin ötesinde: okuma, sınav, dinleme, konuşma</span></div><nav class="hubg" aria-label="Çalışma bölümleri">${L.map(([h,i,n,d])=>`<a class="card" href="${h}"><span class="hi">${ic(i)}</span><span><b>${n}</b><small>${d}</small></span></a>`).join('')}</nav>`;
+}
 function pwaHtml(){
   if(matchMedia('(display-mode: standalone)').matches)return '';
-  return `<section class="card pwa"><img src="apple-touch-icon.png" alt=""><div><b>Kelime Arenası'nı telefonuna ekle</b><span>Uygulama mağazasına gerek yok. Ana ekrandan tam ekran açılır, ilerlemen aynen kalır.</span></div><button class="btn btn-ghost" data-a="pwa">${ic('phone')}Telefona ekle</button></section>`;
+  try{if(localStorage.getItem('ka_pwa_x'))return ''}catch(e){}
+  return `<section class="card pwa"><img src="apple-touch-icon.png" alt=""><div><b>Kelime Arenası'nı telefonuna ekle</b><span>Uygulama mağazasına gerek yok. Ana ekrandan tam ekran açılır, ilerlemen aynen kalır.</span></div><button class="btn btn-ghost" data-a="pwa">${ic('phone')}Telefona ekle</button><button class="ka-icon-btn pwax" data-a="pwax" aria-label="Bu kartı gizle" title="Gizle">${ic('x')}</button></section>`;
 }
 
 /* ---------- Etkinlik çerçevesi ---------- */
@@ -1296,6 +1314,7 @@ document.addEventListener('click',e=>{
     ctx:()=>{C.ctx=!C.ctx;const x=C.cur&&C.cur.x;if(!x)return;const fb=$('#fb').innerHTML,lk=C.locked;nextCumle();if(lk){document.querySelectorAll('.opt').forEach(b=>{b.disabled=true});$('#fb').innerHTML=fb;C.locked=true}},
     prand:()=>{const G=PL(),c=G.map((x,i)=>i).filter(i=>i!==P.gi&&!G[i].ok);P.gi=c.length?c[Math.floor(Math.random()*c.length)]:0;drawPara();scrollTo({top:0,behavior:'smooth'})},
     ycheck:()=>yazCheck(false),yskip:()=>yazCheck(true),bcheck:bossYaz,cnext:nextGroup,override:overrideYaz,editcard:()=>Q&&Q.cur&&editCard(Q.cur.x),
+    pwax:()=>{try{localStorage.setItem('ka_pwa_x','1')}catch(e){}const c=document.querySelector('.card.pwa');if(c)c.remove()},
     styup:()=>{if(BUSY)return;cur.items.forEach(x=>{x.s='';x.st='';x.d=[];x.dv=0;x.dn=''});cur.groups.forEach(g=>{g.text='';g.ana='';g.gl={};g.last=null;g.draft=''});cur.prog.cdone=[];cur.sty=2;save(true);prepare()},
     styno:()=>{cur.sty=2;save(true);renderHome()},
     audundo:auditUndo,audok:()=>{cur.audSeen=1;save(true);renderHome()},audlog:auditLog,audrun:()=>runAudit(cur,true)
@@ -1318,6 +1337,8 @@ KA.nav('index.html',{stats:true});
 (function legacyQueue(){const q=KA.store.get('ka_news_added_words',null);if(Array.isArray(q)&&q.length){q.forEach(w=>{if(w&&w.en&&w.tr)KA.addUnknown(w.en,w.tr)});KA.store.del('ka_news_added_words')}})();
 renderHome();
 })();
+
+document.addEventListener('toggle',e=>{const t=e.target;if(t&&t.classList&&t.classList.contains('progx'))try{localStorage.setItem('ka_progx',t.open?'1':'0')}catch(x){}},true);
 </script>
 </body>
 </html>

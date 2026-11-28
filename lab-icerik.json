@@ -1,0 +1,523 @@
+{
+ "mimar": [
+  {
+   "title": "WHY WE PROCRASTINATE",
+   "color": "#0f766e",
+   "p": [
+    {
+     "r": "intro",
+     "t": "Almost everyone has postponed an important task while doing something far less useful instead: tidying a desk, checking messages or watching just one more video. For a long time, this habit was seen as a simple lack of discipline. Recent research, however, suggests that the question of why we delay tasks we know are important is more complex and more interesting than it first appears."
+    },
+    {
+     "r": "define",
+     "t": "Psychologists define procrastination as the voluntary delay of an intended action despite expecting to be worse off because of the delay. This definition separates it from strategic waiting, such as delaying a purchase until prices fall. The key element is irrationality: the procrastinator knows that the delay is likely to cause harm, yet chooses it anyway."
+    },
+    {
+     "r": "cause",
+     "t": "One influential explanation focuses on emotion rather than time management. According to this view, people put off tasks that make them feel anxious, bored or insecure, because postponing them brings immediate emotional relief. The relief, however, is temporary, and the unfinished task often returns with even stronger negative feelings, which makes further delay more likely."
+    },
+    {
+     "r": "example",
+     "t": "A study carried out at a Canadian university illustrates this point. Students who forgave themselves for procrastinating before their first exam procrastinated significantly less before the second one. By reducing the guilt attached to the task, self-forgiveness appears to have weakened the emotional cycle that keeps people avoiding their work."
+    },
+    {
+     "r": "counter",
+     "t": "Not all delay, however, is harmful. Some researchers distinguish between ordinary procrastinators and so-called active procrastinators, who deliberately postpone work because they believe they perform better under pressure. Unlike ordinary procrastinators, these individuals usually meet their deadlines and do not report the same levels of stress."
+    },
+    {
+     "r": "conclude",
+     "t": "Taken together, these findings suggest that the solution to procrastination may lie less in better calendars than in better emotional habits. Planning tools can certainly help, but as long as a task remains a source of anxiety, people are likely to find creative ways of avoiding it."
+    }
+   ],
+   "q": [
+    {
+     "q": "How does paragraph 4 relate to paragraph 3?",
+     "o": [
+      "It provides evidence that supports the explanation in paragraph 3.",
+      "It presents a view that contradicts paragraph 3.",
+      "It defines a term used in paragraph 3.",
+      "It summarises the whole text."
+     ],
+     "a": 0,
+     "why": "3. paragraf duygusal bir açıklama öneriyor; 4. paragraf 'illustrates this point' diyerek bunu destekleyen bir çalışma veriyor."
+    },
+    {
+     "q": "What is the primary purpose of paragraph 5?",
+     "o": [
+      "To show that delaying a task is not always negative",
+      "To explain why students forgive themselves",
+      "To criticise active procrastinators",
+      "To give a second definition of procrastination"
+     ],
+     "a": 0,
+     "why": "'Not all delay, however, is harmful' cümlesi paragrafın amacını veriyor: bir karşı görüş, ertelemenin her zaman zararlı olmadığı."
+    },
+    {
+     "q": "Why does the author mention 'better calendars' in paragraph 6?",
+     "o": [
+      "To contrast time-management tools with emotional solutions",
+      "To recommend a specific planning tool",
+      "To prove that planning tools are useless",
+      "To give an example of active procrastination"
+     ],
+     "a": 0,
+     "why": "'less in better calendars than in better emotional habits': yazar zaman yönetimi araçlarını duygusal alışkanlıklarla karşılaştırıyor. Araçların işe yaramadığını söylemiyor ('can certainly help')."
+    }
+   ]
+  },
+  {
+   "title": "THE RISE OF FAST FASHION",
+   "color": "#b45309",
+   "p": [
+    {
+     "r": "intro",
+     "t": "Twenty years ago, most clothing shops changed their collections four times a year, following the seasons. Today, some brands introduce new designs every week, and customers have come to expect a constant stream of cheap, fashionable clothes. This transformation has changed not only how people shop but also how they think about clothing itself."
+    },
+    {
+     "r": "define",
+     "t": "The term 'fast fashion' refers to a business model in which retailers copy trends from fashion shows and celebrity culture very quickly and produce them at low cost. Rather than being designed to last for years, these garments are intended to be worn for a short time and then replaced by the next trend."
+    },
+    {
+     "r": "cause",
+     "t": "Several developments made this model possible. First, global supply chains allowed companies to move production to countries where labour was cheap. Second, improved logistics reduced the time between design and delivery from months to weeks. Finally, social media created a culture in which being photographed in the same outfit twice became, for some, a social embarrassment."
+    },
+    {
+     "r": "example",
+     "t": "The environmental costs of this system are considerable. Producing a single cotton T-shirt requires large amounts of water, and synthetic fabrics release tiny plastic fibres every time they are washed. Moreover, because the clothes are so cheap, a large share of them is thrown away after being worn only a few times."
+    },
+    {
+     "r": "counter",
+     "t": "Defenders of fast fashion argue, however, that the industry has made stylish clothing affordable for people on low incomes, who were once excluded from following fashion. They also point out that the factories involved provide millions of jobs, many of them for women, in developing economies."
+    },
+    {
+     "r": "conclude",
+     "t": "Whether the industry can become sustainable may therefore depend less on the good intentions of individual shoppers than on regulation. Laws that require companies to take responsibility for their products after they are sold could change the economics of fast fashion more effectively than appeals to consumers' consciences."
+    }
+   ],
+   "q": [
+    {
+     "q": "How does paragraph 5 relate to paragraph 4?",
+     "o": [
+      "It presents arguments in favour of fast fashion after its costs have been described.",
+      "It gives further examples of environmental damage.",
+      "It explains the causes mentioned in paragraph 4.",
+      "It summarises the writer's final position."
+     ],
+     "a": 0,
+     "why": "4. paragraf maliyetleri anlatıyor; 5. paragraf 'Defenders … argue, however' ile savunucuların argümanlarını getiriyor: karşı görüş."
+    },
+    {
+     "q": "What is the main purpose of paragraph 3?",
+     "o": [
+      "To explain how fast fashion became possible",
+      "To describe the environmental costs of clothing",
+      "To criticise social media users",
+      "To compare clothing shops in the past and today"
+     ],
+     "a": 0,
+     "why": "'Several developments made this model possible' konu cümlesi: paragraf modelin nedenlerini sıralıyor (First, Second, Finally)."
+    },
+    {
+     "q": "What does the writer imply in paragraph 6?",
+     "o": [
+      "Consumers' choices alone are unlikely to solve the problem.",
+      "Consumers do not care about the environment.",
+      "Fast fashion will disappear without regulation.",
+      "Companies already take responsibility for their products."
+     ],
+     "a": 0,
+     "why": "'depend less on the good intentions of individual shoppers than on regulation': tüketicilerin iyi niyeti tek başına yetmez. Tüketicilerin umursamadığını söylemiyor."
+    }
+   ]
+  }
+ ],
+ "rolesN": {
+  "intro": "Konuyu ve soruyu tanıtır",
+  "define": "Temel kavramı tanımlar",
+  "cause": "Nedenleri açıklar",
+  "example": "Örnek ya da çalışma verir",
+  "counter": "Karşı görüş sunar",
+  "conclude": "Sonuç ve değerlendirme"
+ },
+ "sempo": {
+  "title": "Should universities allow AI writing tools?",
+  "topic": "Yapay zekâ ve eğitim",
+  "sch": [
+   {
+    "k": "ellis",
+    "n": "Prof. Hana Ellis",
+    "f": "Eğitim bilimleri",
+    "t": "Banning AI writing tools is simply unenforceable: students will use them at home whatever the rules say. Instead of fighting technology, universities should rethink assessment. Oral examinations, in-class writing and portfolios that show how a piece of work developed over time make it much harder to submit work that is not one's own, while still allowing students to benefit from AI as a learning aid."
+   },
+   {
+    "k": "silva",
+    "n": "Dr. Marco Silva",
+    "f": "Dilbilim",
+    "t": "Writing is not just a way of reporting ideas; it is one of the main ways in which we form them. When students let a machine produce their first drafts, they skip the stage at which an argument actually takes shape. I would allow AI for revising a finished text, for example to check grammar, but drafting should remain the student's own work, at least in the first years of university."
+   },
+   {
+    "k": "aksoy",
+    "n": "Dr. Leyla Aksoy",
+    "f": "Bilgisayar bilimleri",
+    "t": "Whatever policy universities choose, it must not depend on AI detectors. These programs are far less reliable than their makers claim, and they are particularly likely to flag texts written by non-native speakers of English, whose simpler sentence structures resemble machine-generated text. Failing a student on the basis of such software would be deeply unfair."
+   },
+   {
+    "k": "whit",
+    "n": "Prof. James Whitfield",
+    "f": "Felsefe ve etik",
+    "t": "The ethical question is not whether students use AI but whether they are honest about it. A student who openly explains how a tool helped them is no more a cheat than one who asks a friend to read a draft. What universities should require is transparency: every assignment should include a short statement describing whether and how AI was used."
+   }
+  ],
+  "match": [
+   {
+    "s": "Prohibiting these tools would be impossible to put into practice.",
+    "a": "ellis"
+   },
+   {
+    "s": "Software that claims to identify machine-written text may treat certain students unfairly.",
+    "a": "aksoy"
+   },
+   {
+    "s": "The real problem is not using the tool but concealing its use.",
+    "a": "whit"
+   },
+   {
+    "s": "Producing a text is itself a way of developing ideas.",
+    "a": "silva"
+   },
+   {
+    "s": "AI tools improve students' creativity more than traditional teaching does.",
+    "a": "none"
+   },
+   {
+    "s": "Universities should change the way they examine students.",
+    "a": "ellis"
+   }
+  ],
+  "mc": [
+   {
+    "q": "Which scholar is MOST worried about the effect of AI on students' thinking?",
+    "o": [
+     "Prof. Ellis",
+     "Dr. Silva",
+     "Dr. Aksoy",
+     "Prof. Whitfield"
+    ],
+    "a": 1,
+    "why": "Silva yazmanın düşüncenin oluştuğu aşama olduğunu, ilk taslağı makineye bırakmanın bu aşamayı atlattığını söylüyor."
+   },
+   {
+    "q": "Who would most likely object to a university using an AI detector to fail students?",
+    "o": [
+     "Prof. Ellis",
+     "Dr. Silva",
+     "Dr. Aksoy",
+     "Prof. Whitfield"
+    ],
+    "a": 2,
+    "why": "Aksoy: 'Failing a student on the basis of such software would be deeply unfair.'"
+   },
+   {
+    "q": "Which of the following would BOTH Prof. Ellis and Prof. Whitfield accept?\nI. Students may use AI tools in some way.\nII. AI detectors are reliable enough to use.\nIII. Every assignment should include a statement about AI use.",
+    "o": [
+     "I only",
+     "I and III",
+     "II and III",
+     "I, II and III"
+    ],
+    "a": 0,
+    "why": "İkisi de AI kullanımına bir şekilde izin veriyor (I). Dedektörlerden ikisi de bahsetmiyor (II yanlış). Açıklama zorunluluğunu yalnızca Whitfield öneriyor (III yalnızca onun)."
+   }
+  ],
+  "short": [
+   {
+    "q": "According to Dr. Aksoy, which students are most likely to be wrongly flagged by AI detectors?",
+    "lim": 6,
+    "keys": [
+     [
+      "non-native",
+      "nonnative",
+      "non native"
+     ]
+    ],
+    "m": "non-native speakers of English"
+   },
+   {
+    "q": "Name ONE form of assessment that Prof. Ellis suggests.",
+    "lim": 4,
+    "keys": [
+     [
+      "oral",
+      "in-class",
+      "portfolio",
+      "portfolios"
+     ]
+    ],
+    "m": "oral examinations"
+   }
+  ]
+ },
+ "tuzak": {
+  "bins": {
+   "cause": "Neden-sonuç ters",
+   "degree": "Kesinlik / derece değişti",
+   "compare": "Karşılaştırma ters",
+   "who": "Yanlış kişi / kaynak",
+   "none": "Metinde yok"
+  },
+  "why": {
+   "cause": "Metindeki neden ile sonuç yer değiştirmiş.",
+   "degree": "Metindeki temkinli ifade (may, tend to, some, slightly) kesin ya da aşırı bir ifadeye çevrilmiş (always, all, proved, dramatically, only).",
+   "compare": "Karşılaştırmanın yönü ters çevrilmiş (more ↔ less).",
+   "who": "Bilgi doğru, ama başka bir kişiye ya da kaynağa mal edilmiş.",
+   "none": "Metin bu konuda hiçbir şey söylemiyor: doğru ya da yanlış diyemeyiz."
+  },
+  "r": [
+   {
+    "t": "Researchers found that people who walk to work tend to report higher levels of happiness than those who drive. However, they warned that happier people may simply be more likely to choose walking.",
+    "s": [
+     [
+      "Researchers proved that walking to work always makes people happier.",
+      "degree"
+     ],
+     [
+      "Drivers reported higher levels of happiness than walkers.",
+      "compare"
+     ],
+     [
+      "The participants warned that happier people may choose walking.",
+      "who"
+     ],
+     [
+      "The study was carried out in several European cities.",
+      "none"
+     ]
+    ]
+   },
+   {
+    "t": "The rise in online shopping has led many small bookshops to close. Some of those that survived did so by hosting events such as readings and book clubs.",
+    "s": [
+     [
+      "Many small bookshops closed, which led to a rise in online shopping.",
+      "cause"
+     ],
+     [
+      "All of the small bookshops that survived hosted events.",
+      "degree"
+     ],
+     [
+      "Book clubs mostly attract young readers.",
+      "none"
+     ],
+     [
+      "Online retailers began hosting readings and book clubs.",
+      "who"
+     ]
+    ]
+   },
+   {
+    "t": "Professor Lin argues that bilingual children are better at switching between tasks than monolingual children. Her colleague Dr. Park, however, believes the advantage is small and may disappear in adulthood.",
+    "s": [
+     [
+      "Dr. Park argues that bilingual children are much better at switching tasks.",
+      "who"
+     ],
+     [
+      "According to Lin, monolingual children switch between tasks more easily than bilingual children.",
+      "compare"
+     ],
+     [
+      "Dr. Park is certain that the advantage disappears in adulthood.",
+      "degree"
+     ],
+     [
+      "Professor Lin grew up speaking two languages.",
+      "none"
+     ]
+    ]
+   },
+   {
+    "t": "Because the factory reduced its working hours, productivity increased slightly. Managers expect that the change could also reduce staff turnover.",
+    "s": [
+     [
+      "Productivity increased, so the factory reduced its working hours.",
+      "cause"
+     ],
+     [
+      "Productivity increased dramatically after the change.",
+      "degree"
+     ],
+     [
+      "Workers expect the change to reduce staff turnover.",
+      "who"
+     ],
+     [
+      "The factory produces electronic goods.",
+      "none"
+     ]
+    ]
+   },
+   {
+    "t": "Coffee consumption in the country has fallen by a third since 2010, while tea consumption has remained stable. Health campaigns are thought to be one reason for the decline.",
+    "s": [
+     [
+      "Tea consumption has fallen more than coffee consumption since 2010.",
+      "compare"
+     ],
+     [
+      "Health campaigns are the only reason for the fall in coffee drinking.",
+      "degree"
+     ],
+     [
+      "The fall in coffee drinking led to the government's health campaigns.",
+      "cause"
+     ],
+     [
+      "Tea is cheaper than coffee in the country.",
+      "none"
+     ]
+    ]
+   },
+   {
+    "t": "Early studies claimed that video games make players more aggressive. More recent research, which used larger samples, has found little evidence for this link.",
+    "s": [
+     [
+      "More recent research claimed that video games make players more aggressive.",
+      "who"
+     ],
+     [
+      "Recent research has proved that video games have no effect on aggression.",
+      "degree"
+     ],
+     [
+      "Early studies used larger samples than more recent research.",
+      "compare"
+     ],
+     [
+      "Most video game players are teenagers.",
+      "none"
+     ]
+    ]
+   }
+  ]
+ },
+ "radar": {
+  "title": "A SHORT HISTORY OF PAPER MONEY",
+  "p": [
+   "Before paper money existed, trade depended on coins made of metal. These were valuable and widely trusted, but they were also heavy, which made them impractical for merchants who had to travel long distances.",
+   "The first paper notes appeared in China during the Tang dynasty. Merchants left their heavy coins with trusted agents and received written certificates instead, which they could later exchange for the coins in another city.",
+   "By the eleventh century, the government of the Song dynasty had taken control of printing these notes, partly to stop private traders from issuing too many of them.",
+   "Marco Polo, who travelled to China in the thirteenth century, described with astonishment how the emperor's paper was accepted as payment in every part of the empire.",
+   "In Europe, a Swedish bank issued the continent's first banknotes in 1661, at a time when the country's copper coins were so large and heavy that they were difficult to use in everyday trade.",
+   "Printing paper money, however, brought new dangers. When governments produced notes faster than their economies grew, prices rose sharply, a process economists call inflation.",
+   "To build public trust, many countries later promised that their notes could be exchanged for a fixed amount of gold. In various forms, this arrangement lasted until the 1970s.",
+   "Today, digital payments are gradually replacing cash in some countries, and some economists predict that physical banknotes may one day become little more than collectors' items."
+  ],
+  "q": [
+   [
+    "a European country whose metal coins were too big to use easily",
+    5
+   ],
+   [
+    "a foreign visitor who was amazed by a payment system",
+    4
+   ],
+   [
+    "a state taking over the production of notes",
+    3
+   ],
+   [
+    "the link between money and a precious metal",
+    7
+   ],
+   [
+    "a possible future for banknotes",
+    8
+   ],
+   [
+    "the problem of carrying money on long journeys",
+    1
+   ],
+   [
+    "what happens when too many notes are printed",
+    6
+   ],
+   [
+    "documents given to merchants in exchange for coins",
+    2
+   ]
+  ]
+ },
+ "butce": [
+  {
+   "t": "One influential explanation focuses on emotion rather than time management. According to this view, people put off tasks that make them feel anxious, bored or insecure, because postponing them brings immediate emotional relief.",
+   "q": "According to the text, what does postponing a task give people?",
+   "lim": 3,
+   "keys": [
+    [
+     "relief"
+    ],
+    [
+     "immediate",
+     "emotional"
+    ]
+   ],
+   "m": "immediate emotional relief"
+  },
+  {
+   "t": "The first paper notes appeared in China during the Tang dynasty. Merchants left their heavy coins with trusted agents and received written certificates instead, which they could later exchange for the coins in another city.",
+   "q": "What did Tang merchants receive in exchange for their coins?",
+   "lim": 3,
+   "keys": [
+    [
+     "certificates"
+    ]
+   ],
+   "m": "written certificates"
+  },
+  {
+   "t": "Defenders of fast fashion argue, however, that the industry has made stylish clothing affordable for people on low incomes, who were once excluded from following fashion.",
+   "q": "According to its defenders, who has fast fashion helped?",
+   "lim": 5,
+   "keys": [
+    [
+     "low"
+    ],
+    [
+     "incomes",
+     "income"
+    ]
+   ],
+   "m": "people on low incomes"
+  },
+  {
+   "t": "Critics of the early chess program pointed out that it showed neither creativity nor real understanding; it simply applied, one step after another, the rules that its programmers had written for it.",
+   "q": "Which TWO qualities did critics say the program did not show?",
+   "lim": 4,
+   "keys": [
+    [
+     "creativity"
+    ],
+    [
+     "understanding"
+    ]
+   ],
+   "m": "creativity and understanding"
+  },
+  {
+   "t": "In a series of experiments, participants who slept for at least seven hours after studying in the evening remembered considerably more new vocabulary than those who stayed awake for the same period.",
+   "q": "What did participants do after studying that helped them remember more?",
+   "lim": 5,
+   "keys": [
+    [
+     "slept"
+    ],
+    [
+     "seven",
+     "7"
+    ]
+   ],
+   "m": "slept at least seven hours"
+  }
+ ]
+}

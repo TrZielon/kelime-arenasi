@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="tr" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Konuşma Koçu · Kelime Arenası</title>
+<meta name="description" content="Yapay zekâ ile İngilizce konuş: IELTS Speaking tarzı akademik sınav ya da serbest sohbet. Band tahmini, düzeltmeler ve daha iyi kelime önerileri.">
+<meta name="theme-color" content="#0f766e">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="K. Arenası">
+<link rel="manifest" href="manifest.webmanifest">
+<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="ortak.css?v=22">
+<style>
+.kh{padding:26px;margin-bottom:16px}
+.kh h1{font-size:clamp(28px,4vw,40px);margin:6px 0 8px}
+.kh p{color:var(--ink2);margin:0}
+.kmodes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.kmode{padding:22px;text-align:left;border:1px solid var(--line);cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;gap:10px}
+.kmode:hover{border-color:var(--p);transform:translateY(-1px)}
+.kmode .mi{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;background:var(--g);color:#fff}
+.kmode .mi svg{width:26px;height:26px}
+.kmode b{font-family:Fraunces,serif;font-size:23px}
+.kmode p{margin:0;color:var(--ink2);font-size:14.5px;line-height:1.5}
+.kmode ul{margin:0;padding-left:18px;color:var(--ink2);font-size:13.5px;line-height:1.6}
+.hist{margin-top:16px;padding:16px 18px}
+.hist .bars{display:flex;gap:8px;align-items:flex-end;height:70px;margin-top:10px}
+.hist .bars div{flex:1;max-width:46px;border-radius:8px 8px 3px 3px;background:var(--p);position:relative;min-height:6px}
+.hist .bars span{position:absolute;top:-18px;left:0;right:0;text-align:center;font:800 11.5px "Plus Jakarta Sans",sans-serif;color:var(--ink2)}
+.opt-g{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px}
+.opt-g .pill.on{background:var(--p);color:var(--p-ink);border-color:var(--p)}
+.lbl{font-weight:800;font-size:14px}
+.setup{padding:22px;max-width:760px}
+/* sınav */
+.exh{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.exh .t{font-weight:800;font-size:17px;flex:1}
+.steps{display:flex;gap:6px}
+.steps span{font:800 12px "Plus Jakarta Sans",sans-serif;padding:6px 10px;border-radius:999px;background:var(--soft);color:var(--mut)}
+.steps span.on{background:var(--p);color:var(--p-ink)}.steps span.ok{background:var(--ok-soft);color:var(--ok)}
+.room{padding:22px;display:grid;gap:16px}
+.exq{display:flex;gap:14px;align-items:flex-start}
+.ava{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--acc2));color:#fff;display:grid;place-items:center;font:800 18px Fraunces,serif;flex:0 0 auto}
+.bub{background:var(--soft);border-radius:4px 18px 18px 18px;padding:14px 16px;font-family:Fraunces,serif;font-size:19px;line-height:1.55;flex:1}
+.bub small{display:block;font:700 12px "Plus Jakarta Sans",sans-serif;color:var(--mut);margin-bottom:4px;letter-spacing:.06em;text-transform:uppercase}
+.bub .tr{display:block;margin-top:6px;font:500 14px "Plus Jakarta Sans",sans-serif;color:var(--ink2)}
+.cue{border:2px dashed var(--line2);border-radius:18px;padding:16px 18px;background:var(--card2)}
+.cue b{font-family:Fraunces,serif;font-size:20px;display:block;margin-bottom:6px}
+.cue ul{margin:6px 0 0;padding-left:20px;line-height:1.7}
+.ansbox{display:grid;gap:10px}
+.ansbox textarea{min-height:110px;font-size:16px;line-height:1.55}
+.microw{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.bigmic{width:72px;height:72px;border-radius:50%;border:0;background:var(--p);color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 8px 24px color-mix(in srgb,var(--p) 40%,transparent);flex:0 0 auto}
+.bigmic svg{width:30px;height:30px}
+.bigmic.rec{background:var(--bad);animation:pulse 1.3s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--bad) 55%,transparent)}70%{box-shadow:0 0 0 18px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.tmr{font:800 22px "Plus Jakarta Sans",sans-serif;min-width:64px}
+.tmr.warn{color:var(--bad)}
+.mhint{color:var(--mut);font-size:13.5px;flex:1;min-width:160px}
+.meter{height:8px;border-radius:99px;background:var(--soft);overflow:hidden}.meter i{display:block;height:100%;background:var(--p);transition:width .3s}
+/* sonuç */
+.bands{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.band{padding:14px;border-radius:16px;background:var(--soft);text-align:center}
+.band b{display:block;font:800 30px "Plus Jakarta Sans",sans-serif;color:var(--p)}
+.band span{font-size:12.5px;font-weight:700;color:var(--ink2)}
+.band.ov{background:var(--p);color:var(--p-ink)}.band.ov b{color:var(--p-ink)}.band.ov span{color:inherit}
+.rsec{margin-top:16px}
+.rsec h3{font-size:18px;margin:0 0 8px}
+.fix{display:grid;gap:8px}
+.fix div{padding:10px 12px;border-radius:12px;background:var(--soft);font-size:14.5px;line-height:1.5}
+.fix s{color:var(--bad);text-decoration-thickness:1.5px}
+.fix ins{color:var(--ok);text-decoration:none;font-weight:700}
+.fix small{display:block;color:var(--mut);margin-top:3px}
+.stat{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.stat span{padding:6px 10px;border-radius:999px;background:var(--soft);font-size:13px;font-weight:700}
+.trans{max-height:320px;overflow:auto;font-size:14px;line-height:1.6;background:var(--soft);border-radius:12px;padding:12px 14px}
+.trans p{margin:0 0 8px}
+/* sohbet */
+.chat{display:flex;flex-direction:column;gap:10px;padding:18px;min-height:340px;max-height:58vh;overflow:auto}
+.msg{max-width:84%;padding:11px 14px;border-radius:18px;line-height:1.5;font-size:15.5px}
+.msg.ai{background:var(--soft);border-top-left-radius:4px;align-self:flex-start}
+.msg.me{background:var(--p);color:var(--p-ink);border-top-right-radius:4px;align-self:flex-end}
+.msg .tr{display:block;margin-top:5px;font-size:13px;opacity:.85}
+.msg .fx{display:block;margin-top:8px;padding-top:7px;border-top:1px solid rgba(255,255,255,.3);font-size:13px}
+.msg .fx b{font-weight:800}
+.msg button.pl{border:0;background:transparent;color:inherit;opacity:.7;cursor:pointer;padding:2px 4px;vertical-align:middle}
+.msg button.pl svg{width:15px;height:15px}
+.typing{align-self:flex-start;color:var(--mut);font-size:13.5px}
+.cbar{display:flex;gap:10px;align-items:flex-end;padding:12px;border-top:1px solid var(--line)}
+.cbar textarea{flex:1;min-height:52px;max-height:140px;font-size:15.5px}
+.cbar .bigmic{width:56px;height:56px}.cbar .bigmic svg{width:24px;height:24px}
+.sw{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--ink2);cursor:pointer}
+.sw input{accent-color:var(--p);width:18px;height:18px}
+@media (max-width:760px){.kmodes{grid-template-columns:1fr}.bands{grid-template-columns:repeat(2,minmax(0,1fr))}.band.ov{grid-column:1/-1}.bub{font-size:17.5px}.room{padding:16px}.chat{max-height:none;min-height:50vh}}
+</style>
+</head>
+<body>
+<main class="ka-wrap" id="main"></main>
+<script src="firebase-config.js?v=22"></script><script src="ortak.js?v=22"></script>
+<script>
+(()=>{
+const {$,esc,shuf}=KA,ic=KA.ic;
+const I={mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',stop:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>',exam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h5M8 8h4"/></svg>',chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>',play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"/></svg>'};
+let BANK=null,HIST=()=>KA.store.get('ka_konus',[])||[];
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+const FILL=/\b(um+|uh+|er+|erm|hmm+|you know|i mean|like,|kind of|sort of)\b/gi;
+
+/* ---------- Ses tanıma ---------- */
+const R={on:false,rec:null,fin:'',t0:0,sec:0,conf:[],box:null,onUi:null};
+function recStart(box,onUi){
+  if(!SR){KA.toast('Bu tarayıcı sesi yazıya çeviremiyor (Chrome, Edge ya da Safari kullan). Cevabını yazarak da verebilirsin.',4500);box&&box.focus();return false}
+  KA.stopSpeak();R.box=box;R.onUi=onUi;R.fin=box.value?box.value.trim()+' ':'';R.on=true;R.t0=Date.now();
+  const rec=new SR();R.rec=rec;rec.lang='en-US';rec.continuous=true;rec.interimResults=true;
+  rec.onresult=e=>{let it='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal){R.fin+=r[0].transcript.trim()+' ';if(r[0].confidence)R.conf.push(r[0].confidence)}else it+=r[0].transcript}R.box.value=(R.fin+it).replace(/\s+/g,' ').trimStart();R.box.dispatchEvent(new Event('input'))};
+  rec.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed'){R.on=false;KA.toast('Mikrofon izni verilmedi. Tarayıcının adres çubuğundan mikrofona izin ver ya da cevabını yaz.',5000);onUi&&onUi()}};
+  rec.onend=()=>{if(R.on){try{rec.start()}catch(x){}}else onUi&&onUi()};
+  try{rec.start()}catch(e){R.on=false;return false}
+  onUi&&onUi();return true;
+}
+function recStop(){if(!R.on)return 0;R.on=false;const s=(Date.now()-R.t0)/1000;R.sec+=s;try{R.rec&&R.rec.stop()}catch(e){}return s}
+
+/* ---------- Ana ekran ---------- */
+async function load(){if(!BANK)BANK=await (await fetch('konus-banka.json?v=1')).json()}
+function hub(){
+  stopAll();location.hash='';
+  const H=HIST().slice(-8);
+  $('#main').innerHTML=`<div class="exh"><a class="btn btn-ghost btn-sm" href="dinle.html">${ic('back')}Dinle & Konuş</a></div><section class="card kh"><span class="eyebrow">Dinle & Konuş · Konuşma Koçu</span><h1>İngilizce konuş, yapay zekâ dinlesin</h1><p>Mikrofona konuş; söylediklerin yazıya dökülür, yapay zekâ seninle konuşur ve sonunda neyi daha iyi söyleyebileceğini gösterir. Mikrofon yoksa yazarak da konuşabilirsin.</p></section>
+  <div class="kmodes">
+   <button class="card kmode" data-go="exam" style="--g:#0f766e"><span class="mi">${I.exam}</span><b>Akademik sınav</b><p>IELTS Speaking'deki 3 bölümün aynısı: sınav görevlisi soru sorar, sen konuşursun, sonunda band tahmini alırsın.</p><ul><li>Part 1: kendin ve günlük konular (4-5 dk)</li><li>Part 2: konu kartı, 1 dk hazırlık + 2 dk konuşma</li><li>Part 3: konu üzerine tartışma (4-5 dk)</li></ul></button>
+   <button class="card kmode" data-go="chat" style="--g:#b45309"><span class="mi">${I.chat}</span><b>Serbest sohbet</b><p>İstediğin konuda ya da hazır bir senaryoda doğal bir sohbet. İstersen yapay zekâ cümlelerini anında düzeltir.</p><ul><li>Kampüs, kafe, film, seyahat, mülakat…</li><li>Her cevabın Türkçesi ve sesli okunuşu</li><li>Sohbet sonunda kısa değerlendirme</li></ul></button>
+  </div>
+  ${H.length?`<section class="card hist"><span class="eyebrow">Son sınavların · band tahmini</span><div class="bars">${H.map(h=>`<div style="height:${Math.max(10,(h.o/9)*100)}%" title="${new Date(h.d).toLocaleDateString('tr-TR')}"><span>${h.o}</span></div>`).join('')}</div></section>`:''}
+  <p class="mut" style="font-size:13px;margin-top:14px">Band puanı resmî bir IELTS sonucu değil, konuşma dökümüne dayanan bir tahmindir. Telaffuz puanı, ses tanımanın seni ne kadar doğru anladığına dayanır.</p>`;
+}
+function stopAll(){recStop();KA.stopSpeak();clearInterval(EX.tick)}
+
+/* ---------- Akademik sınav ---------- */
+let EX={};
+const EVAL=`You are a certified, experienced IELTS Speaking examiner. Assess the candidate's performance using the official public band descriptors (Fluency and Coherence, Lexical Resource, Grammatical Range and Accuracy, Pronunciation). The input is a speech-to-text transcript, so ignore missing punctuation and capitalisation; judge pronunciation only roughly from the recognition confidence and obvious misrecognitions, and be conservative.
+Be honest and calibrated: very short or off-topic answers lower Fluency and Coherence; simple, repetitive vocabulary caps Lexical Resource at 5-6; frequent basic errors cap Grammar at 5. Use half bands. Overall = average of the four, rounded to the nearest half band.
+Write explanations in TURKISH; keep all English examples in English.
+Return ONLY JSON: {"band":{"fc":6.5,"lr":6,"gra":6,"p":6.5,"overall":6.5},"ozet":"2-3 sentences in Turkish","guclu":["Turkish, specific"],"gelisim":["Turkish, specific and actionable"],"duzelt":[{"sen":"exact phrase the candidate said","daha_iyi":"corrected / more natural version","neden":"short Turkish reason"}],"kelime":[{"sen":"simple word they used","oneri":"2-3 higher-level alternatives","ornek":"an example sentence in their context"}],"ornek_cevap":{"soru":"one question from the test","cevap":"a Band 8 model answer, 60-90 words, natural spoken English"},"ipuclari":["3 IELTS-specific Turkish tips"]}
+Give 4-8 items in "duzelt" (the most useful ones) and 4-6 in "kelime".`;
+const P3GEN=`You are an IELTS Speaking examiner. Given a Part 2 cue card topic, write 5 Part 3 discussion questions: more abstract, about society, comparisons, causes, future changes and opinions; gradually more demanding. Return ONLY JSON: {"q":["...","..."]}`;
+async function examSetup(){
+  await load();location.hash='exam';
+  const ts=BANK.p2;
+  $('#main').innerHTML=`<div class="exh"><button class="btn btn-ghost btn-sm" data-a="hub">${ic('back')}Konuşma Koçu</button><span class="t">Akademik sınav</span></div>
+  <section class="card setup"><div class="lbl">Bölüm</div><div class="opt-g" id="pt">${[['full','Tam sınav · 11-14 dk'],['p1','Sadece Part 1'],['p2','Sadece Part 2'],['p3','Part 2 + Part 3']].map(([k,n],i)=>`<button class="pill ${i===0?'on':''}" data-pt="${k}">${n}</button>`).join('')}</div>
+  <div class="lbl">Part 2 konu kartı</div><select class="select" id="cue" style="margin:8px 0 14px"><option value="rnd">Rastgele</option>${ts.map((t,i)=>`<option value="${i}">${esc(t.t)}</option>`).join('')}</select>
+  <label class="sw" style="margin-bottom:14px"><input type="checkbox" id="trq">Soruların Türkçesini göster</label>
+  <div class="mut" style="font-size:13.5px;line-height:1.55;margin-bottom:14px">${SR?'Her sorudan sonra mikrofon düğmesine bas ve konuş; bitince tekrar bas. Söylediklerin kutuya yazılır, istersen düzeltebilirsin.':'Bu tarayıcıda ses tanıma yok; cevaplarını yazarak verebilirsin. Sesli konuşmak için Chrome, Edge ya da Safari kullan.'}</div>
+  <button class="btn btn-p btn-lg" data-a="estart" style="width:100%">${I.mic}Sınava başla</button></section>`;
+}
+function examStart(){
+  const pt=document.querySelector('#pt .on').dataset.pt,cv=$('#cue').value;
+  const card=cv==='rnd'?shuf(BANK.p2)[0]:BANK.p2[+cv];
+  const tps=shuf(BANK.p1).slice(0,2);
+  const Q=[];
+  if(pt==='full'||pt==='p1'){Q.push({part:1,q:BANK.intro[0]},{part:1,q:BANK.intro[1]});tps.forEach(t=>t.q.slice(0,pt==='p1'?4:3).forEach((q,i)=>Q.push({part:1,q:(i===0?`Now let's talk about ${t.t.toLowerCase()}. `:'')+q})))}
+  if(pt!=='p1'){Q.push({part:2,cue:card,q:`Now I'm going to give you a topic, and I'd like you to talk about it for one to two minutes. You have one minute to think about what you are going to say. You can make some notes if you wish.`},{part:2.5,q:card.r})}
+  if(pt==='full'||pt==='p3'){card.p3.forEach(q=>Q.push({part:3,q,base:1}))}
+  EX={pt,card,Q,i:0,log:[],tr:$('#trq').checked,tick:null,p3ready:false};R.sec=0;R.conf=[];
+  if(pt==='full'||pt==='p3'){KA.askJ(P3GEN,'Cue card: '+card.t+'\nBullet points: '+card.b.join('; '),{tier:'quick',ms:20000}).then(r=>{const q=r.json&&Array.isArray(r.json.q)?r.json.q.map(String).filter(x=>x.length>10).slice(0,5):[];if(q.length>=4){EX.Q=EX.Q.filter(x=>!(x.part===3&&x.base&&EX.Q.indexOf(x)>EX.i));const done=EX.Q.filter(x=>x.part===3).length;q.slice(done).forEach(x=>EX.Q.push({part:3,q:x}))}}).catch(()=>{})}
+  askQ();
+}
+const partOf=q=>q.part===2.5?2:q.part;
+function head(){const p=partOf(EX.Q[EX.i]||{part:3});const parts=[...new Set(EX.Q.map(partOf))];return `<div class="exh"><button class="btn btn-ghost btn-sm" data-a="quit">${ic('back')}Çık</button><span class="t">Akademik sınav · Soru ${Math.min(EX.i+1,EX.Q.length)}/${EX.Q.length}</span><span class="steps">${parts.map(x=>`<span class="${x===p?'on':x<p?'ok':''}">Part ${x}</span>`).join('')}</span></div>`}
+async function trOf(q){if(!EX.tr)return '';try{const r=await KA.askJ('Translate the English question into natural Turkish. Return ONLY JSON {"tr":"..."}',q,{tier:'quick',ms:8000});return r.json&&r.json.tr||''}catch(e){return ''}}
+function askQ(){
+  clearInterval(EX.tick);
+  if(EX.i>=EX.Q.length)return examEval();
+  const x=EX.Q[EX.i];
+  if(x.part===2&&x.cue)return cueCard(x);
+  const sub=x.part===1?'Part 1 · Kısa ve doğal cevap ver (2-4 cümle)':x.part===2.5?'Part 2 · Kapanış sorusu (1-2 cümle)':'Part 3 · Görüşünü nedenleri ve örnekleriyle geliştir (4-6 cümle)';
+  $('#main').innerHTML=head()+`<section class="card room"><div class="exq"><span class="ava">E</span><div class="bub"><small>Sınav görevlisi</small><span lang="en">${esc(x.q)}</span><span class="tr" id="qtr"></span></div></div>
+  <div class="row" style="gap:6px;justify-content:flex-start"><button class="btn btn-ghost btn-sm" data-a="replay">${I.play}Soruyu tekrar dinle</button><span class="mut" style="font-size:13px">${sub}</span></div>${ansUi()}</section>`;
+  KA.speak(x.q);trOf(x.q).then(t=>{const e=$('#qtr');if(e&&t)e.textContent=t});wireAns();
+}
+function ansUi(ph){return `<div class="ansbox"><textarea class="textarea" id="ans" lang="en" placeholder="${ph||'Mikrofona bas ve konuş ya da buraya yaz…'}"></textarea><div class="microw"><button class="bigmic" id="mic" aria-label="Konuşmaya başla">${I.mic}</button><span class="tmr" id="tmr">0:00</span><span class="mhint" id="mh">${SR?'Konuşmak için mikrofona bas.':'Cevabını yaz.'}</span><button class="btn btn-p" data-a="next" id="nx">Cevabı gönder${ic('arrow')}</button></div></div>`}
+const mm=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+function wireAns(limit,onLimit){
+  const box=$('#ans'),mic=$('#mic');let start=0;
+  const ui=()=>{mic.classList.toggle('rec',R.on);mic.innerHTML=R.on?I.stop:I.mic;$('#mh').textContent=R.on?'Dinliyorum… bitince durdur.':(box.value.trim()?'Gerekirse yazıyı düzelt, sonra gönder.':SR?'Konuşmak için mikrofona bas.':'Cevabını yaz.')};
+  mic.onclick=()=>{if(R.on){recStop();ui()}else{start=Date.now()-(EX.cur||0)*1000;if(recStart(box,ui)){}}};
+  EX.cur=0;clearInterval(EX.tick);EX.tick=setInterval(()=>{if(!R.on)return;EX.cur=(Date.now()-R.t0)/1000;const t=$('#tmr');if(t){t.textContent=mm(EX.cur);t.classList.toggle('warn',!!limit&&EX.cur>limit-15)}if(limit&&EX.cur>=limit){recStop();ui();onLimit&&onLimit()}},250);
+}
+function cueCard(x){
+  const c=x.cue;
+  $('#main').innerHTML=head()+`<section class="card room"><div class="exq"><span class="ava">E</span><div class="bub"><small>Sınav görevlisi</small><span lang="en">${esc(x.q)}</span></div></div>
+  <div class="cue" lang="en"><b>${esc(c.t)}</b>You should say:<ul>${c.b.map(b=>`<li>${esc(b)}</li>`).join('')}</ul></div>
+  <div id="prep"><div class="lbl">Hazırlık · <span id="pt2">1:00</span></div><div class="meter" style="margin:8px 0"><i id="pm" style="width:100%"></i></div><textarea class="textarea" id="notes" placeholder="Notların (anahtar kelimeler)… Sınavda da not almana izin verilir." style="min-height:80px"></textarea><div class="row" style="margin-top:10px"><button class="btn btn-p" data-a="talk">Hazırım, konuşmaya başla${ic('arrow')}</button></div></div></section>`;
+  KA.speak('You have one minute to prepare.');
+  let left=60;clearInterval(EX.tick);EX.tick=setInterval(()=>{left--;const a=$('#pt2'),m=$('#pm');if(a)a.textContent=mm(Math.max(0,left));if(m)m.style.width=(left/60*100)+'%';if(left<=0){clearInterval(EX.tick);talk()}},1000);
+}
+function talk(){
+  clearInterval(EX.tick);const notes=($('#notes')||{}).value||'';EX.notes=notes;
+  const prep=$('#prep');if(!prep)return;
+  prep.outerHTML=`<div>${notes.trim()?`<div class="mut" style="font-size:13.5px;margin-bottom:8px"><b>Notların:</b> ${esc(notes)}</div>`:''}<div class="lbl">Konuşma · en fazla 2 dakika. 1 dakikanın altında kalırsan puanın düşer.</div>${ansUi('Mikrofona bas ve konuşmaya başla…')}</div>`;
+  KA.speak('All right? Remember, you have one to two minutes for this. I\'ll tell you when the time is up. Can you start speaking now, please?');
+  wireAns(120,()=>{KA.speak('Thank you.');KA.toast('Süre doldu. Cevabını gönder.')});
+}
+function sendAns(){
+  const box=$('#ans');if(!box)return;const sec=recStop()||EX.cur||0;const a=box.value.trim();
+  if(!a){KA.toast('Önce cevabını söyle ya da yaz.');return}
+  const x=EX.Q[EX.i];EX.log.push({part:partOf(x),q:x.cue?x.cue.t:x.q,a,sec:Math.round(sec)});EX.i++;askQ();
+}
+function stats(){
+  const all=EX.log.map(l=>l.a).join(' '),w=all.split(/\s+/).filter(Boolean).length,sec=EX.log.reduce((n,l)=>n+(l.sec||0),0);
+  const fil=(all.match(FILL)||[]).length,conf=R.conf.length?Math.round(R.conf.reduce((a,b)=>a+b,0)/R.conf.length*100):null;
+  const p2=EX.log.find(l=>l.part===2);
+  return {w,sec,wpm:sec>20?Math.round(w/(sec/60)):null,fil,conf,avg:Math.round(w/Math.max(1,EX.log.length)),p2s:p2?p2.sec:null,uniq:new Set(all.toLowerCase().match(/[a-z']+/g)||[]).size};
+}
+async function examEval(){
+  clearInterval(EX.tick);const st=stats();
+  $('#main').innerHTML=head()+`<section class="card room" style="text-align:center"><span class="ka-spin"></span><h2 style="margin:6px 0">Sınav bitti. Değerlendiriliyor…</h2><p class="mut">Sınav görevlisi konuşmanı dört IELTS ölçütüne göre puanlıyor.</p></section>`;
+  KA.speak("Thank you. That is the end of the speaking test.");
+  const tr=EX.log.map((l,i)=>`[Part ${l.part}] Q: ${l.q}\nA (${l.sec||'?'} s): ${l.a}`).join('\n\n');
+  const meta=`STATS: ${st.w} words, speaking time ${st.sec}s, ${st.wpm?st.wpm+' words/min':'wpm unknown'}, filler words ${st.fil}, distinct words ${st.uniq}, avg words per answer ${st.avg}${st.p2s!=null?', Part 2 long turn '+st.p2s+'s':''}, speech recognition confidence ${st.conf!=null?st.conf+'%':'n/a (typed)'}.`;
+  let r=null;try{r=await KA.askJ(EVAL,meta+'\n\nTRANSCRIPT:\n'+tr,{tier:'long',ms:90000})}catch(e){}
+  const j=r&&r.json;
+  if(!j||!j.band){$('#main').innerHTML=head()+`<section class="card room"><h2>Değerlendirme alınamadı</h2><p class="mut">${esc(r&&r.err||'Yapay zekâya ulaşılamadı.')}</p><div class="row"><button class="btn btn-p" data-a="reeval">${ic('reset')}Tekrar dene</button><button class="btn btn-ghost" data-a="hub">Çık</button></div>${transHtml()}</section>`;return}
+  const hb=v=>{v=Number(v);return isNaN(v)?'–':Math.max(1,Math.min(9,Math.round(v*2)/2))};
+  const B={fc:hb(j.band.fc),lr:hb(j.band.lr),gra:hb(j.band.gra),p:hb(j.band.p)};const ov=hb(j.band.overall!=null?j.band.overall:(B.fc+B.lr+B.gra+B.p)/4);
+  const H=HIST();H.push({d:Date.now(),o:ov});KA.store.set('ka_konus',H.slice(-20));try{KA.addXp(20)}catch(e){}
+  const L=a=>(Array.isArray(a)?a:[]);
+  $('#main').innerHTML=head()+`<section class="card room"><span class="eyebrow">Sonuç · band tahmini</span>
+  <div class="bands"><div class="band ov"><b>${ov}</b><span>Genel</span></div><div class="band"><b>${B.fc}</b><span>Akıcılık ve tutarlılık</span></div><div class="band"><b>${B.lr}</b><span>Kelime çeşitliliği</span></div><div class="band"><b>${B.gra}</b><span>Dilbilgisi</span></div><div class="band"><b>${B.p}</b><span>Telaffuz*</span></div></div>
+  <div class="stat"><span>${st.w} kelime</span>${st.wpm?`<span>${st.wpm} kelime/dk</span>`:''}<span>${st.fil} dolgu kelimesi (um, like…)</span><span>${st.uniq} farklı kelime</span>${st.p2s?`<span>Part 2: ${mm(st.p2s)}</span>`:""}</div>
+  <p style="margin:12px 0 0;line-height:1.6">${esc(j.ozet||'')}</p>
+  ${L(j.guclu).length?`<div class="rsec"><h3>Güçlü yönlerin</h3><ul>${L(j.guclu).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+  ${L(j.gelisim).length?`<div class="rsec"><h3>Geliştirmen gerekenler</h3><ul>${L(j.gelisim).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+  ${L(j.duzelt).length?`<div class="rsec"><h3>Daha doğru ve doğal söyleyiş</h3><div class="fix">${L(j.duzelt).map(d=>`<div><s>${esc(d.sen)}</s> → <ins>${esc(d.daha_iyi)}</ins> <button class="btn btn-ghost btn-sm" data-say="${esc(d.daha_iyi)}" style="min-height:28px;padding:2px 8px">${I.play}</button><small>${esc(d.neden||'')}</small></div>`).join('')}</div></div>`:''}
+  ${L(j.kelime).length?`<div class="rsec"><h3>Kelimeni yükselt</h3><div class="fix">${L(j.kelime).map(k=>`<div><b>${esc(k.sen)}</b> → <ins>${esc(k.oneri)}</ins><small lang="en">${esc(k.ornek||'')}</small></div>`).join('')}</div></div>`:''}
+  ${j.ornek_cevap&&j.ornek_cevap.cevap?`<div class="rsec"><h3>Band 8 örnek cevap</h3><div class="fix"><div><b lang="en">${esc(j.ornek_cevap.soru||'')}</b><br><span lang="en">${esc(j.ornek_cevap.cevap)}</span><br><button class="btn btn-ghost btn-sm" data-say="${esc(j.ornek_cevap.cevap)}" style="margin-top:6px">${I.play}Dinle</button></div></div></div>`:''}
+  ${L(j.ipuclari).length?`<div class="rsec"><h3>IELTS taktikleri</h3><ul>${L(j.ipuclari).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+  ${transHtml()}
+  <p class="mut" style="font-size:12.5px">* Telaffuz, ses tanımanın seni ne kadar doğru anladığına dayanan kaba bir tahmindir. Band puanları resmî IELTS sonucu değildir.</p>
+  <div class="row" style="gap:8px"><button class="btn btn-p" data-go="exam">${ic('reset')}Yeni sınav</button><button class="btn btn-ghost" data-a="hub">Konuşma Koçu</button></div></section>`;
+  KA.sfx.win();
+}
+function transHtml(){return `<details class="rsec"><summary style="cursor:pointer;font-weight:800">Konuşmanın dökümü</summary><div class="trans">${EX.log.map(l=>`<p><b>Part ${l.part} · ${esc(l.q)}</b><br>${esc(l.a)} <span class="mut">(${l.sec||0} sn)</span></p>`).join('')}</div></details>`}
+
+/* ---------- Serbest sohbet ---------- */
+let CH={};
+const CHAT=s=>`You are a warm, natural English conversation partner for a Turkish university student preparing for English exams (level B1-C1). Scenario: ${s}.
+Rules: reply in natural spoken English, 1-3 short sentences, then usually ask ONE follow-up question that keeps the conversation going. Match the student's level but gently introduce one useful higher-level word or phrase now and then. Never lecture. If the student writes in Turkish, reply in English and encourage them to try in English.
+Also check the student's LAST message: list 0-2 real mistakes or clearly unnatural phrases (not punctuation or capitalisation; speech-to-text may miss commas).
+Return ONLY JSON: {"reply":"...","tr":"Turkish translation of your reply","fix":[{"you":"exact words from the student's last message","better":"natural version","why":"very short Turkish reason"}]}`;
+const CHEV=`You are an English speaking coach. Read this conversation between a Turkish student and an AI partner and give brief, encouraging, specific feedback in TURKISH (English examples stay in English). Return ONLY JSON: {"ozet":"2 sentences","guclu":["..."],"gelisim":["..."],"ifadeler":[{"ifade":"useful English phrase for this topic","tr":"Turkish meaning"}],"seviye":"estimated CEFR level, e.g. B2"}. 2-3 items in each list, 5 phrases.`;
+async function chatSetup(){
+  await load();location.hash='chat';
+  $('#main').innerHTML=`<div class="exh"><button class="btn btn-ghost btn-sm" data-a="hub">${ic('back')}Konuşma Koçu</button><span class="t">Serbest sohbet</span></div>
+  <section class="card setup"><div class="lbl">Senaryo</div><div class="opt-g" id="sc">${BANK.chat.map((c,i)=>`<button class="pill ${i===0?'on':''}" data-sc="${c.k}" title="${esc(c.d)}">${esc(c.n)}</button>`).join('')}</div>
+  <div class="lbl">Konu (isteğe bağlı)</div><input class="input" id="topic" placeholder="Örnek: Boğaziçi'de hazırlık hayatı, sevdiğim bir dizi, yapay zekâ…" style="margin:8px 0 14px">
+  <div class="row" style="gap:16px;justify-content:flex-start;margin-bottom:14px"><label class="sw"><input type="checkbox" id="fx" checked>Hatalarımı düzelt</label><label class="sw"><input type="checkbox" id="trc">Türkçesini göster</label><label class="sw"><input type="checkbox" id="auto" checked>Cevapları sesli oku</label></div>
+  <button class="btn btn-p btn-lg" data-a="cstart" style="width:100%">${I.chat}Sohbete başla</button></section>`;
+}
+function chatStart(){
+  const k=document.querySelector('#sc .on').dataset.sc,sc=BANK.chat.find(c=>c.k===k),tp=$('#topic').value.trim();
+  CH={sc:sc.s+(tp?`. The student wants to talk about: ${tp}`:''),name:sc.n,fx:$('#fx').checked,tr:$('#trc').checked,auto:$('#auto').checked,msgs:[],busy:false};R.sec=0;R.conf=[];
+  $('#main').innerHTML=`<div class="exh"><button class="btn btn-ghost btn-sm" data-a="cend">${ic('back')}Bitir</button><span class="t">${esc(sc.n)}</span><label class="sw"><input type="checkbox" id="trc2" ${CH.tr?'checked':''}>Türkçe</label><button class="btn btn-ghost btn-sm" data-a="ceval">${ic('check')}Değerlendir</button></div>
+  <section class="card" style="padding:0;overflow:hidden"><div class="chat" id="chat"></div><div class="cbar"><button class="bigmic" id="mic" aria-label="Konuş">${I.mic}</button><textarea class="textarea" id="ans" lang="en" placeholder="Konuş ya da yaz… (Enter ile gönder)"></textarea><button class="btn btn-p" data-a="csend" aria-label="Gönder">${ic('arrow')}</button></div></section>`;
+  const mic=$('#mic'),box=$('#ans');
+  const ui=()=>{mic.classList.toggle('rec',R.on);mic.innerHTML=R.on?I.stop:I.mic};
+  mic.onclick=()=>{if(R.on){recStop();ui();if(box.value.trim())chatSend()}else recStart(box,ui)};
+  box.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();chatSend()}});
+  $('#trc2').onchange=e=>{CH.tr=e.target.checked;drawChat()};
+  chatTurn(tp?`(The student would like to talk about: ${tp}. Open the conversation.)`:'(Open the conversation with a friendly first line that fits the scenario.)',true);
+}
+function drawChat(typing){
+  const c=$('#chat');if(!c)return;
+  c.innerHTML=CH.msgs.map((m,i)=>m.r==='ai'?`<div class="msg ai"><span lang="en">${esc(m.t)}</span> <button class="pl" data-say="${esc(m.t)}" aria-label="Dinle">${I.play}</button>${CH.tr&&m.tr?`<span class="tr">${esc(m.tr)}</span>`:''}</div>`:`<div class="msg me"><span lang="en">${esc(m.t)}</span>${m.fx&&m.fx.length?m.fx.map(f=>`<span class="fx"><s>${esc(f.you)}</s> → <b>${esc(f.better)}</b>${f.why?' · '+esc(f.why):''}</span>`).join(''):''}</div>`).join('')+(typing?'<div class="typing"><span class="ka-spin"></span> yazıyor…</div>':'');
+  c.scrollTop=c.scrollHeight;
+}
+function chatSend(){const box=$('#ans');if(!box||CH.busy)return;recStop();const t=box.value.trim();if(!t)return;box.value='';CH.msgs.push({r:'me',t});drawChat(true);chatTurn(null)}
+async function chatTurn(seed,first){
+  CH.busy=true;drawChat(true);
+  const hist=CH.msgs.slice(-14).map(m=>(m.r==='ai'?'Partner: ':'Student: ')+m.t).join('\n');
+  let r=null;try{r=await KA.askJ(CHAT(CH.sc),(hist||'')+(seed?'\n'+seed:''),{tier:'quick',ms:25000})}catch(e){}
+  CH.busy=false;
+  const j=r&&r.json;
+  if(!j||!j.reply){drawChat();KA.toast('Cevap alınamadı: '+esc(r&&r.err||'bağlantı'),3500);return}
+  const last=[...CH.msgs].reverse().find(m=>m.r==='me');
+  if(last&&!first&&CH.fx&&Array.isArray(j.fix))last.fx=j.fix.filter(f=>f&&f.you&&f.better&&f.you.trim().toLowerCase()!==f.better.trim().toLowerCase()).slice(0,2);
+  CH.msgs.push({r:'ai',t:String(j.reply),tr:String(j.tr||'')});drawChat();
+  if(CH.auto)KA.speak(String(j.reply));
+}
+async function chatEval(){
+  const me=CH.msgs.filter(m=>m.r==='me');if(me.length<3){KA.toast('Değerlendirme için en az 3 mesaj yaz ya da söyle.');return}
+  recStop();KA.stopSpeak();
+  const box=document.createElement('div');box.className='card room';box.style.marginTop='14px';box.innerHTML='<span class="ka-spin"></span> Sohbetin değerlendiriliyor…';$('#main').appendChild(box);box.scrollIntoView({behavior:'smooth'});
+  let r=null;try{r=await KA.askJ(CHEV,CH.msgs.map(m=>(m.r==='ai'?'Partner: ':'Student: ')+m.t).join('\n'),{tier:'quick',ms:40000})}catch(e){}
+  const j=r&&r.json;if(!j){box.innerHTML='<p class="bad">Değerlendirme alınamadı.</p>';return}
+  const fx=me.flatMap(m=>m.fx||[]);const L=a=>Array.isArray(a)?a:[];
+  box.innerHTML=`<span class="eyebrow">Sohbet değerlendirmesi${j.seviye?' · tahmini seviye '+esc(j.seviye):''}</span><p style="line-height:1.6;margin:8px 0">${esc(j.ozet||'')}</p>${L(j.guclu).length?`<h3 style="margin:10px 0 6px;font-size:17px">Güçlü yönlerin</h3><ul>${L(j.guclu).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${L(j.gelisim).length?`<h3 style="margin:10px 0 6px;font-size:17px">Geliştirmen gerekenler</h3><ul>${L(j.gelisim).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${fx.length?`<h3 style="margin:10px 0 6px;font-size:17px">Sohbetteki düzeltmeler (${fx.length})</h3><div class="fix">${fx.map(f=>`<div><s>${esc(f.you)}</s> → <ins>${esc(f.better)}</ins><small>${esc(f.why||'')}</small></div>`).join('')}</div>`:''}${L(j.ifadeler).length?`<h3 style="margin:10px 0 6px;font-size:17px">Bu konu için kullanışlı ifadeler</h3><div class="fix">${L(j.ifadeler).map(x=>`<div><b lang="en">${esc(x.ifade)}</b> <button class="btn btn-ghost btn-sm" data-say="${esc(x.ifade)}" style="min-height:28px;padding:2px 8px">${I.play}</button><small>${esc(x.tr||'')}</small></div>`).join('')}</div>`:''}`;
+  try{KA.addXp(10)}catch(e){}
+}
+
+/* ---------- Olaylar ---------- */
+document.addEventListener('click',e=>{
+  const t=e.target;
+  const pt=t.closest('[data-pt]');if(pt){document.querySelectorAll('[data-pt]').forEach(b=>b.classList.toggle('on',b===pt));return}
+  const sc=t.closest('[data-sc]');if(sc){document.querySelectorAll('[data-sc]').forEach(b=>b.classList.toggle('on',b===sc));return}
+  const go=t.closest('[data-go]');if(go){go.dataset.go==='exam'?examSetup():chatSetup();return}
+  const a=t.closest('[data-a]');if(!a)return;
+  ({hub,estart:examStart,next:sendAns,talk,replay:()=>{const x=EX.Q[EX.i];if(x)KA.speak(x.q)},reeval:examEval,
+    quit:()=>{if(EX.log.length&&!confirm('Sınavdan çıkılsın mı? Cevapların kaydedilmez.'))return;hub()},
+    cstart:chatStart,csend:chatSend,ceval:chatEval,cend:()=>{if(CH.msgs&&CH.msgs.filter(m=>m.r==='me').length>=3&&confirm('Çıkmadan önce sohbetin değerlendirilsin mi?')){chatEval();return}hub()}}[a.dataset.a]||(()=>{}))();
+});
+addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(!h)hub()});
+KA.nav('dinle.html');
+const h=location.hash.slice(1);if(h==='exam')examSetup();else if(h==='chat')chatSetup();else hub();
+})();
+</script>
+</body>
+</html>

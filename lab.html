@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="tr" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Okuma Oyunları · Kelime Arenası</title>
+<meta name="description" content="BUEPT reading için beş oyun: Metin Mimarı, Sempozyum, Tuzak Laboratuvarı, Tarama Radarı, Kelime Bütçesi. Can, kombo, jeton, güçlendiriciler ve kendi kelimelerinle sonsuz içerik.">
+<meta name="theme-color" content="#0f766e">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="K. Arenası">
+<link rel="manifest" href="manifest.webmanifest">
+<script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="ortak.css?v=22">
+<style>
+:root{--sans:"Plus Jakarta Sans",system-ui,sans-serif}
+.lh{padding:24px;margin-bottom:14px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.lh h1{font-size:clamp(28px,4vw,40px);margin:6px 0 8px}.lh p{color:var(--ink2);margin:0}
+.prof{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.pchip{display:flex;flex-direction:column;align-items:center;min-width:74px;padding:10px 12px;border-radius:16px;background:var(--soft)}
+.pchip b{font:800 20px var(--sans)}.pchip small{font-size:11.5px;font-weight:700;color:var(--mut)}
+.lgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.lcard{padding:0;text-align:left;border:1px solid var(--line);cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;overflow:hidden}
+.lcard:hover{border-color:var(--g);transform:translateY(-2px)}
+.lcard .art{height:110px;background:var(--g);display:grid;place-items:center;font-size:54px;position:relative}
+.lcard .art:after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 40%,rgba(255,255,255,.18))}
+.lcard .bd{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px}
+.lcard b{font-family:Fraunces,serif;font-size:21px}.lcard p{margin:0;color:var(--ink2);font-size:14px;line-height:1.5}
+.tags{display:flex;gap:5px;flex-wrap:wrap}.tags span{font-size:11.5px;font-weight:800;padding:3px 8px;border-radius:999px;background:var(--soft);color:var(--ink2)}
+.tags span.big{background:var(--g);color:#fff}
+.stars{color:var(--acc2);letter-spacing:2px;font-size:15px}
+.sec{margin-top:20px}.sec h2{font-size:21px;margin:0 0 10px}
+.shop{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.pu{padding:14px;border-radius:16px;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;gap:6px}
+.pu .e{font-size:26px}.pu b{font-size:15px}.pu small{color:var(--mut);font-size:12.5px;line-height:1.35}
+.pu .row{justify-content:space-between;margin-top:auto}
+.achs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.ach{padding:10px 12px;border-radius:14px;background:var(--soft);font-size:13px;color:var(--mut);display:flex;gap:8px;align-items:center}
+.ach i{font-style:normal;font-size:20px;filter:grayscale(1);opacity:.5}.ach.on{background:var(--acc-soft);color:var(--ink)}.ach.on i{filter:none;opacity:1}
+/* oyun çerçevesi */
+.gt{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.gt .t{font-weight:800;font-size:18px;flex:1;min-width:140px}
+.hud{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 10px;margin:0 0 12px;border-radius:16px;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(8px);box-shadow:0 0 0 1px var(--line),0 6px 18px rgba(0,0,0,.05)}
+.hud .hp{font-size:17px;letter-spacing:1px}.hud .hp .x{filter:grayscale(1);opacity:.3}
+.hud .h{font:800 14px var(--sans);padding:5px 10px;border-radius:999px;background:var(--soft)}
+.hud .h.cb{background:var(--acc-soft);color:var(--acc2)}
+.hud .pus{display:flex;gap:5px;margin-left:auto}
+.hud .pus button{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:4px 9px;font:800 13px var(--sans);color:var(--ink);cursor:pointer;display:flex;gap:4px;align-items:center}
+.hud .pus button:disabled{opacity:.35;cursor:default}.hud .pus button.act{border-color:var(--p);background:var(--p-soft)}
+.stg{padding:20px 22px;position:relative}
+.lbl{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+.ttl{font-family:Fraunces,serif;font-size:22px;margin:0 0 6px}
+.para{font-family:Fraunces,serif;font-size:17px;line-height:1.7}
+.fb{margin-top:12px;padding:12px 14px;border-radius:14px;font-size:14.5px;line-height:1.55;animation:pop .25s}.fb.ok{background:var(--ok-soft)}.fb.no{background:var(--bad-soft)}.fb b{display:block;margin-bottom:2px}
+.opts{display:grid;gap:8px;margin-top:12px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);font:600 15px/1.45 var(--sans);color:var(--ink);cursor:pointer;white-space:pre-line;transition:transform .12s}
+.opt:hover:not(:disabled){border-color:var(--p);transform:translateX(2px)}.opt kbd{font:800 12px var(--sans);min-width:22px;height:22px;border-radius:7px;background:var(--soft);display:grid;place-items:center;flex:0 0 auto}
+.opt.ok{border-color:var(--ok);background:var(--ok-soft)}.opt.no{border-color:var(--bad);background:var(--bad-soft)}.opt.gone{opacity:.25;text-decoration:line-through}
+.brief{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
+.how{display:grid;gap:8px;margin:10px 0}.how div{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--soft);font-size:14px;line-height:1.45}.how i{font-style:normal;font-size:18px}
+.diff{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 14px}
+.diff button{border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:10px 6px;font:800 14px var(--sans);color:var(--ink);cursor:pointer}
+.diff button small{display:block;font-weight:600;font-size:11.5px;color:var(--mut);margin-top:3px}
+.diff button.on{border-color:var(--p);background:var(--p-soft)}
+.minishop{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 14px}
+.minishop button{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:6px 10px;font:700 13px var(--sans);color:var(--ink);cursor:pointer}
+.tbar{height:8px;border-radius:99px;background:var(--soft);overflow:hidden;margin:10px 0}.tbar i{display:block;height:100%;background:var(--p);transition:width .2s linear}.tbar.low i{background:var(--bad)}.tbar.frz i{background:#3b82f6}
+#main.ing>*{animation:none!important}
+@keyframes pop{0%{transform:scale(.96);opacity:.4}100%{transform:none;opacity:1}}
+@keyframes sh{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.shake{animation:sh .4s}
+.flt{position:fixed;z-index:999;pointer-events:none;font:800 20px var(--sans);color:var(--ok);text-shadow:0 2px 8px rgba(0,0,0,.15);animation:fl 1s ease-out forwards}
+.flt.no{color:var(--bad)}.flt.cb{color:var(--acc2);font-size:24px}
+@keyframes fl{0%{transform:translate(-50%,0) scale(.8);opacity:0}15%{opacity:1;transform:translate(-50%,-6px) scale(1.1)}100%{transform:translate(-50%,-60px);opacity:0}}
+.banner{position:fixed;left:50%;top:22%;transform:translate(-50%,-50%);z-index:998;font:800 32px Fraunces,serif;color:var(--acc2);text-shadow:0 4px 20px rgba(0,0,0,.2);pointer-events:none;animation:bn 1.2s forwards;white-space:nowrap}
+@keyframes bn{0%{transform:translate(-50%,-50%) scale(.5);opacity:0}20%{transform:translate(-50%,-50%) scale(1.15);opacity:1}70%{opacity:1}100%{transform:translate(-50%,-70%) scale(1);opacity:0}}
+/* mimar */
+.mgrid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:16px;align-items:start}
+.tower{display:flex;flex-direction:column-reverse;gap:6px;padding:14px;border-radius:18px;background:linear-gradient(var(--soft),var(--card2));position:sticky;top:70px}
+.floor{display:flex;gap:10px;align-items:center;min-height:50px;padding:8px 12px;border-radius:10px;border:2px dashed var(--line2);background:var(--card);font-size:13.5px;line-height:1.35;cursor:pointer;text-align:left;color:var(--ink);font-family:inherit;transition:transform .15s}
+.floor i{font-style:normal;font:800 13px var(--sans);min-width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--soft)}
+.floor.fill{border-style:solid;border-color:var(--p)}.floor.lock{border-color:var(--ok);background:var(--ok-soft);cursor:default}
+.ground{height:10px;border-radius:6px;background:var(--ink2);opacity:.5;margin-top:2px}
+.pool{display:grid;gap:10px}
+.pc{padding:12px 14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);cursor:pointer;font-family:Fraunces,serif;font-size:15.5px;line-height:1.6;text-align:left;color:var(--ink)}
+.pc:hover{border-color:var(--p)}
+.roles{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.roles button{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:8px 13px;font:700 13.5px var(--sans);color:var(--ink);cursor:pointer}
+.roles button.ok{background:var(--ok);border-color:var(--ok);color:#fff}.roles button.no{background:var(--bad);border-color:var(--bad);color:#fff}.roles button.gone{opacity:.25}
+mark.cue{background:color-mix(in srgb,var(--acc) 45%,transparent);color:inherit;border-radius:3px;padding:0 2px}
+.city{display:flex;align-items:flex-end;gap:6px;height:120px;padding:0 10px;border-bottom:6px solid var(--ink2);margin:10px auto 0;max-width:460px;justify-content:center}
+.city div{width:42px;border-radius:6px 6px 0 0;position:relative;background:var(--c);animation:pop .4s}
+.city div:after{content:'';position:absolute;inset:8px 7px 6px;background:repeating-linear-gradient(transparent 0 8px,rgba(255,255,255,.55) 8px 12px);opacity:.6}
+/* sempo */
+.sch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.sc{padding:14px;border-radius:16px;background:var(--card2);border:1.5px solid var(--line)}
+.sc b{font-family:Fraunces,serif;font-size:17px;display:block}.sc small{color:var(--mut);font-weight:700}
+.sc p{margin:8px 0 0;font-family:Fraunces,serif;font-size:15px;line-height:1.6}
+.mod{display:flex;gap:12px;align-items:flex-start;margin:6px 0 4px}
+.mod .av{width:46px;height:46px;border-radius:50%;background:#6d28d9;color:#fff;display:grid;place-items:center;font-size:22px;flex:0 0 auto}
+.mod .bb{flex:1;padding:14px 16px;border-radius:4px 18px 18px 18px;background:var(--soft);font-family:Fraunces,serif;font-size:19px;line-height:1.5}
+.who{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:12px}
+.who button{border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:10px;font:700 14px var(--sans);color:var(--ink);cursor:pointer;text-align:left}
+.who button small{display:block;font-weight:600;font-size:11.5px;color:var(--mut)}
+.who button.ok{border-color:var(--ok);background:var(--ok-soft)}.who button.no{border-color:var(--bad);background:var(--bad-soft)}.who button.gone{opacity:.25}
+.rep{height:12px;border-radius:99px;background:var(--soft);overflow:hidden}.rep i{display:block;height:100%;background:linear-gradient(90deg,#6d28d9,var(--acc2));transition:width .5s}
+.wl{font-size:13px;color:var(--mut);font-weight:700}
+/* tuzak */
+.stm{font-family:Fraunces,serif;font-size:19px;line-height:1.5;padding:16px;border-radius:16px;border:2px solid var(--line);background:var(--card);margin-top:10px}
+.bins{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}
+.bins button{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:12px 6px;font:800 12.5px/1.25 var(--sans);color:var(--ink);cursor:pointer;min-height:64px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bins button i{font-style:normal;font-size:20px}
+.bins button.ok{background:var(--ok);border-color:var(--ok);color:#fff}.bins button.no{background:var(--bad);border-color:var(--bad);color:#fff}.bins button.gone{opacity:.2}
+.src{padding:12px 14px;border-radius:14px;background:var(--soft);font-family:Fraunces,serif;font-size:16.5px;line-height:1.65}
+/* radar */
+.rq{position:sticky;top:58px;z-index:15;margin-bottom:8px}
+.rq .card{padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:2px solid #1d4ed8}
+.rq b{font-size:15.5px;flex:1;min-width:200px}
+.sweep{width:34px;height:34px;border-radius:50%;border:2px solid #1d4ed8;position:relative;overflow:hidden;flex:0 0 auto}
+.sweep:after{content:'';position:absolute;left:50%;top:50%;width:50%;height:2px;background:#1d4ed8;transform-origin:0 50%;animation:sw 1.4s linear infinite}
+@keyframes sw{to{transform:rotate(360deg)}}
+.rtime{font:800 22px var(--sans)}
+.rp{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;margin-bottom:6px;border:1.5px solid transparent;text-align:left;background:transparent;width:100%;color:var(--ink);font-family:Fraunces,serif;font-size:16px;line-height:1.6}
+.rp:hover{border-color:var(--line2);background:var(--card)}.rp i{font:800 14px var(--sans);font-style:normal;width:30px;height:30px;border-radius:9px;background:var(--soft);display:grid;place-items:center}
+.rp.ok{border-color:var(--ok);background:var(--ok-soft)}.rp.no{border-color:var(--bad);background:var(--bad-soft)}.rp.dim{opacity:.25}
+/* bütçe */
+.wtok{display:inline;border:0;background:transparent;padding:1px 2px;margin:0;border-radius:5px;cursor:pointer;font:inherit;color:inherit}
+.wtok:hover{background:var(--p-soft)}.wtok.on{background:var(--p);color:var(--p-ink)}.wtok.hl{box-shadow:0 0 0 2px var(--acc) inset}
+.tray{display:flex;flex-wrap:wrap;gap:6px;min-height:50px;padding:10px;border-radius:14px;border:2px dashed var(--line2);margin-top:12px;align-items:center}
+.tray button{border:0;border-radius:8px;padding:6px 10px;background:var(--p);color:var(--p-ink);font:700 14px var(--sans);cursor:pointer;animation:pop .2s}
+.coins{display:flex;gap:4px;align-items:center}.coins i{width:18px;height:18px;border-radius:50%;background:var(--acc2);box-shadow:inset 0 -2px 0 rgba(0,0,0,.2)}.coins i.u{background:var(--soft);box-shadow:none}.coins i.over{background:var(--bad)}
+/* sonuç */
+.end{text-align:center;padding:28px}.end .big{font:800 50px var(--sans);color:var(--p)}
+.end .st{font-size:40px;letter-spacing:6px;color:var(--acc2)}
+.gain{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.gain span{padding:8px 12px;border-radius:999px;background:var(--soft);font:800 14px var(--sans)}
+.rev{text-align:left;display:grid;gap:8px;margin-top:16px}
+.rev div{padding:10px 12px;border-radius:12px;background:var(--bad-soft);font-size:14px;line-height:1.5}.rev b{display:block}
+.newach{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border-radius:999px;background:var(--acc-soft);font-weight:800;margin:4px}
+@media (max-width:860px){.lh{grid-template-columns:1fr}.prof{justify-content:flex-start}.lgrid,.shop{grid-template-columns:1fr 1fr}.brief{grid-template-columns:1fr}.mgrid{grid-template-columns:1fr}.tower{position:static}.sch{grid-template-columns:1fr}.bins{grid-template-columns:repeat(2,minmax(0,1fr))}.bins button:last-child{grid-column:1/-1}.stg{padding:16px}.hud .pus{margin-left:0;width:100%}.rq{top:104px}}
+@media (max-width:520px){.lgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="ka-wrap" id="main"></main>
+<script src="firebase-config.js?v=22"></script><script src="ortak.js?v=22"></script>
+<script>
+(()=>{
+const {$,esc,shuf}=KA,ic=KA.ic;
+let D=null,G=null,BAR=null,PEND=null;
+/* ---------- Profil: jeton, güçlendiriciler, başarımlar ---------- */
+const PK='ka_lab2';
+const P=()=>Object.assign({coins:60,best:{},ach:[],pu:{fifty:1,hint:1,shield:1,time:1},city:[],career:0,played:0},KA.store.get(PK,{})||{});
+const putP=o=>KA.store.set(PK,o);
+const DIFF={kolay:{n:'Çaylak',hp:5,m:1,tz:0,rd:210,d:'5 can · süre yok'},orta:{n:'Usta',hp:3,m:1.5,tz:20,rd:150,d:'3 can · ×1,5 puan'},zor:{n:'Efsane',hp:2,m:2,tz:10,rd:105,d:'2 can · ×2 puan'}};
+let DK=(()=>{try{return localStorage.getItem('ka_lab_dk')||'orta'}catch(e){return 'orta'}})();
+const PU={fifty:{n:'50/50',e:'✂️',c:30,d:'Yanlış seçeneklerin yarısını kaldırır.'},hint:{n:'İpucu',e:'💡',c:20,d:'Oyuna özel ipucu: anahtar kelimeyi ya da yeri gösterir.'},shield:{n:'Kalkan',e:'🛡️',c:40,d:'Bir sonraki hatanı affeder; can gitmez.'},time:{n:'Zaman',e:'⏳',c:25,d:'Sayaç durur ya da +15 saniye.'}};
+const ACH={ilk:['🏅','İlk zafer'],kusursuz:['💎','Hatasız tur'],kombo8:['🔥','8\'li kombo'],efsane:['👑','Efsane zorlukta kazan'],sehir3:['🏙️','Şehrinde 3 bina'],editor:['📰','Baş editör'],hiz:['⚡','3 saniyede buldun'],tasarruf:['🪙','Bütçede kusursuz'],kendi:['✍️','Kendi kelimelerinle bitir'],tuzak20:['🧪','20 tuzak yakaladın']};
+const GAMES={
+ mimar:{n:'Metin Mimarı',e:'🏛️',g:'#0f766e',big:1,d:'Karışmış bir makaleyi kat kat yeniden kur, her paragrafa görevini ver, denetimden geç. Her makale şehrine bir bina ekler.',k:['Paragraf amacı','Paragraf ilişkisi','Metin yapısı']},
+ sempo:{n:'Sempozyum',e:'🎙️',g:'#6d28d9',big:1,d:'Konferans muhabirisin: iddiaları doğru akademisyene bağla, tutum çıkar, haberini kelime sınırıyla yaz. Kariyerin seans seans yükselir.',k:['Eşleştirme','Tutum çıkarımı','I-II-III','Kısa cevap']},
+ tuzak:{n:'Tuzak Laboratuvarı',e:'🧪',g:'#b91c1c',d:'Süre işlerken her yanlış şıkkı doğru tuzak türüne at. Hızlı cevap bonus, kombo çarpan getirir.',k:['Çeldirici türleri','Hız']},
+ radar:{n:'Tarama Radarı',e:'📡',g:'#1d4ed8',d:'"Hangi paragraf…?" Saat işliyor; okumadan, tarayarak bul. Hızlı buldukça puanın katlanır.',k:['Scanning','Zaman yönetimi']},
+ butce:{n:'Kelime Bütçesi',e:'🪙',g:'#a16207',d:'Kısa cevabı metindeki kelimelere dokunarak kur. Kilit bilgiyi en az kelimeyle veren kazanır.',k:['Kısa cevap','Kelime sınırı']}
+};
+const HOW={
+ mimar:[['🧱','Paragrafları sıraya diz: 1. kat giriş, en üst kat sonuç. Kontrol ettiğinde yanlış katlar düşer ve bir can gider.'],['🏷️','Her paragrafın görevini seç: tanım mı, örnek mi, karşı görüş mü?'],['🔍','Denetimde paragraf ilişkisi ve amaç soruları gelir. Bina ayakta kalırsa şehrine eklenir.']],
+ sempo:[['📖','Dört akademisyenin görüşlerini oku. Panel sırasında metinlere istediğin zaman bakabilirsin.'],['🎤','Moderatör başka sözlerle söylenmiş iddiaları okur: kim söyledi? Biri kimseye ait değil.'],['📝','Çıkarım soruları ve kelime sınırlı kısa haber cevaplarıyla itibarını yükselt.']],
+ tuzak:[['🧪','Önce kısa metni oku. Ardından metne göre YANLIŞ olan ifadeler tek tek gelir.'],['🗂️','Her ifadeyi tuzak türüne at: neden-sonuç ters, kesinlik değişmiş, karşılaştırma ters, yanlış kişi, metinde yok.'],['⏱️','Hızlı cevap bonus puan getirir; kombo çarpanı 2 katına kadar çıkar.']],
+ radar:[['📡','Üstte bir bilgi belirir: o bilgi hangi paragrafta? Okuma, anahtar kelimenin eş anlamlısını ara.'],['⚡','Ne kadar hızlı bulursan o kadar çok puan. Yanlış paragraf 8 saniye götürür.'],['⏳','Süre bitince oyun biter. Zaman güçlendiricisi +15 saniye ekler.']],
+ butce:[['❓','Soruyu oku; cevap metinde bir yerde duruyor.'],['🪙','Cevabı metindeki kelimelere dokunarak kur. Her kelime bir jeton, sınırı aşarsan cevap geçersiz.'],['🎯','Kilit bilgiyi en az kelimeyle verirsen tam puan; fazla kelime puanı düşürür.']]
+};
+/* ---------- BUEPT üslup profili (20 deneme sınavının analizi) ve üretim komutları ---------- */
+const STYLE=`BUEPT ÜSLUP PROFİLİ (20 gerçek Boğaziçi deneme sınavının analizinden; o metinleri KOPYALAMA, yalnızca mantığını uygula): konular psikoloji deneyleri, sosyoloji, medya ve ikna, etik/felsefe/hukuk, teknoloji ve yapay zekâ, tarih ve ekonomi, sağlık, eğitim, sinema ve kültür; paragraf mantığı konu cümlesi → tanım → çalışma ya da düşünür (emin değilsen "one study", "researchers") → örnek → karşı görüş → değerlendirme; cümle mantığı although/despite, however, as a result, for example, in other words, this/such gönderimleri, hedging (may, tend to, is likely to); C1 akademik ama anlaşılır; uydurma istatistik ve gerçek kişiler hakkında yanlış bilgi yok. Öğrencinin kelimelerini metinlere doğal biçimde yerleştir.`;
+const GEN={
+ mimar:`Sen BUEPT okuma sınavı yazarı ve oyun tasarımcısısın. "Metin Mimarı" oyunu için öğrencinin kelimeleriyle ÖZGÜN bir akademik makale yaz.
+${STYLE}
+Makale tam 6 paragraf; her paragraf 60-95 kelime; paragrafların görevleri sırayla şunlar ve her biri yalnızca bir kez: intro (konuyu ve soruyu tanıtır), define (temel kavramı tanımlar), cause (nedenleri açıklar), example (örnek ya da çalışma), counter (karşı görüş), conclude (değerlendirme). Paragraflar karıştırılınca doğru sıra bağlaç ve gönderimlerden bulunabilsin (However, This, Taken together…). Sonra 3 İngilizce denetim sorusu yaz: paragraf ilişkisi, paragrafın amacı ve "Why does the author mention…" ya da çıkarım; 4 şık, tek doğru, açıklama Türkçe.
+YALNIZCA JSON: {"title":"UPPER CASE TITLE","p":[{"r":"intro","t":"..."},{"r":"define","t":"..."},{"r":"cause","t":"..."},{"r":"example","t":"..."},{"r":"counter","t":"..."},{"r":"conclude","t":"..."}],"q":[{"q":"...","o":["...","...","...","..."],"a":0,"why":"Türkçe açıklama"}]}`,
+ sempo:`Sen BUEPT okuma sınavı yazarı ve oyun tasarımcısısın. "Sempozyum" oyunu için öğrencinin kelimeleriyle ÖZGÜN bir panel hazırla.
+${STYLE}
+Tartışmalı bir akademik soru seç. 4 KURGUSAL akademisyen yaz (gerçek kişi değil): her birinin adı, alanı (Türkçe) ve 60-80 kelimelik İngilizce görüşü; görüşleri birbirinden net ayrışsın ama kısmen örtüşsün. Sonra:
+- "match": 6 iddia, konuşmacıların görüşlerini BAŞKA SÖZLERLE anlatsın (aynı kelimeleri kopyalama); her biri bir konuşmacının "k" değerine ya da "none"a ait; tam olarak 1 tanesi "none" (kimse söylemedi ama makul görünüyor).
+- "mc": 3 İngilizce soru: "Which scholar is MOST worried…", "Who would most likely object to…", bir tane I-II-III; 4 şık; açıklama Türkçe.
+- "short": 2 kısa cevap sorusu; "lim" kelime sınırı (4-6); "keys" kabul için gereken kelime grupları (her grup eş değer alternatifler, metinde geçen kelimeler); "m" örnek cevap.
+YALNIZCA JSON: {"title":"question as title","topic":"Türkçe konu","sch":[{"k":"a","n":"Prof. Name Surname","f":"Türkçe alan","t":"..."}],"match":[{"s":"...","a":"a"}],"mc":[{"q":"...","o":["...","...","...","..."],"a":1,"why":"..."}],"short":[{"q":"...","lim":5,"keys":[["word","alt"]],"m":"..."}]}`,
+ tuzak:`Sen BUEPT okuma sınavı yazarısın. "Tuzak Laboratuvarı" oyunu için öğrencinin kelimeleriyle 6 tur hazırla. Her tur: 2-3 cümlelik ÖZGÜN akademik metin + metne göre YANLIŞ olan 4 ifade. Her yanlış ifade bu tuzak türlerinden TAM OLARAK birini kullansın ve 4 ifade 4 farklı türden olsun:
+- "cause": neden ile sonuç yer değiştirmiş
+- "degree": kesinlik ya da derece değişmiş (may→will, some→all, slightly→dramatically, one reason→the only reason)
+- "compare": karşılaştırmanın yönü ters (more↔less, higher↔lower)
+- "who": bilgi doğru ama başka kişiye ya da kaynağa mal edilmiş
+- "none": metinde hiç geçmeyen ama makul görünen bilgi
+Bu yüzden her metin bir neden-sonuç, bir karşılaştırma, bir temkinli ifade ve en az iki kişi/kaynak içersin.
+${STYLE}
+YALNIZCA JSON: {"r":[{"t":"metin","s":[["yanlış ifade","cause"],["...","degree"],["...","who"],["...","none"]]}]}`,
+ radar:`Sen BUEPT okuma sınavı yazarısın. "Tarama Radarı" oyunu için öğrencinin kelimeleriyle ÖZGÜN bir metin yaz: başlık + tam 8 kısa paragraf (her biri 35-55 kelime), her paragraf farklı bir alt konuya ya da döneme odaklansın. Sonra 8 tarama ipucu yaz: her biri tek bir paragrafın içeriğini BAŞKA SÖZLERLE anlatan, 5-12 kelimelik İngilizce bir isim öbeği (paragraftaki kelimeleri aynen kullanma; eş anlamlı kullan); her paragraf tam bir kez cevap olsun.
+${STYLE}
+YALNIZCA JSON: {"title":"UPPER CASE TITLE","p":["p1","p2","p3","p4","p5","p6","p7","p8"],"q":[["paraphrased clue",paragraf_numarası_1_8]]}`,
+ butce:`Sen BUEPT okuma sınavı yazarısın. "Kelime Bütçesi" oyunu için öğrencinin kelimeleriyle 5 kısa cevap sorusu hazırla. Her biri: 1-2 cümlelik ÖZGÜN akademik metin (25-45 kelime), metne dayalı İngilizce bir soru, kelime sınırı "lim" (3-6), "keys" (doğru cevap için şart olan kelime grupları; her gruptaki kelimeler METİNDE AYNEN geçen kelimeler olsun, en fazla 3 grup) ve "m" (metindeki kelimelerle kurulmuş en kısa örnek cevap, lim'i aşmasın).
+${STYLE}
+YALNIZCA JSON: {"items":[{"t":"metin","q":"soru","lim":4,"keys":[["kelime"],["kelime","alternatif"]],"m":"örnek cevap"}]}`
+};
+const inpOf=ws=>'Öğrencinin kelimeleri:\n'+ws.map(w=>w.en+(w.tr?' = '+w.tr:'')).join('\n');
+const V=()=>KA.src.V;
+const ROLES=['intro','define','cause','example','counter','conclude'];
+const CHK={
+ mimar:j=>{const p=(j.p||[]).map(x=>({r:String(x.r||''),t:String(x.t||'').trim()})).filter(x=>ROLES.includes(x.r)&&x.t.split(/\s+/).length>25);if(p.length!==6||new Set(p.map(x=>x.r)).size!==6)throw new Error('6 paragraf ve 6 farklı görev gerekli');p.sort((a,b)=>ROLES.indexOf(a.r)-ROLES.indexOf(b.r));const q=(j.q||[]).filter(x=>x&&x.q&&Array.isArray(x.o)&&x.o.length>=3&&Number.isInteger(+x.a)&&+x.a<x.o.length).map(x=>({q:String(x.q),o:x.o.map(String),a:+x.a,why:String(x.why||'')}));if(q.length<2)throw new Error('denetim soruları eksik');return [{title:String(j.title||'ARTICLE').toUpperCase(),color:'#0f766e',p,q,own:1}]},
+ sempo:j=>{const sch=(j.sch||[]).filter(x=>x&&x.k&&x.n&&x.t).map(x=>({k:String(x.k),n:String(x.n),f:String(x.f||''),t:String(x.t)}));if(sch.length<3)throw new Error('en az 3 konuşmacı');const ks=new Set(sch.map(x=>x.k));const match=(j.match||[]).filter(x=>x&&x.s&&(ks.has(String(x.a))||x.a==='none')).map(x=>({s:String(x.s),a:String(x.a)}));if(match.length<4)throw new Error('eşleştirme eksik');const mc=(j.mc||[]).filter(x=>x&&x.q&&Array.isArray(x.o)&&x.o.length>=3&&Number.isInteger(+x.a)&&+x.a<x.o.length).map(x=>({q:String(x.q),o:x.o.map(String),a:+x.a,why:String(x.why||'')}));const short=(j.short||[]).filter(x=>x&&x.q&&Array.isArray(x.keys)&&x.keys.length).map(x=>({q:String(x.q),lim:Math.max(2,Math.min(8,+x.lim||5)),keys:x.keys.map(g=>(Array.isArray(g)?g:[g]).map(String)),m:String(x.m||'')}));return {title:String(j.title||''),topic:String(j.topic||''),sch,match,mc,short,own:1}},
+ tuzak:j=>{const B=['cause','degree','compare','who','none'];const r=(j.r||[]).map(x=>({t:String(x&&x.t||''),s:(x&&x.s||[]).filter(y=>Array.isArray(y)&&y[0]&&B.includes(y[1])).map(y=>[String(y[0]),y[1]])})).filter(x=>x.t&&x.s.length>=3);if(r.length<4)throw new Error('en az 4 tur');return {r,own:1}},
+ radar:j=>{const p=(j.p||[]).map(String).filter(x=>x.split(/\s+/).length>15);if(p.length<6)throw new Error('en az 6 paragraf');const q=(j.q||[]).filter(x=>Array.isArray(x)&&x[0]&&+x[1]>=1&&+x[1]<=p.length).map(x=>[String(x[0]),+x[1]]);if(q.length<5)throw new Error('en az 5 ipucu');return {title:String(j.title||'READING').toUpperCase(),p,q,own:1}},
+ butce:j=>{const L=(j.items||[]).map(x=>({t:String(x&&x.t||''),q:String(x&&x.q||''),lim:Math.max(2,Math.min(7,+(x&&x.lim)||4)),keys:(x&&x.keys||[]).map(g=>(Array.isArray(g)?g:[g]).map(String)).slice(0,3),m:String(x&&x.m||'')})).filter(x=>x.t&&x.q&&x.keys.length&&x.keys.every(g=>g.some(w=>norm(x.t).includes(norm(w)))));if(L.length<3)throw new Error('en az 3 geçerli soru (anahtar kelimeler metinde geçmeli)');return L.map(x=>Object.assign(x,{own:1}))}
+};
+const NEED={mimar:10,sempo:10,tuzak:12,radar:10,butce:10};
+async function load(){if(!D)D=await (await fetch('lab-icerik.json?v=3')).json()}
+
+/* ---------- Efektler ---------- */
+function floatTxt(el,t,cls){try{const r=(el||document.body).getBoundingClientRect();const d=document.createElement('div');d.className='flt '+(cls||'');d.textContent=t;d.style.left=(r.left+r.width/2)+'px';d.style.top=(r.top+Math.min(r.height,40))+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}catch(e){}}
+function banner(t){const d=document.createElement('div');d.className='banner';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),1250)}
+function shake(el){if(!el)return;el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}
+function confetti(){try{KA.confetti&&KA.confetti(innerWidth/2,innerHeight/3,60,Math.PI)}catch(e){}}
+
+/* ---------- Ortak oyun durumu ---------- */
+function newG(k,data){const d=DIFF[DK],p=P();G={k,data,dk:DK,d,hp:d.hp,maxhp:d.hp,score:0,combo:0,maxc:0,coins:0,ok:0,n:0,mist:[],shield:false,frz:false,t0:Date.now(),fast:false,usedPu:0};return G}
+function hud(){
+  const h=$('#hud');if(!h||!G)return;const p=P(),g=G;
+  const hearts=g.k==='radar'?'':`<span class="hp" title="Can">${'❤️'.repeat(Math.max(0,g.hp))}<span class="x">${'❤️'.repeat(Math.max(0,g.maxhp-g.hp))}</span></span>`;
+  h.innerHTML=`${hearts}<span class="h" title="Puan">⭐ ${g.score}</span><span class="h" title="Jeton">🪙 ${p.coins+g.coins}</span>${g.combo>=2?`<span class="h cb" title="Kombo">🔥 x${g.combo}</span>`:''}${g.shield?'<span class="h" title="Kalkan aktif">🛡️</span>':''}<span class="pus">${Object.entries(PU).map(([k,u])=>`<button data-pu="${k}" title="${u.n}: ${u.d}" ${(p.pu[k]||0)<1||!puOk(k)?'disabled':''} class="${k==='shield'&&g.shield?'act':''}">${u.e}<span>${p.pu[k]||0}</span></button>`).join('')}</span>`;
+}
+const mult=()=>G.d.m*(1+Math.min(G.combo-1,5)*.2);
+function good(el,base,bonus){
+  const g=G;g.combo++;g.maxc=Math.max(g.maxc,g.combo);g.ok++;g.n++;
+  const pts=Math.round(base*mult()+(bonus||0));g.score+=pts;g.coins+=Math.max(1,Math.round(pts/10));
+  floatTxt(el,'+'+pts);KA.sfx.ok();if([3,5,8,12].includes(g.combo)){banner('🔥 Kombo x'+g.combo);KA.sfx.win()}
+  hud();return pts;
+}
+function bad(el,mist){
+  const g=G;g.n++;g.combo=0;
+  if(g.shield){g.shield=false;floatTxt(el,'🛡️ Kalkan!','cb');KA.sfx.tick();if(mist)g.mist.push(mist);hud();return true}
+  if(g.k!=='radar')g.hp--;shake(el);floatTxt(el,g.k==='radar'?'-8 sn':'-1 ❤️','no');KA.sfx.bad();if(mist)g.mist.push(mist);hud();
+  if(g.k!=='radar'&&g.hp<=0){setTimeout(()=>finish(false),800);return false}
+  return true;
+}
+function usePu(k){
+  const p=P(),g=G;if(!g||(p.pu[k]||0)<1||!puOk(k))return;
+  if(k==='shield'){if(g.shield)return;g.shield=true}
+  else if(!applyPu(k))return;
+  p.pu[k]--;putP(p);g.usedPu++;KA.sfx.tick();hud();
+}
+const puOk=k=>{const f=PUF[G&&G.k];return !!(f&&f[k]&&f[k].ok())||k==='shield'};
+const applyPu=k=>{const f=PUF[G.k];return f&&f[k]&&f[k].go()!==false};
+
+/* ---------- Ana ekran ---------- */
+function hub(){
+  stopTick();G=null;if(location.hash)history.replaceState(null,'',location.pathname);const p=P();
+  const best=k=>p.best[k]||{};
+  $('#main').classList.remove('ing');$('#main').innerHTML=`<div class="gt"><a class="btn btn-ghost btn-sm" href="oyunlar.html">${ic('back')}Oyun Salonu</a></div><section class="card lh"><div><span class="eyebrow">Oyun Salonu · Okuma Oyunları</span><h1>BUEPT okumasını oynayarak öğren</h1><p>Her oyun reading'de puan kaybettiren bir beceriye odaklanır. Can, kombo, jeton, güçlendiriciler ve zorluk seviyeleri var; "Kendi kelimelerim" ile her seferinde yeni içerik gelir.</p></div>
+   <div class="prof"><div class="pchip"><b>🪙 ${p.coins}</b><small>jeton</small></div><div class="pchip"><b>🏅 ${p.ach.length}/${Object.keys(ACH).length}</b><small>başarım</small></div><div class="pchip"><b>🏙️ ${p.city.length}</b><small>bina</small></div><div class="pchip"><b>${rankOf(p.career).n.split(' ')[0]}</b><small>muhabirlik</small></div></div></section>
+  <div class="lgrid">${Object.entries(GAMES).map(([k,g])=>{const b=best(k);return `<button class="card lcard" data-go="${k}" style="--g:${g.g}"><span class="art">${g.e}</span><span class="bd"><b>${g.n}</b><p>${g.d}</p><span class="tags">${g.big?'<span class="big">Kapsamlı</span>':''}${g.k.map(x=>`<span>${x}</span>`).join('')}</span>${b.s!=null?`<span class="row" style="justify-content:space-between"><span class="stars">${'★'.repeat(b.st||0)}${'☆'.repeat(3-(b.st||0))}</span><small class="mut" style="font-weight:700">En iyi: ${b.s}</small></span>`:''}</span></button>`}).join('')}</div>
+  <section class="sec"><h2>Güçlendirici dükkânı</h2><div class="shop">${Object.entries(PU).map(([k,u])=>`<div class="pu"><span class="e">${u.e}</span><b>${u.n} <span class="mut" style="font-weight:700">· elinde ${p.pu[k]||0}</span></b><small>${u.d}</small><div class="row"><span style="font-weight:800">🪙 ${u.c}</span><button class="btn btn-ghost btn-sm" data-buy="${k}" ${p.coins<u.c?'disabled':''}>Satın al</button></div></div>`).join('')}</div></section>
+  <section class="sec"><h2>Başarımlar</h2><div class="achs">${Object.entries(ACH).map(([k,[e,n]])=>`<div class="ach ${p.ach.includes(k)?'on':''}"><i>${e}</i>${n}</div>`).join('')}</div></section>
+  ${p.city.length?`<section class="sec"><h2>Şehrin · ${p.city.length} bina</h2><div class="card" style="padding:14px">${cityHtml(p.city)}</div></section>`:''}
+  <p class="mut" style="margin-top:16px;font-size:13.5px"><a href="oyunlar.html">← Oyun Salonu</a></p>`;
+}
+const CITYC=['#0f766e','#b45309','#6d28d9','#1d4ed8','#be123c','#a16207'];
+const cityHtml=c=>`<div class="city">${c.slice(-10).map((t,i)=>`<div style="--c:${CITYC[i%CITYC.length]};height:${55+((i*37+t.length*7)%55)}px" title="${esc(t)}"></div>`).join('')}</div>`;
+function buy(k){const p=P(),u=PU[k];if(p.coins<u.c)return;p.coins-=u.c;p.pu[k]=(p.pu[k]||0)+1;putP(p);KA.sfx.ok();KA.toast(u.e+' '+u.n+' alındı');if(G&&G.ph==='brief')brief(G.k);else if(G)hud();else hub()}
+
+/* ---------- Brifing: kurallar, zorluk, kaynak, dükkân ---------- */
+function brief(k){
+  stopTick();G={k,ph:'brief'};PEND=null;location.hash=k;const g=GAMES[k],p=P();
+  $('#main').classList.remove('ing');$('#main').innerHTML=`<div class="gt"><button class="btn btn-ghost btn-sm" data-a="hub">${ic('back')}Okuma Oyunları</button><span class="t">${g.e} ${g.n}</span><span class="h" style="font-weight:800">🪙 ${p.coins}</span></div>
+  <section class="card stg"><div class="brief"><div><div class="lbl">Nasıl oynanır</div><div class="how">${HOW[k].map(([e,t])=>`<div><i>${e}</i><span>${t}</span></div>`).join('')}</div></div>
+  <div><div class="lbl">Zorluk</div><div class="diff">${Object.entries(DIFF).map(([dk,d])=>`<button data-dk="${dk}" class="${DK===dk?'on':''}">${d.n}<small>${k==='radar'?Math.floor(d.rd/60)+':'+String(d.rd%60).padStart(2,'0')+' süre':k==='tuzak'?(d.tz?d.tz+' sn/ifade':'süre yok')+' · '+d.hp+' can':d.d}</small></button>`).join('')}</div>
+  <div class="lbl">Güçlendiriciler</div><div class="minishop">${Object.entries(PU).map(([pk,u])=>`<button data-buy="${pk}" title="${u.d}" ${p.coins<u.c?'disabled':''}>${u.e} ${p.pu[pk]||0} · +1 🪙${u.c}</button>`).join('')}</div>
+  <div class="lbl">İçerik</div><div id="wsrc"></div>
+  <button class="btn btn-p btn-lg" data-a="start" id="gostart" style="width:100%;margin-top:12px" disabled>${ic('play')}Oyuna başla</button></div></div></section>`;
+  BAR=KA.src.bar('#wsrc',{game:'lab_'+k,need:NEED[k],min:6,title:'yeni '+g.n+' içeriği',hint:'Metinler BUEPT üslubunda, senin kelimelerinle sıfırdan yazılır.',gen:ws=>KA.src.ask(GEN[k],inpOf(ws),CHK[k],{ai:{tier:'long',ms:110000}}),
+    onData:d=>{PEND=d;const b=$('#gostart');if(b)b.disabled=false},onDemo:()=>{PEND=demoOf(k);const b=$('#gostart');if(b)b.disabled=false}});
+}
+function demoOf(k){
+  if(k==='mimar'){const p=P(),i=(p.played||0)%D.mimar.length;return [D.mimar[i]]}
+  if(k==='sempo')return D.sempo;if(k==='tuzak')return D.tuzak;if(k==='radar')return D.radar;return D.butce;
+}
+function start(){const k=G&&G.k;if(!k||!PEND)return;const data=PEND;newG(k,data);({mimar:mStart,sempo:sStart,tuzak:tStart,radar:rStart,butce:bStart})[k]();scrollTo({top:0})}
+function frame(inner){const g=GAMES[G.k];const m=$('#main');m.classList.toggle('ing',!!$('#hud'));m.innerHTML=`<div class="gt"><button class="btn btn-ghost btn-sm" data-a="quit">${ic('back')}${g.n}</button><span class="t">${g.e} ${DIFF[G.dk].n}</span></div><div class="hud" id="hud"></div>${inner}`;hud();const fbs=m.querySelectorAll('.fb');const fb=fbs[fbs.length-1];if(fb&&innerWidth<860){const r=fb.getBoundingClientRect();if(r.bottom>innerHeight-110)setTimeout(()=>scrollBy({top:r.bottom-innerHeight+170,behavior:'smooth'}),40)}}
+let TICK=null;const stopTick=()=>{clearInterval(TICK);TICK=null};
+
+/* ---------- Sonuç ---------- */
+const rankOf=c=>{const R=[[0,'Stajyer muhabir'],[150,'Muhabir'],[400,'Kıdemli muhabir'],[800,'Baş editör'],[1500,'Yayın yönetmeni']];let r=R[0],nx=null;R.forEach((x,i)=>{if(c>=x[0]){r=x;nx=R[i+1]||null}});return {n:r[1],nx}};
+function finish(win,extra){
+  stopTick();const g=G;if(!g||g.done)return;g.done=1;
+  const acc=g.n?g.ok/g.n:0,alive=g.k==='radar'?true:g.hp>0;const st=!win||!alive?0:acc>=.9?3:acc>=.7?2:1;
+  const p=P();p.coins+=g.coins+(st*5);p.played=(p.played||0)+1;const b=p.best[g.k]||{};if(b.s==null||g.score>b.s)p.best[g.k]={s:g.score,st:Math.max(st,b.st||0)};else b.st=Math.max(st,b.st||0);
+  const got=[];const give=k=>{if(!p.ach.includes(k)){p.ach.push(k);got.push(k)}};
+  if(win&&alive)give('ilk');if(win&&alive&&!g.mist.length&&g.n>=4)give('kusursuz');if(g.maxc>=8)give('kombo8');if(win&&alive&&g.dk==='zor')give('efsane');if(win&&alive&&g.data&&(g.data.own||(Array.isArray(g.data)&&g.data[0]&&g.data[0].own)))give('kendi');
+  if(g.k==='mimar'&&win&&alive){const t=g.A.title;if(!p.city.includes(t))p.city.push(t);else p.city.push(t+' ·'+p.city.length);if(p.city.length>=3)give('sehir3')}
+  if(g.k==='sempo'){p.career+=g.score;if(p.career>=800)give('editor')}
+  if(g.k==='tuzak'){p.tz=(p.tz||0)+g.ok;if(p.tz>=20)give('tuzak20')}
+  if(g.fast)give('hiz');if(g.k==='butce'&&g.perfect&&win&&alive)give('tasarruf');
+  putP(p);try{KA.addXp(Math.round(g.score/6))}catch(e){}
+  if(st>=2){KA.sfx.win();confetti()}
+  const rk=g.k==='sempo'?rankOf(p.career):null;
+  $('#main').classList.remove('ing');$('#main').innerHTML=`<div class="gt"><button class="btn btn-ghost btn-sm" data-a="hub">${ic('back')}Okuma Oyunları</button><span class="t">${GAMES[g.k].e} ${GAMES[g.k].n}</span></div>
+  <section class="card end"><div class="lbl">${!alive?'Canların bitti':win?'Tur tamamlandı':'Süre doldu'}</div><div class="st">${'★'.repeat(st)}${'☆'.repeat(3-st)}</div><div class="big">${g.score}</div><p class="mut" style="margin:0">puan · %${Math.round(acc*100)} isabet · en uzun kombo ${g.maxc}</p>
+  <div class="gain"><span>🪙 +${g.coins+st*5} jeton</span><span>✦ +${Math.round(g.score/6)} XP</span>${g.usedPu?`<span>⚡ ${g.usedPu} güçlendirici</span>`:''}</div>
+  ${got.map(k=>`<span class="newach">${ACH[k][0]} Yeni başarım: ${ACH[k][1]}</span>`).join('')}
+  ${extra||''}
+  ${rk?`<p style="margin:10px 0 0"><b>${rk.n}</b>${rk.nx?` · ${rk.nx[1]} unvanına ${rk.nx[0]-p.career} puan`:''}</p>`:''}
+  ${g.k==='mimar'&&p.city.length?cityHtml(p.city):''}
+  ${g.mist.length?`<div class="rev"><div style="background:var(--soft)"><b>Tekrar et: ${g.mist.length} hata</b>Her birinin doğrusu ve nedeni aşağıda.</div>${g.mist.map(m=>`<div><b>${esc(m.q)}</b>Doğrusu: ${esc(m.a)}${m.why?'<br>'+esc(m.why):''}</div>`).join('')}</div>`:''}
+  <div class="row" style="justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap"><button class="btn btn-p" data-a="again">${ic('reset')}Tekrar oyna</button><button class="btn btn-ghost" data-go="${g.k}">Yeni içerik / zorluk</button><button class="btn btn-ghost" data-a="hub">Okuma Oyunları</button></div></section>`;
+}
+
+/* ===== 1. METİN MİMARI ===== */
+const RN={intro:'Konuyu ve soruyu tanıtır',define:'Temel kavramı tanımlar',cause:'Nedenleri açıklar',example:'Örnek ya da çalışma verir',counter:'Karşı görüş sunar',conclude:'Sonuç ve değerlendirme'};
+const RW={intro:'Giriş paragrafı bir durum, yaygın bir inanç ya da soru ortaya koyar.',define:'"refers to", "define … as", "the term" gibi ifadeler tanımın işaretidir.',cause:'"Several factors…", "One explanation…", "First… Second…" nedenleri sıralar.',example:'"illustrates", "A study…", "For instance" örnek ya da kanıt verir.',counter:'"However", "Not all…", "Critics/Defenders argue" karşı görüşü getirir.',conclude:'"Taken together", "therefore", "may depend…" değerlendirme ve sonuç bildirir.'};
+const CUE=/\b(However|Not all|Defenders|Critics|Taken together|Therefore|therefore|refers to|define[sd]?|the term|illustrates|A study|For instance|For example|First|Second|Finally|Several|One (influential )?explanation|This|These|Such|Moreover|In other words)\b/g;
+function mStart(){const g=G,A=g.data[0]||g.data;g.A=A;g.ph='order';g.pool=shuf(A.p.map((x,i)=>i));g.slot=Array(A.p.length).fill(null);g.lock=Array(A.p.length).fill(false);g.checks=0;g.ri=0;g.rw={};g.qi=0;g.qa=null;g.gone=[];drawM()}
+function drawM(){
+  const g=G,A=g.A,n=A.p.length;
+  if(g.ph==='order'){
+    frame(`<section class="card stg"><div class="lbl">1 / 3 · Kat planı · ${esc(A.title)}</div><p style="margin:0 0 12px;color:var(--ink2)">Paragrafa dokun, en alttaki boş kata yerleşir. Yanlış yere koyduğunu geri almak için kata dokun. <b>Kontrol</b> yanlış katları düşürür ve bir can götürür.</p>
+    <div class="mgrid"><div><div class="tower">${g.slot.map((pi,i)=>`<button class="floor ${pi!=null?'fill':''} ${g.lock[i]?'lock':''}" data-fl="${i}"><i>${g.lock[i]?'✓':i+1}</i><span>${pi!=null?esc(A.p[pi].t.slice(0,90))+'…':'<span class="mut">Boş kat</span>'}</span></button>`).join('')}</div><div class="ground"></div>${g.slot.every(x=>x!=null)?`<button class="btn btn-p" data-a="mcheck" style="width:100%;margin-top:12px">${ic('check')}Binayı kontrol et</button>`:''}</div>
+    <div class="pool">${g.pool.map(pi=>`<button class="pc" data-pc="${pi}">${g.cue?esc(A.p[pi].t).replace(CUE,'<mark class="cue">$1</mark>'):esc(A.p[pi].t)}</button>`).join('')||'<p class="mut">Bütün paragraflar yerleşti.</p>'}</div></div></section>`);return}
+  if(g.ph==='role'){const i=g.ri,p=A.p[i],done=g.rw[i];
+    frame(`<section class="card stg"><div class="lbl">2 / 3 · Görevler · Kat ${i+1} / ${n}</div><div class="para">${g.cue?esc(p.t).replace(CUE,'<mark class="cue">$1</mark>'):KA.tokens(p.t)}</div>
+    <p style="font-weight:800;margin:14px 0 0">Bu paragrafın görevi ne?</p><div class="roles">${ROLES.map(r=>`<button data-role="${r}" class="${done?(r===p.r?'ok':r===done?'no':''):g.gone.includes(r)?'gone':''}" ${done||g.gone.includes(r)?'disabled':''}>${RN[r]}</button>`).join('')}</div>
+    ${done?`<div class="fb ${done===p.r?'ok':'no'}"><b>${done===p.r?'Doğru görev!':'Doğrusu: '+RN[p.r]}</b>${esc(RW[p.r])}</div><div class="row" style="margin-top:10px"><button class="btn btn-p" data-a="mnext">${i+1<n?'Sonraki kat':'Denetime geç'}${ic('arrow')}</button></div>`:''}</section>`);return}
+  const q=A.q[g.qi],ans=g.qa;
+  frame(`<section class="card stg"><div class="lbl">3 / 3 · Bina denetimi · Soru ${g.qi+1} / ${A.q.length}</div><details style="margin-bottom:10px"><summary style="cursor:pointer;font-weight:800">Makaleyi göster</summary>${A.p.map((p,i)=>`<p class="para" style="font-size:15px"><b>${i+1}</b> ${esc(p.t)}</p>`).join('')}</details><h3 style="margin:0">${esc(q.q)}</h3>
+  <div class="opts">${q.o.map((o,i)=>`<button class="opt ${ans!=null?(i===q.a?'ok':i===ans?'no':''):g.gone.includes(i)?'gone':''}" data-mq="${i}" ${ans!=null||g.gone.includes(i)?'disabled':''}><kbd>${'ABCD'[i]}</kbd><span>${esc(o)}</span></button>`).join('')}</div>${ans!=null?`<div class="fb ${ans===q.a?'ok':'no'}"><b>${ans===q.a?'Doğru!':'Yanlış'}</b>${esc(q.why)}</div><div class="row" style="margin-top:10px"><button class="btn btn-p" data-a="mqn">${g.qi+1<A.q.length?'Sonraki soru':'Binayı teslim et'}${ic('arrow')}</button></div>`:''}</section>`);
+}
+function mCheck(){
+  const g=G;g.checks++;let badN=0;const btn=$('[data-a=mcheck]');
+  g.slot.forEach((pi,i)=>{if(pi===i)g.lock[i]=true;else{badN++;g.pool.push(pi);g.slot[i]=null}});
+  if(!badN){good(btn,40-Math.min(30,(g.checks-1)*10));banner('🏗️ Bina ayakta!');g.ph='role';g.gone=[];g.cue=false;setTimeout(drawM,500);return}
+  g.mist.push({q:'Kat planı: '+g.A.title,a:'Doğru sıra '+g.A.p.map(p=>RN[p.r]).join(' → '),why:'Giriş → tanım → neden → örnek → karşı görüş → sonuç akışı BUEPT metinlerinde çok yaygındır.'});
+  if(bad(btn))drawM();else return;
+  const f=document.querySelector('.tower');shake(f);
+  KA.toast(badN+' kat yanlış yerdeydi; doğru katlar kilitlendi.');
+}
+const PUF={
+ mimar:{fifty:{ok:()=>G.ph!=='order'&&!(G.ph==='role'?G.rw[G.ri]:G.qa!=null)&&!G.gone.length,go:()=>{if(G.ph==='role'){const p=G.A.p[G.ri];G.gone=shuf(ROLES.filter(r=>r!==p.r)).slice(0,3)}else{const q=G.A.q[G.qi];G.gone=shuf(q.o.map((x,i)=>i).filter(i=>i!==q.a)).slice(0,2)}drawM()}},
+   hint:{ok:()=>G.ph==='order'?G.slot.some((x,i)=>!G.lock[i]):G.ph==='role'&&!G.cue,go:()=>{if(G.ph==='order'){const i=G.slot.findIndex((x,j)=>!G.lock[j]&&x!==j);if(i<0)return false;if(G.slot[i]!=null)G.pool.push(G.slot[i]);const k=G.slot.indexOf(i);if(k>=0)G.slot[k]=null;G.pool=G.pool.filter(x=>x!==i);G.slot[i]=i;G.lock[i]=true;G.cue=true}else G.cue=true;drawM()}},
+   time:{ok:()=>false,go:()=>false}},
+ sempo:{fifty:{ok:()=>G.ph==='match'&&G.cur==null&&!G.gone.length||G.ph==='mc'&&G.ma==null&&!G.gone.length,go:()=>{if(G.ph==='match'){const x=G.S.match[G.order[G.mi]];G.gone=shuf([...G.S.sch.map(s=>s.k),'none'].filter(k=>k!==x.a)).slice(0,2)}else{const q=G.S.mc[G.qi];G.gone=shuf(q.o.map((x,i)=>i).filter(i=>i!==q.a)).slice(0,2)}drawS()}},
+   hint:{ok:()=>G.ph==='match'&&G.cur==null&&!G.hintF,go:()=>{G.hintF=true;drawS()}},time:{ok:()=>false,go:()=>false}},
+ tuzak:{fifty:{ok:()=>G.cur==null&&!G.gone.length,go:()=>{const k=G.list[G.i][1];G.gone=shuf(Object.keys(D.tuzak.bins).filter(b=>b!==k)).slice(0,2);drawT(true)}},
+   hint:{ok:()=>G.cur==null&&!G.hintT,go:()=>{G.hintT=true;drawT(true)}},time:{ok:()=>G.cur==null&&!!G.d.tz&&!G.frz,go:()=>{G.frz=true;drawT(true)}}},
+ radar:{fifty:{ok:()=>!G.dim.length,go:()=>{const a=G.qs[G.qi][1];G.dim=shuf(G.R.p.map((x,i)=>i+1).filter(n=>n!==a)).slice(0,G.R.p.length-2);drawR()}},
+   hint:{ok:()=>!G.dim.length,go:()=>{const a=G.qs[G.qi][1];G.dim=shuf(G.R.p.map((x,i)=>i+1).filter(n=>n!==a)).slice(0,Math.floor(G.R.p.length/2));drawR()}},time:{ok:()=>true,go:()=>{G.left+=15;floatTxt($('#rt'),'+15 sn','cb')}}},
+ butce:{fifty:{ok:()=>!G.res&&!G.gaveKey,go:()=>{const x=G.L[G.i],ws=x.t.split(/\s+/);const want=x.keys[0];const i=ws.findIndex(w=>want.some(k=>norm(w)===norm(k)));if(i<0)return false;if(!G.sel.includes(i))G.sel.push(i);G.gaveKey=true;drawB()}},
+   hint:{ok:()=>!G.res&&!G.hl,go:()=>{G.hl=true;drawB()}},time:{ok:()=>false,go:()=>false}}
+};
+function mClick(t){
+  const g=G;if(!g||g.k!=='mimar'||g.done)return false;
+  const pc=t.closest('[data-pc]');if(pc){const pi=+pc.dataset.pc,i=g.slot.findIndex((x,j)=>x==null&&!g.lock[j]);if(i<0)return true;g.slot[i]=pi;g.pool=g.pool.filter(x=>x!==pi);KA.sfx.tick();drawM();return true}
+  const fl=t.closest('[data-fl]');if(fl){const i=+fl.dataset.fl;if(g.lock[i]||g.slot[i]==null)return true;g.pool.push(g.slot[i]);g.slot[i]=null;drawM();return true}
+  const rl=t.closest('[data-role]');if(rl){const p=g.A.p[g.ri];if(g.rw[g.ri])return true;g.rw[g.ri]=rl.dataset.role;if(rl.dataset.role===p.r)good(rl,12);else{g.mist.push({q:'Kat '+(g.ri+1)+': '+p.t.slice(0,70)+'…',a:RN[p.r],why:RW[p.r]});if(!bad(rl))return true}drawM();return true}
+  const mq=t.closest('[data-mq]');if(mq){if(g.qa!=null)return true;const q=g.A.q[g.qi];g.qa=+mq.dataset.mq;if(g.qa===q.a)good(mq,18);else{g.mist.push({q:q.q,a:q.o[q.a],why:q.why});if(!bad(mq))return true}drawM();return true}
+  return false;
+}
+
+/* ===== 2. SEMPOZYUM ===== */
+function sStart(){const g=G;g.S=g.data;g.ph='read';g.order=shuf(g.S.match.map((x,i)=>i));g.mi=0;g.cur=null;g.qi=0;g.ma=null;g.sa={};g.gone=[];g.rep=50;drawS()}
+const sName=k=>k==='none'?'Hiçbiri':G.S.sch.find(s=>s.k===k).n;
+const schHtml=()=>`<div class="sch">${G.S.sch.map(s=>`<div class="sc"><b>${esc(s.n)}</b><small>${esc(s.f)}</small><p>${KA.tokens(s.t)}</p></div>`).join('')}</div>`;
+function drawS(){
+  const g=G,S=g.S;const repb=`<div class="row" style="gap:10px;margin-bottom:10px"><span class="wl">İtibar</span><div class="rep" style="flex:1"><i style="width:${Math.max(4,Math.min(100,g.rep))}%"></i></div></div>`;
+  const refl=`<details style="margin:0 0 12px"><summary style="cursor:pointer;font-weight:800">Konuşmacıların görüşlerine bak</summary><div style="margin-top:10px">${schHtml()}</div></details>`;
+  if(g.ph==='read'){frame(`<section class="card stg"><div class="lbl">Sempozyum · ${esc(S.topic)}</div><h2 class="ttl">${esc(S.title)}</h2><p style="margin:0 0 12px;color:var(--ink2)">Basın masasındasın. Dört konuşmacının görüşlerini dikkatle oku: kim neyi savunuyor, kim neye karşı? Panel başlayınca moderatör iddiaları başka sözlerle okuyacak.</p>${schHtml()}<div class="row" style="margin-top:14px"><button class="btn btn-p" data-a="s1">Panel başlasın${ic('arrow')}</button></div></section>`);return}
+  if(g.ph==='match'){const x=S.match[g.order[g.mi]],opts=[...S.sch.map(s=>s.k),'none'],a=g.cur;
+    frame(`<section class="card stg">${repb}<div class="lbl">Oturum 1 · Kim söyledi? · ${g.mi+1} / ${S.match.length}</div>${refl}
+    <div class="mod"><span class="av">🎤</span><div class="bb" lang="en">“${esc(x.s)}”</div></div>${g.hintF&&a==null?`<p class="mut" style="font-size:13.5px">💡 İpucu: ${x.a==='none'?'Bu fikri hiçbir konuşmacı tam olarak söylemedi; görüşleri tek tek kontrol et.':'Bu fikrin sahibi '+esc(S.sch.find(s=>s.k===x.a).f)+' alanından.'}</p>`:''}
+    <div class="who">${opts.map(k=>{const s=S.sch.find(z=>z.k===k);return `<button data-sm="${k}" class="${a?(k===x.a?'ok':k===a?'no':''):g.gone.includes(k)?'gone':''}" ${a||g.gone.includes(k)?'disabled':''}>${esc(sName(k))}<small>${s?esc(s.f):'kimse söylemedi'}</small></button>`}).join('')}</div>
+    ${a?`<div class="fb ${a===x.a?'ok':'no'}"><b>${a===x.a?'Doğru kaynak!':'Bu fikir: '+esc(sName(x.a))}</b>${x.a==='none'?'Hiçbir konuşmacı bunu söylemedi; makul görünse de metinde yok.':'Bu, '+esc(sName(x.a))+' görüşünün başka sözlerle söylenmiş hali.'}</div><div class="row" style="margin-top:10px"><button class="btn btn-p" data-a="snext">${g.mi+1<S.match.length?'Sıradaki iddia':'Oturum 2'}${ic('arrow')}</button></div>`:''}</section>`);return}
+  if(g.ph==='mc'){const q=S.mc[g.qi],a=g.ma;
+    frame(`<section class="card stg">${repb}<div class="lbl">Oturum 2 · Tutum ve çıkarım · ${g.qi+1} / ${S.mc.length}</div>${refl}<h3 style="margin:0;white-space:pre-line">${esc(q.q)}</h3>
+    <div class="opts">${q.o.map((o,i)=>`<button class="opt ${a!=null?(i===q.a?'ok':i===a?'no':''):g.gone.includes(i)?'gone':''}" data-smq="${i}" ${a!=null||g.gone.includes(i)?'disabled':''}><kbd>${'ABCD'[i]}</kbd><span>${esc(o)}</span></button>`).join('')}</div>${a!=null?`<div class="fb ${a===q.a?'ok':'no'}">${esc(q.why)}</div><div class="row" style="margin-top:10px"><button class="btn btn-p" data-a="sqn">${g.qi+1<S.mc.length?'Sonraki soru':'Oturum 3: haberini yaz'}${ic('arrow')}</button></div>`:''}</section>`);return}
+  frame(`<section class="card stg">${repb}<div class="lbl">Oturum 3 · Haber notları</div><p style="margin:0 0 10px;color:var(--ink2)">Editörün kısa cevap istiyor. Kelime sınırını aşma; bilgiyi metinden al.</p>${refl}${S.short.map((q,qi)=>{const r=g.sa[qi];return `<div class="sc" style="margin-top:10px;background:var(--soft)"><p style="margin:0 0 8px;font-family:inherit;font-weight:700">${qi+1}. ${esc(q.q)} <span class="wl">(en fazla ${q.lim} kelime)</span></p><input class="input" data-ss="${qi}" lang="en" ${r?'disabled':''} value="${esc(r?r.v:'')}" placeholder="Cevabın" autocomplete="off"><div class="wl" id="wc${qi}" style="margin-top:4px"></div>${r?`<div class="fb ${r.ok?'ok':'no'}"><b>${r.ok?'Editör onayladı':r.over?'Kelime sınırı aşıldı':'Kilit bilgi eksik'}</b>Örnek cevap: ${esc(q.m)}</div>`:''}</div>`}).join('')}
+  <div class="row" style="margin-top:14px">${Object.keys(g.sa).length===S.short.length?`<button class="btn btn-p" data-a="sdone">Haberi yayına gönder${ic('arrow')}</button>`:`<button class="btn btn-p" data-a="scheck">${ic('check')}Editöre gönder</button>`}</div></section>`);
+  document.querySelectorAll('[data-ss]').forEach(inp=>{const f=()=>{const n=inp.value.trim().split(/\s+/).filter(Boolean).length,q=S.short[+inp.dataset.ss];const e=$('#wc'+inp.dataset.ss);if(e){e.textContent=n+' / '+q.lim+' kelime';e.style.color=n>q.lim?'var(--bad)':''}};inp.addEventListener('input',f);f()});
+}
+const norm=s=>String(s).toLowerCase().replace(/[^a-z0-9\- ]/g,' ').replace(/\s+/g,' ').trim();
+function keyOk(v,keys){const t=' '+norm(v)+' ';return keys.every(alts=>alts.some(a=>t.includes(norm(a))))}
+function sClick(t){
+  const g=G;if(!g||g.k!=='sempo'||g.done)return false;
+  const sm=t.closest('[data-sm]');if(sm){if(g.cur)return true;const x=g.S.match[g.order[g.mi]];g.cur=sm.dataset.sm;if(g.cur===x.a){good(sm,15);g.rep+=8}else{g.rep-=10;g.mist.push({q:'“'+x.s+'”',a:sName(x.a),why:''});if(!bad(sm))return true}drawS();return true}
+  const mq=t.closest('[data-smq]');if(mq){if(g.ma!=null)return true;const q=g.S.mc[g.qi];g.ma=+mq.dataset.smq;if(g.ma===q.a){good(mq,20);g.rep+=10}else{g.rep-=10;g.mist.push({q:q.q,a:q.o[q.a],why:q.why});if(!bad(mq))return true}drawS();return true}
+  return false;
+}
+function sCheck(){const g=G;let alive=true;g.S.short.forEach((q,qi)=>{if(g.sa[qi]||!alive)return;const inp=document.querySelector(`[data-ss="${qi}"]`);const v=inp?inp.value.trim():'';const n=v.split(/\s+/).filter(Boolean).length,over=n>q.lim,ok=!!v&&!over&&keyOk(v,q.keys);g.sa[qi]={v,ok,over};if(ok){good(inp,25);g.rep+=10}else{g.rep-=8;g.mist.push({q:q.q,a:q.m,why:over?'Kelime sınırı aşıldı: sınavda cevap geçersiz sayılır.':''});alive=bad(inp)}});if(alive)drawS()}
+
+/* ===== 3. TUZAK LABORATUVARI ===== */
+const BIN_E={cause:'🔁',degree:'📏',compare:'⚖️',who:'👤',none:'🚫'};
+function tStart(){const g=G,T=g.data;g.T=T;g.list=[];shuf(T.r.map((x,i)=>i)).forEach(ri=>shuf(T.r[ri].s).forEach(s=>g.list.push([s[0],s[1],ri])));g.i=0;g.cur=null;g.gone=[];drawT()}
+function drawT(keep){
+  const g=G,x=g.list[g.i],r=g.T.r[x[2]],a=g.cur,B=D.tuzak.bins;
+  frame(`<section class="card stg"><div class="lbl">Numune ${g.i+1} / ${g.list.length}</div><div class="src">${KA.tokens(r.t)}</div>
+  ${g.d.tz&&a==null?`<div class="tbar ${g.frz?'frz':''}" id="tb"><i style="width:100%"></i></div>`:''}
+  <div class="stm" id="stm" lang="en">${esc(x[0])}</div><p class="mut" style="font-size:13px;margin:8px 0 0">Bu ifade metne göre yanlış. Hangi tuzakla yanlış yapılmış?${g.hintT&&a==null?` <b>💡 ${esc(HINTT[x[1]])}</b>`:''}</p>
+  <div class="bins">${Object.entries(B).map(([b,n])=>`<button data-tz="${b}" class="${a?(b===x[1]?'ok':b===a?'no':''):g.gone.includes(b)?'gone':''}" ${a||g.gone.includes(b)?'disabled':''}><i>${BIN_E[b]}</i>${n}</button>`).join('')}</div>
+  ${a?`<div class="fb ${a===x[1]?'ok':'no'}"><b>${a===x[1]?'Tuzağı yakaladın!':a==='late'?'Süre doldu · Doğrusu: '+B[x[1]]:'Doğrusu: '+B[x[1]]}</b>${esc(D.tuzak.why[x[1]])}</div><div class="row" style="margin-top:10px"><button class="btn btn-p" data-a="tnext" id="nx">${g.i+1<g.list.length?'Sıradaki ifade':'Laboratuvar raporu'}${ic('arrow')}</button></div>`:''}</section>`);
+  if(a==null&&g.d.tz&&!keep){g.tl=g.d.tz*10;g.tst=Date.now()}
+  if(a==null&&g.d.tz){stopTick();TICK=setInterval(()=>{if(!G||G.k!=='tuzak'||G.cur!=null)return stopTick();if(G.frz)return;G.tl--;const b=$('#tb');if(b){b.firstElementChild.style.width=(G.tl/(G.d.tz*10)*100)+'%';b.classList.toggle('low',G.tl<G.d.tz*3)}if(G.tl<=0){stopTick();tAns('late',$('#stm'))}},100)}
+}
+const HINTT={cause:'Metindeki neden ile sonuca bak: hangisi hangisine yol açıyor?',degree:'Kesinlik kelimelerine bak: may, some, slightly, one of…',compare:'Karşılaştırma kelimelerine bak: more, less, higher, lower.',who:'Bu bilgiyi metinde KİM söylüyor?',none:'Bu bilgi metinde gerçekten geçiyor mu?'};
+function tAns(b,el){const g=G,x=g.list[g.i];if(g.cur!=null)return;g.cur=b;stopTick();if(b===x[1]){const bonus=g.d.tz?Math.round(Math.max(0,g.tl)/(g.d.tz*10)*10):0;good(el,10,bonus)}else{g.mist.push({q:x[0],a:D.tuzak.bins[x[1]],why:D.tuzak.why[x[1]]});if(!bad(el))return}g.frz=false;g.hintT=false;g.gone=[];drawT(true)}
+function tClick(t){const g=G;if(!g||g.k!=='tuzak'||g.done)return false;const b=t.closest('[data-tz]');if(!b)return false;tAns(b.dataset.tz,b);return true}
+function tNext(){const g=G;g.i++;g.cur=null;if(g.i>=g.list.length)return finish(true);drawT();scrollTo({top:0})}
+
+/* ===== 4. TARAMA RADARI ===== */
+function rStart(){const g=G;g.R=g.data;g.qs=shuf(g.R.q);g.qi=0;g.left=g.d.rd;g.dim=[];g.okp=null;g.wr=null;drawR();stopTick();TICK=setInterval(()=>{if(!G||G.k!=='radar'||G.done)return stopTick();G.left--;const e=$('#rt');if(e){e.textContent=fmt(G.left);e.style.color=G.left<=20?'var(--bad)':''}if(G.left<=0)finish(G.qi>=Math.ceil(G.qs.length/2),`<p>${G.qi} / ${G.qs.length} bilgi bulundu</p>`)},1000)}
+const fmt=s=>Math.floor(Math.max(0,s)/60)+':'+String(Math.max(0,s)%60).padStart(2,'0');
+function drawR(){
+  const g=G,R=g.R,q=g.qs[g.qi];
+  frame(`<div class="rq"><div class="card"><span class="sweep"></span><b>Hangi paragrafta: <span lang="en">${esc(q[0])}</span>?</b><span class="mut" style="font-weight:800">${g.qi+1}/${g.qs.length}</span><span class="rtime" id="rt">${fmt(g.left)}</span></div></div>
+  <section class="card stg"><h2 class="ttl" style="text-align:center">${esc(R.title)}</h2><p class="mut" style="text-align:center;font-size:13px;margin:0 0 10px">Okuma, tara: anahtar kelimenin eş anlamlısını ara.</p>${R.p.map((p,i)=>`<button class="rp ${g.okp===i+1?'ok':''} ${g.wr===i+1?'no':''} ${g.dim.includes(i+1)?'dim':''}" data-rp="${i+1}" ${g.dim.includes(i+1)?'disabled':''}><i>${i+1}</i><span>${esc(p)}</span></button>`).join('')}</section>`);
+  g.qt0=Date.now();
+}
+function rClick(t){const g=G;if(!g||g.k!=='radar'||g.done)return false;const b=t.closest('[data-rp]');if(!b)return false;if(g.okp)return true;const n=+b.dataset.rp,q=g.qs[g.qi];
+  if(n===q[1]){const s=(Date.now()-g.qt0)/1000;if(s<3)g.fast=true;const bonus=Math.max(0,Math.round(12-s));good(b,10,bonus);if(s<4)floatTxt(b,'⚡ Hızlı!','cb');g.okp=n;g.wr=null;drawR();setTimeout(()=>{if(!G||G.k!=='radar'||G.done)return;g.okp=null;g.dim=[];g.qi++;if(g.qi>=g.qs.length)finish(true,`<p>Kalan süre: <b>${fmt(g.left)}</b></p>`);else drawR()},550)}
+  else{if(!g.shield)g.left-=8;g.wr=n;g.mist.push({q:q[0],a:'Paragraf '+q[1],why:'Paragraf '+q[1]+': '+g.R.p[q[1]-1].slice(0,110)+'…'});bad(b);if(g.left<=0)return finish(false),true;drawR()}return true}
+
+/* ===== 5. KELİME BÜTÇESİ ===== */
+function bStart(){const g=G;g.L=shuf(g.data).slice(0,6);g.i=0;g.sel=[];g.res=null;g.perfect=true;drawB()}
+function drawB(){
+  const g=G,x=g.L[g.i],r=g.res;const ws=x.t.split(/\s+/);const used=g.sel.length;
+  let hlIdx=[];if(g.hl){const ss=x.t.match(/[^.!?]+[.!?]*/g)||[x.t];const s=ss.find(z=>x.keys.every(gr=>gr.some(k=>norm(z).includes(norm(k)))))||ss.find(z=>x.keys[0].some(k=>norm(z).includes(norm(k))))||'';let pos=0;ws.forEach((w,i)=>{const at=x.t.indexOf(w,pos);pos=at+w.length;if(s&&at>=x.t.indexOf(s.trim())&&at<x.t.indexOf(s.trim())+s.trim().length)hlIdx.push(i)})}
+  frame(`<section class="card stg"><div class="lbl">Soru ${g.i+1} / ${g.L.length}</div><h3 style="margin:0 0 4px" lang="en">${esc(x.q)}</h3><div class="row" style="justify-content:space-between;margin:6px 0 12px"><span class="wl">NO MORE THAN ${x.lim} WORDS</span><span class="coins" title="Kelime jetonu">${Array.from({length:Math.max(x.lim,used)},(_,i)=>`<i class="${i<used?(i>=x.lim?'over':'u'):''}"></i>`).join('')}</span></div>
+  <div class="para" lang="en">${ws.map((w,i)=>`<button class="wtok ${g.sel.includes(i)?'on':''} ${hlIdx.includes(i)?'hl':''}" data-wt="${i}" ${r?'disabled':''}>${esc(w)}</button>`).join(' ')}</div>
+  <div class="tray" id="tray">${g.sel.length?g.sel.map(i=>`<button data-tr="${i}" ${r?'disabled':''}>${esc(ws[i].replace(/[.,;:!?"“”()]/g,''))}</button>`).join(''):'<span class="mut" style="font-size:13.5px">Cevabın burada oluşur. Metindeki kelimelere dokun.</span>'}</div>
+  ${r?`<div class="fb ${r.ok?'ok':'no'}"><b>${r.ok?(r.extra?'Doğru, ama savurgan':'Tam isabet!'):r.over?'Bütçe aşıldı':'Kilit bilgi eksik'}</b>Örnek cevap: <b style="display:inline" lang="en">${esc(x.m)}</b>${r.ok&&r.extra?` · ${r.extra} fazla kelime: sınavda gereksiz kelime yanlış bilgi riskini artırır.`:''}</div><div class="row" style="margin-top:10px"><button class="btn btn-p" data-a="bnext">${g.i+1<g.L.length?'Sonraki soru':'Sonuç'}${ic('arrow')}</button></div>`:`<div class="row" style="margin-top:12px;gap:8px"><button class="btn btn-p" data-a="bcheck" ${used?'':'disabled'}>${ic('check')}Cevabı teslim et</button><button class="btn btn-ghost" data-a="bclear">Temizle</button></div>`}</section>`);
+}
+function bClick(t){const g=G;if(!g||g.k!=='butce'||g.done)return false;
+  const w=t.closest('[data-wt]');if(w){if(g.res)return true;const i=+w.dataset.wt;if(g.sel.includes(i))g.sel=g.sel.filter(x=>x!==i);else{if(g.sel.length>=g.L[g.i].lim+2){KA.toast('Bütçen bitti. Bir kelimeyi geri al.');shake($('#tray'));return true}g.sel.push(i);KA.sfx.tick()}drawB();return true}
+  const tr=t.closest('[data-tr]');if(tr){if(g.res)return true;g.sel=g.sel.filter(x=>x!==+tr.dataset.tr);drawB();return true}return false}
+function bCheck(){const g=G,x=g.L[g.i],ws=x.t.split(/\s+/);const v=g.sel.map(i=>ws[i]).join(' ');const n=g.sel.length,ideal=Math.min(x.lim,x.m.split(/\s+/).length);const over=n>x.lim,ok=!over&&keyOk(v,x.keys);const extra=Math.max(0,n-ideal);g.res={ok,over,extra};const tray=$('#tray');
+  if(ok){good(tray,Math.max(8,24-extra*5));if(extra)g.perfect=false}else{g.perfect=false;g.mist.push({q:x.q,a:x.m,why:over?'Kelime sınırını aştın.':'Cevapta kilit bilgi yoktu.'});if(!bad(tray))return}drawB()}
+
+/* ===== Olaylar ===== */
+async function go(k){stopTick();await load();brief(k);scrollTo({top:0})}
+document.addEventListener('click',e=>{
+  const t=e.target;
+  if(!t.closest('.wtok')){const tk=t.closest('.tk');if(tk&&!(G&&G.k==='tuzak'&&G.d&&G.d.tz&&G.cur==null)){KA.lookup(tk.dataset.w,{anchor:tk,context:''});return}}
+  const pu=t.closest('[data-pu]');if(pu){usePu(pu.dataset.pu);return}
+  const by=t.closest('[data-buy]');if(by){buy(by.dataset.buy);return}
+  const dk=t.closest('[data-dk]');if(dk){DK=dk.dataset.dk;try{localStorage.setItem('ka_lab_dk',DK)}catch(x){}document.querySelectorAll('[data-dk]').forEach(b=>b.classList.toggle('on',b===dk));return}
+  if(mClick(t)||sClick(t)||tClick(t)||rClick(t)||bClick(t))return;
+  const g=t.closest('[data-go]');if(g){go(g.dataset.go);return}
+  const a=t.closest('[data-a]');if(!a)return;
+  ({hub:()=>{stopTick();hub()},start,again:()=>{const k=G.k,d=G.data;newG(k,d);({mimar:mStart,sempo:sStart,tuzak:tStart,radar:rStart,butce:bStart})[k]();scrollTo({top:0})},
+    quit:()=>{if(G&&G.n&&!G.done&&!confirm('Oyundan çıkılsın mı? Bu turun puanı kaydedilmez.'))return;brief(G.k)},
+    mcheck:mCheck,mnext:()=>{G.ri++;G.gone=[];G.cue=false;if(G.ri>=G.A.p.length){G.ph='insp';G.qi=0;G.qa=null}drawM();scrollTo({top:0})},mqn:()=>{G.qi++;G.qa=null;G.gone=[];if(G.qi>=G.A.q.length)return finish(true);drawM()},
+    s1:()=>{G.ph='match';drawS();scrollTo({top:0})},snext:()=>{G.mi++;G.cur=null;G.gone=[];G.hintF=false;if(G.mi>=G.S.match.length){G.ph='mc';G.qi=0}drawS();scrollTo({top:0})},sqn:()=>{G.qi++;G.ma=null;G.gone=[];if(G.qi>=G.S.mc.length)G.ph='short';drawS();scrollTo({top:0})},scheck:sCheck,sdone:()=>finish(true),
+    tnext:tNext,bcheck:bCheck,bclear:()=>{G.sel=[];drawB()},bnext:()=>{G.i++;G.sel=[];G.res=null;G.hl=false;G.gaveKey=false;if(G.i>=G.L.length)return finish(true);drawB()}}[a.dataset.a]||(()=>{}))();
+});
+document.addEventListener('keydown',e=>{if(!G||G.done||e.metaKey||e.ctrlKey||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
+  if(e.key==='Enter'){const n=document.querySelector('[data-a=tnext],[data-a=snext],[data-a=sqn],[data-a=mnext],[data-a=mqn],[data-a=bnext]');if(n){e.preventDefault();n.click()}return}
+  const k='12345'.indexOf(e.key);if(k<0)return;
+  if(G.k==='tuzak'&&G.cur==null){const b=document.querySelectorAll('[data-tz]:not([disabled])');const all=[...document.querySelectorAll('[data-tz]')];if(all[k]&&!all[k].disabled)all[k].click()}
+  else if(G.k==='sempo'){const all=[...document.querySelectorAll('[data-sm],[data-smq]')];if(all[k]&&!all[k].disabled)all[k].click()}
+  else if(G.k==='mimar'&&G.ph==='insp'){const all=[...document.querySelectorAll('[data-mq]')];if(all[k]&&!all[k].disabled)all[k].click()}
+});
+addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(GAMES[h]&&(!G||G.k!==h))go(h);else if(!h&&G)hub()});
+KA.nav('oyunlar.html');KA._labG=()=>G;
+load().then(()=>{const h=location.hash.slice(1);if(GAMES[h])brief(h);else hub()}).catch(()=>{$('#main').innerHTML='<p class="bad">İçerik yüklenemedi.</p>'});
+})();
+</script>
+</body>
+</html>

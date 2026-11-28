@@ -149,46 +149,69 @@ KA.askJ=async(sys,input,o={})=>{try{const t=await KA.ai(sys+'\n\nGİRDİ:\n'+inp
 /* ---------- Ses: Amerikan İngilizcesi ---------- */
 let muted=S.raw('ka_mute','0')==='1',voice=null,audio=null,seq=0;
 const mem=new Map();
-function pickVoice(){try{const vs=speechSynthesis.getVoices()||[];voice=vs.find(v=>/^en[-_]US/i.test(v.lang)&&/Samantha|Google US|Aaron|Ava|Allison|Zira|Jenny|Aria|Natural/i.test(v.name))||vs.find(v=>/^en[-_]US/i.test(v.lang))||null}catch(e){}}
+function pickVoice(){try{const vs=(window.speechSynthesis&&speechSynthesis.getVoices())||[];const sc=v=>(/^en[-_]US/i.test(v.lang)?10:/^en/i.test(v.lang)?4:-99)+(/Natural|Neural|Enhanced|Premium/i.test(v.name)?6:0)+(/Samantha|Ava|Aria|Jenny|Allison|Google US English|Microsoft (Aria|Jenny|Guy)/i.test(v.name)?4:0)+(v.localService?1:0)-(/Albert|Bad News|Bells|Boing|Bubbles|Cellos|Whisper|Zarvox|Trinoids|Jester|Organ|Superstar|Wobble|Good News|Fred|Junior|Ralph|Kathy|Novelty/i.test(v.name)?30:0);let best=null,bs=-1;vs.forEach(v=>{const x=sc(v);if(x>bs){bs=x;best=v}});voice=bs>0?best:null}catch(e){}}
 if('speechSynthesis' in window){pickVoice();try{speechSynthesis.onvoiceschanged=pickVoice}catch(e){}}
-function local(text,rate){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';if(voice)u.voice=voice;u.rate=rate||.95;speechSynthesis.speak(u)}catch(e){}}
+/* Ses hemen gelsin: cihazın İngilizce sesi anında konuşur; uzun metinler cümle cümle okunur
+   (Chrome uzun cümlelerde susuyor, Safari cancel()'dan hemen sonraki speak()'i yutuyor). */
+const synth=('speechSynthesis' in window)?window.speechSynthesis:null;
+function uttr(text,rate){const u=new SpeechSynthesisUtterance(text);u.lang='en-US';if(!voice)pickVoice();if(voice)u.voice=voice;u.rate=rate||.95;return u}
+function pieces(t){if(t.length<=200)return [t];const ss=t.match(/[^.!?;:]+[.!?;:]*["”’)]*\s*/g)||[t],out=[];let c='';ss.forEach(x=>{if((c+x).length>200&&c){out.push(c.trim());c=''}if(x.length>200){x.split(/(?<=,)\s+/).forEach(y=>{if((c+y).length>200&&c){out.push(c.trim());c=''}c+=y+' '})}else c+=x});if(c.trim())out.push(c.trim());return out}
+function localSay(text,rate,done){
+  if(!synth){done&&done(false);return false}
+  const my=seq,parts=pieces(text);let i=0,fin=false;const end=ok=>{if(fin)return;fin=true;done&&done(ok)};
+  const nx=()=>{if(my!==seq)return end(false);if(i>=parts.length)return end(true);const u=uttr(parts[i++],rate);u.onend=nx;u.onerror=e=>{if(e&&(e.error==='interrupted'||e.error==='canceled'))return end(false);nx()};try{synth.speak(u);if(synth.paused)synth.resume()}catch(e){end(false)}};
+  if(synth.speaking||synth.pending){try{synth.cancel()}catch(e){}setTimeout(nx,70)}else nx();
+  return true;
+}
+const hasVoice=()=>{if(!synth)return false;if(!voice)pickVoice();return !!voice||(synth.getVoices()||[]).length===0};
 async function cloudUrl(text,ms){
   if(mem.has(text))return mem.get(text);
   const key='https://ka-tts.local/'+encodeURIComponent(text);
   let blob=null;
   try{if(window.caches){const c=await caches.open('ka-tts-v1');const hit=await c.match(key);if(hit)blob=await hit.blob()}}catch(e){}
   if(!blob){
-    const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),ms||(text.length>60?6000:2500));
+    const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),ms||4000);
     try{const r=await fetch('api/tts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({text}),signal:ac.signal});if(!r.ok)throw 0;blob=await r.blob();try{if(window.caches)(await caches.open('ka-tts-v1')).put(key,new Response(blob.slice(0),{headers:{'content-type':'audio/wav'}}))}catch(e){}}
     finally{clearTimeout(tm)}
   }
   const u=URL.createObjectURL(blob);mem.set(text,u);return u;
 }
+function stopAll(){if(audio){try{audio.pause()}catch(e){}}}
 KA.speak=(t,rate)=>{
   if(muted)return;
   let text=String(t||'').replace(/\s+/g,' ').trim();if(text.length<60)text=text.split(/\s*[\/~]\s*/)[0];text=text.slice(0,1800);if(!text)return;
-  const my=++seq;if(audio){try{audio.pause()}catch(e){}}
-  try{speechSynthesis.cancel()}catch(e){}
-  if(location.protocol==='file:')return local(text,rate);
-  cloudUrl(text).then(u=>{if(my!==seq)return;audio=new Audio(u);audio.playbackRate=rate||1;return audio.play()}).catch(()=>{if(my===seq)local(text,rate)});
+  const my=++seq;stopAll();
+  // cihazda İngilizce ses varsa hemen onu kullan (gecikme yok); yoksa doğal bulut sesi
+  if(hasVoice()&&localSay(text,rate))return;
+  if(location.protocol==='file:')return;
+  cloudUrl(text).then(u=>{if(my!==seq)return;audio=new Audio(u);audio.playbackRate=rate||1;return audio.play()}).catch(()=>{});
 };
-// Oynatma bitince çözülen sürüm (uzun dinleme metinleri için)
 KA.speakP=(t,rate)=>new Promise(res=>{
   if(muted)return res(false);
   const text=String(t||'').replace(/\s+/g,' ').trim().slice(0,1900);if(!text)return res(false);
-  const my=++seq;if(audio){try{audio.pause()}catch(e){}}
-  try{speechSynthesis.cancel()}catch(e){}
-  const loc=()=>{try{const u=new SpeechSynthesisUtterance(text);u.lang='en-US';if(voice)u.voice=voice;u.rate=(rate||1)*.95;u.onend=()=>res(my===seq);u.onerror=()=>res(false);speechSynthesis.speak(u)}catch(e){res(false)}};
-  if(location.protocol==='file:')return loc();
-  cloudUrl(text,25000).then(u=>{if(my!==seq)return res(false);audio=new Audio(u);audio.playbackRate=rate||1;audio.onended=()=>res(my===seq);audio.onerror=()=>{if(my===seq)loc();else res(false)};return audio.play()}).catch(()=>{if(my===seq)loc();else res(false)});
+  const my=++seq;stopAll();
+  if(hasVoice()&&localSay(text,rate,res))return;
+  if(location.protocol==='file:')return res(false);
+  cloudUrl(text,25000).then(u=>{if(my!==seq)return res(false);audio=new Audio(u);audio.playbackRate=rate||1;audio.onended=()=>res(my===seq);audio.onerror=()=>res(false);return audio.play()}).catch(()=>res(false));
 });
-KA.ttsWarm=t=>{const x=String(t||'').replace(/\s+/g,' ').trim().slice(0,1900);if(!x||muted||location.protocol==='file:')return;cloudUrl(x,25000).catch(()=>{})};
-KA.stopSpeak=()=>{seq++;if(audio){try{audio.pause()}catch(e){}}try{speechSynthesis.cancel()}catch(e){}};
+KA.ttsWarm=()=>{};
+KA.stopSpeak=()=>{seq++;stopAll();try{synth&&synth.cancel()}catch(e){}};
+// iPhone ve Safari: ilk dokunuşta ses motorlarını aç, böylece sonraki sesler beklemeden çalar
+const unlock=()=>{document.removeEventListener('pointerdown',unlock,true);document.removeEventListener('keydown',unlock,true);
+  try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume()}catch(e){}
+  try{if(synth&&!synth.speaking){const u=new SpeechSynthesisUtterance(' ');u.volume=0;synth.speak(u)}}catch(e){}
+  pickVoice()};
+document.addEventListener('pointerdown',unlock,true);document.addEventListener('keydown',unlock,true);
 KA.muted=v=>{if(v!==undefined){muted=!!v;S.set('ka_mute',muted?'1':'0');if(muted)KA.stopSpeak();document.querySelectorAll('[data-ka-snd]').forEach(b=>{b.innerHTML=KA.ic(muted?'mute':'sound');b.title=muted?'Sesi aç':'Sesi kapat'})}return muted};
 let ac=null;
-function tone(fs,d,ty,vol){if(muted)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const t=ac.currentTime;fs.forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain(),s=t+i*d;o.type=ty;o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(1e-4,s);g.gain.exponentialRampToValueAtTime(vol||.12,s+.012);g.gain.exponentialRampToValueAtTime(1e-4,s+d);o.start(s);o.stop(s+d+.03)})}catch(e){}}
+function tone(fs,d,ty,vol){if(muted)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();const t=ac.currentTime+.005;fs.forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain(),s=t+i*d;o.type=ty;o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(1e-4,s);g.gain.exponentialRampToValueAtTime(vol||.12,s+.012);g.gain.exponentialRampToValueAtTime(1e-4,s+d);o.start(s);o.stop(s+d+.03)})}catch(e){}}
 KA.sfx={ok:()=>tone([660,880],.09,'triangle'),bad:()=>tone([220,180],.16,'sawtooth',.07),win:()=>tone([523,659,784,1047],.12,'triangle'),tick:()=>tone([1200],.03,'square',.04),cap:()=>tone([392,523,784],.1,'triangle'),hit:()=>tone([150,110],.18,'square',.08)};
 
+/* ---------- Şıkları dengeli karıştır: aynı soru her açılışta aynı sırada, ama doğru cevap hep aynı harfte değil ---------- */
+KA.hash=t=>{let h=2166136261;t=String(t);for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
+KA.perm=(key,n)=>{let x=KA.hash(key)||1;const r=()=>{x^=x<<13;x>>>=0;x^=x>>>17;x^=x<<5;x>>>=0;return x/4294967296};const a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const FIXED=o=>o.length<=3&&o.every(v=>/^(true|false|not given|yes|no|doğru|yanlış|parçada yok|metinde yok)$/i.test(String(v).trim()));
+KA.mixQ=q=>{if(!q||!Array.isArray(q.o)||typeof q.a!=='number'||q._mx||FIXED(q.o))return q;const p=KA.perm(String(q.q||'')+q.o.join('|'),q.o.length);const o=p.map(i=>q.o[i]);q.a=p.indexOf(q.a);q.o=o;q._mx=1;return q};
 /* ---------- Açık / koyu mod ---------- */
 KA.mode=v=>{
   if(v){document.documentElement.dataset.mode=v;S.set('ka_pal',v==='dark'?'derin_akdeniz':'akdeniz');document.querySelectorAll('.ka-mode button').forEach(b=>b.classList.toggle('on',b.dataset.m===v));const mt=$('meta[name="theme-color"]');if(mt)mt.content=v==='dark'?'#061312':'#0f766e'}
@@ -203,6 +226,7 @@ const IC={
   exam:'<path d="M9 4h6l1 2h3v15H5V6h3z"/><path d="m9 13 2 2 4-4"/>',
   sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
   moon:'<path d="M20 14.5A8 8 0 0 1 9.5 4 7 7 0 1 0 20 14.5z"/>',
+  chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8 11h8M8 14h5"/>',
   ear:'<path d="M6 8.5a6 6 0 1 1 12 0c0 3-2 4.2-3 5.5-.9 1.2-.9 2.4-1.6 3.6A3 3 0 0 1 8 16"/><path d="M10 8.5a2 2 0 1 1 4 0c0 1.2-1 1.7-1.5 2.3"/>',
   sound:'<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>',
   mute:'<path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6M21 9l-5 6"/>',
@@ -240,15 +264,15 @@ const IC={
 KA.ic=(n,cls)=>`<svg class="${cls||''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||''}</svg>`;
 
 /* ---------- Gezinme çubuğu (tek kaynak) ---------- */
-const LINKS=[['index.html','Ana sayfa','home'],['haber.html','Haber','news'],['oyunlar.html','Oyunlar','sword'],['sinav.html','Sınav','exam'],['sozluk.html','Sözlük','book'],['dinle.html','Dinle','ear']];
+const LINKS=[['index.html','Ana sayfa','home'],['haber.html','Haber','news'],['oyunlar.html','Oyunlar','sword'],['sinav.html','Sınav','exam'],['sozluk.html','Sözlük','book'],['dinle.html','Dinle','ear','Dinle & Konuş']];
 KA.nav=(active,o={})=>{
-  const links=LINKS.map(([h,t,i])=>`<a href="${h==='index.html'?'./':h}" class="${h===active?'on':''}">${KA.ic(i)}<span>${t}</span></a>`).join('');
+  const links=LINKS.map(([h,t,i,lg])=>`<a href="${h==='index.html'?'./':h}" class="${h===active?'on':''}" ${h===active?'aria-current="page"':''}>${KA.ic(i)}<span>${lg?`<span class="nlg">${lg}</span><span class="nsm">${t}</span>`:t}</span></a>`).join('');
   const m=KA.mode();
   const html=`<nav class="ka-nav" aria-label="Ana gezinme"><div class="ka-nav-in">
     <a class="ka-brand" href="./" aria-label="Kelime Arenası ana sayfa"><img src="favicon.svg" alt="" width="34" height="34">Kelime Arenası</a>
     <div class="ka-links">${links}</div>
     <div class="ka-tools">
-      ${o.stats?`<span class="ka-chip ka-hide-sm" title="Günlük seri"><span style="color:var(--acc2)">${KA.ic('flame')}</span><b id="kaStreak">0</b><small>gün</small></span><span class="ka-chip" title="Toplam XP"><span style="color:var(--acc)">${KA.ic('star')}</span><b id="kaXp">0</b></span>`:''}
+      ${o.stats?`<span class="ka-chip ka-hide-sm" title="Günlük seri"><span style="color:var(--acc2)">${KA.ic('flame')}</span><b id="kaStreak">0</b><small>gün</small></span><span class="ka-chip" title="Toplam XP"><span style="color:var(--acc)">${KA.ic('star')}</span><b id="kaXp">0</b><small class="kl">XP</small></span>`:''}
       <div class="ka-mode" role="group" aria-label="Görünüm modu"><button data-m="light" class="${m!=='dark'?'on':''}" title="Açık Akdeniz">${KA.ic('sun')}<span>Açık</span></button><button data-m="dark" class="${m==='dark'?'on':''}" title="Koyu Akdeniz">${KA.ic('moon')}<span>Koyu</span></button></div>
       <button class="ka-icon-btn" data-ka-snd title="${muted?'Sesi aç':'Sesi kapat'}">${KA.ic(muted?'mute':'sound')}</button>
     </div></div></nav>`;
@@ -442,13 +466,7 @@ document.addEventListener('click',e=>{if(eat&&e.target.closest&&e.target.closest
 (function(){
 // kota dolunca bir kez sessizce bekleyip yeniden dene
 const ai0=KA.ai;KA.ai=async(p,o={})=>{try{return await ai0(p,o)}catch(e){if(/Çok fazla istek/.test(e.message||'')&&!o._re){await new Promise(r=>setTimeout(r,6000));return ai0(p,Object.assign({},o,{_re:1}))}throw e}};
-// uzun metinler cihazın kendi sesiyle hemen okunur; doğal ses kotası tek kelimelere kalır
-const sp0=KA.speak,spP0=KA.speakP;
-const local=(t,rate,done)=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(t).slice(0,1900));u.lang='en-US';u.rate=(rate||1)*.95;const v=speechSynthesis.getVoices().find(x=>/^en[-_]US/i.test(x.lang)&&/Samantha|Google US|Aria|Jenny/i.test(x.name))||speechSynthesis.getVoices().find(x=>/^en/i.test(x.lang));if(v)u.voice=v;u.onend=()=>done&&done(true);u.onerror=()=>done&&done(false);speechSynthesis.speak(u);return true}catch(e){return false}};
-const long=t=>String(t||'').trim().length>70&&'speechSynthesis' in window&&!(KA.muted&&KA.muted());
-KA.speak=(t,r)=>{if(long(t)){if(KA.stopSpeak)try{KA.stopSpeak()}catch(e){}if(local(t,r))return}return sp0(t,r)};
-if(spP0)KA.speakP=(t,r)=>long(t)?new Promise(res=>{try{KA.stopSpeak()}catch(e){}if(!local(t,r,res))spP0(t,r).then(res)}):spP0(t,r);
-KA.ttsWarm=()=>{};
+
 // sayfalar önceden hazırlanır: menüye gelince hedef sayfa arka planda indirilir
 const seen=new Set();const pre=e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a)return;let u;try{u=new URL(a.href,location.href)}catch(x){return}if(u.origin!==location.origin||!/\.html$|\/$/.test(u.pathname)||u.pathname===location.pathname||seen.has(u.pathname))return;seen.add(u.pathname);const l=document.createElement('link');l.rel='prefetch';l.href=u.pathname;document.head.appendChild(l)};
 document.addEventListener('pointerover',pre,{passive:true});document.addEventListener('touchstart',pre,{passive:true});
@@ -555,12 +573,14 @@ const nav0=KA.nav;KA.nav=function(){const r=nav0.apply(this,arguments);chip();re
 /* ilk ziyarette ve birkaç günde bir: göze çarpan davet */
 function banner(){
   if(conf()||document.querySelector('.aiw,.aiw-ban'))return;
+  if(!/(^\/$|\/$|index\.html$)/.test(location.pathname))return;
+  const h=document.getElementById('home');if(h&&h.hidden)return;
   const st=rd('ka_aiban')||{};if(st.until&&Date.now()<st.until)return;
   const l=KA.aiLeft(),d=document.createElement('div');d.className='aiw-ban';
   d.innerHTML=`<span class="aiw-ic sm">✦</span><div><b>Kendi yapay zekânı bağla</b><small>Ücretsiz, 1 dakika. Bağlayınca her şey daha hızlı ve sınırsız. Bugün ${l} deneme hakkın var.</small></div><button class="btn btn-p btn-sm" data-aiban="go">Bağla</button><button class="aiw-bx" data-aiban="later" aria-label="Sonra">×</button>`;
   document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('in'));
 }
-document.addEventListener('click',e=>{const b=e.target.closest('[data-aiban]');if(!b)return;const d=document.querySelector('.aiw-ban');if(b.dataset.aiban==='go'){d&&d.remove();KA.aiWizard('')}else{wr('ka_aiban',{until:Date.now()+3*864e5});d&&d.remove()}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-aiban]');if(!b)return;const d=document.querySelector('.aiw-ban');if(b.dataset.aiban==='go'){d&&d.remove();KA.aiWizard('')}else{wr('ka_aiban',{until:Date.now()+7*864e5});d&&d.remove()}});
 const boot=()=>{chip();if(/^#(yz|yapay-zeka)$/i.test(location.hash))KA.aiWizard('');else setTimeout(banner,1800)};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else setTimeout(boot,0);
 /* ---------- bağlama sihirbazı ---------- */

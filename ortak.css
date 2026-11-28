@@ -114,7 +114,8 @@ img{max-width:100%}
 @keyframes kaUp{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
 
 /* ---------- Kelime paneli (dokununca açılan sözlük) ---------- */
-.tk{cursor:pointer;border-radius:4px;box-shadow:inset 0 -1.5px 0 color-mix(in srgb,var(--p) 35%,transparent);transition:background .12s}
+.tk{cursor:pointer;border-radius:4px;transition:background .12s,box-shadow .12s}
+@media (hover:hover){.tk:hover{box-shadow:inset 0 -1.5px 0 color-mix(in srgb,var(--p) 55%,transparent)}}
 .tk:hover{background:var(--p-soft)}
 .tk.sel{background:var(--acc-soft);box-shadow:inset 0 -2px 0 var(--acc)}
 .ka-lex{position:fixed;z-index:95;width:min(360px,calc(100vw - 24px));background:var(--card);border:1px solid var(--line2);border-radius:18px;box-shadow:var(--sh2);padding:16px 16px 14px;animation:kaFade .12s}
@@ -633,3 +634,7 @@ body:has(.ka-modal) .aiw-ban,body:has(.aiw) .aiw-ban{display:none}
   .aiw-ban small{display:none}.aiw-ban b{font-size:14px;line-height:1.25}
 }
 @media (max-width:360px){.ka-tools .ka-chip.ka-xp,.ka-tools .ka-chip:has(svg[data-i="star"]){display:none}}
+
+.ka-links .nsm{display:none}.ka-tabbar .nlg{display:none}.ka-tabbar .nsm{display:inline}
+
+.ka-chip small.kl{display:inline!important;font-size:11px;font-weight:800;margin-left:1px}

@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0f766e">
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Special+Elite&display=swap">
-<link rel="stylesheet" href="ortak.css?v=19">
+<link rel="stylesheet" href="ortak.css?v=22">
 <style>
 :root{--cork:color-mix(in srgb,#b7834a 55%,var(--card));--paper:#fbf7ee;--pink:#e11d48;--type:"Special Elite",ui-monospace,Menlo,monospace}
 :root[data-mode=dark]{--cork:color-mix(in srgb,#7a5530 55%,var(--card));--paper:#f3ecdc}
@@ -254,7 +254,7 @@ body.quake .ka-wrap{animation:quake .5s}
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="view"></div></main>
-<script src="firebase-config.js?v=19"></script><script src="ortak.js?v=19"></script>
+<script src="firebase-config.js?v=22"></script><script src="ortak.js?v=22"></script>
 <script>
 (function(){
 'use strict';
@@ -608,7 +608,7 @@ function reader(id){
   if(st.solved){qs=`<section class="card qs"><span class="qtype">Belge çözüldü</span><h3>Bu belgeden 2 kanıt çıktı</h3>${d.q.map(x=>evCard(x.e)).join('')}<div class="nilmini"><i>${NIL}</i><p>${esc(d.note)}</p></div><div class="tools"><button class="btn btn-p" data-go="board">Panoya dön ${ic('arrow')}</button></div></section>`}
   else{const ok=st.ans===q.a,wr=st.wr||[];
     qs=`<section class="card qs"><div class="row" style="justify-content:space-between"><span class="qtype">${esc(q.ty)}</span><span class="qprog"><i class="${qi>0?'on':''} on"></i><i class="${qi>0?'on':''}"></i></span></div><h3>${esc(q.q)}</h3>
-    <div class="qo">${q.o.map((o,i)=>`<button data-qa="${i}" class="${wr.includes(i)?'no':ok&&i===q.a?'ok':''}" ${ok||wr.includes(i)?'disabled':''}><kbd>${'ABCD'[i]}</kbd><span>${esc(o)}</span></button>`).join('')}</div>
+    <div class="qo">${(/^(True|False|Not given)$/.test(q.o[0])?q.o.map((o,i)=>i):KA.perm(q.q+q.o.join('|'),q.o.length)).map((i,j)=>{const o=q.o[i];return `<button data-qa="${i}" class="${wr.includes(i)?'no':ok&&i===q.a?'ok':''}" ${ok||wr.includes(i)?'disabled':''}><kbd>${'ABCD'[j]}</kbd><span>${esc(o)}</span></button>`}).join('')}</div>
     ${ok?`<div class="why"><b>Doğru.</b> ${esc(q.why)}</div><div class="strat"><b>Strateji · ${esc(q.ty)}</b>${TIP[q.ty]||''}</div><div class="earn"><i>${I.pin}</i><div><b>Kanıt panoya eklendi: ${esc(C.ev[q.e].t)}</b>${esc(C.ev[q.e].d)}</div></div><div class="tools"><button class="btn btn-p" id="qnext">${qi===0?'Sıradaki soru':'Belgeyi kapat'} ${ic('arrow')}</button></div>`
       :`${wr.length?`<div class="why"><b>Olmadı.</b> ${hard()?'İpucu yok: soruyu ve metni yeniden oku.':wr.length>1?'Sarı işaretli cümleye bak; cevap orada.':'Metne tekrar bak; cevap tek bir cümlede.'}</div>`:''}${hard()?'':`<div class="tools"><button class="btn btn-ghost btn-sm" id="qhint" ${st.hl!=null?'disabled':''}>${ic('spark')}Cümleyi göster${timed()?' · '+COST.hint+' dk':''}</button></div>`}`}
     </section>`}

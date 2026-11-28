@@ -16,7 +16,7 @@
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=19">
+<link rel="stylesheet" href="ortak.css?v=22">
 <style>
 .kh{padding:26px;margin-bottom:16px}
 .kh h1{font-size:clamp(28px,4vw,40px);margin:6px 0 8px}
@@ -63,7 +63,7 @@
 </head>
 <body>
 <main class="ka-wrap" id="main"></main>
-<script src="firebase-config.js?v=19"></script><script src="ortak.js?v=19"></script>
+<script src="firebase-config.js?v=22"></script><script src="ortak.js?v=22"></script>
 <script>
 (()=>{
 const {$,esc,shuf}=KA,ic=KA.ic;
@@ -114,7 +114,7 @@ async function load(){
 }
 function hub(){
   G=null;if(location.hash)history.replaceState(null,'',location.pathname);const b=best();
-  $('#main').innerHTML=`<section class="card kh"><span class="eyebrow">Oyun Salonu · BUEPT Okuma Kampı</span><h1>Sınavın en sık soru tiplerini çalış</h1><p>20 Boğaziçi deneme sınavını inceledim ve en çok tekrar eden üç soru tipini çıkardım. Paragraflar ve vakalar o sınavların konu seçimine, paragraf yapısına ve cümle mantığına göre, senin kelimelerinle <b>sıfırdan</b> yazılır; her tur yenidir.</p></section>
+  $('#main').innerHTML=`<div class="gtop"><a class="btn btn-ghost btn-sm" href="oyunlar.html">${ic('back')}Oyun Salonu</a></div><section class="card kh"><span class="eyebrow">Oyun Salonu · BUEPT Okuma Kampı</span><h1>Sınavın en sık soru tiplerini çalış</h1><p>20 Boğaziçi deneme sınavını inceledim ve en çok tekrar eden üç soru tipini çıkardım. Paragraflar ve vakalar o sınavların konu seçimine, paragraf yapısına ve cümle mantığına göre, senin kelimelerinle <b>sıfırdan</b> yazılır; her tur yenidir.</p></section>
   <div class="modes">${Object.entries(MODES).map(([k,m])=>`<button class="card mcard" data-go="${k}" style="--g:${m.g}"><span class="mi">${ic(m.i)}</span><b>${m.n}</b><p>${m.d}</p><small>${m.k}${b[k]!=null?` · En iyi: ${b[k]}`:''}</small></button>`).join('')}</div>
   <p class="mut" style="margin-top:16px;font-size:13.5px"><a href="oyunlar.html">← Oyun Salonu</a> · <a href="deneme.html">Tam deneme sınavı oluştur →</a></p>`;
 }
@@ -122,7 +122,7 @@ function hub(){
 /* ---------- Ortak oyun akışı ---------- */
 async function play(m){
   location.hash=m;G={m,i:0,ok:0,streak:0,miss:[],q:[]};
-  $('#main').innerHTML=`<div class="gtop"><button class="btn btn-ghost btn-sm" data-a="hub">${ic('back')}Kamp</button><span class="t">${MODES[m].n}</span><span class="hud" id="hud"></span></div><div id="wsrc" style="margin-bottom:12px"></div><div class="card stage" id="stg"><span class="ka-spin"></span> Hazırlanıyor…</div>`;
+  $('#main').innerHTML=`<div class="gtop"><button class="btn btn-ghost btn-sm" data-a="hub">${ic('back')}Okuma Kampı</button><span class="t">${MODES[m].n}</span><span class="hud" id="hud"></span></div><div id="wsrc" style="margin-bottom:12px"></div><div class="card stage" id="stg"><span class="ka-spin"></span> Hazırlanıyor…</div>`;
   try{await load()}catch(e){$('#stg').innerHTML=`<p class="bad">İçerik yüklenemedi: ${esc(e.message)}</p>`;return}
   if(!G||G.m!==m)return;
   BAR=KA.src.bar('#wsrc',SRC[m]);

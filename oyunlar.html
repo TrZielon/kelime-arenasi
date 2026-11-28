@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0f766e">
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light'}catch(e){}</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=19">
+<link rel="stylesheet" href="ortak.css?v=22">
 <style>
 .hub-h{padding:24px 26px;position:relative;overflow:hidden}
 .hub-h h1{font-size:clamp(28px,4.4vw,42px);margin:6px 0}
@@ -16,6 +16,13 @@
 .atl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.atl a{display:block;text-decoration:none;color:var(--ink);background:var(--soft);border-radius:16px;padding:12px 14px;transition:transform .2s var(--spring)}.atl a:hover{transform:translateY(-3px)}.atl b{display:block;font-size:15px}.atl span{display:block;font-size:12.5px;color:var(--mut);margin-top:2px}@media (max-width:760px){.atl{grid-template-columns:1fr 1fr}}
 .ghead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:22px 4px 0}.ghead h2{margin:0;font-size:24px}.ghead span{color:var(--mut);font-weight:700;font-size:13.5px}.games.big .gart{height:170px}
 .games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.atl.mini,#view>.atl{margin-top:14px}#view>.atl a{background:var(--card);box-shadow:0 0 0 1.5px var(--line) inset;padding:14px 16px}#view>.atl a:hover{box-shadow:0 0 0 1.5px var(--p) inset}
+.labban{display:flex;align-items:center;gap:14px;padding:14px 18px;margin:14px 0 0;text-decoration:none;color:var(--ink);border:2px solid var(--p)}.labban .lbi{font-size:30px}.labban span:nth-child(2){flex:1;display:flex;flex-direction:column;gap:2px}.labban b{font-family:Fraunces,serif;font-size:19px}.labban small{color:var(--ink2);font-size:13.5px}@media(max-width:640px){.labban{flex-wrap:wrap}.labban .btn{width:100%;justify-content:center}}
+.gcatbar{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;padding:12px 2px;margin:6px 0 -6px;background:var(--bg);scrollbar-width:none}.gcatbar::-webkit-scrollbar{display:none}
+.gcatbar button{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:700 14px "Plus Jakarta Sans",system-ui,sans-serif;padding:9px 14px;border-radius:999px;cursor:pointer}
+.gcatbar button i{font-style:normal;font-size:12px;font-weight:800;min-width:20px;height:20px;border-radius:999px;display:grid;place-items:center;background:var(--soft);color:var(--mut)}
+.gcatbar button.on{background:var(--p);border-color:var(--p);color:var(--p-ink)}.gcatbar button.on i{background:rgba(255,255,255,.22);color:inherit}
+.gcats{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px}.gcats span{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--g);opacity:.9}.gcats span+span:before{content:'·';margin-right:5px;color:var(--mut)}
 .gcard{--g:var(--p);border-radius:24px;background:var(--card);box-shadow:0 0 0 1.5px var(--line) inset,var(--sh1);overflow:hidden;display:flex;flex-direction:column;transition:transform .25s var(--spring),box-shadow .25s}
 .gcard:hover{transform:translateY(-4px);box-shadow:0 0 0 1.5px color-mix(in srgb,var(--g) 50%,var(--line)) inset,var(--sh2)}
 .gart{height:150px;position:relative;background:linear-gradient(160deg,color-mix(in srgb,var(--g) 22%,var(--card)),color-mix(in srgb,var(--g) 6%,var(--card)));overflow:hidden}
@@ -123,7 +130,7 @@
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="view"></div></main>
-<script src="firebase-config.js?v=19"></script><script src="ortak.js?v=19"></script>
+<script src="firebase-config.js?v=22"></script><script src="ortak.js?v=22"></script>
 <script>
 (function(){
 'use strict';
@@ -139,6 +146,11 @@ const hasSyn=()=>W.filter(x=>x[2]).length>=4;
 
 /* ---------- HUB ---------- */
 const ART={
+mimar:`<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><rect width="300" height="150" fill="#0f766e" opacity=".12"/><path d="M0 132h300" stroke="var(--ink2)" stroke-width="4" opacity=".5"/><g fill="#0f766e"><rect x="40" y="62" width="44" height="70" rx="4" opacity=".55"/><rect x="96" y="30" width="56" height="102" rx="4"/><rect x="164" y="48" width="40" height="84" rx="4" opacity=".7"/><rect x="216" y="78" width="46" height="54" rx="4" opacity=".45"/></g><g fill="#fff" opacity=".75"><rect x="106" y="42" width="12" height="8"/><rect x="130" y="42" width="12" height="8"/><rect x="106" y="60" width="12" height="8"/><rect x="130" y="60" width="12" height="8"/><rect x="106" y="78" width="12" height="8"/><rect x="130" y="78" width="12" height="8"/></g><path d="M118 30V14h22l6 8" fill="none" stroke="var(--acc2)" stroke-width="4" stroke-linecap="round"/><rect x="138" y="96" width="34" height="22" rx="4" fill="var(--acc2)" transform="rotate(-8 155 107)"/></svg>`,
+sempo:`<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><rect width="300" height="150" fill="#6d28d9" opacity=".12"/><rect x="20" y="104" width="260" height="14" rx="4" fill="#6d28d9" opacity=".5"/><g fill="#6d28d9">${[50,110,170,230].map((x,i)=>`<circle cx="${x}" cy="62" r="17" opacity="${.5+i*.12}"/><rect x="${x-20}" y="80" width="40" height="26" rx="10" opacity="${.5+i*.12}"/>`).join('')}</g><g stroke="var(--acc2)" stroke-width="4" stroke-linecap="round"><path d="M150 18v18"/><circle cx="150" cy="14" r="7" fill="var(--acc2)"/></g><path d="M196 22h70v26h-50l-12 10v-10h-8z" fill="#fff" stroke="#6d28d9" stroke-width="3"/><path d="M208 31h46M208 39h30" stroke="#6d28d9" stroke-width="3"/></svg>`,
+tuzak:`<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><rect width="300" height="150" fill="#b91c1c" opacity=".08"/><path d="M118 26h36v34l26 54a10 10 0 0 1-9 14H101a10 10 0 0 1-9-14l26-54z" fill="#fff" stroke="#b91c1c" stroke-width="5"/><path d="M104 96h64l10 20a6 6 0 0 1-5 9H99a6 6 0 0 1-5-9z" fill="#b91c1c" opacity=".55"/><circle cx="128" cy="104" r="5" fill="#fff"/><circle cx="146" cy="112" r="4" fill="#fff"/><g fill="#b91c1c">${[0,1,2,3,4].map(i=>`<rect x="${196+i*18}" y="${70-i*8}" width="12" height="${60+i*8}" rx="3" opacity="${.3+i*.14}"/>`).join('')}</g></svg>`,
+radar:`<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><rect width="300" height="150" fill="#1d4ed8" opacity=".1"/><g fill="none" stroke="#1d4ed8" stroke-width="3" opacity=".5"><circle cx="150" cy="80" r="22"/><circle cx="150" cy="80" r="44"/><circle cx="150" cy="80" r="66"/></g><path d="M150 80L208 46A66 66 0 0 1 216 80z" fill="#1d4ed8" opacity=".35"/><path d="M150 80L208 46" stroke="#1d4ed8" stroke-width="4"/><circle cx="190" cy="60" r="6" fill="var(--acc2)"/><circle cx="112" cy="104" r="4" fill="#1d4ed8"/><circle cx="176" cy="118" r="4" fill="#1d4ed8"/></svg>`,
+butce:`<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><rect width="300" height="150" fill="#a16207" opacity=".1"/><g>${[0,1,2,3,4,5].map(i=>`<ellipse cx="${84+i*26}" cy="${112-i*4}" rx="15" ry="6" fill="#a16207" opacity="${.35+i*.1}"/>`).join('')}</g>${[0,1,2,3].map(i=>`<rect x="${70+i*42}" y="34" width="34" height="22" rx="6" fill="#fff" stroke="#a16207" stroke-width="3"/>`).join('')}<circle cx="232" cy="96" r="22" fill="var(--acc2)"/><text x="232" y="103" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">6</text></svg>`,
 ravenwood:"<svg viewBox=\"0 0 300 150\" preserveAspectRatio=\"xMidYMid slice\"><defs><radialGradient id=\"rwg\" cx=\"50%\" cy=\"0%\" r=\"90%\"><stop offset=\"0\" stop-color=\"#173a2e\"/><stop offset=\"1\" stop-color=\"#11151C\"/></radialGradient></defs><rect width=\"300\" height=\"150\" fill=\"url(#rwg)\"/><g fill=\"#0a1210\"><path d=\"M30 150V70l20-20 20 20v80z\"/><path d=\"M230 150V60l18-22 18 22v90z\"/><rect x=\"80\" y=\"80\" width=\"140\" height=\"70\"/><path d=\"M80 80l70-34 70 34z\"/></g><g fill=\"#D4AF37\" opacity=\".85\"><rect x=\"96\" y=\"96\" width=\"10\" height=\"16\"/><rect x=\"128\" y=\"96\" width=\"10\" height=\"16\"/><rect x=\"162\" y=\"96\" width=\"10\" height=\"16\" opacity=\".3\"/><rect x=\"194\" y=\"96\" width=\"10\" height=\"16\"/><rect x=\"244\" y=\"74\" width=\"8\" height=\"12\"/></g><circle cx=\"262\" cy=\"26\" r=\"12\" fill=\"#F4EFE6\" opacity=\".85\"/><g transform=\"translate(118 18) rotate(-8)\"><rect width=\"70\" height=\"40\" rx=\"3\" fill=\"#F4EFE6\"/><text x=\"35\" y=\"25\" text-anchor=\"middle\" font-family=\"Cinzel,serif\" font-weight=\"900\" font-size=\"11\" fill=\"#9B1B30\">EXPOSED</text><rect x=\"6\" y=\"12\" width=\"58\" height=\"18\" fill=\"none\" stroke=\"#9B1B30\" stroke-width=\"2\"/></g></svg>",
 fetih:`<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><path d="M60 150V80a90 90 0 0 1 180 0v70" fill="none" stroke="var(--p)" stroke-width="14" opacity=".35"/><path d="M95 150V90a55 55 0 0 1 110 0v60" fill="var(--p)" opacity=".18"/><g stroke="var(--acc2)" stroke-width="8" stroke-linecap="round"><path d="M118 58l64 64M182 58l-64 64"/></g><circle cx="150" cy="90" r="12" fill="var(--acc)"/></svg>`,
 halat:`<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><path d="M0 128h300" stroke="var(--line2)" stroke-width="3"/><path d="M40 86 Q150 96 260 86" fill="none" stroke="#a16207" stroke-width="6" stroke-linecap="round"/><path d="M150 112v-50" stroke="var(--bad)" stroke-width="3" stroke-dasharray="5 5"/><circle cx="150" cy="91" r="7" fill="var(--bad)"/><g stroke="var(--p)" stroke-width="8" stroke-linecap="round" fill="none"><path d="M52 64l12 30M64 94l-14 30M64 94l12 30M58 76l20 12"/></g><circle cx="48" cy="52" r="12" fill="var(--p)"/><g stroke="var(--acc2)" stroke-width="8" stroke-linecap="round" fill="none"><path d="M248 64l-12 30M236 94l14 30M236 94l-12 30M242 76l-20 12"/></g><circle cx="252" cy="52" r="12" fill="var(--acc2)"/></svg>`,
@@ -150,27 +162,57 @@ ari:"<svg viewBox=\"0 0 300 150\" preserveAspectRatio=\"xMidYMid slice\"><rect w
 kopru:`<svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><rect x="0" y="118" width="300" height="32" fill="var(--p)" opacity=".3"/><rect x="0" y="80" width="56" height="70" rx="8" fill="var(--ink2)" opacity=".7"/><rect x="244" y="80" width="56" height="70" rx="8" fill="var(--ink2)" opacity=".7"/><g fill="#c2840a"><rect x="60" y="78" width="40" height="14" rx="3"/><rect x="104" y="78" width="40" height="14" rx="3"/><rect x="148" y="78" width="40" height="14" rx="3"/></g><rect x="194" y="58" width="40" height="14" rx="3" fill="#c2840a" transform="rotate(-14 214 65)"/><circle cx="30" cy="54" r="9" fill="var(--p)"/><path d="M30 63v14M30 77l-6 10M30 77l6 10M24 69h12" stroke="var(--p)" stroke-width="5" stroke-linecap="round"/></svg>`
 };
 const BIG=[
+ ['mimar','Metin Mimarı','Karışmış bir makaleyi kat kat yeniden kur, her paragrafa görevini ver, denetimden geç. Her makale şehrine yeni bir bina ekler; şehrin büyüdükçe unvanın yükselir.',['Paragraf amacı','Paragraf ilişkisi','Metin yapısı'],'#0f766e',1],
+ ['sempo','Sempozyum: Kim Ne Dedi?','Konferans muhabirisin. Dört akademisyenin görüşlerini oku; başka sözlerle söylenen iddiaları doğru kişiye bağla, tutum çıkar, haberini kelime sınırıyla yaz. Kariyerin seans seans ilerler.',['Eşleştirme','Tutum çıkarımı','I-II-III','Kısa cevap'],'#6d28d9',1],
  ['ravenwood','The Impostor: Ravenwood Files','Sahte kimlikle seçkin bir akademiye sız, kayıp ablanın izini sür. Raporlarda yalan yakala, sözleşme tuzaklarını gör, kelime kartlarıyla söz düellosu yap. Bölüm 1: 7 gün.',['Close reading','Hedging','Kart düellosu'],'#9B1B30',1],
  ['dava','Dedektif Masası','Hikâyeli davalar: İngilizce belgeleri oku, ifadelerdeki çelişkileri yakala, suçluyu kanıtlarıyla göster. İki dava açık.',['Reading','Çıkarım','Paraphrase'],'#b45309',0],
- ['avukat','Mahkeme: Stajyer Avukat','Sözleşmeleri oku, kart topla; duruşmada karşı avukat belgeleri çarpıttığında "İtiraz!" de ve çarpıtılan kelimeyi göster.',['may / must','unless','Paraphrase'],'#7a4f2a',1],
- ['lonca','Lonca: Kelime Büyücüsü','Kelimelerin güç taşıdığı diyarda çıraksın. Dilekçeleri doğru kelimeyle çöz, yaratıkların adını bağlamdan bul, Kâtip\'le düello yap.',['Nüans','Kelime türü','Collocation'],'#6d28d9',1],
  ['ari','ARI\'yı Eğit','Öğretmen sensin: İngilizce okumayı öğrenen robot ARI\'nın hatalarını bul, ona doğru kuralı öğret. Sınavdaki başarısı senin öğretmenliğine bağlı.',['Sahte arkadaşlar','few / a few','Çıkarım'],'#0f766e',1]
 ];
 const GAMES=[
+ ['tuzak','Tuzak Laboratuvarı','Her yanlış şık bir tuzaktır. Süre işlerken şıkkı doğru tuzak türüne at; kombo yap, güçlendirici kullan, canını koru.',['Çeldirici türleri','Detay','Hız'],'#b91c1c',1],
+ ['radar','Tarama Radarı','Saat işliyor: "Hangi paragraf…?" sorusunun cevabını okumadan, tarayarak bul. Hız bonusu, zaman dondurma, alan daraltma.',['Scanning','Zaman yönetimi'],'#1d4ed8',1],
+ ['butce','Kelime Bütçesi','Kısa cevabı metindeki kelimelere dokunarak kur. Her kelime bir jeton: kilit bilgiyi en az kelimeyle ver.',['Kısa cevap','Kelime sınırı'],'#a16207',1],
  ['fetih','Arena Fethi','Bölge bölge arenayı fethet. Kızışma, rövanş kelimeleri ve maç sonu talimiyle.',['Kelime','Strateji'],'var(--p)',0],
- ['halat','Halat Çekme','Gölge rakibe karşı hız düellosu. Her doğru cevap halatı sana çeker, rakip de boş durmaz.',['Kelime','Eş anlam','Hız'],'var(--acc2)',0],
  ['makas','Bağlaç Makası','Treni doğru istasyona gönder. Makası However, Therefore ya da Moreover\'a çevir; cümle o yöne akar.',['Bağlaçlar','Reading'],'var(--p)',0],
- ['kopru','Cümle Köprüsü','Parçaları doğru sırayla dizip köprüyü kur. Yanlış tahta nehre düşer.',['Cümle yapısı','Writing'],'#a16207',0]
 ];
 let VIEW='hub';
+/* ---------- Kategoriler ---------- */
+const CATS=[['all','Tümü'],['hikaye','Hikâyeli maceralar'],['okuma','Okuma soru tipleri'],['kelime','Kelime ve anlam'],['hiz','5 dakikada'],['sinav','Sınav provası']];
+const CAT={ravenwood:['hikaye','okuma'],dava:['hikaye','okuma'],ari:['hikaye','okuma'],mimar:['hikaye','okuma'],sempo:['hikaye','okuma'],fetih:['kelime'],makas:['okuma','hiz'],tuzak:['okuma','hiz'],radar:['okuma','hiz'],butce:['okuma','hiz','kelime']};
+const MINI=[
+ ['k:yer','Cümle Yerleştir','Eksik cümle A, B, C, D','kamp.html#yer',['okuma','hiz']],
+ ['k:vaka','Vaka Dosyası','Kavramı yeni bir duruma uygula','kamp.html#vaka',['okuma','hiz']],
+ ['k:ana','Ana Fikir Avı','Detay tuzağına düşme','kamp.html#ana',['okuma','hiz']],
+ ['a:par','Paraphrase Avı','Doğru / Yanlış / Parçada yok','atolye.html#par',['okuma','hiz']],
+ ['a:iz','İz Sürücü','it, they, this neyi gösteriyor?','atolye.html#iz',['okuma','hiz']],
+ ['a:det','Bağlam Dedektifi','Bilmediğin kelimeyi cümleden çöz','atolye.html#det',['kelime','okuma','hiz']],
+ ['a:fam','Kelime Ailesi','analyse, analysis, analytical…','atolye.html#fam',['kelime','hiz']],
+ ['deneme','Sınav oluştur','Süreli, tam BUEPT reading denemesi','deneme.html',['sinav']],
+ ['sinavodasi','Kendi sınavını çöz','PDF sınavını yükle, optik formla puanla','sinav.html',['sinav']]
+];
+const CATN=Object.fromEntries(CATS);
+let FCAT=(()=>{try{const v=localStorage.getItem('ka_gcat');return CATN[v]?v:'all'}catch(e){return 'all'}})();
+function bigCard([k,n,d,sk,col,nw]){const b=best(k);return `<article class="gcard" style="--g:${col}"><div class="gart">${ART[k]}${nw?'<span class="nw">YENİ</span>':''}${b!=null?`<span class="pb">En iyi: ${b}</span>`:''}</div><div class="gbody"><div class="gcats">${(CAT[k]||[]).map(c=>`<span>${CATN[c]}</span>`).join('')}</div><h3>${n}</h3><p>${d}</p><div class="skills">${sk.map(s=>`<span>${s}</span>`).join('')}</div><button class="btn btn-p" data-go="${k}">Oyna ${ic('arrow')}</button></div></article>`}
+const miniGrid=L=>`<div class="atl">${L.map(([k,n,d,h])=>`<a href="${h}"><b>${n}</b><span>${d}</span></a>`).join('')}</div>`;
 function hub(){
+  const has=(k,c)=>(CAT[k]||[]).includes(c);
+  const sec=(t,sub,html)=>html?`<div class="ghead"><h2>${t}</h2><span>${sub}</span></div>${html}`:'';
+  let body='';
+  if(FCAT==='all'){
+    body=sec('Hikâyeli maceralar','15–25 dakikalık, uzun soluklu oyunlar',`<div class="games big">${BIG.map(bigCard).join('')}</div>`)
+     +sec('Hızlı oyunlar','3–5 dakikalık turlar',`<div class="games">${GAMES.map(bigCard).join('')}</div>`)
+     +sec('Okuma soru tipleri','Her biri BUEPT reading\'deki bir soru tipine karşılık gelir',miniGrid(MINI.filter(m=>m[4][0]==='okuma')))
+     +sec('Kelime ve anlam','Bağlam, kelime ailesi ve anlam ayrımı',miniGrid(MINI.filter(m=>m[4][0]==='kelime')))
+     +sec('Sınav provası','Süreli, tam sınav deneyimi',miniGrid(MINI.filter(m=>m[4][0]==='sinav')));
+  }else{
+    const B=BIG.filter(g=>has(g[0],FCAT)),Q=GAMES.filter(g=>has(g[0],FCAT)),M=MINI.filter(m=>m[4].includes(FCAT));
+    body=(B.length?`<div class="games big">${B.map(bigCard).join('')}</div>`:'')+(Q.length?`<div class="games">${Q.map(bigCard).join('')}</div>`:'')+(M.length?sec(B.length||Q.length?'Kısa alıştırmalar':CATN[FCAT],'Tek bir beceriye odaklı',miniGrid(M)):'');
+  }
+  const cnt=c=>c==='all'?BIG.length+GAMES.length+MINI.length:BIG.filter(g=>has(g[0],c)).length+GAMES.filter(g=>has(g[0],c)).length+MINI.filter(m=>m[4].includes(c)).length;
   $('#view').innerHTML=`<section class="card hub-h"><svg class="arcs" viewBox="0 0 200 200"><path d="M20 200V100a80 80 0 0 1 160 0v100" fill="none" stroke="currentColor" stroke-width="18"/><path d="M60 200v-90a40 40 0 0 1 80 0v90" fill="none" stroke="currentColor" stroke-width="14"/></svg>
    <span class="eyebrow">Oyunlar</span><h1>Oyun Salonu</h1><p>Her oyun reading ve kelime becerilerinden birini çalıştırıyor. Kısa turlar, anında sonuç; hatalarını oyun sonunda tekrar listesi olarak alırsın.</p></section>
-   <div class="ghead"><h2>Büyük oyunlar</h2><span>15–25 dakikalık, hikâyeli maceralar</span></div><div class="games big">${BIG.map(([k,n,d,sk,col,nw])=>{const b=best(k);return `<article class="gcard" style="--g:${col}"><div class="gart">${ART[k]}${nw?'<span class="nw">YENİ</span>':''}${b!=null?`<span class="pb">En iyi: ${b}</span>`:''}</div><div class="gbody"><h3>${n}</h3><p>${d}</p><div class="skills">${sk.map(s=>`<span>${s}</span>`).join('')}</div><button class="btn btn-p" data-go="${k}">Oyna ${ic('arrow')}</button></div></article>`}).join('')}</div><div class="ghead"><h2>Hızlı oyunlar</h2><span>3–5 dakikalık turlar</span></div><div class="games">${GAMES.map(([k,n,d,sk,col,nw])=>{const b=best(k);return `<article class="gcard" style="--g:${col}"><div class="gart">${ART[k]}${nw?'<span class="nw">YENİ</span>':''}${b!=null?`<span class="pb">En iyi: ${b}</span>`:''}</div><div class="gbody"><h3>${n}</h3><p>${d}</p><div class="skills">${sk.map(s=>`<span>${s}</span>`).join('')}</div><button class="btn btn-p" data-go="${k}">Oyna ${ic('arrow')}</button></div></article>`}).join('')}</div>
-   <section class="card hub-h kamp" style="margin-top:18px"><span class="eyebrow">Yeni · BUEPT Okuma Kampı</span><h2 style="margin:4px 0 6px;font-size:26px">Deneme sınavlarının en sık soru tipleri</h2><p>20 Boğaziçi deneme sınavının konu, paragraf ve soru mantığıyla, senin kelimelerinle sıfırdan yazılan alıştırmalar.</p>
-   <div class="atl">${[['yer','Cümle Yerleştir','Eksik cümle A, B, C, D'],['vaka','Vaka Dosyası','Kavramı yeni bir duruma uygula'],['ana','Ana Fikir Avı','Detay tuzağına düşme']].map(([k,n,d])=>`<a href="kamp.html#${k}"><b>${n}</b><span>${d}</span></a>`).join('')}<a href="deneme.html"><b>Sınav oluştur</b><span>Tam BUEPT reading denemesi</span></a></div></section>
-   <section class="card hub-h" style="margin-top:18px"><span class="eyebrow">Reading Atölyesi</span><h2 style="margin:4px 0 6px;font-size:26px">Sınav becerilerini tek tek çalış</h2><p>Kısa, odaklı alıştırmalar. Her biri BUEPT reading'deki bir soru tipine karşılık gelir.</p>
-   <div class="atl">${[['det','Bağlam Dedektifi','Bilmediğin kelimeyi cümleden çöz'],['par','Paraphrase Avı','Doğru / Yanlış / Parçada yok'],['iz','İz Sürücü','it, they, this neyi gösteriyor?'],['fam','Kelime Ailesi','analyse, analysis, analytical…']].map(([k,n,d])=>`<a href="atolye.html#${k}"><b>${n}</b><span>${d}</span></a>`).join('')}</div></section>`;
+   <div class="gcatbar" role="tablist" aria-label="Kategoriler">${CATS.map(([c,n])=>`<button role="tab" aria-selected="${FCAT===c}" class="${FCAT===c?'on':''}" data-gcat="${c}">${n}<i>${cnt(c)}</i></button>`).join('')}</div>
+   ${body}`;
 }
 function head(n,extra){return `<div class="gtop"><button class="btn btn-ghost btn-sm" data-go="hub">← Oyun Salonu</button><div class="hud">${extra||''}</div></div>`}
 /* ---------- HALAT ÇEKME ---------- */
@@ -366,9 +408,11 @@ const SRCQ={
   makas:{game:'makas',need:8,min:4,title:'bağlaç soruları',gen:genMakas,onData:d=>{MR=d},onDemo:()=>{MR=DEMOQ.MR}},
   kopru:{game:'kopru',need:6,min:4,title:'köprü cümleleri',gen:genKopru,onData:d=>{KS=d},onDemo:()=>{KS=DEMOQ.KS}}
 };
+document.addEventListener('click',e=>{const c=e.target.closest('[data-gcat]');if(!c)return;FCAT=c.dataset.gcat;try{localStorage.setItem('ka_gcat',FCAT)}catch(x){}hub();const bar=document.querySelector('.gcatbar');if(bar)bar.scrollIntoView({block:'nearest'})});
 function go(v){VIEW=v;cancelAnimationFrame(H.raf);cancelAnimationFrame(M.raf);H.over=true;
   if(v==='hub')hub();else if(v==='halat')halatIntro();else if(v==='makas')makasIntro();else if(v==='kopru')kopruIntro();
-  else if(['fetih','dava','avukat','lonca','ari','ravenwood'].includes(v)){location.href=v+'.html';return}
+  else if(['fetih','dava','ari','ravenwood'].includes(v)){location.href=v+'.html';return}
+  else if(['mimar','sempo','tuzak','radar','butce'].includes(v)){location.href='lab.html#'+v;return}
   window.scrollTo({top:0,behavior:'smooth'})}
 document.addEventListener('click',e=>{
   const t=e.target,q=s=>t.closest(s);let b;

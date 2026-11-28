@@ -7,7 +7,7 @@
 <meta name="description" content="Sahte kimlikle Ravenwood Enstitüsü'ne sız, kayıp ablanın izini akademik okumayla sür: yalan yakala, sözleşme tuzaklarını gör, kelime kartlarıyla söz düellosu yap.">
 <meta name="theme-color" content="#0F241D">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@700;900&display=swap">
-<link rel="stylesheet" href="ortak.css?v=18">
+<link rel="stylesheet" href="ortak.css?v=22">
 <style>
 :root{--em:#0F241D;--em2:#173a2e;--navy:#11151C;--navy2:#1a2030;--parch:#F4EFE6;--parch2:#e8dfcd;--ink9:#1f1a12;--gold:#D4AF37;--gold2:#b8952a;--blood:#9B1B30;--mut9:#a8b3ab;--serif:Fraunces,Georgia,"Times New Roman",serif}
 body.rwb{background:radial-gradient(120% 70% at 50% -10%,#173a2e 0%,#0F241D 38%,#11151C 100%) fixed;color:#e9e4d8}
@@ -253,8 +253,8 @@ svg.yarn{position:absolute;inset:0;z-index:3;pointer-events:none}
 </head>
 <body class="rwb">
 <main class="rw" id="app"></main>
-<script src="firebase-config.js?v=18"></script>
-<script src="ortak.js?v=18"></script>
+<script src="firebase-config.js?v=22"></script>
+<script src="ortak.js?v=22"></script>
 <script>
 (function(){
 'use strict';
@@ -741,6 +741,9 @@ const SART={
  forum:'<rect width="400" height="160" fill="#0d0a0a"/><g fill="none" stroke="#D4AF37" stroke-width="2" opacity=".5"><path d="M20 160Q200 40 380 160"/><path d="M60 160Q200 70 340 160"/><path d="M100 160Q200 100 300 160"/></g><rect x="185" y="100" width="30" height="40" fill="#3a1f14"/><circle cx="200" cy="60" r="34" fill="#9B1B30" opacity=".2"/>'
 };
 
+/* şıkları dengeli dağıt (doğru cevap hep A olmasın); sıralama soruya göre sabit */
+(function(){if(!window.KA||!KA.mixQ)return;const seen=new Set();const walk=v=>{if(!v||typeof v!=='object'||seen.has(v))return;seen.add(v);if(Array.isArray(v))return v.forEach(walk);if(typeof v.q==='string'&&Array.isArray(v.o)&&typeof v.a==='number'&&v.o.every(x=>typeof x==='string'))KA.mixQ(v);Object.keys(v).forEach(k=>walk(v[k]))};
+ [typeof DAYS!=='undefined'?DAYS:null,typeof VQ!=='undefined'?VQ:null,typeof GAUNT!=='undefined'?GAUNT:null,typeof SCENES!=='undefined'?SCENES:null].forEach(walk)})();
 /* ================= YARDIMCILAR ================= */
 const face=(c,hair,acc,skin)=>`<svg viewBox="0 0 200 200" aria-hidden="true"><rect width="200" height="200" fill="${c}" opacity=".22"/><path d="M30 200c6-40 34-62 70-62s64 22 70 62z" fill="${c}"/><path d="M84 140l16 22 16-22" fill="#fff" opacity=".85"/><rect x="88" y="112" width="24" height="30" fill="${skin||'#e8b98f'}"/><ellipse cx="100" cy="82" rx="38" ry="44" fill="${skin||'#e8b98f'}"/><path d="M62 76c0-30 16-44 38-44s38 14 38 44c-8-12-20-18-38-18s-30 6-38 18z" fill="${hair}"/><circle cx="86" cy="82" r="4" fill="#1f2937"/><circle cx="114" cy="82" r="4" fill="#1f2937"/><path d="M90 106q10 6 20 0" stroke="#7f1d1d" stroke-width="3" fill="none" stroke-linecap="round"/>${acc?ACC[acc]||'':''}</svg>`;
 const ACC={glasses:`<g fill="none" stroke="#111" stroke-width="3.5"><rect x="74" y="72" width="22" height="17" rx="5"/><rect x="104" y="72" width="22" height="17" rx="5"/><path d="M96 80h8"/></g>`,bun:`<circle cx="100" cy="30" r="15" fill="#7c2d12"/>`,beard:`<path d="M66 92c4 30 18 38 34 38s30-8 34-38c-8 10-20 14-34 14s-26-4-34-14z" fill="#d6d3d1"/>`,cap:`<path d="M58 62c4-24 22-34 42-34s38 10 42 34z" fill="#0b3b2a"/><path d="M58 62h96l-10 8H58z" fill="#052e1f"/>`,hat:`<path d="M54 52h92l-8-24H62z" fill="#111"/><rect x="40" y="50" width="120" height="8" rx="4" fill="#111"/>`};
