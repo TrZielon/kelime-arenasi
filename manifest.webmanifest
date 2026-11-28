@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "Kelime Arenası",
-  "short_name": "K. Arenası",
-  "description": "BUEPT ve akademik İngilizce için kelime oyunları, sözlük, haberler ve PDF sınav odası.",
+  "name": "Pharos",
+  "short_name": "Pharos",
+  "description": "BUEPT ve akademik İngilizce için okuma, kelime ve konuşma çalışması: oyunlar, sözlük, haberler ve sınav odası.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "/",

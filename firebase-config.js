@@ -1,4 +1,4 @@
-/* Kelime Arenası — Google ile giriş ayarı.
+/* Pharos — Google ile giriş ayarı.
    Bu değerler gizli değildir; güvenliği Firestore kuralları ve
    Authentication > Authorized domains ayarı sağlar. */
 window.KA_FIREBASE = {

@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>The Impostor: Ravenwood Files · Kelime Arenası</title>
+<title>The Impostor: Ravenwood Files · Pharos</title>
 <meta name="description" content="Sahte kimlikle Ravenwood Enstitüsü'ne sız, kayıp ablanın izini akademik okumayla sür: yalan yakala, sözleşme tuzaklarını gör, kelime kartlarıyla söz düellosu yap.">
 <meta name="theme-color" content="#0F241D">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@700;900&display=swap">
-<link rel="stylesheet" href="ortak.css?v=23">
+<link rel="stylesheet" href="ortak.css?v=24">
 <style>
 :root{--em:#0F241D;--em2:#173a2e;--navy:#11151C;--navy2:#1a2030;--parch:#F4EFE6;--parch2:#e8dfcd;--ink9:#1f1a12;--gold:#D4AF37;--gold2:#b8952a;--blood:#9B1B30;--mut9:#a8b3ab;--serif:Fraunces,Georgia,"Times New Roman",serif}
 body.rwb{background:radial-gradient(120% 70% at 50% -10%,#173a2e 0%,#0F241D 38%,#11151C 100%) fixed;color:#e9e4d8}
@@ -253,8 +253,8 @@ svg.yarn{position:absolute;inset:0;z-index:3;pointer-events:none}
 </head>
 <body class="rwb">
 <main class="rw" id="app"></main>
-<script src="firebase-config.js?v=23"></script>
-<script src="ortak.js?v=23"></script>
+<script src="firebase-config.js?v=24"></script>
+<script src="ortak.js?v=24"></script>
 <script>
 (function(){
 'use strict';
@@ -803,7 +803,7 @@ function view(html){const a=$('#app');a.innerHTML=html;window.scrollTo({top:0});
 /* ================= GİRİŞ ================= */
 const CREST=`<svg viewBox="0 0 100 100" class="crest" aria-hidden="true"><path d="M50 6l36 14v26c0 24-16 40-36 48C30 86 14 70 14 46V20z" fill="#0F241D" stroke="#D4AF37" stroke-width="3"/><path d="M34 60c6-16 12-26 16-30 4 4 10 14 16 30-6-4-11-6-16-6s-10 2-16 6z" fill="#D4AF37"/><circle cx="50" cy="36" r="4" fill="#9B1B30"/></svg>`;
 function title(){
- view(`<div class="title">${CREST}<div class="lbl">Kelime Arenası · Hikâye Oyunu</div><h1>THE IMPOSTOR<br>RAVENWOOD FILES</h1><div class="tg">Bölüm 1 · Yalan Satırların Arasında</div>
+ view(`<div class="title">${CREST}<div class="lbl">Pharos · Hikâye Oyunu</div><h1>THE IMPOSTOR<br>RAVENWOOD FILES</h1><div class="tg">Bölüm 1 · Yalan Satırların Arasında</div>
   <div class="note">Ablan <b>Elara</b>, Ravenwood Enstitüsü'nde burslu okurken ortadan kayboldu. Okul, "psikolojik çöküntü yaşayıp kendi isteğiyle ayrıldığını" söyleyen resmi bir rapor yayınladı. Sana ulaşan son notu tek cümleydi; ardından gece yarısı telefonuna bozuk bir sesli mesaj düştü:<div style="margin-top:10px;font-size:19px">"Raporu dikkatli oku, yalan satırların arasında. <b>Sakın benim adımla gelme.</b>"</div><div class="sig">— E.</div></div>
   <p class="mut" style="max-width:560px;margin:22px auto 0">Sahte bir kimlik ve sahte bir burs dosyasıyla okula sızıyorsun. 30 gün içinde gerçeği bulmalısın; yoksa "Büyük Denetim" günü maskeni düşürür. Okuduğun her rapor bir ipucu, öğrendiğin her kelime bir silah.</p>
   <div class="row" style="justify-content:center;margin-top:18px"><button class="rbtn" data-a="startgame">${S.start?'Devam et':S.pro?'Kimliğini hazırla':'▶ Elara\'nın son mesajını dinle'}</button>${S.start?`<button class="rbtn ghost" data-a="newgame">Yeni oyun</button>`:''}</div>
@@ -1441,7 +1441,7 @@ function learnReport(){
  <p style="margin:6px 0">Bu bölümde <b>${all.length}</b> akademik kelimeyle çalıştın (${words.length} tanesini metinde ya da tekrarda çözdün, ${deck.length} tanesi destende).</p>
  <div class="skl">${Object.keys(SKN).filter(k=>st[k]).map(k=>{const r=st[k],t=r.ok+r.no,p=Math.round(r.ok/t*100);return `<div><span>${esc(SKN[k])}</span><b>${p}%</b><i style="width:${p}%"></i></div>`}).join('')}</div>
  <div class="chips" style="margin-top:10px">${all.slice(0,40).map(w=>`<span class="chip" style="cursor:default;font-size:12.5px">${esc(w)} · <span style="font-weight:600">${esc(W[w].tr)}</span></span>`).join('')}</div>
- <div class="row" style="margin-top:12px"><button class="rbtn" data-a="export">📚 Bu kelimeleri Kelime Arenası listeme ekle</button><a class="rbtn ghost sm" href="index.html">Ana sayfada çalış →</a></div>
+ <div class="row" style="margin-top:12px"><button class="rbtn" data-a="export">📚 Bu kelimeleri Pharos listeme ekle</button><a class="rbtn ghost sm" href="index.html">Ana sayfada çalış →</a></div>
  <p class="mut" style="font-size:12.5px;margin:6px 0 0">"Ravenwood · Bölüm 1" adında yeni bir liste açılır; Kapı, Kalem ve Bekçi gibi ana çalışmalarda bu kelimelerle devam edebilirsin.</p></div>`;
 }
 function exportWords(){

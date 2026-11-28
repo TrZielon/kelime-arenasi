@@ -1,4 +1,4 @@
-/* Kelime Arenası · ortak kod (bütün sayfalar kullanır) */
+/* Pharos · ortak kod (bütün sayfalar kullanır) */
 (function(){
 'use strict';
 /* Vercel'in her yüklemede verdiği geçici adresler (…-xxxx-hasan-2037.vercel.app) ana adrese yönlendirilir.
@@ -279,7 +279,7 @@ KA.nav=(active,o={})=>{
   const links=LINKS.map(([h,t,i,lg])=>`<a href="${h==='index.html'?'./':h}" class="${h===active?'on':''}" ${h===active?'aria-current="page"':''}>${KA.ic(i)}<span>${lg?`<span class="nlg">${lg}</span><span class="nsm">${t}</span>`:t}</span></a>`).join('');
   const m=KA.mode();
   const html=`<nav class="ka-nav" aria-label="Ana gezinme"><div class="ka-nav-in">
-    <a class="ka-brand" href="./" aria-label="Kelime Arenası ana sayfa"><img src="favicon.svg" alt="" width="34" height="34">Kelime Arenası</a>
+    <a class="ka-brand" href="./" aria-label="Pharos ana sayfa"><img src="favicon.svg?v=24" alt="" width="34" height="34"><svg class="ka-wm" viewBox="-6 -6 270 92" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="9.5" stroke-linejoin="round"><path transform="translate(0 0)" d="M4.5 20V80M8.5 40A15.5 15.5 0 1 0 8.5 39.99"/><path transform="translate(51 0)" d="M4.5 0V60M4.5 60V40A15.5 15.5 0 0 1 35.5 40V60"/><path transform="translate(98 0)" d="M35.5 20V60M35.5 40A15.5 15.5 0 1 0 35.5 40.01"/><path transform="translate(145 0)" d="M4.5 20V60M4.5 44C4.5 31 12 24.5 25 24.5"/><path transform="translate(176 0)" d="M4.5 40A15.5 15.5 0 1 0 35.5 40A15.5 15.5 0 1 0 4.5 40Z"/><path transform="translate(223 0)" d="M31 28.5C28.5 24 24 21 17.5 21C10 21 6 25 6 30.5C6 36.5 12 38 17.5 39.3C24.5 41 30.5 43 30.5 49.5C30.5 55.5 25.5 59 17.5 59C11 59 6.5 56 4 51.5"/></g></svg></a>
     <div class="ka-links">${links}</div>
     <div class="ka-tools">
       ${o.stats?`<span class="ka-chip ka-hide-sm" title="Günlük seri"><span style="color:var(--acc2)">${KA.ic('flame')}</span><b id="kaStreak">0</b><small>gün</small></span><span class="ka-chip" title="Toplam XP"><span style="color:var(--acc)">${KA.ic('star')}</span><b id="kaXp">0</b><small class="kl">XP</small></span>`:''}
@@ -382,7 +382,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')KA.closeLookup()});
 document.addEventListener('pointerdown',e=>{if(lexEl&&!lexEl.contains(e.target)&&!e.target.closest('.tk'))KA.closeLookup()},true);
 
 /* ---------- Alt bilgi ---------- */
-addEventListener('DOMContentLoaded',()=>{if(document.querySelector('.ka-foot'))return;const m=document.querySelector('main');if(m)m.insertAdjacentHTML('afterend','<footer class="ka-foot"><a href="gizlilik.html">Gizlilik politikası</a><span>·</span><span>Kelime Arenası</span></footer>')});
+addEventListener('DOMContentLoaded',()=>{if(document.querySelector('.ka-foot'))return;const m=document.querySelector('main');if(m)m.insertAdjacentHTML('afterend','<footer class="ka-foot"><a href="gizlilik.html">Gizlilik politikası</a><span>·</span><span>Pharos</span></footer>')});
 
 /* ---------- Uygulama: çevrimdışı çalışma ---------- */
 

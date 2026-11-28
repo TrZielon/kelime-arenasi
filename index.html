@@ -3,20 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Kelime Arenası · Akademik İngilizce kelime oyunu</title>
-<meta name="description" content="Akademik İngilizce kelimelerini Kapı, Çark, Nişan, Kalem, Bekçi, Tercüman ve Kürsü ringleriyle oyun gibi öğren.">
+<title>Pharos · BUEPT okuma, kelime ve konuşma</title>
+<meta name="description" content="Pharos: BUEPT ve akademik İngilizce için okuma, kelime ve konuşma çalışması. Oyunlar, sözlük, okuma kampı ve konuşma koçu.">
 <meta name="theme-color" content="#0f766e">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pharos">
+<meta property="og:title" content="Pharos · Turn the page. Find the light.">
+<meta property="og:description" content="BUEPT ve akademik İngilizce için okuma, kelime ve konuşma çalışması.">
+<meta property="og:image" content="https://kelime-arenasi-d8zm.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-96.png" type="image/png" sizes="96x96">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="K. Arenası">
+<meta name="apple-mobile-web-app-title" content="Pharos">
 <script>try{var m=localStorage.getItem('ka_pal');document.documentElement.dataset.mode=(m==='derin_akdeniz')?'dark':'light';if(sessionStorage.getItem('ka_gate'))document.documentElement.classList.add('ka-gin')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="ortak.css?v=23">
+<link rel="stylesheet" href="ortak.css?v=24">
 <style>
 .hero{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:center;padding:30px 32px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%)}
 .hero h1{font-size:clamp(28px,4vw,40px);margin:8px 0 10px}
@@ -174,7 +182,7 @@
 </head>
 <body>
 <main class="ka-wrap" id="main"><div id="home"></div><section id="act" class="act" hidden></section></main>
-<script src="firebase-config.js?v=23"></script><script src="ortak.js?v=23"></script>
+<script src="firebase-config.js?v=24"></script><script src="ortak.js?v=24"></script>
 <script>
 (function(){
 'use strict';
@@ -516,7 +524,7 @@ function hubHtml(){
 function pwaHtml(){
   if(matchMedia('(display-mode: standalone)').matches)return '';
   try{if(localStorage.getItem('ka_pwa_x'))return ''}catch(e){}
-  return `<section class="card pwa"><img src="apple-touch-icon.png" alt=""><div><b>Kelime Arenası'nı telefonuna ekle</b><span>Uygulama mağazasına gerek yok. Ana ekrandan tam ekran açılır, ilerlemen aynen kalır.</span></div><button class="btn btn-ghost" data-a="pwa">${ic('phone')}Telefona ekle</button><button class="ka-icon-btn pwax" data-a="pwax" aria-label="Bu kartı gizle" title="Gizle">${ic('x')}</button></section>`;
+  return `<section class="card pwa"><img src="apple-touch-icon.png" alt=""><div><b>Pharos'u telefonuna ekle</b><span>Uygulama mağazasına gerek yok. Ana ekrandan tam ekran açılır, ilerlemen aynen kalır.</span></div><button class="btn btn-ghost" data-a="pwa">${ic('phone')}Telefona ekle</button><button class="ka-icon-btn pwax" data-a="pwax" aria-label="Bu kartı gizle" title="Gizle">${ic('x')}</button></section>`;
 }
 
 /* ---------- Etkinlik çerçevesi ---------- */
