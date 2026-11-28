@@ -1,5 +1,5 @@
 /* Kelime Arenası · çevrimdışı çalışma (service worker) */
-const V='ka-v31';
+const V='ka-v32';
 const CORE=['./','index.html','haber.html','fetih.html','sinav.html','sozluk.html','dinle.html','oyunlar.html','atolye.html','dava.html','ari.html','ravenwood.html','deneme.html','kamp.html','konus.html','lab.html','gizlilik.html','offline.html','ortak.css?v=22','ortak.js?v=22','favicon.svg','favicon-96.png','icon-192.png','icon-512.png','manifest.webmanifest'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
